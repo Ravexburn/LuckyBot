@@ -1,10 +1,11 @@
 const botSettings = require("./botsettings.json");
 const Discord = require("discord.js");
 const link = "https://trello.com/b/0uytHSPL";
+const link2 = "https://github.com/Ravexburn/LuckyBot";
 
 module.exports = (bot = Discord.Client) => {
 
-//On bot joining
+    //On bot joining
 
     bot.on("guildCreate", guild => {
         let embed = new Discord.RichEmbed()
@@ -27,7 +28,7 @@ Here are a few things this bot can do:
 
 • And many more features to come!
 
-If there are any questions or problems feel free to message one of the owners or check [here](${link})!`)
+If there are any questions or problems feel free to message one of the owners or check [here](${link2})!`)
 
         guild.owner.user.send(embed);
     });
@@ -52,6 +53,11 @@ If there are any questions or problems feel free to message one of the owners or
 
         }
 
+        if ((command === `${prefix}github`) || (command === `${prefix}git`)) {
+            message.channel.send(`View upcoming features here: ${link2}`);
+
+        }
+
         //Command help
 
         if (command === `${prefix}help`) {
@@ -65,6 +71,7 @@ If there are any questions or problems feel free to message one of the owners or
 \*\* ${prefix}help\*\* - Shows this list of commands.
 \*\* ${prefix}mod\*\* - Sends a list of mod commands in direct messages.
 \*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
+\*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
 \*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`)
                 .addField(":round_pushpin: Notificatons", `\*\* ${prefix}notify\*\* - Shows a list of commands for notifications.
 \*\* ${prefix}notify help\*\* - Shows a detailed list of commands for notifications.

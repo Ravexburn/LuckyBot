@@ -142,13 +142,14 @@ bot.on("message", async message => {
         let date = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
         
         let trello = "https://trello.com/b/0uytHSPL";
+        let git = "https://github.com/Ravexburn/LuckyBot"
 
         let embed = new Discord.RichEmbed()
             .setAuthor("About Lucky Bot", bot.user.displayAvatarURL)
             .setColor("#a8e8eb")
             .setThumbnail(bot.user.displayAvatarURL)
             .addField("Authors", "Rave#0737 and OrigamiCoder#1375", true)
-            .addField("Websites", `[Trello](${trello})`, true)
+            .addField("Websites", `[Trello](${trello}) [Github](${git})`, true)
             .addField("Servers", bot.guilds.size, true)
             .addField("Uptime", date, true)
             .addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
