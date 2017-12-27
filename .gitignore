@@ -1,0 +1,11 @@
+botsettings.json
+node_modules/
+data/
+*.sqlite
+.vscode/
+libraries used.txt
+backupbot.js
+backupbot2.js
+musicdonotuse.js
+start.bat
+nodemon.json
