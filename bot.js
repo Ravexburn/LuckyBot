@@ -247,8 +247,6 @@ bot.on("message", async message => {
         }
         let rolename = args.join(" ");
 
-
-
         if (message.guild.roles.exists("name", rolename)) {
             message.guild.members.find("id", message.author.id).removeRole(message.guild.roles.find("name", rolename));
             message.channel.send(message.author + " " + "**Your role has been removed**")
