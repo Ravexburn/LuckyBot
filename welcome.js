@@ -23,10 +23,11 @@ module.exports = (bot = Discord.Client) => {
         }
 
         let msg = serverSettings.welcomeMessage;
-        let user = member.user;
+        let mention = member.user;
         let serverName = guild.name;
+        let user = member.user.tag;
 
-        msg = msg.replace("{user}", user).replace("{server}", serverName);
+        msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
 
         let embed = new Discord.RichEmbed()
             .setColor("RANDOM")

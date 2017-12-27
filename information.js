@@ -106,7 +106,7 @@ If there are any questions or problems feel free to message one of the owners or
                 .addField("Welcome Commands", `\*\* ${prefix}welcome\*\* - Shows a list of commands for welcome.
 \*\* ${prefix}welcome help\*\* - Shows a detailed list of commands for welcome.
 \*\* ${prefix}welcome channel <channel name>\*\* - Sets the channel the bot should welcome new members in.
-\*\* ${prefix}welcome message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user.`)
+\*\* ${prefix}welcome message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`)
                 .addField(":checkered_flag: Start Commands", `\*\* ${prefix}start\*\* - Shows a list of commands for start.
 \*\* ${prefix}start help\*\* - Shows a detailed list of commands for start.
 \*\* ${prefix}start roles <channel name>\*\* - Sets the channel for the role system.
