@@ -274,9 +274,10 @@ module.exports = (bot = Discord.Client) => {
 
                     break;
 
+                case "msg":    
                 case "message":
                     if (args.length == 1) {
-                        message.channel.send("Please enter a welcome message: ({user} tags the new user, {server} is server name)");
+                        message.channel.send("Please enter a welcome message: ({mention} tags the new user, {server} is server name, {user} shows user tag)");
                         return;
                     }
                     let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
