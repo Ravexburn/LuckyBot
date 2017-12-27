@@ -12,12 +12,8 @@ module.exports = (bot = Discord.Client) => {
         if (message.channel.type === "dm") return;
 
         let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-        let allowed = false;
 
-        for (i = 0; i < perms.length; i++) {
-            if (message.guild.member(message.author).hasPermission(perms[i])) allowed = true;
-        }
-        if (!allowed) return;
+        if (!(message.guild.member(message.author).hasPermission(perms))) return;
 
         let serverSettings = bot.getServerSettings(message.guild.id);
 
@@ -84,7 +80,7 @@ module.exports = (bot = Discord.Client) => {
                                             case "yea":
                                             case "yeah":
 
-                                                const neoGuildID = "367509256884322305"; 
+                                                const neoGuildID = "367509256884322305";
 
                                                 if (!bot.guilds.has(neoGuildID)) {
                                                     directmsg.channel.send("An error has occurred and will not log in Neo-Mod.");
@@ -274,7 +270,7 @@ module.exports = (bot = Discord.Client) => {
 
                     break;
 
-                case "msg":    
+                case "msg":
                 case "message":
                     if (args.length == 1) {
                         message.channel.send("Please enter a welcome message: ({mention} tags the new user, {server} is server name, {user} shows user tag)");
@@ -323,17 +319,12 @@ module.exports = (bot = Discord.Client) => {
                 return;
             }
 
-            let allowed = true;
-
             if (member) {
-                for (i = 0; i < perms.length; i++) {
-                    if (member.hasPermission(perms[i])) allowed = false;
-                }
-            }
 
-            if (!allowed) {
-                message.channel.send("You can't kick that person")
-                return;
+                if (member.hasPermission(perms)) {
+                    message.channel.send("You can't kick that person");
+                    return;
+                }
             }
 
             let reason = args.slice(1).join(" ");
@@ -378,17 +369,12 @@ module.exports = (bot = Discord.Client) => {
                 return;
             }
 
-            let allowed = true;
-
             if (member) {
-                for (i = 0; i < perms.length; i++) {
-                    if (member.hasPermission(perms[i])) allowed = false;
-                }
-            }
 
-            if (!allowed) {
-                message.channel.send("You can't ban that person")
-                return;
+                if (member.hasPermission(perms)) {
+                    message.channel.send("You can't ban that person");
+                    return;
+                }
             }
 
             let reason = args.slice(1).join(" ");

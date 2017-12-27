@@ -95,12 +95,8 @@ If there are any questions or problems feel free to message one of the owners or
         if (command === `${prefix}mod`) {
 
             let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-            let allowed = false;
 
-            for (i = 0; i < perms.length; i++) {
-                if (message.guild.member(message.author).hasPermission(perms[i])) allowed = true;
-            }
-            if (!allowed) return;
+            if (!(message.guild.member(message.author).hasPermission(perms))) return;
 
             let embed = new Discord.RichEmbed()
                 .setTitle("Mod Commands")
