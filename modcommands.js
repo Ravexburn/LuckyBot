@@ -326,7 +326,7 @@ module.exports = (bot = Discord.Client) => {
 
             if (member) {
                 for (i = 0; i < perms.length; i++) {
-                    if (GuildMember.hasPermission(perms[i])) allowed = false;
+                    if (member.hasPermission(perms[i])) allowed = false;
                 }
             }
 
@@ -381,7 +381,7 @@ module.exports = (bot = Discord.Client) => {
 
             if (member) {
                 for (i = 0; i < perms.length; i++) {
-                    if (GuildMember.hasPermission(perms[i])) allowed = false;
+                    if (member.hasPermission(perms[i])) allowed = false;
                 }
             }
 
