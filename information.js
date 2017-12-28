@@ -122,7 +122,7 @@ If there are any questions or problems feel free to message one of the owners or
 
         //Suggestions
 
-        if (command === `${prefix}suggestion` || command === `${prefix}suggest`) {
+        if (command === `${prefix}suggestion` || command === `${prefix}suggest` || command === `${prefix}sgt`) {
 
             const chan = getSuggestionChannel();
             if (!chan) {
@@ -130,9 +130,15 @@ If there are any questions or problems feel free to message one of the owners or
                 return;
             }
 
+            let msg = args.join(" ").trim();
+            if (msg === ""){
+                message.channel.send("I've got a suggestion, try adding a suggestion. `*suggestion <message>`");
+                return;
+            }
             let embed = new Discord.RichEmbed()
                 .setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-                .setDescription(message.content)
+                .setTitle("Server: " + message.guild.name + "")
+                .setDescription("```css\n" + msg + "\n```")
                 .setFooter(message.createdAt);
             if (message.attachments != null && message.attachments.size !== 0) {
                 embed.setImage(message.attachments.first().url);
@@ -148,8 +154,8 @@ If there are any questions or problems feel free to message one of the owners or
     });
 
     function getSuggestionChannel() {
-        let suggestGuild = "367509256884322305";
-        let suggestChan = "367760957646307328";
+        let suggestGuild = "176137665069056000"; //367509256884322305
+        let suggestChan = "310087364565401603"; //367760957646307328
         const guild = bot.guilds.get(suggestGuild);
         if (!guild) return null;
         const chan = guild.channels.get(suggestChan);
