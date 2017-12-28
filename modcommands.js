@@ -288,7 +288,54 @@ module.exports = (bot = Discord.Client) => {
                     break;
             }
         }
+        
+        /** Command: Mute
+         * Description: Mutes a tagged user.
+         * Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
+         */
+        if ((command === `${prefix}mute)) {
+            if (args.length === 0 || message.mentions.users.size < 1) { // Checks if no args given or no one mentioned
+                message.channel.send(`No one to mute, please do ${command} @user`);
+                return; 
+            }
 
+            let muteRole = null;
+            let memberToMute = message.guild.member(message.mentions.users.array()[0].id); // The irst user mentioned is muted, rest are ignored
+            
+            if (memberToMute.id === message.author.id) { //Don't mute yourself 
+                message.channel.send("You can't mute yourself");
+                return;
+            }
+
+            if (memberToMute.hasPermission(perms)) { //Don't mute person with clout
+                message.channel.send("You can't mute that person");
+                return;
+            }
+
+
+            for (let role in message.guild.roles.array()) {
+                if (role.name.toLowerCase() !== "mute") { // If there is no role named "mute" it creates a new one
+                    message.guild.createRole({
+                        name: "mute"
+                    }).then(newRole => {
+                        muteRole = newRole;
+                        message.channel.send(`There was no mute role found, a new one has been created with the name ${newRole.name}`);
+                        for (let channel in guild.channels) {
+                            channel.overwritePermissions(muteRole, { SEND_MESSAGES: false });
+                        }
+                    });
+                }
+                else if (role.name.toLowerCase() === "mute") {
+                    muteRole = role;
+                }
+            }
+            memberToMute.addRole(muteRole).then(member => {
+                message.channel.send(`Muted ${member.displayName}`);
+            }).catch(() => {
+                message.channel.send("Failed to mute");
+            });
+        }
+        
         //Kick command
 
         if ((command === `${prefix}kick`)) {
