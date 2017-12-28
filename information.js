@@ -82,8 +82,8 @@ If there are any questions or problems feel free to message one of the owners or
 \*\* ${prefix}notify global add <keyword>\*\* - Adds a <keyword> to notify you about on all servers.
 \*\* ${prefix}notify global remove <keyword>\*\* - Removes a <keyword> you were notified about on all servers.`)
                 .addField("Roles", `\*\* ${prefix}roles\*\* - Shows a detailed list of commands for roles.
-\*\* ${prefix}addrole <role> \*\* - Allows user to add the <role>.
-\*\* ${prefix}removerole <role> \*\* - Allows user to remove the <role>.
+\*\*+<role> \*\* - Allows user to add the <role>.
+\*\*-<role> \*\* - Allows user to remove the <role>.
 :warning: When adding and removing roles, names must match role name exactly!`)
                 .setFooter("If you have any other questions please contact Rave#0737");
 
