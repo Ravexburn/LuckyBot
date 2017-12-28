@@ -93,6 +93,14 @@ function addRole(member, rolename, message) {
     if (member.guild.roles.exists("name", rolename)) {
         let role = member.guild.roles.find("name", rolename);
 
+        if (member.roles.has(role.id)) {
+            //Member has role
+            message.reply("You already have this role.")
+                .then(message => message.delete(10 * 1000));
+            message.delete(10 * 1000);
+            return false;
+        }
+
         if (canAddRole(member, role)) {
             member.addRole(role).catch(console.error);
             message.reply("Role has been added.")
@@ -102,14 +110,6 @@ function addRole(member, rolename, message) {
         }
         else {
             message.reply("You do not have the required permissions to add that role.")
-                .then(message => message.delete(10 * 1000));
-            message.delete(10 * 1000);
-            return false;
-        }
-
-        if (member.roles.has(role.id)) {
-            //Member has role
-            message.reply("You already have this role.")
                 .then(message => message.delete(10 * 1000));
             message.delete(10 * 1000);
             return false;
@@ -156,8 +156,10 @@ function removeRole(member, rolename, message) {
  */
 function canAddRole(member, role) {
     let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
-    if (role.hasPermission(perms)) {
-        return false;
+    for (i = 0; i < perms.length; i++) {
+        if (role.hasPermission(perms[i])) {
+            return false;
+        }
     }
     return true;
 }
