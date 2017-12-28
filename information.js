@@ -132,7 +132,7 @@ If there are any questions or problems feel free to message one of the owners or
 
             let msg = args.join(" ").trim();
             if (msg === ""){
-                message.channel.send("I've got a suggestion, try adding a suggestion. `*suggestion <message>`");
+                message.channel.send(`I've got a suggestion, try adding a suggestion. \`${command} <message>\``);
                 return;
             }
             let embed = new Discord.RichEmbed()
