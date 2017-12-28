@@ -293,7 +293,7 @@ module.exports = (bot = Discord.Client) => {
          * Description: Mutes a tagged user. Unmutes if user is already muted.
          * Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
          */
-        if ((command === `${prefix}mute)) {
+        if ((command === `${prefix}mute`)) {
             if (args.length === 0 || message.mentions.users.size < 1) { // Checks if no args given or no one mentioned
                 message.channel.send(`No one to mute, please do ${command} @user`);
                 return; 
