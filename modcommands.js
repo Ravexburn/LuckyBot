@@ -290,7 +290,7 @@ module.exports = (bot = Discord.Client) => {
         }
         
         /** Command: Mute
-         * Description: Mutes a tagged user.
+         * Description: Mutes a tagged user. Unmutes if user is already muted.
          * Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
          */
         if ((command === `${prefix}mute)) {
@@ -301,7 +301,7 @@ module.exports = (bot = Discord.Client) => {
 
             let muteRole = null;
             let memberToMute = message.guild.member(message.mentions.users.array()[0].id); // The irst user mentioned is muted, rest are ignored
-            
+
             if (memberToMute.id === message.author.id) { //Don't mute yourself 
                 message.channel.send("You can't mute yourself");
                 return;
@@ -324,16 +324,24 @@ module.exports = (bot = Discord.Client) => {
                             channel.overwritePermissions(muteRole, { SEND_MESSAGES: false });
                         }
                     });
-                }
-                else if (role.name.toLowerCase() === "mute") {
+                } else if (role.name.toLowerCase() === "mute") {
                     muteRole = role;
                 }
             }
-            memberToMute.addRole(muteRole).then(member => {
-                message.channel.send(`Muted ${member.displayName}`);
-            }).catch(() => {
-                message.channel.send("Failed to mute");
-            });
+            
+            if (memberToMute.roles.has(muteRole.id)) {
+                memberToMute.removeRole(muteRole).then(member => {
+                    message.channel.send(`Muted ${member.displayName}`);
+                }).catch(() => {
+                    message.channel.send("Failed to unmute");
+                });
+            } else {
+                memberToMute.addRole(muteRole).then(member => {
+                    message.channel.send(`Muted ${member.displayName}`);
+                }).catch(() => {
+                    message.channel.send("Failed to mute");
+                });
+            }
         }
         
         //Kick command
