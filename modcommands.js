@@ -313,21 +313,25 @@ module.exports = (bot = Discord.Client) => {
             }
 
 
-            for (let role in message.guild.roles.array()) {
-                if (role.name.toLowerCase() !== "mute") { // If there is no role named "mute" it creates a new one
-                    message.guild.createRole({
-                        name: "mute"
-                    }).then(newRole => {
-                        muteRole = newRole;
-                        message.channel.send(`There was no mute role found, a new one has been created with the name ${newRole.name}`);
-                        for (let channel in guild.channels) {
-                            channel.overwritePermissions(muteRole, { SEND_MESSAGES: false });
-                        }
-                    });
-                } else if (role.name.toLowerCase() === "mute") {
+            for (let role in message.guild.roles.array()) { //
+                if (role.name.toLowerCase() === "mute") {
                     muteRole = role;
                 }
             }
+            
+            if (muteRole === null && !message.guild.member(bot.user.id).hasPermission("MANAGE_ROLES")) {
+                message.channel.send("There was no mute role found and I do not have permission to create a new role.\nPlease create a new role called \"mute\" and try again");
+            } else if (muteRole === null) { // If there is no role named "mute" it creates a new one
+                message.guild.createRole({
+                    name: "mute"
+                }).then(newRole => {
+                    muteRole = newRole;
+                    message.channel.send(`There was no mute role found, a new one has been created with the name ${newRole.name}`);
+                    for (let channel in guild.channels) {
+                        channel.overwritePermissions(muteRole, { SEND_MESSAGES: false });
+                    }
+                });
+            }  
             
             if (memberToMute.roles.has(muteRole.id)) {
                 memberToMute.removeRole(muteRole).then(member => {
