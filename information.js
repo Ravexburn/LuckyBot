@@ -154,8 +154,8 @@ If there are any questions or problems feel free to message one of the owners or
     });
 
     function getSuggestionChannel() {
-        let suggestGuild = "176137665069056000"; //367509256884322305
-        let suggestChan = "310087364565401603"; //367760957646307328
+        let suggestGuild = "367509256884322305"; //367509256884322305
+        let suggestChan = "367760957646307328"; //367760957646307328
         const guild = bot.guilds.get(suggestGuild);
         if (!guild) return null;
         const chan = guild.channels.get(suggestChan);
