@@ -319,7 +319,7 @@ module.exports = (bot = Discord.Client) => {
                 }
             }
             
-            if (muteRole === null && !message.guild.member(bot.user.id).hasPermission("MANAGE_ROLES")) {
+            if (muteRole === null && !message.guild.member(bot.user).hasPermission("MANAGE_ROLES")) {
                 message.channel.send("There was no mute role found and I do not have permission to create a new role.\nPlease create a new role called \"mute\" and try again");
             } else if (muteRole === null) { // If there is no role named "mute" it creates a new one
                 message.guild.createRole({
