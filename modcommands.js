@@ -13,8 +13,12 @@ module.exports = (bot = Discord.Client) => {
         if (message.channel.type === "dm") return;
 
         let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-
-        if (!(message.guild.member(message.author).hasPermission(perms))) return;
+        let allowed = false;
+        
+                for (i = 0; i < perms.length; i++) {
+                    if (message.guild.member(message.author).hasPermission(perms[i])) allowed = true;
+                }
+                if (!allowed) return;
 
         let serverSettings = bot.getServerSettings(message.guild.id);
 
