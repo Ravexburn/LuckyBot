@@ -16,6 +16,10 @@ module.exports = (bot = Discord.Client) => {
         const serverSettings = bot.getServerSettings(message.guild.id);
         if (!serverSettings) return;
 
+        if (!serverSettings.logsOn) return;
+
+        if (!serverSettings.messageLog) return;
+
         if (!serverSettings.channelID) return;
 
         const channelID = serverSettings.channelID;
@@ -31,7 +35,7 @@ module.exports = (bot = Discord.Client) => {
             .setFooter(message.channel.name)
             .setTimestamp(message.createdAt);
         if (message.attachments != null && message.attachments.size !== 0) {
-            embed.setImage(message.attachments.first().url);
+            return;
         }
         let color = "#a8e8eb";
         let member = message.guild.members.get(message.author.id);
@@ -69,6 +73,10 @@ module.exports = (bot = Discord.Client) => {
 
         const serverSettings = bot.getServerSettings(message.guild.id);
         if (!serverSettings) return;
+        
+        if (!serverSettings.logsOn) return;
+
+        if (!serverSettings.editLog) return;
 
         if (!serverSettings.editChannelID) return;
 
@@ -124,6 +132,10 @@ module.exports = (bot = Discord.Client) => {
         const serverSettings = bot.getServerSettings(message.guild.id);
         if (!serverSettings) return;
 
+        if (!serverSettings.logsOn) return;
+
+        if (!serverSettings.deleteLog) return;
+
         if (!serverSettings.deleteChannelID) return;
 
         const deleteChannelID = serverSettings.deleteChannelID;
@@ -167,7 +179,82 @@ module.exports = (bot = Discord.Client) => {
         neoChan.send(":warning: Message has been removed:", embed);
     });
 
+    //Images
 
+    bot.on("message", async message => {
+        if (message.system) return;
+        if (message.author.bot) return;
+        if (message.channel.type === 'dm') return;
 
+        const serverSettings = bot.getServerSettings(message.guild.id);
+        if (!serverSettings) return;
+
+        if (!serverSettings.logsOn) return;
+
+        if (!serverSettings.imageLog) return;
+
+        if (!serverSettings.imageChannelID) return;
+
+        const imageChannelID = serverSettings.imageChannelID;
+        const imageEmbed = serverSettings.imageEmbed;
+
+        if (!message.guild.channels.has(imageChannelID)) {
+            return;
+        }
+        const chan = message.guild.channels.get(imageChannelID);
+
+        if (message.attachments == null || message.attachments.size === 0) {
+            return;
+        }
+
+        if (imageEmbed === false) {
+
+            let image = { file: message.attachments.first().url };
+            chan.send(`\*\*${message.author.tag}\*\* posted \*\*${message.channel.name}\*\* at \*\*${message.createdAt}\*\*`, image);
+        }
+
+        else {
+            let embed = new Discord.RichEmbed()
+                .setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+                .setFooter(message.channel.name)
+                .setTimestamp(message.createdAt)
+                .setImage(message.attachments.first().url);
+
+            let color = "#a8e8eb";
+            let member = message.guild.members.get(message.author.id);
+            if (member.colorRole) { color = member.colorRole.color; }
+            embed.setColor(color);
+            chan.send(embed);
+        }
+
+        if (bot.centlog === false) return;
+        if (serverSettings.centEnabled === "false") return;
+        const neoChanID = serverSettings.centChanID;
+        const neoGuildID = serverSettings.centGuildID;
+
+        if (!bot.guilds.has(neoGuildID)) {
+            return;
+        }
+        const neoGuild = bot.guilds.get(neoGuildID);
+
+        if (!neoGuild.channels.has(neoChanID)) {
+            return;
+        }
+        const neoChan = neoGuild.channels.get(neoChanID);
+
+        let embed = new Discord.RichEmbed()
+            .setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+            .setFooter(`${message.guild.name} | ${message.chanel.name}`)
+            .setTimestamp(message.createdAt)
+            .setImage(message.attachments.first().url);
+
+        let color = "#a8e8eb";
+        let member = message.guild.members.get(message.author.id);
+        if (member.colorRole) { color = member.colorRole.color; }
+        embed.setColor(color);
+
+        neoChan.send(embed);
+
+    });
 
 }

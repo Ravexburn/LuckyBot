@@ -62,10 +62,10 @@ module.exports = (bot = Discord.Client) => {
                 case "logs":
                 case "messagelogs":
 
-                   initMsglog(message);
+                    initMsglog(message);
 
                     break;
-               
+
                 //Roles
 
                 case "roles":
@@ -170,24 +170,40 @@ module.exports = (bot = Discord.Client) => {
 
         //Toggles
 
-        if ((command === `${prefix}toggle`)){
+        if ((command === `${prefix}toggle`)) {
             if (args.length === 0) {
                 message.channel.send(`\`\`\`md\nTo use toggle please use one of the following subcommands: \n${command} <image>\`\`\``);
                 return;
             }
+            let emote = "";
             switch (args[0].toLowerCase()) {
 
+                //Toggle Image Embed
                 case "image":
-                let emote = "";
-                serverSettings.imageEmbed = !serverSettings.imageEmbed;
-                bot.setServerSettings(message.guild.id, serverSettings);
-                if(serverSettings.imageEmbed === true){
-                    emote = ":white_check_mark: **Enabled**";
-                }else{
-                    emote = ":x: **Disabled**";
-                }
-                message.channel.send(`\*\*Embed images status:\*\* ${emote}`);
-                return;
+                    serverSettings.imageEmbed = !serverSettings.imageEmbed;
+                    bot.setServerSettings(message.guild.id, serverSettings);
+                    if (serverSettings.imageEmbed === true) {
+                        emote = ":white_check_mark: **Enabled**";
+                    } else {
+                        emote = ":x: **Disabled**";
+                    }
+                    message.channel.send(`\*\*Embed images status:\*\* ${emote}`);
+                    return;
+
+                //Toggle Logs
+                case "logs":
+                    serverSettings.logsOn = !serverSettings.logsOn;
+                    bot.setServerSettings(message.guild.id, serverSettings);
+                    if (serverSettings.logsOn === true) {
+                        emote = ":white_check_mark: **Enabled**";
+                    } else {
+                        emote = ":x: **Disabled**";
+                    }
+                    message.channel.send(`\*\*Logs status:\*\* ${emote}`);
+                    return;
+
+                default:
+                    return;
             }
         }
 
@@ -481,101 +497,213 @@ module.exports = (bot = Discord.Client) => {
 
     });
 
-}
+    /**
+     * 
+     * @param {Message} message 
+     */
+    function initMsglog(message) {
 
-/**
- * 
- * @param {Message} message 
- */
-function initMsglog(message){
-    if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
+        let author = message.author;
+        if (message.mentions.channels == null || message.mentions.channels.size === 0) {
+            message.channel.send(`Please choose a channel for message logs.`);
+            return;
+        }
         let chan = message.mentions.channels.first();
-        message.channel.send("Now logging in: " + chan);
-        serverSettings.channelID = chan.id;
-        serverSettings.editChannelID = chan.id;
-        serverSettings.deleteChannelID = chan.id;
-        serverSettings.imageChannelID = chan.id;
-        bot.setServerSettings(message.guild.id, serverSettings);
-        if (bot.centlog === false) return;
-        if (serverSettings.centEnabled !== "") return;
-        message.author.send(`Would you like this to also be added to Neo-Mod cord as a backup? You have two minutes to respond. ${invite} (yes/no)`)
-            .then(directmsg => {
-                directmsg.channel.awaitMessages(response => response.author.id === message.author.id, { max: 1, time: 120000, errors: ['time'] })
-                    .then(collected => {
-                        switch (collected.first().content.toLowerCase()) {
-                            case "yes":
-                            case "y":
-                            case "ok":
-                            case "okay":
-                            case "k":
-                            case "sure":
-                            case "yea":
-                            case "yeah":
+        let embed = new Discord.RichEmbed();
+        embed.setTitle(`Intial Message Log Setup`)
+            .setColor("#a8e8eb")
+            .setDescription(`Please select by using the reactions what you would like to include in the message log.
+        
+1. All messages being sent.
 
-                                const neoGuildID = "367509256884322305";
+2. Edited messages.
 
-                                if (!bot.guilds.has(neoGuildID)) {
-                                    directmsg.channel.send("An error has occurred and will not log in Neo-Mod.");
-                                    console.log("Couldn't get guild REEEEEEEEE");
-                                    return;
-                                }
-                                serverSettings.centGuildID = neoGuildID;
-                                bot.setServerSettings(message.guild.id, serverSettings);
-                                const neoGuild = bot.guilds.get(neoGuildID);
-                                let neoChanID = serverSettings.centChanID;
-                                let neoChan;
-                                if (neoChanID !== "") {
-                                    if (neoGuild.channels.has(neoChanID)) {
-                                        neoChan = neoGuild.channels.get(neoChanID);
-                                    }
-                                }
+3. Deleted messages.
 
-                                if (!neoChan) {
-                                    let name = message.guild.name;
-                                    name = name.replace(/\s+/g, "_").replace(/[^-\w]+/g, "");
-                                    neoGuild.createChannel(name, `text`).then(channel => {
-                                        neoChan = channel;
-                                        serverSettings.centChanID = neoChan.id;
-                                        bot.setServerSettings(message.guild.id, serverSettings);
-                                    }).catch(() => {
-                                        console.error();
-                                    });
-                                }
+4. Images.
 
-                                serverSettings.centEnabled = "true";
-                                message.author.send(`Message logs have also been enabled on Neo-Mod cord. ${invite}Contact Rave on how to view them.`);
-                                if (message.author.id !== message.guild.ownerID) {
-                                    message.guild.owner.send(`Message logs have also been enabled on Neo-Mod cord. ${invite}Contact Rave on how to view them.`);
-                                }
-                                break;
+5. All features.
 
-                            case "no":
-                            case "nope":
-                            case "na":
-                            case "never":
-                            case "n":
-                                serverSettings.centEnabled = "false";
-                                message.author.send(`Will not log in Neo-Mod cord.`);
-                                break;
+After you have made your decision react with the :floppy_disk: to save.`)
 
-                            default:
-                                serverSettings.centEnabled = "false";
-                                message.author.send(`Will not log in Neo-Mod cord.`);
-                                break;
+        message.channel.send(embed)
+            .then(async function (message) {
+                await message.react("1⃣");
+                await message.react("2⃣");
+                await message.react("3⃣");
+                await message.react("4⃣");
+                await message.react("5⃣");
+                await message.react("💾");
+                return message;
+            }).then(function (message) {
+                message.awaitReactions((reaction, user) => reaction.emoji.name === "💾" && user.id === author.id, { max: 1, time: 600000, errors: ['time'] })
+                    .then(() => {
+                        let reactions = message.reactions;
+                        let log = {
+                            messageLog: false,
+                            editLog: false,
+                            deleteLog: false,
+                            imageLog: false,
+                        }
+                        reactions.forEach(r => {
+                            if (!r.me) return;
 
+                            if (!r.users.has(author.id)) return;
+
+                            switch (r.emoji.name) {
+
+                                case "1⃣":
+
+                                    log.messageLog = true;
+                                    break;
+
+                                case "2⃣":
+
+                                    log.editLog = true;
+                                    break;
+
+                                case "3⃣":
+
+                                    log.deleteLog = true;
+                                    break;
+
+                                case "4⃣":
+
+                                    log.imageLog = true;
+                                    break;
+
+                                case "5⃣":
+
+                                    log.messageLog = true;
+                                    log.editLog = true;
+                                    log.deleteLog = true;
+                                    log.imageLog = true;
+                                    break;
+
+                                default:
+                                    break;
+
+                            }
+                        });
+
+                        let serverSettings = bot.getServerSettings(message.guild.id);
+                        //Updates logs on    
+                        serverSettings.logsOn = (log.messageLog || log.editLog || log.deleteLog || log.imageLog);
+                        //Updates features
+                        serverSettings.messageLog = log.messageLog;
+                        serverSettings.editLog = log.editLog;
+                        serverSettings.deleteLog = log.deleteLog;
+                        serverSettings.imageLog = log.imageLog;
+                        //Updates id
+                        if(serverSettings.logsOn){
+                        serverSettings.channelID = chan.id;
+                        serverSettings.editChannelID = chan.id;
+                        serverSettings.deleteChannelID = chan.id;
+                        serverSettings.imageChannelID = chan.id;
+                        }
+                        bot.setServerSettings(message.guild.id, serverSettings);
+
+                        let embed = new Discord.RichEmbed();
+                        embed.setTitle(`These are the settings chosen for message logs:`)
+                            .setColor("#a8e8eb");
+                        let msg = "";
+                        for (let value in log) {
+                            if (log[value]) {
+                                msg += `${value} = ${log[value]}\n\n`;
+                            }
                         }
 
-                    }).catch(() => {
-                        directmsg.channel.send("No response, will not log.");
-                    })
+                        msg += `\*\*These settings will be logged in: ${chan}.\*\*`
 
-            }).catch(() => {
-                console.error();
+                        embed.setDescription(msg);
+                        message.channel.send(embed);
+
+                    }).catch((error) => {
+                        message.channel.send("Command timed out, please use command again to set up message logs.");
+                    });
+            }).catch((error) => {
+                console.log(error);
             });
 
-    } else {
+        //Centralized Logs
 
-        message.channel.send(`Please mention a channel ${command} ${args[0]} <#channelname>`);
+        /*    if (bot.centlog === false) return;
+           if (serverSettings.centEnabled !== "") return;
+           message.author.send(`Would you like this to also be added to Neo-Mod cord as a backup? You have two minutes to respond. ${invite} (yes/no)`)
+               .then(directmsg => {
+                   directmsg.channel.awaitMessages(response => response.author.id === message.author.id, { max: 1, time: 120000, errors: ['time'] })
+                       .then(collected => {
+                           switch (collected.first().content.toLowerCase()) {
+                               case "yes":
+                               case "y":
+                               case "ok":
+                               case "okay":
+                               case "k":
+                               case "sure":
+                               case "yea":
+                               case "yeah":
+   
+                                   const neoGuildID = "367509256884322305";
+   
+                                   if (!bot.guilds.has(neoGuildID)) {
+                                       directmsg.channel.send("An error has occurred and will not log in Neo-Mod.");
+                                       console.log("Couldn't get guild REEEEEEEEE");
+                                       return;
+                                   }
+                                   serverSettings.centGuildID = neoGuildID;
+                                   bot.setServerSettings(message.guild.id, serverSettings);
+                                   const neoGuild = bot.guilds.get(neoGuildID);
+                                   let neoChanID = serverSettings.centChanID;
+                                   let neoChan;
+                                   if (neoChanID !== "") {
+                                       if (neoGuild.channels.has(neoChanID)) {
+                                           neoChan = neoGuild.channels.get(neoChanID);
+                                       }
+                                   }
+   
+                                   if (!neoChan) {
+                                       let name = message.guild.name;
+                                       name = name.replace(/\s+/g, "_").replace(/[^-\w]+/g, "");
+                                       neoGuild.createChannel(name, `text`).then(channel => {
+                                           neoChan = channel;
+                                           serverSettings.centChanID = neoChan.id;
+                                           bot.setServerSettings(message.guild.id, serverSettings);
+                                       }).catch(() => {
+                                           console.error();
+                                       });
+                                   }
+   
+                                   serverSettings.centEnabled = "true";
+                                   message.author.send(`Message logs have also been enabled on Neo-Mod cord. ${invite}Contact Rave on how to view them.`);
+                                   if (message.author.id !== message.guild.ownerID) {
+                                       message.guild.owner.send(`Message logs have also been enabled on Neo-Mod cord. ${invite}Contact Rave on how to view them.`);
+                                   }
+                                   break;
+   
+                               case "no":
+                               case "nope":
+                               case "na":
+                               case "never":
+                               case "n":
+                                   serverSettings.centEnabled = "false";
+                                   message.author.send(`Will not log in Neo-Mod cord.`);
+                                   break;
+   
+                               default:
+                                   serverSettings.centEnabled = "false";
+                                   message.author.send(`Will not log in Neo-Mod cord.`);
+                                   break;
+   
+                           }
+   
+                       }).catch(() => {
+                           directmsg.channel.send("No response, will not log.");
+                       })
+   
+               }).catch(() => {
+                   console.error();
+               }); */
 
     }
+
 }

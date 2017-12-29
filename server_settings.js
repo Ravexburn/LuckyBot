@@ -12,9 +12,16 @@ const defaultSettings = {
     musicChannelID: "",
     editChannelID: "",
     deleteChannelID: "",
+    imageChannelID: "",
     centGuildID: "",
     centChanID: "",
     centEnabled: "",
+    imageEmbed: true,
+    logsOn: false,
+    messageLog: false,
+    editLog: false,
+    deleteLog: false,
+    imageLog: false,
 }
 
 module.exports = (bot = Discord.Client) => {
@@ -33,9 +40,9 @@ module.exports = (bot = Discord.Client) => {
         if (!bot.hasServerSettings(guildID)) {
             bot.initServerSettings(guildID);
         }
-        const guildSettings = bot.serverSet.get(guildID);     
-        for (var key in defaultSettings){
-            if (!guildSettings.hasOwnProperty(key)){
+        const guildSettings = bot.serverSet.get(guildID);
+        for (var key in defaultSettings) {
+            if (!guildSettings.hasOwnProperty(key)) {
                 guildSettings[key] = defaultSettings[key];
                 bot.setServerSettings(guildID, guildSettings);
             }
@@ -43,17 +50,17 @@ module.exports = (bot = Discord.Client) => {
         return guildSettings;
     }
 
-    bot.setServerSettings = function setServerSettings(guildID, newSettings){
+    bot.setServerSettings = function setServerSettings(guildID, newSettings) {
         bot.serverSet.set(guildID, newSettings);
         return;
     }
 
-    bot.delServerSettings = function delServerSettings(guildID){
+    bot.delServerSettings = function delServerSettings(guildID) {
         bot.serverSet.delete(guildID);
 
     }
 
-    bot.getDefaultSettings = function getDefaultSettings(){
+    bot.getDefaultSettings = function getDefaultSettings() {
         return defaultSettings;
     }
 };
