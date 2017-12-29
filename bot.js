@@ -9,6 +9,7 @@ require("./information.js")(bot);
 require("./messagelogs.js")(bot);
 require("./modcommands.js")(bot);
 require("./notifications.js")(bot);
+require("./roles.js")(bot);
 require("./server_settings.js")(bot);
 require("./welcome.js")(bot);
 
@@ -94,7 +95,7 @@ bot.on("message", async message => {
             embed.addField(fieldString, gameString, true);
         }
 
-        embed.addField("Joined Server On", member.joinedAt.toLocaleString(), true); //to use for botinfo message.guild.joinedAt.toLocaleString()
+        embed.addField("Joined Server On", member.joinedAt.toLocaleString(), true);
 
         if (member.roles) {
             let roleString = member.roles.array().join(", ");
@@ -158,116 +159,6 @@ bot.on("message", async message => {
     }
 });
 
-
-//Roles
-
-bot.on("message", async message => {
-    if (message.author.bot) return;
-    if (message.channel.type === "dm") return;
-    const serverSettings = bot.getServerSettings(message.guild.id);
-    if (!serverSettings) return;
-
-    let prefix = serverSettings.prefix;
-    let valid_channel = false;
-    let activeChannel;
-
-    if (message.channel.id === serverSettings.roleChannelID) {
-        valid_channel = true;
-    }
-
-    if (message.guild.channels.has(serverSettings.roleChannelID)) {
-        activeChannel = message.guild.channels.get(serverSettings.roleChannelID);
-    }
-
-    if (!activeChannel) return;
-
-    let messageArray = message.content.split(" ");
-    let command = messageArray[0];
-    let args = messageArray.slice(1);
-
-    if (!command.startsWith(prefix)) return;
-
-    //Add Role
-
-    if (command === `${prefix}addrole`) {
-        if (valid_channel === false) {
-            message.channel.send(message.author + " " + "**Please use this in the roles channel**" + " [" + activeChannel + "]")
-                .then(message => message.delete(10 * 1000));
-            message.delete(10 * 1000);
-            return;
-        }
-        if (args.length === 0) {
-            message.channel.send(message.author + " " + "**To select a role please use " + `${prefix}addrole` + " <role name>**")
-                .then(message => message.delete(10 * 1000));
-            message.delete(10 * 1000);
-            return;
-        }
-        let rolename = args.join(" ");
-        let target;
-
-        if (message.guild.roles.exists("name", rolename)) {
-            let role = message.guild.roles.find("name", rolename);
-            let err = false;
-
-            let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
-            for (i = 0; i < perms.length; i++) {
-                if (role.hasPermission(perms[i])) err = true;
-            }
-
-            if (err === false) {
-                message.guild.members.find("id", message.author.id).addRole(role);
-                message.channel.send(message.author + " " + "**Your roles have been set**")
-                    .then(message => message.delete(10 * 1000));
-                message.delete(10 * 1000);
-                return;
-            }
-        }
-
-        message.channel.send(message.author + " " + "**Please pick a valid role**")
-            .then(message => message.delete(10 * 1000));
-        message.delete(10 * 1000);
-        return;
-
-    }
-
-    //Remove Role
-
-    if ((command === `${prefix}removerole`) || (command === `${prefix}remrole`)) {
-        if (valid_channel === false) {
-            message.channel.send(message.author + " " + "**Please use this in the roles channel**" + " [" + activeChannel + "]")
-                .then(message => message.delete(10 * 1000));
-            message.delete(10 * 1000);
-            return;
-        }
-        if (args.length === 0) {
-            message.channel.send(message.author + " " + "**To remove a role please use " + `${prefix}removerole` + " or " + `${prefix}remrole` + " <role name>**")
-                .then(message => message.delete(10 * 1000));
-            message.delete(10 * 1000);
-            return;
-        }
-        let rolename = args.join(" ");
-
-        if (message.guild.roles.exists("name", rolename)) {
-            message.guild.members.find("id", message.author.id).removeRole(message.guild.roles.find("name", rolename));
-            message.channel.send(message.author + " " + "**Your role has been removed**")
-                .then(message => message.delete(10 * 1000));
-            message.delete(10 * 1000);
-            return;
-        }
-        else {
-            message.channel.send(message.author + " " + "**Please pick a valid role to remove**")
-                .then(message => message.delete(10 * 1000));
-            message.delete(10 * 1000);
-            return;
-        }
-
-    }
-
-
-});
-
 bot.login(botSettings.token);
-
-
 
 //SHIFT ALT F to format

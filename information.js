@@ -82,8 +82,8 @@ If there are any questions or problems feel free to message one of the owners or
 \*\* ${prefix}notify global add <keyword>\*\* - Adds a <keyword> to notify you about on all servers.
 \*\* ${prefix}notify global remove <keyword>\*\* - Removes a <keyword> you were notified about on all servers.`)
                 .addField("Roles", `\*\* ${prefix}roles\*\* - Shows a detailed list of commands for roles.
-\*\* ${prefix}addrole <role> \*\* - Allows user to add the <role>.
-\*\* ${prefix}removerole <role> \*\* - Allows user to remove the <role>.
+\*\*+<role> \*\* - Allows user to add the <role>.
+\*\*-<role> \*\* - Allows user to remove the <role>.
 :warning: When adding and removing roles, names must match role name exactly!`)
                 .setFooter("If you have any other questions please contact Rave#0737");
 
@@ -122,7 +122,7 @@ If there are any questions or problems feel free to message one of the owners or
 
         //Suggestions
 
-        if (command === `${prefix}suggestion` || command === `${prefix}suggest`) {
+        if (command === `${prefix}suggestion` || command === `${prefix}suggest` || command === `${prefix}sgt`) {
 
             const chan = getSuggestionChannel();
             if (!chan) {
@@ -130,9 +130,15 @@ If there are any questions or problems feel free to message one of the owners or
                 return;
             }
 
+            let msg = args.join(" ").trim();
+            if (msg === ""){
+                message.channel.send(`I've got a suggestion, try adding a suggestion. \`${command} <message>\``);
+                return;
+            }
             let embed = new Discord.RichEmbed()
                 .setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-                .setDescription(message.content)
+                .setTitle("Server: " + message.guild.name + "")
+                .setDescription("```css\n" + msg + "\n```")
                 .setFooter(message.createdAt);
             if (message.attachments != null && message.attachments.size !== 0) {
                 embed.setImage(message.attachments.first().url);
@@ -148,8 +154,8 @@ If there are any questions or problems feel free to message one of the owners or
     });
 
     function getSuggestionChannel() {
-        let suggestGuild = "367509256884322305";
-        let suggestChan = "367760957646307328";
+        let suggestGuild = "367509256884322305"; //367509256884322305
+        let suggestChan = "367760957646307328"; //367760957646307328
         const guild = bot.guilds.get(suggestGuild);
         if (!guild) return null;
         const chan = guild.channels.get(suggestChan);
