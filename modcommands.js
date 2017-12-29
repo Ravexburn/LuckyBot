@@ -172,7 +172,7 @@ module.exports = (bot = Discord.Client) => {
 
         if ((command === `${prefix}toggle`)) {
             if (args.length === 0) {
-                message.channel.send(`\`\`\`md\nTo use toggle please use one of the following subcommands: \n${command} <image>\`\`\``);
+                message.channel.send(`\`\`\`md\nTo use toggle please use one of the following subcommands: \n${command} <image|logs>\`\`\``);
                 return;
             }
             let emote = "";
