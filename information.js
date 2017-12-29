@@ -114,7 +114,10 @@ If there are any questions or problems feel free to message one of the owners or
 \*\* ${prefix}start help\*\* - Shows a detailed list of commands for start.
 \*\* ${prefix}start roles <channel name>\*\* - Sets the channel for the role system.
 \*\* ${prefix}start logs <channel name>\*\* - Sets the channel for message logs.  
-\*\* ${prefix}start join <channel name>\*\* - Sets the channel for users joining and leaving. (Message cannot be changed on this)`);
+\*\* ${prefix}start join <channel name>\*\* - Sets the channel for users joining and leaving. (Message cannot be changed on this)`)
+                .addField(":arrows_counterclockwise: Toggle Commands", `\*\* ${prefix}toggle\*\* - Shows a list of commands for toggles.
+\*\* ${prefix}toggle image\*\* - Changes between embed disabled for images in message logs.
+\*\* ${prefix}toggle logs\*\* - Turns message logs on and off.`);
 
             message.channel.send(`List of mod commands sent to direct messages.`);
             message.author.send(embed);
@@ -131,7 +134,7 @@ If there are any questions or problems feel free to message one of the owners or
             }
 
             let msg = args.join(" ").trim();
-            if (msg === ""){
+            if (msg === "") {
                 message.channel.send(`I've got a suggestion, try adding a suggestion. \`${command} <message>\``);
                 return;
             }
