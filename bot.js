@@ -55,7 +55,48 @@ bot.on("message", async message => {
     let args = messageArray.slice(1);
     let prefix = serverSettings.prefix;
     if (!command.startsWith(prefix)) return;
+    
+    /** Command: Translate
+     * Description: Translates text into result language.
+     * Notes: Utilizes Google's translate api. Requires https://www.npmjs.com/package/google-translate-api
+     * Usage: {prefix}translate ko en 사란 해
+     *        {prefix}translate korean english 사란 해
+     */ 
+   
+    //https://www.npmjs.com/package/google-translate-api
+    //const translate = require('google-translate-api'); <---requires this******
+    //^^^^^^^^^
+    
+    if (command === `${prefix}translate`) {
+        //Ex. Message: !translate ko en 사란 해
+        let args = message.content.split(" ").slice(1); //args = ["ko", "en", "사란 해"]
+        let langFrom = args[0].toLowerCase(); //"ko"
+        if (langFrom === "to") langFrom = "auto"; //handles if Message: !translate to en 사란 해
+        
+        let langTo = args[1].toLowerCase(); //"en"
+        if (langFrom === "chinese" || langTo === "chinese") { //2 different chinese, must specify
+            message.channel.send("Please specify which Chinese to translate and try again i.e. chinese-simplified/chinese-traditional or zh-cn/zh-tw");
+            return;
+        }
+        //theres a better way ik
+        if (langFrom === "chinese-simplified") langFrom = "zh-cn";
+        if (langTo === "chinese-simplified") langTo = "zh-cn";
+        if (langFrom === "chinese-traditional") langFrom = "zh-tw";
+        if (langTo === "chinese-traditional") langTo = "zh-tw";
+        
+        let toTranslate = args.slice(3).join(" "); //"사란 해"
+        let translated = "";
+        
+        translate(toTranslate, {from: langFrom, to: langTo}).then(res => {
+            translated = res.text;
+        }).catch(err => {
+            message.channel.send("Error translating");
+            console.error(err);
+        });
 
+        message.channel.send(`Translated ${langFrom} to ${langTo}:\n${translated}`);
+    }
+    
     //User Info Settings
 
     if (command === `${prefix}userinfo`) {
