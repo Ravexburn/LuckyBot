@@ -6,6 +6,7 @@ module.exports = (bot = Discord.Client) => {
     //Welcome message
 
     bot.on("guildMemberAdd", member => {
+        if (member.user.bot) return;
         const guild = member.guild;
         const serverSettings = bot.getServerSettings(guild.id);
         if (!serverSettings) return;
