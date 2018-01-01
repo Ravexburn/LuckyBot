@@ -271,7 +271,7 @@ module.exports = (bot = Discord.Client) => {
             }
             
             let muteRoleExists = false;
-            let memberToMute = message.guild.member(message.mentions.users.array()[0].id); // The first user mentioned is muted, rest are ignored
+            let memberToMute = message.guild.member(message.mentions.users.first().id); // The first user mentioned is muted, rest are ignored
 
             if (memberToMute.id === message.author.id) { //Don't mute yourself 
                 message.channel.send("You can't mute yourself");
@@ -283,7 +283,7 @@ module.exports = (bot = Discord.Client) => {
                 return;
             }
 
-            for (let role in message.guild.roles.array()) { 
+            for (let role of message.guild.roles.array()) { 
                 if (role.name.toLowerCase() === "mute" && memberToMute.roles.has(role.id)) {
                     muteRoleExists = true;
                     memberToMute.removeRole(role).then(member => {
