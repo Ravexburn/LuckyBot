@@ -292,6 +292,7 @@ module.exports = (bot = Discord.Client) => {
                         message.channel.send("Failed to unmute");
                         console.error(err);
                     });
+                    return;
                 } else if (role.name.toLowerCase() === "mute") {
                     muteRoleExists = true;
                     memberToMute.addRole(role).then(member => {
@@ -300,6 +301,7 @@ module.exports = (bot = Discord.Client) => {
                         message.channel.send("Failed to mute");
                         console.error(err);
                     });
+                    return;
                 }
             }
             
