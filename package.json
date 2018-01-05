@@ -6,6 +6,7 @@
   "author": "Rave",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.1",
     "cassette": "^3.0.2",
     "discord.js": "^11.2.1",
     "discord.js-music": "^2.1.0",
