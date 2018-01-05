@@ -37,7 +37,8 @@ If there are any questions or problems feel free to message one of the owners or
 
 
     bot.on("message", async message => {
-
+        
+        if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
 
