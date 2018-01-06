@@ -16,8 +16,11 @@ const defaultSettings = {
     centGuildID: "",
     centChanID: "",
     centEnabled: "",
+    //Toggles
     imageEmbed: true,
     logsOn: false,
+    welcomeOn: true,
+    //Message log
     messageLog: false,
     editLog: false,
     deleteLog: false,

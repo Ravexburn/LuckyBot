@@ -33,5 +33,18 @@ module.exports = (bot = Discord.Client) => {
         message.channel.send(`\*\*Logs status:\*\* ${emote}`);
     }
 
-
+    /**
+     * Turns welcome setting on and off
+     * @param {Message} message
+     */
+    welTog = function welTog(message, serverSettings) {
+        serverSettings.welcomeOn = !serverSettings.welcomeOn;
+        bot.setServerSettings(message.guild.id, serverSettings);
+        if (serverSettings.welcomeOn === true) {
+            emote = ":white_check_mark: **Enabled**";
+        } else {
+            emote = ":x: **Disabled**";
+        }
+        message.channel.send(`\*\*Welcome status:\*\* ${emote}`);
+    }
 }

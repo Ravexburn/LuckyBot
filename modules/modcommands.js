@@ -132,7 +132,14 @@ module.exports = (bot = Discord.Client) => {
                     logsTog(message, serverSettings);
                     return;
 
+                //Toggle Welcome     
+                case "welcome":
+
+                    welTog(message, serverSettings);
+                    return;
+
                 default:
+
                     return;
             }
         }
@@ -154,7 +161,7 @@ module.exports = (bot = Discord.Client) => {
                     message.channel.send("<:monkaS:372547459840475146> h-help");
                     break;
 
-                case "chan":    
+                case "chan":
                 case "channel":
 
                     welChan(message, serverSettings, command);
@@ -173,7 +180,7 @@ module.exports = (bot = Discord.Client) => {
             }
         }
 
-        
+
         //Ban Command
 
         if ((command === `${prefix}ban`)) {
