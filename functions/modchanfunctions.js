@@ -16,9 +16,9 @@ module.exports = (bot = Discord.Client) => {
         }
         let chan = message.mentions.channels.first();
         let embed = new Discord.RichEmbed();
-        embed.setTitle(`Intial Message Log Setup`)
+        embed.setTitle(`Message Log Setup`)
             .setColor("#a8e8eb")
-            .setDescription(`Please select by using the reactions what you would like to include in the message log.
+            .setDescription(`Please select what you would like to include in the message log.
     
 1. All messages being sent.
 
@@ -110,7 +110,7 @@ After you have made your decision react with the :floppy_disk: to save.`)
                         bot.setServerSettings(message.guild.id, serverSettings);
 
                         let embed = new Discord.RichEmbed();
-                        embed.setTitle(`These are the settings chosen for message logs:`)
+                        embed.setTitle(`These are the settings selected for message logs:`)
                             .setColor("#a8e8eb");
                         let msg = "";
                         for (let value in log) {
@@ -125,7 +125,7 @@ After you have made your decision react with the :floppy_disk: to save.`)
                         message.channel.send(embed);
 
                     }).catch((error) => {
-                        message.channel.send("Command timed out, please use command again to set up message logs.");
+                        message.channel.send("Command time out, please use command again to set up message logs.");
                     });
             }).catch((error) => {
                 console.log(error);
