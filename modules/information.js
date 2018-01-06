@@ -95,6 +95,7 @@ If there are any questions or problems feel free to message one of the owners or
 \*\* ${prefix}mod\*\* - Sends a list of mod commands in direct messages.
 \*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
 \*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
+\*\* ${prefix}issue\*\* - Please report any issues you are having with Lucky Bot using this command.
 \*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`)
                 .addField(":round_pushpin: Notificatons", `\*\* ${prefix}notify\*\* - Shows a list of commands for notifications.
 \*\* ${prefix}notify help\*\* - Shows a detailed list of commands for notifications.
@@ -177,6 +178,36 @@ If there are any questions or problems feel free to message one of the owners or
 
         }
 
+        //Issues
+        if (command === `${prefix}issue` || command === `${prefix}issues` || command === `${prefix}isu`) {
+
+            const chan = getIssueChannel();
+            if (!chan) {
+                //Stuffs
+                return;
+            }
+           
+            let msg = args.join(" ").trim();
+            if (msg === "") {
+                message.channel.send(`I've got an issue, try adding an issue. \`${command} <message>\``);
+                return;
+            }
+            let embed = new Discord.RichEmbed()
+                .setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+                .setTitle("Server: " + message.guild.name + "")
+                .setDescription("```css\n" + msg + "\n```")
+                .setFooter(message.createdAt);
+            if (message.attachments != null && message.attachments.size !== 0) {
+                embed.setImage(message.attachments.first().url);
+            }
+            let color = "#a8e8eb";
+            let member = message.guild.members.get(message.author.id);
+            if (member.colorRole) { color = member.colorRole.color; }
+            embed.setColor(color);
+            chan.send(embed);
+
+        }
+
     });
 
     function getSuggestionChannel() {
@@ -185,6 +216,17 @@ If there are any questions or problems feel free to message one of the owners or
         const guild = bot.guilds.get(suggestGuild);
         if (!guild) return null;
         const chan = guild.channels.get(suggestChan);
+        if (!chan) return null;
+
+        return chan;
+    }
+
+    function getIssueChannel() {
+        let issueGuild = "367509256884322305"; //367509256884322305
+        let issueChan = "399310698586308619"; //399310698586308619
+        const guild = bot.guilds.get(issueGuild);
+        if (!guild) return null;
+        const chan = guild.channels.get(issueChan);
         if (!chan) return null;
 
         return chan;
