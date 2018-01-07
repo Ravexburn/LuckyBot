@@ -104,7 +104,7 @@ module.exports = (bot = Discord.Client) => {
         let member = null;
 
         if (message.guild.members.has(member_id)) {
-            member = message.member.get(member_id);
+            member = message.members.get(member_id);
         }
 
         if (member === message.member) {
