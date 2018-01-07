@@ -37,7 +37,7 @@ module.exports = (bot = Discord.Client) => {
             return;
         }
         let color = "#a8e8eb";
-        let member = message.guild.members.get(message.author.id);
+        let member = message.member(message.author.id);
         if (member.colorRole) { color = member.colorRole.color; }
         embed.setColor(color);
         chan.send(embed);
@@ -96,7 +96,7 @@ module.exports = (bot = Discord.Client) => {
             embed.setImage(message.attachments.first().url);
         }
         let color = "#a8e8eb";
-        let member = message.guild.members.get(message.author.id);
+        let member = message.member(message.author.id);
         if (member.colorRole) { color = member.colorRole.color; }
         embed.setColor(color);
         chan.send(embed);
@@ -153,7 +153,7 @@ module.exports = (bot = Discord.Client) => {
             embed.setImage(message.attachments.first().url);
         }
         let color = "#a8e8eb";
-        let member = message.guild.members.get(message.author.id);
+        let member = message.member(message.author.id);
         if (member.colorRole) { color = member.colorRole.color; }
         embed.setColor(color);
         chan.send(":warning: Message has been removed:", embed);
@@ -220,7 +220,7 @@ module.exports = (bot = Discord.Client) => {
                 .setImage(message.attachments.first().url);
 
             let color = "#a8e8eb";
-            let member = message.member.get(message.author.id);
+            let member = message.member(message.author.id);
             if (member.colorRole) { color = member.colorRole.color; }
             embed.setColor(color);
             chan.send(embed);
@@ -248,7 +248,7 @@ module.exports = (bot = Discord.Client) => {
             .setImage(message.attachments.first().url);
 
         let color = "#a8e8eb";
-        let member =  message.guild.members.get(message.author.id);
+        let member =  message.member(message.author.id);
         if (member.colorRole) { color = member.colorRole.color; }
         embed.setColor(color);
 
