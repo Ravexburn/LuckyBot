@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 const GuildMember = Discord.GuildMember;
 const Role = Discord.Role;
 
-
 module.exports = (bot = Discord.Client) => {
 
     bot.on("message", async message => {

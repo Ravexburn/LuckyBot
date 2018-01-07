@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 const link = "https://trello.com/b/0uytHSPL";
 const link2 = "https://github.com/Ravexburn/LuckyBot";
 
-
 module.exports = (bot = Discord.Client) => {
 
     require("./../functions/infofunctions.js")(bot);
@@ -171,7 +170,7 @@ If there are any questions or problems feel free to message one of the owners or
                 embed.setImage(message.attachments.first().url);
             }
             let color = "#a8e8eb";
-            let member = message.guild.members.get(message.author.id);
+            let member = message.member(message.author.id);
             if (member.colorRole) { color = member.colorRole.color; }
             embed.setColor(color);
             chan.send(embed);
@@ -201,7 +200,7 @@ If there are any questions or problems feel free to message one of the owners or
                 embed.setImage(message.attachments.first().url);
             }
             let color = "#a8e8eb";
-            let member = message.guild.members.get(message.author.id);
+            let member = message.member(message.author.id);
             if (member.colorRole) { color = member.colorRole.color; }
             embed.setColor(color);
             chan.send(embed);
