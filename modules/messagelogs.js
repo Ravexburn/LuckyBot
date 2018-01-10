@@ -36,9 +36,7 @@ module.exports = (bot = Discord.Client) => {
         if (message.attachments != null && message.attachments.size !== 0) {
             return;
         }
-        let color = "#a8e8eb";
-        let member = message.member;
-        if (member.colorRole) { color = member.colorRole.color; }
+        let color = "#198219";
         embed.setColor(color);
         chan.send(embed);
 
@@ -95,9 +93,7 @@ module.exports = (bot = Discord.Client) => {
         if (message.attachments != null && message.attachments.size !== 0) {
             embed.setImage(message.attachments.first().url);
         }
-        let color = "#a8e8eb";
-        let member = message.member;
-        if (member.colorRole) { color = member.colorRole.color; }
+        let color = "#E5E500";
         embed.setColor(color);
         chan.send(embed);
 
@@ -152,9 +148,7 @@ module.exports = (bot = Discord.Client) => {
         if (message.attachments != null && message.attachments.size !== 0) {
             embed.setImage(message.attachments.first().url);
         }
-        let color = "#a8e8eb";
-        let member = message.member;
-        if (member.colorRole) { color = member.colorRole.color; }
+        let color = "#B20000";
         embed.setColor(color);
         chan.send(":warning: Message has been removed:", embed);
 
@@ -219,9 +213,7 @@ module.exports = (bot = Discord.Client) => {
                 .setTimestamp(message.createdAt)
                 .setImage(message.attachments.first().url);
 
-            let color = "#a8e8eb";
-            let member = message.member;
-            if (member.colorRole) { color = member.colorRole.color; }
+            let color = "#198219";
             embed.setColor(color);
             chan.send(embed);
         }
@@ -248,7 +240,7 @@ module.exports = (bot = Discord.Client) => {
             .setImage(message.attachments.first().url);
 
         let color = "#a8e8eb";
-        let member =  message.member;
+        let member = message.member;
         if (member.colorRole) { color = member.colorRole.color; }
         embed.setColor(color);
 
