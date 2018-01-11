@@ -6,11 +6,11 @@ module.exports = (bot = Discord.Client) => {
 
     require("./../modules/messagelogs.js")(bot);
 
-    msgUpdateHandler = async function msgUpdateHandler(oldmessage, message) {
+    msgUpdateHandler = async function msgUpdateHandler(oldMessage, message) {
 
         //Functions
 
-        editLogs(oldmessage, message);
+        editLogs(oldMessage, message);
 
     };
 }

@@ -55,7 +55,7 @@ bot.on("message", async message => {
 //When a message is updated.
 
 bot.on("messageUpdate", (oldMessage, message) => {
-    msgUpdateHandler(oldmessage, message);
+    msgUpdateHandler(oldMessage, message);
 });
 
 //When a message is deleted.
