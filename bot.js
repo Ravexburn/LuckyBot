@@ -12,6 +12,8 @@ require("./handlers/messagehnd.js")(bot);
 require("./handlers/msgupdate.js")(bot);
 require("./handlers/guildmemberadd.js")(bot);
 require("./handlers/guildcreate.js")(bot);
+require("./handlers/msgdelete.js")(bot);
+require("./handlers/memberleave.js")(bot);
 
 //Generates join link and shows ready status.
 

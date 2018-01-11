@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
 
         //Functions
 
-        leaveMsg(member)
+        leaveMsg(member);
 
     };
 }
