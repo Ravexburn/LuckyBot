@@ -3,7 +3,8 @@ const Notifications = require("./notifications_sql")
 const notify = new Notifications();
 
 module.exports = (bot = Discord.Client) => {
-    bot.on("message", message => {
+    
+   notifySet = async function notifySet(message) {
         if (message.system) return;
         if (message.author.bot) return;
 
@@ -267,11 +268,11 @@ module.exports = (bot = Discord.Client) => {
 
         }
 
-    })
+    };
 
     //Notiifcations
 
-    bot.on("message", message => {
+    notifyPing = async function notifyPing(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
@@ -329,5 +330,5 @@ module.exports = (bot = Discord.Client) => {
         }).catch(() => {
             console.error;
         })
-    })
+    };
 };

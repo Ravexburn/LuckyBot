@@ -4,7 +4,7 @@ const Role = Discord.Role;
 
 module.exports = (bot = Discord.Client) => {
 
-    bot.on("message", async message => {
+    rolesAdd = async function rolesAdd(message) {
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
         const serverSettings = bot.getServerSettings(message.guild.id);
@@ -79,7 +79,7 @@ module.exports = (bot = Discord.Client) => {
             rolename = "";
         }
 
-    });
+    };
 
 }
 

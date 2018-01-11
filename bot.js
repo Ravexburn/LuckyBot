@@ -7,15 +7,11 @@ bot.invCache = new InvCache(bot);
 
 //Required Files
 
-require("./modules/autorole.js")(bot);
-require("./modules/information.js")(bot);
-require("./modules/lastfm.js")(bot);
-require("./modules/messagelogs.js")(bot);
-require("./modules/modcommands.js")(bot);
-require("./modules/notifications.js")(bot);
-require("./modules/roles.js")(bot);
 require("./server_settings.js")(bot);
-require("./modules/welcome.js")(bot);
+require("./handlers/messagehnd.js")(bot);
+require("./handlers/msgupdate.js")(bot);
+require("./handlers/guildmemberadd.js")(bot);
+require("./handlers/guildcreate.js")(bot);
 
 //Generates join link and shows ready status.
 
@@ -34,19 +30,50 @@ bot.on("ready", async () => {
     });
 });
 
-//When bot joins a server set initial settings and update playing status.
+//When the bot joins a server.
 
 bot.on("guildCreate", guild => {
     bot.initServerSettings(guild.id);
     bot.invCache.guildInvites(guild).catch(console.error);
-    bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`)
+    bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`);
+    guildCreateHandler(guild);
 });
 
-//When bot leaves a server delete the settings and update playing status. 
+//When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
     bot.delServerSettings(guild.id);
-    bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`)
+    bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`);
+});
+
+//All the commands the bot runs.
+
+bot.on("message", async message => {
+    msgHandler(message);
+});
+
+//When a message is updated.
+
+bot.on("messageUpdate", (oldMessage, message) => {
+    msgUpdateHandler(oldmessage, message);
+});
+
+//When a message is deleted.
+
+bot.on("messageDelete", message => {
+    delHandler(message);
+});
+
+//When a member joins a server.
+
+bot.on("guildMemberAdd", member => {
+    memberJoinHandler(member);
+});
+
+//When a member leaves a server.
+
+bot.on("guildMemberRemove", member => {
+    leaveHandler(member);
 });
 
 bot.login(botSettings.token);

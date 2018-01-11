@@ -3,7 +3,7 @@ const db = require('quick.db');
 
 module.exports = (bot = Discord.Client) => {
 
-    bot.on("message", async message => {
+    autoRoleMsg = async function autoRoleMsg(message) {
 
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
@@ -32,22 +32,22 @@ module.exports = (bot = Discord.Client) => {
                 message.channel.send(`Auto-role set to ${i.text}`);
             })
         }
-    });
+    };
 
-    bot.on('guildMemberAdd', guildMember => {
+    autoRoleAdd = function autoRoleAdd(member) {
 
-        db.fetchObject(`autoRole_${guildMember.guild.id}`).then(i => {
+        db.fetchObject(`autoRole_${member.guild.id}`).then(i => {
 
             if (!i.text || i.text.toLowerCase() === "none") return;
 
             else {
                 try {
-                    guildMember.addRole(guildMember.guild.roles.find("name", i.text));
+                    member.addRole(member.guild.roles.find("name", i.text));
                 } catch (e) {
                     console.log("error");
                 }
 
             }
         })
-    });
+    };
 }

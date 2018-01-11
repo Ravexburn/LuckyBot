@@ -7,7 +7,7 @@ module.exports = (bot = Discord.Client) => {
 
     //Message Log
 
-    bot.on("message", async message => {
+    msgLog = async function msgLog(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
@@ -59,18 +59,18 @@ module.exports = (bot = Discord.Client) => {
 
         neoChan.send(embed);
 
-    });
+    };
 
     //Message Edits
 
-    bot.on("messageUpdate", (oldMessage, message) => {
+    editLogs = async function editLogs(oldMessage, message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
 
         const serverSettings = bot.getServerSettings(message.guild.id);
         if (!serverSettings) return;
-        
+
         if (!serverSettings.logsOn) return;
 
         if (!serverSettings.editLog) return;
@@ -115,11 +115,11 @@ module.exports = (bot = Discord.Client) => {
         embed.setFooter(`${message.guild.name} | ${message.chanel.name}`);
 
         neoChan.send(embed);
-    });
+    };
 
     //Deleted Message
 
-    bot.on("messageDelete", async message => {
+    delLog = async function delLog(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
@@ -170,11 +170,11 @@ module.exports = (bot = Discord.Client) => {
         embed.setFooter(`${message.guild.name} | ${message.chanel.name}`);
 
         neoChan.send(":warning: Message has been removed:", embed);
-    });
+    };
 
     //Images
 
-    bot.on("message", async message => {
+    imgLog = async function imgLog(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
@@ -246,6 +246,6 @@ module.exports = (bot = Discord.Client) => {
 
         neoChan.send(embed);
 
-    });
+    };
 
 }

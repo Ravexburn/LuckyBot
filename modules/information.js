@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
 
     //On bot joining
 
-    bot.on("guildCreate", guild => {
+   botWelcome = function botWelcome(guild) {
         let embed = new Discord.RichEmbed()
             .setTitle("User Guide")
             .setColor("#a8e8eb")
@@ -32,10 +32,10 @@ Here are a few things this bot can do:
 If there are any questions or problems feel free to message one of the owners or check [here](${link2})!`)
 
         guild.owner.user.send(embed);
-    });
+    };
 
 
-    bot.on("message", async message => {
+    infoMsg = async function infoMsg(message) {
         
         if (message.system) return;
         if (message.author.bot) return;
@@ -207,7 +207,7 @@ If there are any questions or problems feel free to message one of the owners or
 
         }
 
-    });
+    };
 
     function getSuggestionChannel() {
         let suggestGuild = "367509256884322305"; //367509256884322305
