@@ -38,7 +38,10 @@ module.exports = (bot = Discord.Client) => {
         }
         let color = "#198219";
         embed.setColor(color);
-        chan.send(embed);
+        chan.send(embed)
+            .catch((error) => {
+                bot.log(error);
+            });
 
         if (bot.centlog === false) return;
         if (serverSettings.centEnabled === "false") return;
@@ -95,7 +98,10 @@ module.exports = (bot = Discord.Client) => {
         }
         let color = "#E5E500";
         embed.setColor(color);
-        chan.send(embed);
+        chan.send(embed)
+            .catch((error) => {
+                bot.log(error);
+            });
 
         if (bot.centlog === false) return;
         if (serverSettings.centEnabled === "false") return;
@@ -150,7 +156,10 @@ module.exports = (bot = Discord.Client) => {
         }
         let color = "#B20000";
         embed.setColor(color);
-        chan.send(":warning: Message has been removed:", embed);
+        chan.send(":warning: Message has been removed:", embed)
+            .catch((error) => {
+                bot.log(error);
+            });
 
         if (bot.centlog === false) return;
         if (serverSettings.centEnabled === "false") return;
@@ -215,7 +224,10 @@ module.exports = (bot = Discord.Client) => {
 
             let color = "#198219";
             embed.setColor(color);
-            chan.send(embed);
+            chan.send(embed)
+                .catch((error) => {
+                    bot.log(error);
+                });
         }
 
         if (bot.centlog === false) return;
