@@ -14,16 +14,17 @@ require("./handlers/guildmemberadd.js")(bot);
 require("./handlers/guildcreate.js")(bot);
 require("./handlers/msgdelete.js")(bot);
 require("./handlers/memberleave.js")(bot);
+require("./functions/functions.js")(bot);
 
 //Generates join link and shows ready status.
 
 bot.on("ready", async () => {
-    console.log('Ready');
+    bot.log('Ready');
     try {
         let link = await bot.generateInvite();
         console.log(link);
     } catch (error) {
-        console.log(error.stack);
+        bot.log(error.stack);
     }
 
     bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`)
