@@ -25,7 +25,7 @@ module.exports = (bot = Discord.Client) => {
 
 
         let status = member.presence.status;
-        status = status.replace("online", "<:green_circle:364951150732115968> Online").replace("offline", "<:gray_circle:364951138719760387> Offline").replace("idle", "<:yellow_circle:364951165856907264> Idle").replace("dnd", ":red_circle: Do Not Disturb");
+        status = status.replace("online", "<:online:401474727299776512> Online").replace("offline", "<:offline:401474711671799829> Offline").replace("idle", "<:away:401474693741150215> Idle").replace("dnd", "<:dnd:401474738071011329> Do Not Disturb");
 
         embed.addField("Status", status, true);
         embed.addField("Account Created On", member.user.createdAt.toLocaleString(), true);
