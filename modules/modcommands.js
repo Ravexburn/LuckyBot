@@ -18,7 +18,7 @@ module.exports = (bot = Discord.Client) => {
         let allowed = false;
 
         for (i = 0; i < perms.length; i++) {
-            if (message.guild.member(message.author).hasPermission(perms[i])) allowed = true;
+            if (message.member.hasPermission(perms[i])) allowed = true;
         }
         if (!allowed) return;
 
