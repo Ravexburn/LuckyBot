@@ -2,10 +2,9 @@ const Discord = require("discord.js");
 const GuildMember = Discord.GuildMember;
 const Role = Discord.Role;
 
-
 module.exports = (bot = Discord.Client) => {
 
-    bot.on("message", async message => {
+    rolesAdd = async function rolesAdd(message) {
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
         const serverSettings = bot.getServerSettings(message.guild.id);
@@ -80,7 +79,7 @@ module.exports = (bot = Discord.Client) => {
             rolename = "";
         }
 
-    });
+    };
 
 }
 
@@ -115,6 +114,9 @@ function addRole(member, rolename, message) {
         }
 
     }
+    message.reply(`Role does not exist.`)
+        .then(message => message.delete(10 * 1000));
+    message.delete(10 * 1000);
     return false;
 }
 
@@ -145,6 +147,10 @@ function removeRole(member, rolename, message) {
             return false;
         }
     }
+    message.reply(`Role does not exist.`)
+        .then(message => message.delete(10 * 1000));
+    message.delete(10 * 1000);
+    return false;
 }
 
 /**
@@ -155,6 +161,7 @@ function removeRole(member, rolename, message) {
  */
 function canAddRole(member, role) {
     let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
+    if (!role) return false;
     for (i = 0; i < perms.length; i++) {
         if (role.hasPermission(perms[i])) {
             return false;

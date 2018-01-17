@@ -7,7 +7,7 @@ module.exports = (bot = Discord.Client) => {
 
     //Message Log
 
-    bot.on("message", async message => {
+    msgLog = async function msgLog(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
@@ -36,11 +36,12 @@ module.exports = (bot = Discord.Client) => {
         if (message.attachments != null && message.attachments.size !== 0) {
             return;
         }
-        let color = "#a8e8eb";
-        let member = message.guild.members.get(message.author.id);
-        if (member.colorRole) { color = member.colorRole.color; }
+        let color = "#198219";
         embed.setColor(color);
-        chan.send(embed);
+        chan.send(embed)
+            .catch((error) => {
+                bot.log(error);
+            });
 
         if (bot.centlog === false) return;
         if (serverSettings.centEnabled === "false") return;
@@ -61,18 +62,18 @@ module.exports = (bot = Discord.Client) => {
 
         neoChan.send(embed);
 
-    });
+    };
 
     //Message Edits
 
-    bot.on("messageUpdate", (oldMessage, message) => {
+    editLogs = async function editLogs(oldMessage, message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
 
         const serverSettings = bot.getServerSettings(message.guild.id);
         if (!serverSettings) return;
-        
+
         if (!serverSettings.logsOn) return;
 
         if (!serverSettings.editLog) return;
@@ -95,11 +96,12 @@ module.exports = (bot = Discord.Client) => {
         if (message.attachments != null && message.attachments.size !== 0) {
             embed.setImage(message.attachments.first().url);
         }
-        let color = "#a8e8eb";
-        let member = message.guild.members.get(message.author.id);
-        if (member.colorRole) { color = member.colorRole.color; }
+        let color = "#E5E500";
         embed.setColor(color);
-        chan.send(embed);
+        chan.send(embed)
+            .catch((error) => {
+                bot.log(error);
+            });
 
         if (bot.centlog === false) return;
         if (serverSettings.centEnabled === "false") return;
@@ -119,11 +121,11 @@ module.exports = (bot = Discord.Client) => {
         embed.setFooter(`${message.guild.name} | ${message.chanel.name}`);
 
         neoChan.send(embed);
-    });
+    };
 
     //Deleted Message
 
-    bot.on("messageDelete", async message => {
+    delLog = async function delLog(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
@@ -152,11 +154,12 @@ module.exports = (bot = Discord.Client) => {
         if (message.attachments != null && message.attachments.size !== 0) {
             embed.setImage(message.attachments.first().url);
         }
-        let color = "#a8e8eb";
-        let member = message.guild.members.get(message.author.id);
-        if (member.colorRole) { color = member.colorRole.color; }
+        let color = "#B20000";
         embed.setColor(color);
-        chan.send(":warning: Message has been removed:", embed);
+        chan.send(":warning: Message has been removed:", embed)
+            .catch((error) => {
+                bot.log(error);
+            });
 
         if (bot.centlog === false) return;
         if (serverSettings.centEnabled === "false") return;
@@ -176,11 +179,11 @@ module.exports = (bot = Discord.Client) => {
         embed.setFooter(`${message.guild.name} | ${message.chanel.name}`);
 
         neoChan.send(":warning: Message has been removed:", embed);
-    });
+    };
 
     //Images
 
-    bot.on("message", async message => {
+    imgLog = async function imgLog(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === 'dm') return;
@@ -219,11 +222,12 @@ module.exports = (bot = Discord.Client) => {
                 .setTimestamp(message.createdAt)
                 .setImage(message.attachments.first().url);
 
-            let color = "#a8e8eb";
-            let member = message.guild.members.get(message.author.id);
-            if (member.colorRole) { color = member.colorRole.color; }
+            let color = "#198219";
             embed.setColor(color);
-            chan.send(embed);
+            chan.send(embed)
+                .catch((error) => {
+                    bot.log(error);
+                });
         }
 
         if (bot.centlog === false) return;
@@ -248,12 +252,12 @@ module.exports = (bot = Discord.Client) => {
             .setImage(message.attachments.first().url);
 
         let color = "#a8e8eb";
-        let member = message.guild.members.get(message.author.id);
+        let member = message.member;
         if (member.colorRole) { color = member.colorRole.color; }
         embed.setColor(color);
 
         neoChan.send(embed);
 
-    });
+    };
 
 }

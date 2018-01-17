@@ -4,7 +4,7 @@ module.exports = (bot = Discord.Client) => {
 
     //Welcome message
 
-    bot.on("guildMemberAdd", member => {
+    welcomeMsg = function welcomeMsg(member) {
         if (member.user.bot) return;
         const guild = member.guild;
         const serverSettings = bot.getServerSettings(guild.id);
@@ -37,11 +37,11 @@ module.exports = (bot = Discord.Client) => {
             .setTitle("Member Join!")
             .setDescription(msg);
         chan.send(embed);
-    });
+    };
 
     //Join
 
-    bot.on("guildMemberAdd", member => {
+    joinMsg = function joinMsg(member) {
         const guild = member.guild;
         const serverSettings = bot.getServerSettings(guild.id);
         if (!serverSettings) return;
@@ -69,11 +69,11 @@ module.exports = (bot = Discord.Client) => {
         }).catch(() => {
             console.error();
         });
-    });
+    };
 
     //Leave
 
-    bot.on("guildMemberRemove", member => {
+    leaveMsg = function leaveMsg(member) {
         const guild = member.guild;
         const serverSettings = bot.getServerSettings(guild.id);
         if (!serverSettings) return;
@@ -94,5 +94,5 @@ module.exports = (bot = Discord.Client) => {
             .setTitle("Member Left!")
             .setDescription(`${user} left the server`);
         chan.send(embed);
-    });
+    };
 }

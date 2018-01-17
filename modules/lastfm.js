@@ -9,7 +9,7 @@ const lastfmSettings = {
 
 module.exports = (bot = Discord.Client) => {
 
-    bot.on("message", async message => {
+    lastFM = async function lastFM(message) {
 
         if (message.system) return;
         if (message.author.bot) return;
@@ -45,7 +45,7 @@ module.exports = (bot = Discord.Client) => {
                             }
 
                         })
-                        
+
                         let embed = new Discord.RichEmbed()
                             .setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
                             .setURL(response.data.user.url)
@@ -110,6 +110,6 @@ module.exports = (bot = Discord.Client) => {
 
 
 
-    });
+    };
 
 }

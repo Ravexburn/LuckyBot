@@ -10,7 +10,7 @@ module.exports = (bot = Discord.Client) => {
 
     //Admin and Mod Settings
 
-    bot.on("message", async message => {
+    modCmds = async function modCmds(message) {
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
 
@@ -18,7 +18,7 @@ module.exports = (bot = Discord.Client) => {
         let allowed = false;
 
         for (i = 0; i < perms.length; i++) {
-            if (message.guild.member(message.author).hasPermission(perms[i])) allowed = true;
+            if (message.member.hasPermission(perms[i])) allowed = true;
         }
         if (!allowed) return;
 
@@ -257,11 +257,11 @@ module.exports = (bot = Discord.Client) => {
         if ((command === `${prefix}kick`)) {
             kickUser(message, command, args, perms);
         }
-    });
+    };
 
     //Intial Settings (Owner Only)
 
-    bot.on("message", async message => {
+    owner = async function owner(message) {
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
         if (![bot.botSettings.Owner_id, bot.botSettings.Owner_id2].includes(message.author.id)) return;
@@ -390,6 +390,6 @@ module.exports = (bot = Discord.Client) => {
             return;
         }
 
-    });
+    };
 
 }

@@ -1,9 +1,12 @@
 const Discord = require("discord.js");
-const Notifications = require("./notifications_sql")
+const Notifications = require("./notifications_sql");
 const notify = new Notifications();
+//const Ignorenoti = require("./ignorenoti.js");
+//const ignorenoti = new Ignorenoti();
 
 module.exports = (bot = Discord.Client) => {
-    bot.on("message", message => {
+
+    notifySet = async function notifySet(message) {
         if (message.system) return;
         if (message.author.bot) return;
 
@@ -70,7 +73,29 @@ module.exports = (bot = Discord.Client) => {
                     }
 
                     else if (args[0] === "clear") {
-                        message.reply("Not currently available");
+                        notify.tableExists(guild.id)
+                            .then(exists => {
+                                if (!exists) {
+                                    message.reply("Can't find the keyword.");
+                                    throw Error("Table doesn't exist");
+                                }
+                            }).then(() => { return notify.removeAllUserKeywords(user.id, guild.id); })
+                            .then(success => {
+                                if (success) {
+                                    message.reply(`Removed all keywords on \`${guild.name}\``);
+                                    message.delete(1 * 1000);
+                                    return;
+                                }
+                                else {
+                                    message.reply("You do not have keywords on this server.");
+                                    message.delete(1 * 1000);
+                                    return;
+                                }
+                            })
+                            .catch(() => {
+                                console.error;
+
+                            });
                     }
 
                     else if (args[0] === "add") {
@@ -80,9 +105,12 @@ module.exports = (bot = Discord.Client) => {
                     else if (args[0] === "remove") {
                         message.reply("Missing keyword. *notify remove <keyword>");
                     }
+                    else if (args[0] === "ignore") {
+                        message.reply("Missing channel or server id. *notify ignore <channel> or <server id>");
+                    }
 
                     else if (args[0] === "help") {
-                        message.channel.send(`\`\`\`md\nTo use notifications please use one of the following subcommands: \n${command} <list|add|remove|clear>\`\`\``);
+                        message.channel.send(`\`\`\`md\nTo use notifications please use one of the following subcommands: \n${command} <list|add|remove|clear|ignore>\`\`\``);
                     }
                     break;
 
@@ -258,7 +286,23 @@ module.exports = (bot = Discord.Client) => {
                                 break;
                         }
 
+                    } else if (args[0] === "ignore") {
+                        switch (args[1]) {
+
+                            case "channel":
+                            case "chan":
+                                break;
+
+                            case "server":
+                                break;
+
+                            default:
+                                break;
+                        }
+
+
                     }
+
                     break;
 
                 default:
@@ -267,11 +311,26 @@ module.exports = (bot = Discord.Client) => {
 
         }
 
-    })
+
+      /*   if (command === `${prefix}serverignore`) {
+            let channel = null;
+            
+            if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
+                channel = message.mentions.channels.first();
+            }
+            
+            if (!channel) return;
+
+            ignorenoti.guildIgnoreChan(guild.id, channel.id);
+            message.channel.send(`Now ignoring \`${channel}\` for notifications.`)
+            return;
+        }
+ */
+    };
 
     //Notiifcations
 
-    bot.on("message", message => {
+    notifyPing = async function notifyPing(message) {
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
@@ -329,5 +388,5 @@ module.exports = (bot = Discord.Client) => {
         }).catch(() => {
             console.error;
         })
-    })
+    };
 };
