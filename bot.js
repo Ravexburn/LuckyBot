@@ -27,7 +27,7 @@ bot.on("ready", async () => {
         bot.log(error.stack);
     }
 
-    bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`)
+    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`)
     bot.guilds.forEach(guild => {
         bot.invCache.guildInvites(guild).catch(console.error);
     });
@@ -38,7 +38,7 @@ bot.on("ready", async () => {
 bot.on("guildCreate", guild => {
     bot.initServerSettings(guild.id);
     bot.invCache.guildInvites(guild).catch(console.error);
-    bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`);
+    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
     guildCreateHandler(guild);
 });
 
@@ -46,7 +46,7 @@ bot.on("guildCreate", guild => {
 
 bot.on("guildDelete", guild => {
     bot.delServerSettings(guild.id);
-    bot.user.setGame(`on ${bot.guilds.size} servers | *help for list of commands`);
+    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
 });
 
 //All the commands the bot runs.
