@@ -45,7 +45,7 @@ module.exports = (bot = Discord.Client) => {
         let member = null;
 
         if (message.guild.members.has(member_id)) {
-            member = message.members.get(member_id);
+            member = message.guild.member(member_id);
         }
 
         if (member === message.member) {
@@ -104,7 +104,7 @@ module.exports = (bot = Discord.Client) => {
         let member = null;
 
         if (message.guild.members.has(member_id)) {
-            member = message.members.get(member_id);
+            member = message.guild.member(member_id);
         }
 
         if (member === message.member) {
@@ -140,7 +140,7 @@ module.exports = (bot = Discord.Client) => {
         if (args.length == 1) {
             message.channel.send("Please enter a welcome message: ({mention} tags the new user, {server} is server name, {user} shows user tag)");
             return;
-        } 
+        }
         let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
         message.channel.send("Welcome message set as: " + msg)
         serverSettings.welcomeMessage = msg;
