@@ -22,6 +22,7 @@ module.exports = (bot = Discord.Client) => {
             activeChannel = message.guild.channels.get(serverSettings.roleChannelID);
         }
 
+        if (!valid_channel) return;        
         if (!activeChannel) return;
 
         let msgAry = message.content.trim().split(" ");
