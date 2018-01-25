@@ -6,6 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
     require("./../modules/autorole.js")(bot);
     require("./../modules/commands.js")(bot);
+    require("./../modules/filter.js")(bot);
     require("./../modules/information.js")(bot);
     require("./../modules/lastfm.js")(bot);
     require("./../modules/messagelogs.js")(bot);
@@ -18,6 +19,7 @@ module.exports = (bot = Discord.Client) => {
         //Functions
 
         autoRoleMsg(message);
+        specialFilter(message);
         commands(message);
         customCommands(message);
         infoMsg(message);
