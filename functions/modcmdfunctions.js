@@ -133,7 +133,7 @@ module.exports = (bot = Discord.Client) => {
     }
 
     /** 
-      * Command: Mute
+      * Command: Mute by Average Black Guy#2409
      * Description: Mutes a tagged user. Unmutes if user is already muted.
       * Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
       */
