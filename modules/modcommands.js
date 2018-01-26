@@ -192,6 +192,12 @@ module.exports = (bot = Discord.Client) => {
         if ((command === `${prefix}kick`)) {
             kickUser(message, command, args, perms);
         }
+
+        //Mute Command
+
+        if ((command === `${prefix}mute`)){
+            muteUser(message, command, args, perms);
+        }
     };
 
     //Intial Settings (Owner Only)
