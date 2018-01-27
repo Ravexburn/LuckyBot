@@ -70,8 +70,8 @@ module.exports = (bot = Discord.Client) => {
             .addField("Region", message.guild.region, true)
             .addField("Members", message.guild.memberCount, true)
             .addField("Roles", message.guild.roles.size, true)
-            .addField("Text Channels", message.guild.channels.size, true)
-            //  .addField("Voice Channels", message.guild.channels.guildChannel.type("voice").size, true)
+            .addField("Text Channels", message.guild.channels.array().filter(channel => channel.type === "text").length, true)
+            .addField("Voice Channels", message.guild.channels.array().filter(channel => channel.type === "voice").length, true)
             .setFooter(`Server ID: ${message.guild.id}`);
 
         message.channel.send(embed);
