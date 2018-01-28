@@ -32,7 +32,7 @@ module.exports = (bot = Discord.Client) => {
             case "-":
                 break;
             default:
-                return;
+                message.delete();
         }
 
         let length = msgAry.length;
