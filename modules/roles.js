@@ -33,6 +33,7 @@ module.exports = (bot = Discord.Client) => {
                 break;
             default:
                 message.delete();
+                return;
         }
 
         let length = msgAry.length;
