@@ -4,6 +4,7 @@ const link2 = "https://github.com/Ravexburn/LuckyBot";
 
 module.exports = (bot = Discord.Client) => {
 
+    require("./../functions/helpfunctions.js")(bot);
     require("./../functions/infofunctions.js")(bot);
 
     //On bot joining
@@ -84,33 +85,10 @@ If there are any questions or problems feel free to message one of the owners or
 
         if (command === `${prefix}help`) {
 
-            let embed = new Discord.RichEmbed()
-                .setTitle("List of Commands")
-                .setColor("#17487d")
-                .addField(":information_source: Information", `\*\* ${prefix}userinfo\*\* - Shows a user's information.
-\*\* ${prefix}serverinfo\*\* - Shows the server's information.
-\*\* ${prefix}botinfo\*\* - Shows Lucky Bot's information.
-\*\* ${prefix}help\*\* - Shows this list of commands.
-\*\* ${prefix}mod\*\* - Sends a list of mod commands in direct messages.
-\*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
-\*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
-\*\* ${prefix}issue\*\* - Please report any issues you are having with Lucky Bot using this command.
-\*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`)
-                .addField(":round_pushpin: Notificatons", `\*\* ${prefix}notify\*\* - Shows a list of commands for notifications.
-\*\* ${prefix}notify help\*\* - Shows a detailed list of commands for notifications.
-\*\* ${prefix}notify list\*\* - Direct messages a list of keywords for the server.
-\*\* ${prefix}notify add <keyword>\*\* - Adds a <keyword> to notify you about on the server.
-\*\* ${prefix}notify remove <keyword>\*\* - Removes a <keyword> you were notified about on the server.
-\*\* ${prefix}notify global list\*\* - Direct messages a list of global keywords.
-\*\* ${prefix}notify global add <keyword>\*\* - Adds a <keyword> to notify you about on all servers.
-\*\* ${prefix}notify global remove <keyword>\*\* - Removes a <keyword> you were notified about on all servers.`)
-                .addField("Roles", `\*\* ${prefix}roles\*\* - Shows a detailed list of commands for roles.
-\*\*+<role> \*\* - Allows user to add the <role>.
-\*\*-<role> \*\* - Allows user to remove the <role>.
-:warning: When adding and removing roles, names must match role name exactly!`)
-                .setFooter("If you have any other questions please contact Rave#0737");
-
-            message.channel.send(embed);
+            generalHelp(message, prefix);
+            notifyHelp(message, prefix);
+            commandsHelp(message, prefix);
+            rolesHelp(message, prefix);
         }
 
         //Mod help
