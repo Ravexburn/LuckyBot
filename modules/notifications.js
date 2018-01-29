@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const Notifications = require("./notifications_sql");
 const notify = new Notifications();
-//const Ignorenoti = require("./ignorenoti.js");
-//const ignorenoti = new Ignorenoti();
+const Ignorenoti = require("./notifications_ignore.js");
+const ignorenoti = new Ignorenoti();
 
 module.exports = (bot = Discord.Client) => {
 
@@ -150,6 +150,31 @@ module.exports = (bot = Discord.Client) => {
                                     });
                                 break;
 
+                                case "clear":
+                                notify.tableExists(guild.id)
+                                .then(exists => {
+                                    if (!exists) {
+                                        message.reply("Can't find the keyword.");
+                                        throw Error("Table doesn't exist");
+                                    }
+                                }).then(() => { return notify.removeAllUserKeywords(user.id); })
+                                .then(success => {
+                                    if (success) {
+                                        message.reply(`Removed all global keywords.`);
+                                        message.delete(1 * 1000);
+                                        return;
+                                    }
+                                    else {
+                                        message.reply("You do not have any global keywords.");
+                                        message.delete(1 * 1000);
+                                        return;
+                                    }
+                                })
+                                .catch(() => {
+                                    console.error;
+    
+                                });
+
                             default:
                                 break;
                         }
@@ -291,6 +316,13 @@ module.exports = (bot = Discord.Client) => {
 
                             case "channel":
                             case "chan":
+                            let channel = null;
+            
+                            if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
+                                channel = message.mentions.channels.first();
+                            }
+                            
+                            if (!channel) return;
                                 break;
 
                             case "server":
