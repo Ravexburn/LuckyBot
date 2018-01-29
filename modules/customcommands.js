@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
+    require("./../functions/helpfunctions.js")(bot);
+
     const Enmap = require("enmap");
     cmds = new Enmap({ name: 'Commands', persistent: true });
 
@@ -23,7 +25,7 @@ module.exports = (bot = Discord.Client) => {
 
         if (command === `${prefix}command`) {
             if (args.legnth === 0) {
-                message.channel.send(`blah`);
+                commandsHelp(message, prefix);
                 return;
             }
 
@@ -127,7 +129,7 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
-                    message.channel.send(`blah`);
+                    commandsHelp(message, prefix);
                     return;
             }
 

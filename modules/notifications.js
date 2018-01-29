@@ -1,10 +1,12 @@
 const Discord = require("discord.js");
 const Notifications = require("./notifications_sql");
 const notify = new Notifications();
-const Ignorenoti = require("./notifications_ignore.js");
-const ignorenoti = new Ignorenoti();
+//const Ignorenoti = require("./notifications_ignore.js");
+//const ignorenoti = new Ignorenoti();
 
 module.exports = (bot = Discord.Client) => {
+
+    require("./../functions/helpfunctions.js")(bot);
 
     notifySet = async function notifySet(message) {
         if (message.system) return;
@@ -110,7 +112,7 @@ module.exports = (bot = Discord.Client) => {
                     }
 
                     else if (args[0] === "help") {
-                        message.channel.send(`\`\`\`md\nTo use notifications please use one of the following subcommands: \n${command} <list|add|remove|clear|ignore>\`\`\``);
+                        notifyHelp(message, prefix);
                     }
                     break;
 
@@ -176,6 +178,7 @@ module.exports = (bot = Discord.Client) => {
                                 });
 
                             default:
+                            notifyHelp(message, prefix);
                                 break;
                         }
                     }
@@ -246,7 +249,6 @@ module.exports = (bot = Discord.Client) => {
                         let keyword = "";
                         switch (args[1]) {
 
-
                             case "add":
                                 keyword = args[2].toLowerCase();
                                 notify.tableExists()
@@ -308,6 +310,7 @@ module.exports = (bot = Discord.Client) => {
                                 break;
 
                             default:
+                            notifyHelp(message, prefix);
                                 break;
                         }
 
@@ -338,6 +341,7 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
+                notifyHelp(message, prefix);
                     break;
             }
 
