@@ -6,8 +6,6 @@ const defaultSettings = {
     prefix: botSettings.prefix,
     channelID: "",
     roleChannelID: "",
-    welcomeChannelID: "",
-    welcomeMessage: "Welcome {user} to the server!",
     joinChannelID: "",
     musicChannelID: "",
     editChannelID: "",
@@ -18,9 +16,16 @@ const defaultSettings = {
     centEnabled: "",
     //Toggles
     imageEmbed: true,
-    logsOn: false,
+    //Welcome message
     welcomeOn: true,
+    welcomeEmbed: true,
+    welcomeChannelID: "",
+    welcomeTitle: "",
+    welcomeMessage: "Welcome {user} to the server!",
+    welcomeIcon: "",
+    welcomeImage: "",
     //Message log
+    logsOn: false,
     messageLog: false,
     editLog: false,
     deleteLog: false,
