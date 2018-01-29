@@ -1,0 +1,67 @@
+const Discord = require("discord.js");
+const Message = Discord.Message;
+
+module.exports = (bot = Discord.Client) => {
+
+    generalHelp = function generalHelp(message, prefix) {
+
+        let embed = new Discord.RichEmbed()
+            .setTitle("List of Commands")
+            .setColor("#17487d")
+            .addField(":information_source: Information", `\*\* ${prefix}userinfo\*\* - Shows a user's information.
+\*\* ${prefix}serverinfo\*\* - Shows the server's information.
+\*\* ${prefix}botinfo\*\* - Shows Lucky Bot's information.
+\*\* ${prefix}help\*\* - Shows this list of commands.
+\*\* ${prefix}mod\*\* - Sends a list of mod commands in direct messages.
+\*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
+\*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
+\*\* ${prefix}issue\*\* - Please report any issues you are having with Lucky Bot using this command.
+\*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`)
+            .setFooter("If you have any other questions please contact Rave#0737");
+        message.channel.send(embed);
+    }
+
+    notifyHelp = function notifyHelp(message, prefix) {
+
+        let embed = new Discord.RichEmbed()
+            .setColor("#17487d")
+            .addField(":round_pushpin: Notificatons", `\*\* ${prefix}notify\*\* - Shows this list of commands for notifications.
+\*\* ${prefix}notify list\*\* - Direct messages a list of keywords for the server.
+\*\* ${prefix}notify clear\*\* - Removes all keywords for the server.
+\*\* ${prefix}notify add <keyword>\*\* - Adds a <keyword> to notify you about on the server.
+\*\* ${prefix}notify remove <keyword>\*\* - Removes a <keyword> you were notified about on the server.
+\*\* ${prefix}notify global list\*\* - Direct messages a list of global keywords.
+\*\* ${prefix}notify global clear\*\* - Removes all global keywords you have.
+\*\* ${prefix}notify global add <keyword>\*\* - Adds a <keyword> to notify you about on all servers.
+\*\* ${prefix}notify global remove <keyword>\*\* - Removes a <keyword> you were notified about on all servers.`)
+            .setFooter("If you have any other questions please contact Rave#0737");
+        message.channel.send(embed);
+    }
+
+    commandsHelp = function commandsHelp(message, prefix) {
+
+        let embed = new Discord.RichEmbed()
+            .setColor("#17487d")
+            .addField(":speech_left: Custom Commands", `\*\* ${prefix}command\*\* - Shows this list of commands for commands.
+\*\* ${prefix}command add <name> <command>\*\* - Adds a custom command to the server.
+\*\* ${prefix}command remove <name> <command>\*\* - Removes a custom command on the server.
+\*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.`)
+            .setFooter("If you have any other questions please contact Rave#0737");
+        message.channel.send(embed);
+
+    }
+
+    rolesHelp = function rolesHelp(message, prefix) {
+
+        let embed = new Discord.RichEmbed()
+            .setColor("#17487d")
+            .addField(":art: Roles", `\*\* ${prefix}roles\*\* - Shows this list of commands for roles.
+\*\*+<role> \*\* - Allows user to add the <role>.
+\*\*-<role> \*\* - Allows user to remove the <role>.
+:warning: When adding and removing roles, names must match role name exactly!`)
+            .setFooter("If you have any other questions please contact Rave#0737");
+        message.channel.send(embed);
+
+    }
+
+}
