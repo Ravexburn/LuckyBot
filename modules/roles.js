@@ -32,6 +32,7 @@ module.exports = (bot = Discord.Client) => {
             case "-":
                 break;
             default:
+                message.delete();
                 return;
         }
 
