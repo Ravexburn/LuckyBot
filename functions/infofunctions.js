@@ -99,10 +99,10 @@ module.exports = (bot = Discord.Client) => {
             .setAuthor("About Lucky Bot", bot.user.displayAvatarURL)
             .setColor("#a8e8eb")
             .setThumbnail(bot.user.displayAvatarURL)
-            .addField("Authors", "Rave#0737 and OrigamiCoder#1375", true)
+            .addField("Authors", "Rave#0737 and OrigamiCoder#1375")
+            .addField("Uptime", date)
             .addField("Websites", `[Trello](${trello}) [Github](${git})`, true)
             .addField("Servers", bot.guilds.size, true)
-            .addField("Uptime", date, true)
             .addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
             .addField("Bot ID", bot.user.id, true);
         message.channel.send(embed);
