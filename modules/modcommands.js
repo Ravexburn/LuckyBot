@@ -240,10 +240,6 @@ module.exports = (bot = Discord.Client) => {
             }
             switch (args[0].toLowerCase()) {
 
-                case "help":
-                    message.channel.send("<:monkaS:372547459840475146> h-help");
-                    break;
-
                 case "list":
                     serverList(message);
                     break;
@@ -253,7 +249,7 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
-                    message.channel.send(`\`\`\`md\nTo use server please use one of the following subcommands: \n${command} <help|list|leave>\`\`\``);
+                    ownerServerHelp(message, prefix);
                     break;
             }
             return;
@@ -267,19 +263,19 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "toggle":
-                    //Toggles between the relay being in an embed or not.
+                    //Toggles between the relay being in an embed or not. Requires name of relay.
                     break;
 
                 case "start":
-                    //Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
+                    //Where a new relay starts. Requires relay name, type, and at least two channels.
                     break;
 
                 case "add":
-                    //Adds a channel to an existing relay. Requires relay name, channel and server id.
+                    //Adds a channel to an existing relay. Requires relay name, channel.
                     break;
 
                 case "remove":
-                    //Removes a channel to an existing relay. Requires relay name, channel and server id.
+                    //Removes a channel to an existing relay. Requires relay name, channel.
                     break;
 
                 case "delete":
@@ -287,11 +283,11 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
-                    //Relay command help
+                    relayHelp(message, prefix);
                     break;
             }
 
         }
     };
-    
+
 }
