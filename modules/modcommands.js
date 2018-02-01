@@ -235,7 +235,7 @@ module.exports = (bot = Discord.Client) => {
 
         if ((command === `${prefix}server`) || (command === `${prefix}getmeout`)) {
             if (args.length === 0) {
-                message.channel.send(`\`\`\`md\nTo use server please use one of the following subcommands: \n${command} <help|list|leave>\`\`\``);
+                ownerServerHelp(message, prefix)
                 return;
             }
             switch (args[0].toLowerCase()) {
@@ -256,10 +256,14 @@ module.exports = (bot = Discord.Client) => {
         }
 
         if ((command === `${prefix}relay`)) {
+            if (args.length === 0) {
+               relayHelp(message, prefix);
+                return;
+            }
             switch (args[0].toLowerCase()) {
-
-                case "list":
-                    //Lists the existing relays. Shows relay type and name of servers and name of channels(?)
+                
+                case "list":        
+                //Lists the existing relays. Shows relay type and name of servers and name of channels(?)
                     break;
 
                 case "toggle":

@@ -69,7 +69,7 @@ module.exports = (bot = Discord.Client) => {
     ownerServerHelp = function ownerServerHelp(message, prefix) {
 
         let embed = new Discord.RichEmbed()
-            .setColor("#17487d")
+            .setColor("#A021ED")
             .addField(":speech_left: Custom Commands", `\*\* ${prefix}server\*\* - Shows this list of commands for server.
 \*\* ${prefix}server list\*\* - Shows the servers Lucky Bot is in.
 \*\* ${prefix}server leave\*\* - Allows Lucky Bot to leave a server it is in.`);
@@ -80,15 +80,14 @@ module.exports = (bot = Discord.Client) => {
     relayHelp = function relayHelp(message, prefix) {
 
         let embed = new Discord.RichEmbed()
-            .setColor("#17487d")
+            .setColor("#A021ED")
             .addField(":arrows_counterclockwise: Relay", `\*\* ${prefix}relay\*\* - Shows this list of commands for relay.
 \*\* ${prefix}relay list\*\* - Shows existing relays.
 \*\* ${prefix}relay toggle <name>\*\* - Toggles embed on the relay.
 \*\* ${prefix}relay start <name> <type> <chanID1> <chanID2>\*\* - Starts a relay of <type> between at least two channels.
 \*\* ${prefix}relay add <name> <chanID>\*\* - Adds a channel to an existing relay.
 \*\* ${prefix}relay remove <name> <chanID>\*\* - Removes a channel from an existing relay.
-\*\* ${prefix}relay delete <name>\*\* - Deletes an existing relay.`)
-            .setFooter("If you have any other questions please contact Rave#0737");
+\*\* ${prefix}relay delete <name>\*\* - Deletes an existing relay.`);
         message.channel.send(embed);
 
     }
