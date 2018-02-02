@@ -54,7 +54,7 @@ If there are any questions or problems feel free to message one of the owners or
         //User Info Settings
 
         if (command === `${prefix}userinfo`) {
-            userInfo(message);
+            userInfo(message, args);
         }
 
         //Server Info Settings
