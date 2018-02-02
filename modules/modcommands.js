@@ -248,6 +248,10 @@ module.exports = (bot = Discord.Client) => {
                     serverLeave(message, args);
                     break;
 
+                case "settings":
+                //TODO
+                break; 
+                    
                 default:
                     ownerServerHelp(message, prefix);
                     break;
