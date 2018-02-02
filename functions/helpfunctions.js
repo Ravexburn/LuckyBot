@@ -45,6 +45,7 @@ module.exports = (bot = Discord.Client) => {
         let embed = new Discord.RichEmbed()
             .setColor("#17487d")
             .addField(":speech_left: Custom Commands", `\*\* ${prefix}command\*\* - Shows this list of commands for commands.
+\*\* ${prefix}command list\*\* - Direct messages a list of custom commands on the server.
 \*\* ${prefix}command add <name> <command>\*\* - Adds a custom command to the server.
 \*\* ${prefix}command remove <name> <command>\*\* - Removes a custom command on the server.
 \*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.`)
