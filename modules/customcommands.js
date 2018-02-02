@@ -36,7 +36,7 @@ module.exports = (bot = Discord.Client) => {
 
                 case "add":
                     if (args.legnth < 3) {
-                        message.channel.send(`Please add a command name and the command.`);
+                        message.channel.send("**Please add a command name and the command.**");
                         return;
                     }
 
@@ -51,7 +51,7 @@ module.exports = (bot = Discord.Client) => {
                     cmdName = args[1].toLowerCase();
 
                     if (custom[cmdName]) {
-                        message.channel.send(`That command already exists. Please use \`edit\` to edit the command.`);
+                        message.channel.send("**That command already exists. Please use \`edit\` to edit the command.**");
                         return;
                     }
 
@@ -67,21 +67,21 @@ module.exports = (bot = Discord.Client) => {
                 case "edit":
 
                     if (args.legnth < 3) {
-                        message.channel.send(`Please add a command name and the command.`);
+                        message.channel.send("**Please add a command name and the command.**");
                         return;
                     }
 
                     custom = cmds.get(guild.id);
 
                     if (!custom) {
-                        message.channel.send(`There's no custom commands on the server.`);
+                        message.channel.send("**There are no custom commands on the server.**");
                         return;
                     }
 
                     cmdName = args[1].toLowerCase();
 
                     if (!custom[cmdName]) {
-                        message.channel.send(`That command does not exist.`);
+                        message.channel.send("**That command does not exist.**");
                         return;
                     }
 
@@ -97,21 +97,21 @@ module.exports = (bot = Discord.Client) => {
                 case "remove":
 
                     if (args.legnth < 2) {
-                        message.channel.send(`Please add a command name to remove.`);
+                        message.channel.send("**Please add a command name to remove.**");
                         return;
                     }
 
                     custom = cmds.get(guild.id);
 
                     if (!custom) {
-                        message.channel.send(`There's no custom commands on the server.`);
+                        message.channel.send("**There are no custom commands on the server.**");
                         return;
                     }
 
                     cmdName = args[1].toLowerCase();
 
                     if (!custom[cmdName]) {
-                        message.channel.send(`That command does not exist.`);
+                        message.channel.send("**That command does not exist.**");
                         return;
                     }
 
@@ -125,6 +125,32 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "list":
+
+                    if (cmds.has(guild.id)) {
+                        custom = cmds.get(guild.id);
+                    }
+
+                    if (!custom) {
+                        message.channel.send("**There are no custom commands on this server.**");
+                        return;
+                    }
+                    console.log(custom);
+                    let list = [];
+                    for (var key in custom) {
+                        if (custom.hasOwnProperty(key)) {
+                            list.push(`${prefix}${key}`);
+                        }
+                    }
+                    console.log(list);
+                    if (list.legnth === 0) {
+                        message.channel.send("**There are no custom commands on this server.**");
+                        return;
+                    }
+
+                    message.channel.send("**List of commands sent to direct messages.**");
+                    message.author.send(`\`\`\`List of custom commands for ${message.guild.name}:
+${list.join(`\n`)}\`\`\``);
+
 
                     break;
 
