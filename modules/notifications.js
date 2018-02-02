@@ -38,7 +38,7 @@ module.exports = (bot = Discord.Client) => {
             switch (args.length) {
 
                 case 0:
-                    message.channel.send(`\`\`\`md\nTo use notifications please use one of the following subcommands: \n${command} <list|add|remove|clear>\`\`\``);
+                notifyHelp(message, prefix);
                     break;
 
                 case 1:
