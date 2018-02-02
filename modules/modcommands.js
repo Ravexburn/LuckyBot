@@ -249,9 +249,9 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "settings":
-                //TODO
-                break; 
-                    
+                    //TODO shows settings per server
+                    break;
+
                 default:
                     ownerServerHelp(message, prefix);
                     break;
@@ -261,13 +261,13 @@ module.exports = (bot = Discord.Client) => {
 
         if ((command === `${prefix}relay`)) {
             if (args.length === 0) {
-               relayHelp(message, prefix);
+                relayHelp(message, prefix);
                 return;
             }
             switch (args[0].toLowerCase()) {
-                
-                case "list":        
-                //Lists the existing relays. Shows relay type and name of servers and name of channels(?)
+
+                case "list":
+                    //Lists the existing relays. Shows relay type and name of servers and name of channels(?)
                     break;
 
                 case "toggle":

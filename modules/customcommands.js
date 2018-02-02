@@ -134,14 +134,14 @@ module.exports = (bot = Discord.Client) => {
                         message.channel.send("**There are no custom commands on this server.**");
                         return;
                     }
-                    
+
                     let list = [];
                     for (var key in custom) {
                         if (custom.hasOwnProperty(key)) {
                             list.push(`${prefix}${key}`);
                         }
                     }
-                    
+
                     if (list.legnth === 0) {
                         message.channel.send("**There are no custom commands on this server.**");
                         return;
@@ -158,9 +158,6 @@ ${list.join(`\n`)}\`\`\``);
                     commandsHelp(message, prefix);
                     return;
             }
-
-
-
 
         }
     };
