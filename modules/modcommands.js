@@ -181,12 +181,6 @@ module.exports = (bot = Discord.Client) => {
             }
         }
 
-        //Relay
-
-        if ((command === `${prefix}relay`)) {
-
-        }
-
         //Ban Command
 
         if ((command === `${prefix}ban`)) {
