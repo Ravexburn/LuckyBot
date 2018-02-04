@@ -32,7 +32,7 @@ module.exports = (bot = Discord.Client) => {
         }
 
         let member_id = null;
-        const matches = args[0].match(new RegExp(`<@(\\d+)>`));
+        const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 
         if (matches) {
             member_id = matches[1];
@@ -91,7 +91,7 @@ module.exports = (bot = Discord.Client) => {
         }
 
         let member_id = null;
-        const matches = args[0].match(new RegExp(`<@(\\d+)>`));
+        const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 
         if (matches) {
             member_id = matches[1];
