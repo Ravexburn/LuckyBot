@@ -198,6 +198,12 @@ module.exports = (bot = Discord.Client) => {
         if ((command === `${prefix}mute`)) {
             muteUser(message, command, args, perms);
         }
+
+        //Prune Command
+
+        if ((command === `${prefix}prune`)){
+            pruneMessage(message, args);
+        }
     };
 
     //Intial Settings (Owner Only)
