@@ -58,8 +58,7 @@ module.exports = (bot = Discord.Client) => {
 
         let embed = new Discord.RichEmbed()
             .setColor("#17487d")
-            .addField(":art: Roles", `\*\* ${prefix}roles\*\* - Shows this list of commands for roles.
-\*\*+<role> \*\* - Allows user to add the <role>.
+            .addField(":art: Roles", `\*\*+<role> \*\* - Allows user to add the <role>.
 \*\*-<role> \*\* - Allows user to remove the <role>.
 :warning: When adding and removing roles, names must match role name exactly!`)
             .setFooter("If you have any other questions please contact Rave#0737");
