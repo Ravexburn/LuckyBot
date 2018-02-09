@@ -92,7 +92,7 @@ function addRole(member, rolename, message) {
 
     if (member.guild.roles.exists("name", rolename)) {
         let role = member.guild.roles.find("name", rolename);
-
+        if (!role) return;
         if (member.roles.has(role.id)) {
             //Member has role
             message.reply("You already have this role.")
@@ -129,6 +129,7 @@ function removeRole(member, rolename, message) {
 
     if (member.guild.roles.exists("name", rolename)) {
         let role = member.guild.roles.find("name", rolename);
+        if (!role) return;
         if (member.roles.has(role.id)) {
             //Member has role
             return member.removeRole(role).then(() => {
