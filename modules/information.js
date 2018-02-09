@@ -7,35 +7,6 @@ module.exports = (bot = Discord.Client) => {
     require("./../functions/helpfunctions.js")(bot);
     require("./../functions/infofunctions.js")(bot);
 
-    //On bot joining
-
-   botWelcome = function botWelcome(guild) {
-        let embed = new Discord.RichEmbed()
-            .setTitle("User Guide")
-            .setColor("#a8e8eb")
-            .setDescription(`Thank you for choosing Lucky Bot created by Rave#0737 and OrigamiCoder#1375
-Here are a few things this bot can do:
-
-• Customizable bot prefix.
-
-• Notifications about keywords.
-
-• Allows members to set roles.
-
-• Full or partial message logging and centralized logs.
-
-• Kick and Ban commands.
-
-• Welcoming members.
-
-• And many more features to come!
-
-If there are any questions or problems feel free to message one of the owners or check [here](${link2})!`)
-
-        guild.owner.user.send(embed);
-    };
-
-
     infoMsg = async function infoMsg(message) {
         
         if (message.system) return;
