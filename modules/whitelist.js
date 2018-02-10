@@ -26,9 +26,15 @@ module.exports = (bot = Discord.Client) => {
         
         else {
             guild.leave();
+           
+            const chan = serverLogging();
+            if (!chan) {
+                return;
+            }
+           
             let embed = new Discord.RichEmbed()
                 .setAuthor(bot.user.tag, bot.user.displayAvatarURL)
-                .setColor("#1ccc8b")
+                .setColor("#ce1827")
                 .setDescription(`:exclamation: Lucky Bot has joined: \*\*${guild.name}\*\* \`(#${guild.id})\`. Owner: \*\*${guild.owner.user.tag}\*\*\n
 :x: This server is not on the whitelist.`);
             chan.send(embed);
