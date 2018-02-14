@@ -1,0 +1,36 @@
+{
+    "commands": [
+       
+        "autorole",
+        "command",
+        "userinfo",
+        "serverinfo",
+        "botinfo",
+        "trello",
+        "github",
+        "git",
+        "help",
+        "mod",
+        "suggestion",
+        "sgt",
+        "suggest",
+        "issue",
+        "issues",
+        "isu",
+        "lastfm",
+        "lf",
+        "setprefix",
+        "start",
+        "toggle",
+        "welcome",
+        "relay",
+        "ban",
+        "kick",
+        "mute",
+        "intset",
+        "server",
+        "getmeout",
+        "notify"
+    ]
+
+}
