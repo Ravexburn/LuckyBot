@@ -1,11 +1,15 @@
 const Discord = require("discord.js");
+const customcmds = require("./commandnames.json");
+let commandnames = customcmds.commands;
 
 module.exports = (bot = Discord.Client) => {
 
     require("./../functions/helpfunctions.js")(bot);
 
     const Enmap = require("enmap");
-    cmds = new Enmap({ name: 'Commands', persistent: true });
+    const EnmapLevel = require("enmap-level");
+    const commandProvider = new EnmapLevel({ name: 'Commands' });
+    cmds = new Enmap({provider: commandProvider});
 
     customCommands = async function customCommands(message) {
         if (message.system) return;
@@ -24,7 +28,7 @@ module.exports = (bot = Discord.Client) => {
         const guild = message.guild;
 
         if (command === `${prefix}command`) {
-            if (args.legnth === 0) {
+            if (args.length === 0) {
                 commandsHelp(message, prefix);
                 return;
             }
@@ -35,7 +39,8 @@ module.exports = (bot = Discord.Client) => {
             switch (args[0]) {
 
                 case "add":
-                    if (args.legnth < 3) {
+
+                    if (args.length < 3) {
                         message.channel.send("**Please add a command name and the command.**");
                         return;
                     }
@@ -49,13 +54,14 @@ module.exports = (bot = Discord.Client) => {
                     }
 
                     cmdName = args[1].toLowerCase();
-
-                    if (custom[cmdName]) {
-                        message.channel.send("**That command already exists. Please use \`edit\` to edit the command.**");
+            
+                    if (commandnames.includes(cmdName)) {
+                        message.channel.send("**That is a standard command try another name.**");
                         return;
                     }
 
-                    if (custom.hasOwnProperty(cmdName)) {
+                    if (custom[cmdName]) {
+                        message.channel.send("**That command already exists. Please use \`edit\` to edit the command.**");
                         return;
                     }
 
@@ -66,7 +72,7 @@ module.exports = (bot = Discord.Client) => {
 
                 case "edit":
 
-                    if (args.legnth < 3) {
+                    if (args.length < 3) {
                         message.channel.send("**Please add a command name and the command.**");
                         return;
                     }
@@ -96,7 +102,7 @@ module.exports = (bot = Discord.Client) => {
 
                 case "remove":
 
-                    if (args.legnth < 2) {
+                    if (args.length < 2) {
                         message.channel.send("**Please add a command name to remove.**");
                         return;
                     }
@@ -142,7 +148,7 @@ module.exports = (bot = Discord.Client) => {
                         }
                     }
 
-                    if (list.legnth === 0) {
+                    if (list.length === 0) {
                         message.channel.send("**There are no custom commands on this server.**");
                         return;
                     }

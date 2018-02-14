@@ -1,7 +1,9 @@
 const Discord = require("discord.js");
 const Enmap = require("enmap");
+const EnmapLevel = require("enmap-level");
 const axios = require("axios");
-let lastfm = new Enmap({ name: 'Lastfm', persistent: true });
+const lastfmProvider = new EnmapLevel({ name: 'Lastfm' });
+lastfm = new Enmap({provider: lastfmProvider});
 
 const lastfmSettings = {
     username: "",
@@ -45,14 +47,16 @@ module.exports = (bot = Discord.Client) => {
                             }
 
                         })
+                        let date = new Date(response.data.user.registered.unixtime * 1000);
 
                         let embed = new Discord.RichEmbed()
                             .setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
                             .setURL(response.data.user.url)
                             .setThumbnail(thumbnailURL)
                             .setColor("#33cc33")
-                            .addField("Registered", response.data.user.registeredunixtime, true)
-                            .addField("Scrobbles", response.data.user.playcount, true);
+                            .addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
+                            .addField("Scrobbles", response.data.user.playcount, true)
+                            .setFooter("Powered by last.fm");
                         message.channel.send(embed);
                         return;
                     }).catch((error) => {
@@ -67,6 +71,7 @@ module.exports = (bot = Discord.Client) => {
             switch (args[0]) {
 
                 case "set":
+                case "save":
                     if (args.length === 1) {
                         message.reply(`No username supplied.`);
                         return;
