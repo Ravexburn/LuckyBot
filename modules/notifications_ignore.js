@@ -1,12 +1,16 @@
 /*
+ * Notifications Ignore
  * Author: OrigamiCoder
  */
 
 const Discord = require("discord.js");
 const Enmap = require("enmap");
+const EnmapLevel = require("enmap-level");
 
-const guildIgnored = new Enmap({ name: 'ignored-guild', persistent: true });
-const userIgnored = new Enmap({ name: 'ignored-user', persistent: true });
+const guildIgnProvider = new EnmapLevel({ name: 'ignored-guild' });
+const guildIgnored = new Enmap({ provider: guildIgnProvider });
+const userIgnProvider = new EnmapLevel({ name: 'ignored-user' });
+const userIgnored = new Enmap({ provider: userIgnProvider });
 
 const userDefault = {
     guilds: [],

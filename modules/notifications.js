@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const Notifications = require("./notifications_sql");
 const notify = new Notifications();
-//const Ignorenoti = require("./notifications_ignore.js");
-//const ignorenoti = new Ignorenoti();
+const Ignorenoti = require("./notifications_ignore.js");
+const ignorenoti = new Ignorenoti();
 
 module.exports = (bot = Discord.Client) => {
 
@@ -172,7 +172,7 @@ module.exports = (bot = Discord.Client) => {
 
                     break;
 
-                    case "global":
+                case "global":
                     if (args.length === 1) {
                         notifyHelp(message, prefix);
                         return;
@@ -238,39 +238,39 @@ module.exports = (bot = Discord.Client) => {
 
                                 });
                             break;
-         
+
                         //Adds a global notificaton
                         case "add":
-                        if (args.length === 2) {
-                            notifyHelp(message, prefix);
-                            return;
-                        }
-                        keyword = args.slice(2).join(" ").toLowerCase();
-                        notify.tableExists()
-                            .then(exists => {
-                                if (!exists) {
-                                    return notify.createTable();
-                                }
-                            })
-                            .then(() => { return notify.addUserKeyword(user.id, keyword); })
-                            .then(success => {
-                                if (success) {
-                                    message.reply("Added the keyword.");
-                                    user.send(`\`${keyword}\` has been added to your \`Global Keywords\``);
-                                    message.delete(1 * 1000);
-                                    return;
-                                }
-                                else {
-                                    message.reply("You already have this keyword.");
-                                    message.delete(1 * 1000);
-                                    return;
-                                }
-                            })
-                            .catch(() => {
-                                console.error;
+                            if (args.length === 2) {
+                                notifyHelp(message, prefix);
+                                return;
+                            }
+                            keyword = args.slice(2).join(" ").toLowerCase();
+                            notify.tableExists()
+                                .then(exists => {
+                                    if (!exists) {
+                                        return notify.createTable();
+                                    }
+                                })
+                                .then(() => { return notify.addUserKeyword(user.id, keyword); })
+                                .then(success => {
+                                    if (success) {
+                                        message.reply("Added the keyword.");
+                                        user.send(`\`${keyword}\` has been added to your \`Global Keywords\``);
+                                        message.delete(1 * 1000);
+                                        return;
+                                    }
+                                    else {
+                                        message.reply("You already have this keyword.");
+                                        message.delete(1 * 1000);
+                                        return;
+                                    }
+                                })
+                                .catch(() => {
+                                    console.error;
 
-                            });
-                        break;  
+                                });
+                            break;
 
                         //Removes global notification
                         case "remove":
@@ -313,29 +313,92 @@ module.exports = (bot = Discord.Client) => {
                     }
                     break;
 
-                /*    case "ignore":
-   
-                   switch (args[1]) {
+                //Toggles ignore between channel and server
+                case "ignore":
 
-                       case "channel":
-                       case "chan":
-                           let channel = null;
+                    switch (args[1]) {
 
-                           if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
-                               channel = message.mentions.channels.first();
-                           }
+                        case "channel":
+                        case "chan":
+                            if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
+                                channel = message.mentions.channels.first();
+                            } else {
+                                message.channel.send(`Please mention a channel to ignore.`);
+                            }
+                            let channelID = channel.id;
+                            ignorenoti.userToggleIgnoreChannel(user.id, channel.id)
+                                .then((result) => {
+                                    switch (result) {
+                                        case 1:
+                                            message.author.send(`You will no longer recieve notifications from ${channel}`);
+                                            break;
+                                        case -1:
+                                            message.author.send(`You will now recieve notifications from ${channel}`);
+                                            break;
 
-                           if (!channel) return;
-                           break;
+                                        default:
+                                            notifyHelp(message, prefix);
+                                            break;
+                                    }
+                                }).catch((reason) => {
+                                    console.log(reason);
+                                });
+                            break;
 
-                       case "server":
-                           break;
+                        case "guild":
+                        case "server":
+                            ignorenoti.userToggleIgnoreGuild(user.id, guild.id)
+                                .then((result) => {
+                                    switch (result) {
+                                        case 1:
+                                            message.author.send(`You will no longer recieve notifications from ${guild}`);
+                                            break;
 
-                       default:
-                           break;
-                   }
+                                        case -1:
+                                            message.author.send(`You will now recieve notifications from ${guild}`);
+                                            break;
 
-*/
+                                        default:
+                                            notifyHelp(message, prefix);
+                                            break;
+                                    }
+                                }).catch((reason) => {
+                                    console.log(reason);
+                                });
+                            break;
+
+                        default:
+                            notifyHelp(message, prefix);
+                            break;
+
+                    }
+                    break;
+                //Allows a server to ignore a channel for notifications
+                case "serverignore":
+                    if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
+                        channel = message.mentions.channels.first();
+                    } else {
+                        message.channel.send(`Please mention a channel to ignore.`);
+                    }
+                    let channelID = channel.id;
+                    ignorenoti.guildToggleIgnoreChannel(guild.id, channelID)
+                        .then((result) => {
+                            switch (result) {
+                                case 1:
+                                    message.channel.send(`Guild members not will receive notifications from ${channel}`);
+                                    break;
+                                case -1:
+                                    message.channel.send(`Guild members will now receive notifications from ${channel}`);
+                                    break;
+
+                                default:
+                                    notifyHelp(message, prefix);
+                                    break;
+                            }
+                        }).catch((reason) => {
+                            console.log(reason);
+                        });
+                    break;
 
                 default:
                     notifyHelp(message, prefix);
@@ -344,21 +407,6 @@ module.exports = (bot = Discord.Client) => {
 
         }
 
-
-        /*   if (command === `${prefix}serverignore`) {
-              let channel = null;
-              
-              if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
-                  channel = message.mentions.channels.first();
-              }
-              
-              if (!channel) return;
-     
-              ignorenoti.guildIgnoreChan(guild.id, channel.id);
-              message.channel.send(`Now ignoring \`${channel}\` for notifications.`)
-              return;
-          }
-    */
     };
 
     //Notiifcations
@@ -384,42 +432,81 @@ module.exports = (bot = Discord.Client) => {
 
         }
 
-        const notifications = new Discord.Collection();
-        return notify.forEachKeyword((keyword, userID) => {
-            let userSet = notifications.get(keyword);
-            if (!userSet) {
-                userSet = new Set();
-            }
-            userSet.add(userID);
-            notifications.set(keyword, userSet);
-        }).then(() => {
-            return notify.forEachKeyword((keyword, userID) => {
-                let userSet = notifications.get(keyword);
-                if (!userSet) {
-                    userSet = new Set();
+        ignorenoti.isGuildIgnoredChannel(guild.id, message.channel.id)
+            .then((ignored) => {
+                if (ignored) {
+                    return Promise.reject("Guild Ignored the Channel");
                 }
-                userSet.add(userID);
-                notifications.set(keyword, userSet);
-            }, guild.id);
-        }).then(() => {
-            notifications.forEach((userSet, keyword) => {
-                const regex = new RegExp(`\\b(${keyword})\\b`, "ig");
-                let msg = message.content;
-                if (msg.search(regex) !== -1) {
-                    userSet.forEach((userID) => {
-                        if (message.author.id === userID) return;
-                        const member = guild.member(userID);
-                        if (!member) return;
-                        const canRead = message.channel.permissionsFor(member).has("READ_MESSAGES");
-                        if (!canRead) return;
-                        member.send(`:round_pushpin: User **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
+            }).then(() => {
+                const notifications = new Discord.Collection();
+                return notify.forEachKeyword((keyword, userID) => {
+                    return ignorenoti.isUserIgnoredChannel(userID, message.channel.id)
+                        .then((ignored) => {
+                            if (ignored) {
+                                return Promise.reject("User Ignored the Channel");
+                            }
+                        }).then(() => {
+                            return ignorenoti.isUserIgnoredGuild(userID, guild.id)
+                        }).then((ignored) => {
+                            if (ignored) {
+                                return Promise.reject("User Ignored the Guild");
+                            }
+                        }).then(() => {
+                            let userSet = notifications.get(keyword);
+                            if (!userSet) {
+                                userSet = new Set();
+                            }
+                            userSet.add(userID);
+                            notifications.set(keyword, userSet);
+                        }).catch((reason) => {
+
+                        });
+                }).then(() => {
+                    return notify.forEachKeyword((keyword, userID) => {
+                        return ignorenoti.isUserIgnoredChannel(userID, message.channel.id)
+                            .then((ignored) => {
+                                if (ignored) {
+                                    return Promise.reject("User Ignored the Channel");
+                                }
+                            }).then(() => {
+                                return ignorenoti.isUserIgnoredGuild(userID, guild.id)
+                            }).then((ignored) => {
+                                if (ignored) {
+                                    return Promise.reject("User Ignored the Guild");
+                                }
+                            }).then(() => {
+                                let userSet = notifications.get(keyword);
+                                if (!userSet) {
+                                    userSet = new Set();
+                                }
+                                userSet.add(userID);
+                                notifications.set(keyword, userSet);
+                            }).catch((reason) => {
+
+                            });
+                    }, guild.id);
+                }).then(() => {
+                    notifications.forEach((userSet, keyword) => {
+                        const regex = new RegExp(`\\b(${keyword})\\b`, "ig");
+                        let msg = message.content;
+                        if (msg.search(regex) !== -1) {
+                            userSet.forEach((userID) => {
+                                if (message.author.id === userID) return;
+                                const member = guild.member(userID);
+                                if (!member) return;
+                                const canRead = message.channel.permissionsFor(member).has("READ_MESSAGES");
+                                if (!canRead) return;
+                                member.send(`:round_pushpin: User **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
+                            })
+                        }
                     })
-
+                }).catch(() => {
+                    console.error;
+                });
+            }).catch((reason) => {
+                if(reason !== "Guild Ignored the Channel"){
+                    console.log(reason);
                 }
-            })
-
-        }).catch(() => {
-            console.error;
-        })
+            });
     };
 };
