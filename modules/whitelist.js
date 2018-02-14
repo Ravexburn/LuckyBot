@@ -8,7 +8,6 @@ module.exports = (bot = Discord.Client) => {
     whitelist = function whitelist(guild) {
 
         if (servers.hasOwnProperty(guild.id)) {
-            const element = servers[guild.id];
 
             const chan = serverLogging();
             if (!chan) {
