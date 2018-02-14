@@ -373,8 +373,16 @@ module.exports = (bot = Discord.Client) => {
 
                     }
                     break;
+                
                 //Allows a server to ignore a channel for notifications
                 case "serverignore":
+                let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
+                let allowed = false;
+        
+                for (i = 0; i < perms.length; i++) {
+                    if (message.member.hasPermission(perms[i])) allowed = true;
+                }
+                if (!allowed) return;
                     if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
                         channel = message.mentions.channels.first();
                     } else {
