@@ -55,6 +55,20 @@ module.exports = (bot = new Discord.Client()) => {
         removeRelay: relays_data.removeRelay,
 
         /**
+         * 
+         */
+        addChannel: function (relay, channels) {
+            return relays_data.relayExists(relay)
+                .then((exists) => {
+                    if (!exists) {
+                        return Promise.reject(`No such relay: ${relay}`);
+                    }
+                }).then(() => {
+                    return relays_data.addRelayChannels(relay, channels);
+                });
+        },
+
+        /**
          * Removes a channel.
          * @param {string} channelID - The channel ID.
          * @returns {Promise<boolean>} Promise - success.

@@ -70,7 +70,7 @@ module.exports = class Relays_Data {
             if (channels instanceof Array) {
                 return _addRelayChannels(relay, channels);
             } else if (typeof channels === "string") {
-                return _addRelayChannels(relay, channels.split(" "));
+                return _addRelayChannels(relay, channels.trim().split(/ +/g));
             }
         }
 
@@ -425,7 +425,7 @@ function _hasRelayData(relay) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _addRelayData(relay, type, format) {
-    return sql.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}, ${SQL_RELAY_FORMAT}) VALUES (?, ?, ?)`, [relay, type, format])
+    return sql.run(`REPLACE INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}, ${SQL_RELAY_FORMAT}) VALUES (?, ?, ?)`, [relay, type, format])
         .then(() => {
             return Promise.resolve(true);
         }).catch((reason) => {
@@ -455,7 +455,7 @@ function _removeRelayData(relay) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _setRelayData(relay, type, format) {
-    return sql.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ?, ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, format, relay])
+    return sql.run(`REPLACE INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}, ${SQL_RELAY_FORMAT}) VALUES (?, ?, ?)`, [relay, type, format])
         .then(() => {
             return Promise.resolve(true);
         }).catch((reason) => {
@@ -470,7 +470,7 @@ function _setRelayData(relay, type, format) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _setRelayType(relay, type) {
-    return sql.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, relay])
+    return sql.run(`REPLACE INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}) VALUES (?, ?)`, [relay, type])
         .then(() => {
             return Promise.resolve(true);
         }).catch((reason) => {
@@ -485,7 +485,7 @@ function _setRelayType(relay, type) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _setRelayFormat(relay, format) {
-    return sql.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [format, relay])
+    return sql.run(`REPLACE INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_FORMAT}) VALUES (?, ?)`, [relay, format])
         .then(() => {
             return Promise.resolve(true);
         }).catch((reason) => {

@@ -261,6 +261,10 @@ module.exports = (bot = Discord.Client) => {
         }
 
         if ((command === `${prefix}relay`)) {
+            let relay = "";
+            let channels = [];
+            let type = "";
+            let format = "";
             switch (args[0].toLowerCase()) {
 
                 case "list":
@@ -273,31 +277,95 @@ module.exports = (bot = Discord.Client) => {
 
                 case "start":
                     //Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
+                    // *relay start <relay> <type> <channel> <channel> [channel...]
                     if (args.length < 5) {
                         // TODO Feedback
                         return;
                     }
-                    const relay = args[1].toLowerCase();
-                    const type = args[2].toLowerCase();
-                    const channels = args.slice(3).join(" ");
+                    relay = args[1].toLowerCase();
+                    type = args[2].toLowerCase();
+                    channels = args.slice(3);
                     relays.addRelay(relay, channels, type)
                         .catch((reason) => { console.log(reason); });
                     break;
 
                 case "add":
                     //Adds a channel to an existing relay. Requires relay name, channel and server id.
+                    // *relay add <relay> <channel> [channel...]
+                    if (args.length < 3) {
+                        // TODO Feedback
+                        return;
+                    }
+                    relay = args[1].toLowerCase();
+                    channels = args.slice(2);
+                    relays.addChannel(relay, channels)
+                        .catch((reason) => { console.log(reason); });
                     break;
 
                 case "remove":
                     //Removes a channel to an existing relay. Requires relay name, channel and server id.
+                    // *relay remove <relay> <channel>
+                    if (args.length < 3) {
+                        // TODO Feedback
+                        return;
+                    }
+                    relay = args[1].toLowerCase();
+                    let channel = args[2];
+                    relays.removeChannel(channel)
+                        .catch((reason) => { console.log(reason); });
                     break;
 
                 case "delete":
                     //Deletes an existing relay. Requires relay name.
+                    // *relay delete <relay>
+                    if (args.length < 2) {
+                        // TODO Feedback
+                        return;
+                    }
+                    relay = args[1].toLowerCase();
+                    relays.removeRelay(relay)
+                        .catch((reason) => { console.log(reason); });
+                    break;
+
+                case "type":
+                    // *relay type <relay> <type>
+                    if (args.length < 2) {
+                        // TODO Feedback
+                        return;
+                    }
+                    relay = args[1].toLowerCase();
+                    if (args.length === 2) {
+                        return relays.getRelayType(relay)
+                            .then((type) => {
+                                message.reply(`Relay type: \`${type}\``);
+                            }).catch((reason) => { console.log(reason); });
+                    }
+                    type = args[2].toLowerCase();
+                    relays.setRelayType(relay, type)
+                        .catch((reason) => { console.log(reason); });
+                    break;
+
+                case "format":
+                    // *relay format <relay> <format>
+                    if (args.length < 2) {
+                        // TODO Feedback
+                        return;
+                    }
+                    relay = args[1].toLowerCase();
+                    if (args.length === 2) {
+                        return relays.getRelayFormat(relay)
+                            .then((format) => {
+                                message.reply(`Relay format: \`${format}\``);
+                            }).catch((reason) => { console.log(reason); });
+                    }
+                    format = args[2].toLowerCase();
+                    relays.setRelayType(relay, format)
+                        .catch((reason) => { console.log(reason); });
                     break;
 
                 default:
                     //Relay command help
+                    // TODO
                     break;
             }
 
