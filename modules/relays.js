@@ -199,12 +199,12 @@ function _relayMessageCallback(message, channel, relay) {
             let format = data.format;
             const author = message.author;
             switch (type) {
-                case "text":
                 default:
+                case "text":
                     const content = message.content;
                     switch (format) {
-                        case "embed":
                         default:
+                        case "embed":
                             const embed = new Discord.RichEmbed();
                             embed.setAuthor(author.tag, author.displayAvatarURL);
                             embed.setDescription(content);
@@ -233,8 +233,8 @@ function _relayMessageCallback(message, channel, relay) {
                     }
                     let imageUrl = message.attachments.first().url;
                     switch (format) {
-                        case "embed":
                         default:
+                        case "embed":
                             const embed = new Discord.RichEmbed();
                             embed.setAuthor(author.tag, author.displayAvatarURL);
                             embed.setImage(imageUrl);
