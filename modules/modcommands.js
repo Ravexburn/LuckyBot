@@ -359,7 +359,7 @@ module.exports = (bot = Discord.Client) => {
                             }).catch((reason) => { console.log(reason); });
                     }
                     format = args[2].toLowerCase();
-                    relays.setRelayType(relay, format)
+                    relays.setRelayFormat(relay, format)
                         .catch((reason) => { console.log(reason); });
                     break;
 
