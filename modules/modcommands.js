@@ -8,6 +8,7 @@ module.exports = (bot = Discord.Client) => {
     require("./../functions/modcmdfunctions.js")(bot);
     require("./../functions/modtogfunctions.js")(bot);
     require("./../functions/ownercmdfunctions.js")(bot);
+    require("./relays.js")(bot);
 
     //Admin and Mod Settings
 
@@ -272,6 +273,15 @@ module.exports = (bot = Discord.Client) => {
 
                 case "start":
                     //Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
+                    if (args.length < 5) {
+                        // TODO Feedback
+                        return;
+                    }
+                    const relay = args[1].toLowerCase();
+                    const type = args[2].toLowerCase();
+                    const channels = args.slice(3).join(" ");
+                    relays.addRelay(relay, channels, type)
+                        .catch((reason) => { console.log(reason); });
                     break;
 
                 case "add":
@@ -293,5 +303,5 @@ module.exports = (bot = Discord.Client) => {
 
         }
     };
-    
+
 }
