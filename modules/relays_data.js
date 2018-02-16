@@ -4,6 +4,7 @@
  */
 
 const Discord = require("discord.js");
+const Collection = Discord.Collection;
 const sql = require("sqlite");
 // const enmap = require("enmap");
 const mkdirp = require('mkdirp');
@@ -58,6 +59,31 @@ module.exports = class Relays_Data {
          */
         this.channelExists = function channelExists(channelID) {
             return _hasChannel(channelID);
+        }
+
+        /**
+         * Gets all relay names.
+         * @returns {string[]} relays.
+         */
+        this.getAllRelays = function getAllRelays() {
+            return _getAllRelays();
+        }
+
+        /**
+         * Gets all channel IDs.
+         * @returns {string[]} channel IDs.
+         */
+        this.getAllChannels = function getAllChannels() {
+            return _getAllChannels();
+        }
+
+        /**
+         * Gets all relays and channels as a collection 
+         * with each relay name as a key, and an array of its channel ids as its value.
+         * @returns {Collection<string, string[]>} relays.
+         */
+        this.getRelaysCollection = function getRelaysCollection() {
+            return _getRelaysCollection();
         }
 
         /**
@@ -239,6 +265,62 @@ function _hasDataTable() {
 
 function _cleanRelays() {
     // TODO
+}
+
+/**
+ * Gets all relay names.
+ * @returns {string[]} relays.
+ */
+function _getAllRelays() {
+    const relays = new Set();
+    return sql.all(`SELECT DISTINCT ${SQL_RELAY_NAME} FROM ${SQL_TABLE_CHANNELS}`)
+        .then((rows) => {
+            rows.forEach((row) => {
+                relays.add(row[SQL_RELAY_NAME]);
+            });
+            return Promise.resolve(Array.from(relays));
+        }).catch((reason) => {
+            return Promise.reject(reason);
+        });
+}
+
+/**
+ * Gets all channel IDs.
+ * @returns {string[]} channel IDs.
+ */
+function _getAllChannels() {
+    const channels = new Set();
+    return sql.all(`SELECT ${SQL_CHANNEL_ID} FROM ${SQL_TABLE_CHANNELS}`)
+        .then((rows) => {
+            rows.forEach((row) => {
+                channels.add(row[SQL_CHANNEL_ID]);
+            });
+            return Promise.resolve(Array.from(channels));
+        }).catch((reason) => {
+            return Promise.reject(reason);
+        });
+}
+
+/**
+ * Gets all relays and channels as a collection with each relay name as a key, and an array of its channel ids as its value.
+ * @returns {Collection<string, string[]>} relays.
+ */
+function _getRelaysCollection() {
+    const collection = new Collection();
+    return sql.all(`SELECT * FROM ${SQL_TABLE_CHANNELS}`)
+        .then((rows) => {
+            rows.forEach((row) => {
+                const relay = row[SQL_RELAY_NAME];
+                const channelID = row[SQL_CHANNEL_ID];
+                const arr = collection.get(relay);
+                const newArr = (!arr) ? [] : arr;
+                newArr.push(channelID);
+                collection.set(relay, newArr);
+            });
+            return Promise.resolve(collection);
+        }).catch((reason) => {
+            return Promise.reject(reason);
+        });
 }
 
 /**

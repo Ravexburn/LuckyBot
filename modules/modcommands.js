@@ -269,6 +269,20 @@ module.exports = (bot = Discord.Client) => {
 
                 case "list":
                     //Lists the existing relays. Shows relay type and name of servers and name of channels(?)
+                    let msg = "";
+                    relays.getRelaysCollection()
+                        .then((collection) => {
+                            for (let relay of collection) {
+                                const str = `\`${relay[0]}: ${relay[1].join(", ")}\``;
+                                if (msg.length !== 0) {
+                                    msg += "\n";
+                                }
+                                msg += str;
+                            }
+                            message.channel.send(msg);
+                        }).catch((reason) => {
+                            console.log(reason);
+                        });
                     break;
 
                 case "toggle":

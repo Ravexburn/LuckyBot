@@ -28,6 +28,25 @@ module.exports = (bot = new Discord.Client()) => {
         channelExists: relays_data.channelExists,
 
         /**
+         * Gets all relay names.
+         * @returns {string[]} relays.
+         */
+        getAllRelays: relays_data.getAllRelays,
+
+        /**
+         * Gets all channel IDs.
+         * @returns {string[]} channel IDs.
+         */
+        getAllChannels: relays_data.getAllChannels,
+
+        /**
+         * Gets all relays and channels as a collection 
+         * with each relay name as a key, and an array of its channel ids as its value.
+         * @returns {Collection<string, string[]>} relays.
+         */
+        getRelaysCollection: relays_data.getRelaysCollection,
+
+        /**
          * Adds a relay with channels.
          * @param {string} relay - The relay name.
          * @param {string[]|string} channels - Either an array of channel IDs or a string of channel IDs separated by a space(' ').
@@ -50,12 +69,15 @@ module.exports = (bot = new Discord.Client()) => {
         /**
          * Removes a relay.
          * @param {string} relay - The relay name.
-         * @returns {Promise<boolean>} Promise
+         * @returns {Promise<boolean>} Promise - success.
          */
         removeRelay: relays_data.removeRelay,
 
         /**
-         * 
+         * Adds channels to a relay.
+         * @param {string} relay - The relay name.
+         * @param {string[]|string} channels - The channel IDs.
+         * @returns {Promise<boolean>} Promise - success.
          */
         addChannel: function (relay, channels) {
             return relays_data.relayExists(relay)
