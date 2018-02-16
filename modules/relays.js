@@ -201,7 +201,7 @@ function _relayMessageCallback(message, channel, relay) {
             switch (type) {
                 default:
                 case "text":
-                    const content = message.content;
+                    let content = message.content;
                     switch (format) {
                         default:
                         case "embed":
