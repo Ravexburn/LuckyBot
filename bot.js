@@ -27,7 +27,7 @@ bot.on("ready", async () => {
         bot.log(error.stack);
     }
 
-    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`)
+    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
     bot.guilds.forEach(guild => {
         bot.invCache.guildInvites(guild).catch(console.error);
     });
