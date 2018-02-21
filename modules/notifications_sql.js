@@ -10,6 +10,7 @@ const sql = require("sqlite");
 /*
  * Default values
  */
+
 const SQL_FILE = "./data/notifications/notifications.sqlite";
 const SQL_TABLE = "notifications";
 const SQL_USER_ID = "user_id";
