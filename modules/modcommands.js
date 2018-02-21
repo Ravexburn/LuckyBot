@@ -10,6 +10,7 @@ module.exports = (bot = Discord.Client) => {
     require("./../functions/modtogfunctions.js")(bot);
     require("./../functions/ownercmdfunctions.js")(bot);
     require("./relays.js")(bot);
+    require("./whitelist.js")(bot);
 
     //Admin and Mod Settings
 
@@ -238,6 +239,14 @@ module.exports = (bot = Discord.Client) => {
                 .then(message => message.delete(10 * 1000));
             message.delete(10 * 1000);
             return;
+        }
+
+        //Whitelist add
+
+        if ((command === `${prefix}whitelist`)){
+
+            writingWL(message, args);
+
         }
 
         //Servers' info
