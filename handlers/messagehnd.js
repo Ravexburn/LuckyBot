@@ -31,6 +31,7 @@ module.exports = (bot = Discord.Client) => {
         notifySet(message);
         notifyPing(message);
         rolesAdd(message);
+        relays.relayMessage(message);
 
     };
 }
