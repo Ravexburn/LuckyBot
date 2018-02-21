@@ -47,4 +47,22 @@ module.exports = (bot = Discord.Client) => {
         }
         message.channel.send(`\*\*Welcome status:\*\* ${emote}`);
     }
+
+/**
+     * Turns mod logs on and off
+     * @param {Message} message 
+     */
+    modLogTog = function modLogTog(message, serverSettings) {
+        serverSettings.modLogOn = !serverSettings.modLogOn;
+        bot.setServerSettings(message.guild.id, serverSettings);
+        if (serverSettings.modLogOn === true) {
+            emote = ":white_check_mark: **Enabled**";
+        } else {
+            emote = ":x: **Disabled**";
+        }
+        message.channel.send(`\*\*Mod Log status:\*\* ${emote}`);
+    }
+
+
+
 }

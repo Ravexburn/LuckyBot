@@ -6,6 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
     require("./../functions/modchanfunctions.js")(bot);
     require("./../functions/modcmdfunctions.js")(bot);
+    //require("./../functions/modlogfunctions.js")(bot);
     require("./../functions/modtogfunctions.js")(bot);
     require("./../functions/ownercmdfunctions.js")(bot);
 
