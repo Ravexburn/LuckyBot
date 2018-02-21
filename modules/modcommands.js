@@ -37,12 +37,14 @@ module.exports = (bot = Discord.Client) => {
         //Prefix
 
         if ((command === `${prefix}setprefix`)) {
+            console.log("Crash at setprefix");
             setPrefix(message, command, args, serverSettings);
         }
 
         //Starting logs, roles, join, and music
 
         if ((command === `${prefix}start`)) {
+            console.log("Crash at start");
             if (args.length === 0) {
                 message.channel.send(`\`\`\`md\nTo use start please use one of the following subcommands: \n${command} <help|messagelogs|logs|roles|music>\`\`\``);
                 return;
@@ -52,7 +54,7 @@ module.exports = (bot = Discord.Client) => {
                 //Help
 
                 case "help":
-
+                console.log("Crash at start help");
                     message.channel.send("<:monkaS:372547459840475146> h-help");
                     break;
 
@@ -60,28 +62,28 @@ module.exports = (bot = Discord.Client) => {
 
                 case "logs":
                 case "messagelogs":
-
+                console.log("Crash at logs");
                     logChan(message);
                     break;
 
                 //Roles
 
                 case "roles":
-
+                console.log("Crash at roles");
                     rolesChan(message, serverSettings, command);
                     break;
 
                 //Welcome
 
                 case "welcome":
-
+                console.log("Crash at start welcome"); 
                     message.channel.send(`Please use *welcome channel <#channelname> to set a welcome channel`);
                     break;
 
                 //Join
 
                 case "join":
-
+                console.log("Crash at join"); 
                     joinChan(message, serverSettings, command);
                     break;
 
@@ -95,14 +97,14 @@ module.exports = (bot = Discord.Client) => {
                 //Edited messages
 
                 case "edit":
-
+                console.log("Crash at edit"); 
                     editChan(message, serverSettings, command, args);
                     break;
 
                 //Deleted messages
 
                 case "delete":
-
+                console.log("Crash at delete"); 
                     delChan(message, serverSettings, command, args);
                     break;
 
@@ -116,6 +118,7 @@ module.exports = (bot = Discord.Client) => {
         //Toggles
 
         if ((command === `${prefix}toggle`)) {
+            console.log("Crash at toggle"); 
             if (args.length === 0) {
                 message.channel.send(`\`\`\`md\nTo use toggle please use one of the following subcommands: \n${command} <image|logs>\`\`\``);
                 return;
@@ -125,19 +128,19 @@ module.exports = (bot = Discord.Client) => {
 
                 //Toggle Image Embed
                 case "image":
-
+                console.log("Crash at image"); 
                     imgTog(message, serverSettings);
                     return;
 
                 //Toggle Logs
                 case "logs":
-
+                console.log("Crash at toggle logs"); 
                     logsTog(message, serverSettings);
                     return;
 
                 //Toggle Welcome     
                 case "welcome":
-
+                console.log("Crash at toggle welcome"); 
                     welTog(message, serverSettings);
                     return;
 
@@ -153,6 +156,7 @@ module.exports = (bot = Discord.Client) => {
         //*welcome channel #channel
 
         if ((command === `${prefix}welcome`)) {
+            console.log("Crash at welcome"); 
             if (args.length === 0) {
                 message.channel.send(`\`\`\`md\nTo use welcome please use one of the following subcommands: \n${command} <help|channel|message>\`\`\``);
                 return;
@@ -160,19 +164,19 @@ module.exports = (bot = Discord.Client) => {
             switch (args[0].toLowerCase()) {
 
                 case "help":
-
+                console.log("Crash at welcome help"); 
                     message.channel.send("<:monkaS:372547459840475146> h-help");
                     break;
 
                 case "chan":
                 case "channel":
-
+                console.log("Crash at welcome chan"); 
                     welChan(message, serverSettings, command);
                     break;
 
                 case "msg":
                 case "message":
-
+                console.log("Crash at welcome chan"); 
                     welMsg(message, command, args, serverSettings);
                     break;
 
@@ -186,24 +190,28 @@ module.exports = (bot = Discord.Client) => {
         //Ban Command
 
         if ((command === `${prefix}ban`)) {
+            console.log("Crash at ban"); 
             banUser(message, command, args, perms);
         }
 
         //Kick command
 
         if ((command === `${prefix}kick`)) {
+            console.log("Crash at kick"); 
             kickUser(message, command, args, perms);
         }
 
         //Mute Command
 
         if ((command === `${prefix}mute`)) {
+            console.log("Crash at mute"); 
             muteUser(message, command, args, perms);
         }
 
         //Prune Command
 
         if ((command === `${prefix}prune`)){
+            console.log("Crash at prune"); 
             pruneMessage(message, args);
         }
     };

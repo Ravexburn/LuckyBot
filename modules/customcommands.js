@@ -28,6 +28,7 @@ module.exports = (bot = Discord.Client) => {
         const guild = message.guild;
 
         if (command === `${prefix}command`) {
+            console.log("Crash at command");
             if (args.length === 0) {
                 commandsHelp(message, prefix);
                 return;
@@ -39,7 +40,7 @@ module.exports = (bot = Discord.Client) => {
             switch (args[0]) {
 
                 case "add":
-
+                console.log("Crash at cmd add");
                     if (args.length < 3) {
                         message.channel.send("**Please add a command name and the command.**");
                         return;
@@ -71,7 +72,7 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "edit":
-
+                console.log("Crash at cmd edit");
                     if (args.length < 3) {
                         message.channel.send("**Please add a command name and the command.**");
                         return;
@@ -101,7 +102,7 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "remove":
-
+                console.log("Crash at cmd remove");
                     if (args.length < 2) {
                         message.channel.send("**Please add a command name to remove.**");
                         return;
@@ -131,7 +132,7 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "list":
-
+                console.log("Crash at cmd list");
                     if (cmds.has(guild.id)) {
                         custom = cmds.get(guild.id);
                     }

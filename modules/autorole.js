@@ -19,7 +19,7 @@ module.exports = (bot = Discord.Client) => {
         //Autorole
 
         if (command === `${prefix}autorole`) {
-
+            console.log("Crash at autorole");
             let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 
             if (!(message.guild.member(message.author).hasPermission(perms))) return;

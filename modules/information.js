@@ -25,37 +25,42 @@ module.exports = (bot = Discord.Client) => {
         //User Info Settings
 
         if (command === `${prefix}userinfo`) {
+            console.log("Crash at userinfo");
             userInfo(message, args);
         }
 
         //Server Info Settings
 
         if (command === `${prefix}serverinfo`) {
+            console.log("Crash at serverinfo");
             serverInfo(message);
         }
 
         //Bot Info
 
         if (command === `${prefix}botinfo`) {
+            console.log("Crash at botinfo");
             botInfo(message);
         }
 
         //Trello
 
         if (command === `${prefix}trello`) {
+            console.log("Crash at trello");
             message.channel.send(`View upcoming features here: ${link}`);
         }
 
         //Github
 
         if ((command === `${prefix}github`) || (command === `${prefix}git`)) {
+            console.log("Crash at git");
             message.channel.send(`View upcoming features here: ${link2}`);
         }
 
         //Command help
 
         if (command === `${prefix}help`) {
-
+            console.log("Crash at help");
             generalHelp(message, prefix);
             notifyHelp(message, prefix);
             commandsHelp(message, prefix);
@@ -65,7 +70,7 @@ module.exports = (bot = Discord.Client) => {
         //Mod help
 
         if (command === `${prefix}mod`) {
-
+            console.log("Crash at mod");
             let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 
             if (!(message.guild.member(message.author).hasPermission(perms))) return;
@@ -98,7 +103,7 @@ module.exports = (bot = Discord.Client) => {
         //Suggestions
 
         if (command === `${prefix}suggestion` || command === `${prefix}suggest` || command === `${prefix}sgt`) {
-
+            console.log("Crash at suggestion");
             const chan = getSuggestionChannel();
             if (!chan) {
                 //Stuffs
@@ -128,7 +133,7 @@ module.exports = (bot = Discord.Client) => {
 
         //Issues
         if (command === `${prefix}issue` || command === `${prefix}issues` || command === `${prefix}isu`) {
-
+            console.log("Crash at issue");
             const chan = getIssueChannel();
             if (!chan) {
                 //Stuffs
