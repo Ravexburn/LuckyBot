@@ -222,7 +222,7 @@ function _relayMessageCallback(message, channel, relay) {
             const author = message.author;
             switch (type) {
                 default:
-                case "text":
+                case "text": 
                     let content = message.content;
                     switch (format) {
                         default:

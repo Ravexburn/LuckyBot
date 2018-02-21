@@ -272,7 +272,7 @@ module.exports = (bot = Discord.Client) => {
             let type = "";
             let format = "";
             switch (args[0].toLowerCase()) {
-
+                //TODO add functions with help commands for relay in mod commands
                 case "list":
                     //Lists the existing relays. Shows relay type and name of servers and name of channels(?)
                     let msg = "";
@@ -291,15 +291,15 @@ module.exports = (bot = Discord.Client) => {
                         });
                     break;
 
-                case "toggle":
+                /* case "toggle":
                     //Toggles between the relay being in an embed or not. Requires name of relay.
-                    break;
+                    break; */
 
                 case "start":
                     //Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
                     // *relay start <relay> <type> <channel> <channel> [channel...]
                     if (args.length < 5) {
-                        // TODO Feedback
+                       message.channel.send(`Please provide relay name, type of relay, and two or more channels.`);
                         return;
                     }
                     relay = args[1].toLowerCase();
@@ -313,7 +313,7 @@ module.exports = (bot = Discord.Client) => {
                     //Adds a channel to an existing relay. Requires relay name, channel and server id.
                     // *relay add <relay> <channel> [channel...]
                     if (args.length < 3) {
-                        // TODO Feedback
+                        message.channel.send(`Please provide the relay name and the channel id which you would like to add.`);
                         return;
                     }
                     relay = args[1].toLowerCase();
@@ -326,7 +326,7 @@ module.exports = (bot = Discord.Client) => {
                     //Removes a channel to an existing relay. Requires relay name, channel and server id.
                     // *relay remove <relay> <channel>
                     if (args.length < 3) {
-                        // TODO Feedback
+                        message.channel.send(`Please provide the relay name and the channel id which you would like to remove.`);
                         return;
                     }
                     relay = args[1].toLowerCase();
@@ -339,7 +339,7 @@ module.exports = (bot = Discord.Client) => {
                     //Deletes an existing relay. Requires relay name.
                     // *relay delete <relay>
                     if (args.length < 2) {
-                        // TODO Feedback
+                        message.channel.send(`Please provide the relay name you would like to delete.`);
                         return;
                     }
                     relay = args[1].toLowerCase();
@@ -350,7 +350,7 @@ module.exports = (bot = Discord.Client) => {
                 case "type":
                     // *relay type <relay> <type>
                     if (args.length < 2) {
-                        // TODO Feedback
+                        message.channel.send(`Please provide the relay name and type of relay.`);
                         return;
                     }
                     relay = args[1].toLowerCase();
@@ -368,7 +368,7 @@ module.exports = (bot = Discord.Client) => {
                 case "format":
                     // *relay format <relay> <format>
                     if (args.length < 2) {
-                        // TODO Feedback
+                        message.channel.send(`Please provide the relay name and format of relay.`);
                         return;
                     }
                     relay = args[1].toLowerCase();
