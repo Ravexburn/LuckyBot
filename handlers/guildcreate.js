@@ -4,13 +4,13 @@ module.exports = (bot = Discord.Client) => {
 
     //Requires
 
-    require("./../modules/information.js")(bot);
+    require("./../modules/whitelist.js")(bot);
 
     guildCreateHandler = function guildCreateHandler(guild) {
 
         //Functions
 
-        botWelcome(guild);
+        whitelist(guild);
         
     };    
 }

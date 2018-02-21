@@ -1,11 +1,15 @@
 const Discord = require("discord.js");
+const customcmds = require("./commandnames.json");
+let commandnames = customcmds.commands;
 
 module.exports = (bot = Discord.Client) => {
 
     require("./../functions/helpfunctions.js")(bot);
 
     const Enmap = require("enmap");
-    cmds = new Enmap({ name: 'Commands', persistent: true });
+    const EnmapLevel = require("enmap-level");
+    const commandProvider = new EnmapLevel({ name: 'Commands' });
+    cmds = new Enmap({provider: commandProvider});
 
     customCommands = async function customCommands(message) {
         if (message.system) return;
@@ -24,7 +28,7 @@ module.exports = (bot = Discord.Client) => {
         const guild = message.guild;
 
         if (command === `${prefix}command`) {
-            if (args.legnth === 0) {
+            if (args.length === 0) {
                 commandsHelp(message, prefix);
                 return;
             }
@@ -35,8 +39,9 @@ module.exports = (bot = Discord.Client) => {
             switch (args[0]) {
 
                 case "add":
-                    if (args.legnth < 3) {
-                        message.channel.send(`Please add a command name and the command.`);
+
+                    if (args.length < 3) {
+                        message.channel.send("**Please add a command name and the command.**");
                         return;
                     }
 
@@ -49,13 +54,14 @@ module.exports = (bot = Discord.Client) => {
                     }
 
                     cmdName = args[1].toLowerCase();
-
-                    if (custom[cmdName]) {
-                        message.channel.send(`That command already exists. Please use \`edit\` to edit the command.`);
+            
+                    if (commandnames.includes(cmdName)) {
+                        message.channel.send("**That is a standard command try another name.**");
                         return;
                     }
 
-                    if (custom.hasOwnProperty(cmdName)) {
+                    if (custom[cmdName]) {
+                        message.channel.send("**That command already exists. Please use \`edit\` to edit the command.**");
                         return;
                     }
 
@@ -66,22 +72,22 @@ module.exports = (bot = Discord.Client) => {
 
                 case "edit":
 
-                    if (args.legnth < 3) {
-                        message.channel.send(`Please add a command name and the command.`);
+                    if (args.length < 3) {
+                        message.channel.send("**Please add a command name and the command.**");
                         return;
                     }
 
                     custom = cmds.get(guild.id);
 
                     if (!custom) {
-                        message.channel.send(`There's no custom commands on the server.`);
+                        message.channel.send("**There are no custom commands on the server.**");
                         return;
                     }
 
                     cmdName = args[1].toLowerCase();
 
                     if (!custom[cmdName]) {
-                        message.channel.send(`That command does not exist.`);
+                        message.channel.send("**That command does not exist.**");
                         return;
                     }
 
@@ -96,22 +102,22 @@ module.exports = (bot = Discord.Client) => {
 
                 case "remove":
 
-                    if (args.legnth < 2) {
-                        message.channel.send(`Please add a command name to remove.`);
+                    if (args.length < 2) {
+                        message.channel.send("**Please add a command name to remove.**");
                         return;
                     }
 
                     custom = cmds.get(guild.id);
 
                     if (!custom) {
-                        message.channel.send(`There's no custom commands on the server.`);
+                        message.channel.send("**There are no custom commands on the server.**");
                         return;
                     }
 
                     cmdName = args[1].toLowerCase();
 
                     if (!custom[cmdName]) {
-                        message.channel.send(`That command does not exist.`);
+                        message.channel.send("**That command does not exist.**");
                         return;
                     }
 
@@ -126,15 +132,38 @@ module.exports = (bot = Discord.Client) => {
 
                 case "list":
 
+                    if (cmds.has(guild.id)) {
+                        custom = cmds.get(guild.id);
+                    }
+
+                    if (!custom) {
+                        message.channel.send("**There are no custom commands on this server.**");
+                        return;
+                    }
+
+                    let list = [];
+                    for (var key in custom) {
+                        if (custom.hasOwnProperty(key)) {
+                            list.push(`${prefix}${key}`);
+                        }
+                    }
+
+                    if (list.length === 0) {
+                        message.channel.send("**There are no custom commands on this server.**");
+                        return;
+                    }
+
+                    message.channel.send("**List of commands sent to direct messages.**");
+                    message.author.send(`\`\`\`List of custom commands for ${message.guild.name}:
+${list.join(`\n`)}\`\`\``);
+
+
                     break;
 
                 default:
                     commandsHelp(message, prefix);
                     return;
             }
-
-
-
 
         }
     };

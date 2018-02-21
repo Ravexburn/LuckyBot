@@ -182,12 +182,6 @@ module.exports = (bot = Discord.Client) => {
             }
         }
 
-        //Relay
-
-        if ((command === `${prefix}relay`)) {
-
-        }
-
         //Ban Command
 
         if ((command === `${prefix}ban`)) {
@@ -204,6 +198,12 @@ module.exports = (bot = Discord.Client) => {
 
         if ((command === `${prefix}mute`)) {
             muteUser(message, command, args, perms);
+        }
+
+        //Prune Command
+
+        if ((command === `${prefix}prune`)){
+            pruneMessage(message, args);
         }
     };
 
@@ -236,14 +236,10 @@ module.exports = (bot = Discord.Client) => {
 
         if ((command === `${prefix}server`) || (command === `${prefix}getmeout`)) {
             if (args.length === 0) {
-                message.channel.send(`\`\`\`md\nTo use server please use one of the following subcommands: \n${command} <help|list|leave>\`\`\``);
+                ownerServerHelp(message, prefix)
                 return;
             }
             switch (args[0].toLowerCase()) {
-
-                case "help":
-                    message.channel.send("<:monkaS:372547459840475146> h-help");
-                    break;
 
                 case "list":
                     serverList(message);
@@ -253,14 +249,23 @@ module.exports = (bot = Discord.Client) => {
                     serverLeave(message, args);
                     break;
 
+                case "settings":
+                    //TODO shows settings per server
+                    break;
+
                 default:
-                    message.channel.send(`\`\`\`md\nTo use server please use one of the following subcommands: \n${command} <help|list|leave>\`\`\``);
+                    ownerServerHelp(message, prefix);
                     break;
             }
             return;
         }
 
         if ((command === `${prefix}relay`)) {
+            if (args.length === 0) {
+                relayHelp(message, prefix);
+                return;
+            }
+
             let relay = "";
             let channels = [];
             let type = "";
@@ -286,7 +291,7 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "toggle":
-                    //Toggles between the relay being in an embed or not.
+                    //Toggles between the relay being in an embed or not. Requires name of relay.
                     break;
 
                 case "start":
@@ -379,7 +384,7 @@ module.exports = (bot = Discord.Client) => {
 
                 default:
                     //Relay command help
-                    // TODO
+                    relayHelp(message, prefix);
                     break;
             }
 

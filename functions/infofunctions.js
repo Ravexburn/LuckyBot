@@ -6,12 +6,30 @@ module.exports = (bot = Discord.Client) => {
      * User Info
      * @param {Message} message 
      */
-    userInfo = function userInfo(message) {
+    userInfo = function userInfo(message, args) {
+
+        let target_id = null;
+
+        if (args.length !== 0) {
+
+            const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
+
+            if (matches) {
+                target_id = matches[1];
+            }
+
+            if (!target_id) {
+                target_id = args[0];
+            }
+
+        }
 
         let target = message.member;
-        if (message.mentions.members != null && message.mentions.members.size !== 0) {
-            target = message.mentions.members.first();
+
+        if (message.guild.members.has(target_id)) {
+            target = message.guild.member(target_id);
         }
+
         if (!target) return;
         let member = target;
         let color = "#a8e8eb";
@@ -44,7 +62,7 @@ module.exports = (bot = Discord.Client) => {
             }
             embed.addField(fieldString, gameString, true);
         }
-        
+
         if (member.roles) {
             let roleString = member.roles.array().join(", ");
             embed.addField("Roles", roleString);
@@ -99,10 +117,10 @@ module.exports = (bot = Discord.Client) => {
             .setAuthor("About Lucky Bot", bot.user.displayAvatarURL)
             .setColor("#a8e8eb")
             .setThumbnail(bot.user.displayAvatarURL)
-            .addField("Authors", "Rave#0737 and OrigamiCoder#1375", true)
+            .addField("Authors", "Rave#0737 and OrigamiCoder#1375")
+            .addField("Uptime", date)
             .addField("Websites", `[Trello](${trello}) [Github](${git})`, true)
             .addField("Servers", bot.guilds.size, true)
-            .addField("Uptime", date, true)
             .addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
             .addField("Bot ID", bot.user.id, true);
         message.channel.send(embed);

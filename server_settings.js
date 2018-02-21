@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const Enmap = require("enmap");
+const EnmapLevel = require("enmap-level");
 const botSettings = require("./botsettings.json");
 
 const defaultSettings = {
@@ -33,7 +34,8 @@ const defaultSettings = {
 }
 
 module.exports = (bot = Discord.Client) => {
-    bot.serverSet = new Enmap({ name: 'Settings', persistent: true });
+    const serverSetProvider = new EnmapLevel({ name: 'Settings' });
+    bot.serverSet = new Enmap({provider: serverSetProvider })
 
     bot.hasServerSettings = function hasServerSettings(guildID) {
         return bot.serverSet.has(guildID);

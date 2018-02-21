@@ -32,7 +32,7 @@ module.exports = (bot = Discord.Client) => {
         }
 
         let member_id = null;
-        const matches = args[0].match(new RegExp(`<@(\\d+)>`));
+        const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 
         if (matches) {
             member_id = matches[1];
@@ -91,7 +91,7 @@ module.exports = (bot = Discord.Client) => {
         }
 
         let member_id = null;
-        const matches = args[0].match(new RegExp(`<@(\\d+)>`));
+        const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 
         if (matches) {
             member_id = matches[1];
@@ -199,6 +199,22 @@ module.exports = (bot = Discord.Client) => {
                 });
             });
         }
+    }
+
+    //Prunes messages
+    pruneMessage = function pruneMessage(message, args){
+        if(args.length === 0){
+            message.channel.send(`Please provide a number of messages to delete.`);
+            return;
+        }
+
+        let msg = args[0];
+        let num = parseInt(msg) + 1;
+        if (isNaN(num)){
+            message.channel.send(`Please provide a number of messages to delete.`);
+            return;
+        }
+        message.channel.fetchMessages({limit: num}).then(messages => message.channel.bulkDelete(messages));
     }
 
     /**
