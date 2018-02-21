@@ -204,6 +204,83 @@ module.exports = (bot = new Discord.Client()) => {
                         console.log(reason);
                     }
                 });
+        },
+
+        //Made by rave
+        /**
+         * 
+         * @param {Message} message 
+         * @param {Channel} channel 
+         * @param {string} relay 
+         */
+        relayRave: function relayRave(message, channel, relay) {
+            relays_data.getRelayData(relay)
+                .then((data) => {
+                    let type = data.type;
+                    let format = data.format;
+                    const author = message.author;
+                    switch (type) {
+                        default:
+                        case "text":
+                            let content = message.content;
+                            switch (format) {
+                                default:
+                                case "embed":
+                                    let color = message.member.colorRole.color;
+                                    if (!color) color = "RANDOM";
+                                    const embed = new Discord.RichEmbed();
+                                    embed.setAuthor(author.tag, author.displayAvatarURL);
+                                    embed.setDescription(content);
+                                    embed.setColor(color);
+                                    if (message.attachments.size !== 0) {
+                                        const msgAttachment = message.attachments.first();
+                                        embed.setImage(msgAttachment.url);
+                                    }
+                                    embed.setTimestamp(message.createdAt);
+                                    embed.setFooter(message.guild.name);
+                                    channel.send(embed);
+                                    break;
+                                case "none":
+                                    content = `${author.tag}: ${content}`;
+                                    if (message.attachments.size === 0) {
+                                        channel.send(content);
+                                    } else {
+                                        const msgAttachment = message.attachments.first();
+                                        const attachment = new Discord.Attachment(msgAttachment.url, msgAttachment.filename);
+                                        channel.send(content, attachment);
+                                    }
+                                    break;
+                            }
+                            break;
+                        case "image":
+                            if (message.attachments.size === 0) {
+                                return;
+                            }
+                            let imageUrl = message.attachments.first().url;
+                            switch (format) {
+                                default:
+                                case "embed":
+                                    let color = message.member.colorRole.color;
+                                    if (!color) color = "RANDOM";
+                                    const embed = new Discord.RichEmbed();
+                                    embed.setAuthor(author.tag, author.displayAvatarURL);
+                                    embed.setImage(imageUrl);
+                                    embed.setTimestamp(message.createdAt);
+                                    embed.setFooter(message.guild.name);
+                                    embed.setColor(color);
+                                    channel.send(embed);
+                                    break;
+                                case "none":
+                                    const msgAttachment = message.attachments.first();
+                                    const attachment = new Discord.Attachment(msgAttachment.url, msgAttachment.filename);
+                                    channel.send(author.tag, attachment);
+                                    break;
+                            }
+                            break;
+                    }
+                }).catch((reason) => {
+                    console.log(reason);
+                });
         }
     }
 }
@@ -222,7 +299,7 @@ function _relayMessageCallback(message, channel, relay) {
             const author = message.author;
             switch (type) {
                 default:
-                case "text": 
+                case "text":
                     let content = message.content;
                     switch (format) {
                         default:
