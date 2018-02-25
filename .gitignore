@@ -10,3 +10,4 @@ start.bat
 nodemon.json
 template.js
 serverlist.json
+*.log
