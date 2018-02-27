@@ -41,12 +41,10 @@ module.exports = (bot = Discord.Client) => {
             if (!i.text || i.text.toLowerCase() === "none") return;
 
             else {
-                try {
-                    member.addRole(member.guild.roles.find("name", i.text));
-                } catch (e) {
-                    console.log("error");
-                }
-
+                    member.addRole(member.guild.roles.find("name", i.text))
+                    .catch((error) => {
+                        console.log(error);
+                    });
             }
         })
     };
