@@ -95,8 +95,16 @@ module.exports = (bot = Discord.Client) => {
                     });
 
                     break;
+                
+               // case "np":
+              //  case "now playing":
+
+                  //  break;
 
 
+
+
+                    
                 default:
 
                     return;
@@ -104,18 +112,8 @@ module.exports = (bot = Discord.Client) => {
 
             }
 
-
-
-
-
-
-
             return;
         }
-
-
-
-
 
     };
 

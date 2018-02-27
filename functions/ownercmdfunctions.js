@@ -96,4 +96,13 @@ module.exports = (bot = Discord.Client) => {
 
     }
 
+   // serverModSettings = function serverModSettings(message){
+
+
+
+
+        
+  //  }
+
+
 }
