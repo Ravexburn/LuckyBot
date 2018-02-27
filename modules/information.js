@@ -69,47 +69,7 @@ module.exports = (bot = Discord.Client) => {
             notifyHelp(message, prefix, embed);
             commandsHelp(message, prefix, embed);
             rolesHelp(message, prefix, embed);
-
-            if (!message.guild.member(bot.user.id).hasPermission("EMBED_LINKS")) {
-                message.author.send(embed);
-                return;
-            } else {
-                message.channel.send(embed);
-                return;
-            }
-        }
-
-        //Mod help
-
-        if (command === `${prefix}mod`) {
-            console.log("Crash at mod");
-            let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-
-            if (!(message.guild.member(message.author).hasPermission(perms))) return;
-
-            let embed = new Discord.RichEmbed()
-                .setTitle("Mod Commands")
-                .setColor("#990000")
-                .setFooter("If you have any other questions please contact Rave#0737")
-                .addField(":exclamation: Basic Commands", `\*\* ${prefix}setprefix\*\* - Changes the prefix for Lucky Bot.
-\*\* ${prefix}autorole\*\* - Sets a role to be added to a user when they join the server.
-\*\* ${prefix}ban <user> [days] [reason]\*\* - Bans a <user> and removes the messages from [days] for [reason]. Days default is 0.     
-\*\* ${prefix}kick <user> [reason]\*\* - Kicks a <user> for [reason]`)
-                .addField("Welcome Commands", `\*\* ${prefix}welcome\*\* - Shows a list of commands for welcome.
-\*\* ${prefix}welcome help\*\* - Shows a detailed list of commands for welcome.
-\*\* ${prefix}welcome channel <channel name>\*\* - Sets the channel the bot should welcome new members in.
-\*\* ${prefix}welcome message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`)
-                .addField(":checkered_flag: Start Commands", `\*\* ${prefix}start\*\* - Shows a list of commands for start.
-\*\* ${prefix}start help\*\* - Shows a detailed list of commands for start.
-\*\* ${prefix}start roles <channel name>\*\* - Sets the channel for the role system.
-\*\* ${prefix}start logs <channel name>\*\* - Sets the channel for message logs.  
-\*\* ${prefix}start join <channel name>\*\* - Sets the channel for users joining and leaving. (Message cannot be changed on this)`)
-                .addField(":arrows_counterclockwise: Toggle Commands", `\*\* ${prefix}toggle\*\* - Shows a list of commands for toggles.
-\*\* ${prefix}toggle image\*\* - Changes between embed disabled for images in message logs.
-\*\* ${prefix}toggle logs\*\* - Turns message logs on and off.`);
-
-            message.channel.send(`List of mod commands sent to direct messages.`);
-            message.author.send(embed);
+            sendEmbed(message, embed);
         }
 
         //Suggestions

@@ -48,17 +48,15 @@ module.exports = (bot = Discord.Client) => {
         if ((command === `${prefix}start`)) {
             console.log("Crash at start");
             if (args.length === 0) {
-                message.channel.send(`\`\`\`md\nTo use start please use one of the following subcommands: \n${command} <help|messagelogs|logs|roles|music>\`\`\``);
+                let embed = new Discord.RichEmbed()
+                    .setColor("#2ecc71")
+                    .setTitle("Start Help")
+                    .setFooter("If you have any other questions please contact Rave#0737");
+                startHelp(message, prefix, embed);
+                sendEmbed(message, embed);
                 return;
             }
             switch (args[0].toLowerCase()) {
-
-                //Help
-
-                case "help":
-                    console.log("Crash at start help");
-                    message.channel.send("<:monkaS:372547459840475146> h-help");
-                    break;
 
                 //Message logging
 
@@ -75,13 +73,6 @@ module.exports = (bot = Discord.Client) => {
                     rolesChan(message, serverSettings, command);
                     break;
 
-                //Welcome
-
-                case "welcome":
-                    console.log("Crash at start welcome");
-                    message.channel.send(`Please use *welcome channel <#channelname> to set a welcome channel`);
-                    break;
-
                 //Join
 
                 case "join":
@@ -90,8 +81,12 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
-
-                    message.channel.send(`\`\`\`md\nTo use start please use one of the following subcommands: \n${command} <help|messagelogs|logs|roles|music>\`\`\``);
+                    let embed = new Discord.RichEmbed()
+                        .setColor("#2ecc71")
+                        .setTitle("Start Help")
+                        .setFooter("If you have any other questions please contact Rave#0737");
+                    startHelp(message, prefix, embed);
+                    sendEmbed(message, embed);
                     break;
             }
         }
@@ -101,7 +96,12 @@ module.exports = (bot = Discord.Client) => {
         if ((command === `${prefix}toggle`)) {
             console.log("Crash at toggle");
             if (args.length === 0) {
-                message.channel.send(`\`\`\`md\nTo use toggle please use one of the following subcommands: \n${command} <image|logs>\`\`\``);
+                let embed = new Discord.RichEmbed()
+                    .setColor("#3498db")
+                    .setTitle("Toggle Help")
+                    .setFooter("If you have any other questions please contact Rave#0737");
+                toggleHelp(message, prefix, embed);
+                sendEmbed(message, embed);
                 return;
             }
             let emote = "";
@@ -126,7 +126,12 @@ module.exports = (bot = Discord.Client) => {
                     return;
 
                 default:
-
+                    let embed = new Discord.RichEmbed()
+                        .setColor("#3498db")
+                        .setTitle("Toggle Help")
+                        .setFooter("If you have any other questions please contact Rave#0737");
+                    toggleHelp(message, prefix, embed);
+                    sendEmbed(message, embed);
                     return;
             }
         }
@@ -139,7 +144,12 @@ module.exports = (bot = Discord.Client) => {
         if ((command === `${prefix}welcome`)) {
             console.log("Crash at welcome");
             if (args.length === 0) {
-                message.channel.send(`\`\`\`md\nTo use welcome please use one of the following subcommands: \n${command} <help|channel|message>\`\`\``);
+                let embed = new Discord.RichEmbed()
+                    .setColor("#ff8533")
+                    .setTitle("Welcome Help")
+                    .setFooter("If you have any other questions please contact Rave#0737");
+                welcomeHelp(message, prefix, embed);
+                sendEmbed(message, embed);
                 return;
             }
             switch (args[0].toLowerCase()) {
@@ -162,8 +172,12 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
-
-                    message.channel.send(`\`\`\`md\nTo use welcome please use one of the following subcommands: \n${command} <help|channel|message>\`\`\``);
+                    let embed = new Discord.RichEmbed()
+                        .setColor("#ff8533")
+                        .setTitle("Welcome Help")
+                        .setFooter("If you have any other questions please contact Rave#0737");
+                    welcomeHelp(message, prefix, embed);
+                    sendEmbed(message, embed);
                     break;
             }
         }
@@ -195,6 +209,21 @@ module.exports = (bot = Discord.Client) => {
             console.log("Crash at prune");
             pruneMessage(message, args);
         }
+
+        //Mod help
+
+        if (command === `${prefix}mod`) {
+            console.log("Crash at mod");
+            let embed = new Discord.RichEmbed()
+                .setTitle("Mod Commands")
+                .setColor("#990000")
+                .setFooter("If you have any other questions please contact Rave#0737");
+            modHelpGeneral(message, prefix, embed);
+            welcomeHelp(message, prefix, embed);
+            startHelp(message, prefix, embed);
+            toggleHelp(message, prefix, embed);
+            sendEmbed(message, embed);
+        }
     };
 
     //Intial Settings (Owner Only)
@@ -213,7 +242,6 @@ module.exports = (bot = Discord.Client) => {
         //Default Settings
 
         if ((command === `${prefix}intset`)) {
-
             bot.initServerSettings(message.guild.id);
             message.channel.send("**Server settings have been reset**")
                 .then(message => message.delete(10 * 1000));
@@ -238,7 +266,7 @@ module.exports = (bot = Discord.Client) => {
                     .setColor("#a893f9")
                     .setTitle("Server Help");
                 ownerServerHelp(message, prefix, embed);
-                message.channel.send(embed);
+                sendEmbed(message, embed);
                 return;
             }
             switch (args[0].toLowerCase()) {
@@ -260,7 +288,7 @@ module.exports = (bot = Discord.Client) => {
                         .setColor("#a893f9")
                         .setTitle("Server Help");
                     ownerServerHelp(message, prefix, embed);
-                    message.channel.send(embed);
+                    sendEmbed(message, embed);
                     break;
             }
             return;
@@ -272,7 +300,7 @@ module.exports = (bot = Discord.Client) => {
                     .setColor("#A021ED")
                     .setTitle("Relay Help");
                 relayHelp(message, prefix, embed);
-                message.channel.send(embed);
+                sendEmbed(message, embed);
                 return;
             }
 
@@ -396,7 +424,7 @@ module.exports = (bot = Discord.Client) => {
                         .setColor("#A021ED")
                         .setTitle("Relay Help");
                     relayHelp(message, prefix, embed);
-                    message.channel.send(embed);
+                    sendEmbed(message, embed);
                     break;
             }
 
