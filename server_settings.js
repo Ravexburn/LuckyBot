@@ -31,6 +31,8 @@ const defaultSettings = {
     editLog: false,
     deleteLog: false,
     imageLog: false,
+    //Mod logs
+    modLogOn: false,
 }
 
 module.exports = (bot = Discord.Client) => {

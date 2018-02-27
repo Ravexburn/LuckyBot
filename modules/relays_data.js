@@ -24,7 +24,6 @@ const DATA_TYPE = "type";
 const DATA_FORMAT = "format";
 
 let db = null;
-
 module.exports = class Relays_Data {
     constructor(sqlFile = SQL_FILE) {
 
@@ -229,6 +228,7 @@ function _createChannelsTable() {
     )`;
 
     return db.run(sqlCreateTable);
+
 }
 
 function _createDataTable() {
@@ -241,6 +241,7 @@ function _createDataTable() {
     )`;
 
     return db.run(sqlCreateTable);
+
 }
 
 function _hasChannelsTable() {

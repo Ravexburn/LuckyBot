@@ -29,6 +29,7 @@ module.exports = (bot = Discord.Client) => {
         let url = "";
         let username = "";
         if (command === `${prefix}lastfm` || command === `${prefix}lf`) {
+            console.log("Crash at lastfm");
             if (args.length === 0) {
                 if (lastfm.has(message.author.id)) {
                     username = lastfm.get(message.author.id);
@@ -72,6 +73,7 @@ module.exports = (bot = Discord.Client) => {
 
                 case "set":
                 case "save":
+                console.log("Crash at lf set");
                     if (args.length === 1) {
                         message.reply(`No username supplied.`);
                         return;
@@ -93,8 +95,16 @@ module.exports = (bot = Discord.Client) => {
                     });
 
                     break;
+                
+               // case "np":
+              //  case "now playing":
+
+                  //  break;
 
 
+
+
+                    
                 default:
 
                     return;
@@ -102,18 +112,8 @@ module.exports = (bot = Discord.Client) => {
 
             }
 
-
-
-
-
-
-
             return;
         }
-
-
-
-
 
     };
 

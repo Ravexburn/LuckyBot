@@ -35,16 +35,21 @@ module.exports = (bot = Discord.Client) => {
         //Commands for notifications
 
         if ((command === `${prefix}notify`)) {
-
+            console.log("Crash at notify");
             if (args.length === 0) {
-                notifyHelp(message, prefix);
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Notification Help")
+                    .setColor("#b19cd9")
+                    .setFooter("If you have any other questions please contact Rave#0737");
+                notifyHelp(message, prefix, embed);
+                message.channel.send(embed);
                 return;
             }
             switch (args[0]) {
 
                 //Lists the notification on server
                 case "list":
-
+                    console.log("Crash at noti list");
                     notify.tableExists(guild.id)
                         .then(exists => {
                             if (!exists) {
@@ -77,7 +82,7 @@ module.exports = (bot = Discord.Client) => {
 
                 //Clears notification on server
                 case "clear":
-
+                    console.log("Crash at noti clear");
                     notify.tableExists(guild.id)
                         .then(exists => {
                             if (!exists) {
@@ -105,8 +110,14 @@ module.exports = (bot = Discord.Client) => {
 
                 //Adds per server notification
                 case "add":
+                    console.log("Crash at noti add");
                     if (args.length === 1) {
-                        notifyHelp(message, prefix);
+                        let embed = new Discord.RichEmbed()
+                            .setTitle("Notification Help")
+                            .setColor("#b19cd9")
+                            .setFooter("If you have any other questions please contact Rave#0737");
+                        notifyHelp(message, prefix, embed);
+                        message.channel.send(embed);
                         return;
                     }
                     keyword = args.slice(1).join(" ").toLowerCase();
@@ -139,8 +150,14 @@ module.exports = (bot = Discord.Client) => {
 
                 //Removes per server notification
                 case "remove":
+                    console.log("Crash at noti remove");
                     if (args.length === 1) {
-                        notifyHelp(message, prefix);
+                        let embed = new Discord.RichEmbed()
+                            .setTitle("Notification Help")
+                            .setColor("#b19cd9")
+                            .setFooter("If you have any other questions please contact Rave#0737");
+                        notifyHelp(message, prefix, embed);
+                        message.channel.send(embed);
                         return;
                     }
                     keyword = args.slice(1).join(" ").toLowerCase();
@@ -173,8 +190,14 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "global":
+                    console.log("Crash at noti glo");
                     if (args.length === 1) {
-                        notifyHelp(message, prefix);
+                        let embed = new Discord.RichEmbed()
+                            .setTitle("Notification Help")
+                            .setColor("#b19cd9")
+                            .setFooter("If you have any other questions please contact Rave#0737");
+                        notifyHelp(message, prefix, embed);
+                        message.channel.send(embed);
                         return;
                     }
                     keyword = "";
@@ -182,6 +205,7 @@ module.exports = (bot = Discord.Client) => {
 
                         //Lists all global notificatons 
                         case "list":
+                            console.log("Crash at global list");
                             notify.tableExists()
                                 .then(exists => {
                                     if (!exists) {
@@ -214,6 +238,7 @@ module.exports = (bot = Discord.Client) => {
 
                         //Clears all global notifications
                         case "clear":
+                            console.log("Crash at global clear");
                             notify.tableExists(guild.id)
                                 .then(exists => {
                                     if (!exists) {
@@ -241,8 +266,14 @@ module.exports = (bot = Discord.Client) => {
 
                         //Adds a global notificaton
                         case "add":
+                            console.log("Crash at global add");
                             if (args.length === 2) {
-                                notifyHelp(message, prefix);
+                                let embed = new Discord.RichEmbed()
+                                    .setTitle("Notification Help")
+                                    .setColor("#b19cd9")
+                                    .setFooter("If you have any other questions please contact Rave#0737");
+                                notifyHelp(message, prefix, embed);
+                                message.channel.send(embed);
                                 return;
                             }
                             keyword = args.slice(2).join(" ").toLowerCase();
@@ -274,8 +305,14 @@ module.exports = (bot = Discord.Client) => {
 
                         //Removes global notification
                         case "remove":
+                            console.log("Crash at global remove");
                             if (args.length === 2) {
-                                notifyHelp(message, prefix);
+                                let embed = new Discord.RichEmbed()
+                                    .setTitle("Notification Help")
+                                    .setColor("#b19cd9")
+                                    .setFooter("If you have any other questions please contact Rave#0737");
+                                notifyHelp(message, prefix, embed);
+                                message.channel.send(embed);
                                 return;
                             }
                             keyword = args.slice(2).join(" ").toLowerCase();
@@ -308,18 +345,24 @@ module.exports = (bot = Discord.Client) => {
                             break;
 
                         default:
-                            notifyHelp(message, prefix);
+                            let embed = new Discord.RichEmbed()
+                                .setTitle("Notification Help")
+                                .setColor("#b19cd9")
+                                .setFooter("If you have any other questions please contact Rave#0737");
+                            notifyHelp(message, prefix, embed);
+                            message.channel.send(embed);
                             break;
                     }
                     break;
 
                 //Toggles ignore between channel and server
                 case "ignore":
-
+                    console.log("Crash at noti ignore");
                     switch (args[1]) {
 
                         case "channel":
                         case "chan":
+                            console.log("Crash at ignore chan");
                             if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
                                 channel = message.mentions.channels.first();
                             } else {
@@ -337,7 +380,12 @@ module.exports = (bot = Discord.Client) => {
                                             break;
 
                                         default:
-                                            notifyHelp(message, prefix);
+                                            let embed = new Discord.RichEmbed()
+                                                .setTitle("Notification Help")
+                                                .setColor("#b19cd9")
+                                                .setFooter("If you have any other questions please contact Rave#0737");
+                                            notifyHelp(message, prefix, embed);
+                                            message.channel.send(embed);
                                             break;
                                     }
                                 }).catch((reason) => {
@@ -347,6 +395,7 @@ module.exports = (bot = Discord.Client) => {
 
                         case "guild":
                         case "server":
+                            console.log("Crash at ignore server");
                             ignorenoti.userToggleIgnoreGuild(user.id, guild.id)
                                 .then((result) => {
                                     switch (result) {
@@ -359,7 +408,12 @@ module.exports = (bot = Discord.Client) => {
                                             break;
 
                                         default:
-                                            notifyHelp(message, prefix);
+                                            let embed = new Discord.RichEmbed()
+                                                .setTitle("Notification Help")
+                                                .setColor("#b19cd9")
+                                                .setFooter("If you have any other questions please contact Rave#0737");
+                                            notifyHelp(message, prefix, embed);
+                                            message.channel.send(embed);
                                             break;
                                     }
                                 }).catch((reason) => {
@@ -368,21 +422,27 @@ module.exports = (bot = Discord.Client) => {
                             break;
 
                         default:
-                            notifyHelp(message, prefix);
+                            let embed = new Discord.RichEmbed()
+                                .setTitle("Notification Help")
+                                .setColor("#b19cd9")
+                                .setFooter("If you have any other questions please contact Rave#0737");
+                            notifyHelp(message, prefix, embed);
+                            message.channel.send(embed);
                             break;
 
                     }
                     break;
-                
+
                 //Allows a server to ignore a channel for notifications
                 case "serverignore":
-                let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-                let allowed = false;
-        
-                for (i = 0; i < perms.length; i++) {
-                    if (message.member.hasPermission(perms[i])) allowed = true;
-                }
-                if (!allowed) return;
+                    console.log("Crash at noti serverignore");
+                    let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
+                    let allowed = false;
+
+                    for (i = 0; i < perms.length; i++) {
+                        if (message.member.hasPermission(perms[i])) allowed = true;
+                    }
+                    if (!allowed) return;
                     if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
                         channel = message.mentions.channels.first();
                     } else {
@@ -400,7 +460,12 @@ module.exports = (bot = Discord.Client) => {
                                     break;
 
                                 default:
-                                    notifyHelp(message, prefix);
+                                    let embed = new Discord.RichEmbed()
+                                        .setTitle("Notification Help")
+                                        .setColor("#b19cd9")
+                                        .setFooter("If you have any other questions please contact Rave#0737");
+                                    notifyHelp(message, prefix, embed);
+                                    message.channel.send(embed);
                                     break;
                             }
                         }).catch((reason) => {
@@ -409,7 +474,12 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
-                    notifyHelp(message, prefix);
+                    let embed = new Discord.RichEmbed()
+                        .setTitle("Notification Help")
+                        .setColor("#b19cd9")
+                        .setFooter("If you have any other questions please contact Rave#0737");
+                    notifyHelp(message, prefix, embed);
+                    message.channel.send(embed);
                     break;
             }
 
@@ -512,9 +582,10 @@ module.exports = (bot = Discord.Client) => {
                     console.error;
                 });
             }).catch((reason) => {
-                if(reason !== "Guild Ignored the Channel"){
+                if (reason !== "Guild Ignored the Channel") {
                     console.log(reason);
                 }
             });
     };
+
 };
