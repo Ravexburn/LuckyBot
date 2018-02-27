@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
     require("./../functions/infofunctions.js")(bot);
 
     infoMsg = async function infoMsg(message) {
-        
+
         if (message.system) return;
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
@@ -61,10 +61,22 @@ module.exports = (bot = Discord.Client) => {
 
         if (command === `${prefix}help`) {
             console.log("Crash at help");
-            generalHelp(message, prefix);
-            notifyHelp(message, prefix);
-            commandsHelp(message, prefix);
-            rolesHelp(message, prefix);
+            let embed = new Discord.RichEmbed()
+                .setTitle("List of Commands")
+                .setColor("#17487d")
+                .setFooter("If you have any other questions please contact Rave#0737");
+            generalHelp(message, prefix, embed);
+            notifyHelp(message, prefix, embed);
+            commandsHelp(message, prefix, embed);
+            rolesHelp(message, prefix, embed);
+
+            if (!message.guild.member(bot.user.id).hasPermission("EMBED_LINKS")) {
+                message.author.send(embed);
+                return;
+            } else {
+                message.channel.send(embed);
+                return;
+            }
         }
 
         //Mod help
@@ -109,7 +121,7 @@ module.exports = (bot = Discord.Client) => {
                 //Stuffs
                 return;
             }
-           
+
             let msg = args.join(" ").trim();
             if (msg === "") {
                 message.channel.send(`I've got a suggestion, try adding a suggestion. \`${command} <message>\``);
@@ -139,7 +151,7 @@ module.exports = (bot = Discord.Client) => {
                 //Stuffs
                 return;
             }
-           
+
             let msg = args.join(" ").trim();
             if (msg === "") {
                 message.channel.send(`I've got an issue, try adding an issue. \`${command} <message>\``);

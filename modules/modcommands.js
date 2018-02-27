@@ -254,7 +254,11 @@ module.exports = (bot = Discord.Client) => {
 
         if ((command === `${prefix}server`) || (command === `${prefix}getmeout`)) {
             if (args.length === 0) {
-                ownerServerHelp(message, prefix)
+                let embed = new Discord.RichEmbed()
+                    .setColor("#a893f9")
+                    .setTitle("Server Help");
+                    ownerServerHelp(message, prefix, embed);
+                    message.channel.send(embed);
                 return;
             }
             switch (args[0].toLowerCase()) {
@@ -272,7 +276,11 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 default:
-                    ownerServerHelp(message, prefix);
+                    let embed = new Discord.RichEmbed()
+                    .setColor("#a893f9")
+                    .setTitle("Server Help");
+                    ownerServerHelp(message, prefix, embed);
+                    message.channel.send(embed);
                     break;
             }
             return;
@@ -280,7 +288,11 @@ module.exports = (bot = Discord.Client) => {
 
         if ((command === `${prefix}relay`)) {
             if (args.length === 0) {
-                relayHelp(message, prefix);
+                let embed = new Discord.RichEmbed()
+                    .setColor("#A021ED")
+                    .setTitle("Relay Help");
+                relayHelp(message, prefix, embed);
+                message.channel.send(embed);
                 return;
             }
 
@@ -399,7 +411,11 @@ module.exports = (bot = Discord.Client) => {
 
                 default:
                     //Relay command help
-                    relayHelp(message, prefix);
+                    let embed = new Discord.RichEmbed()
+                    .setColor("#A021ED")
+                    .setTitle("Relay Help");
+                relayHelp(message, prefix, embed);
+                message.channel.send(embed);
                     break;
             }
 
