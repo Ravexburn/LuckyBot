@@ -9,7 +9,7 @@ module.exports = (bot = Discord.Client) => {
         if (message.channel.type === "dm") return;
         const serverSettings = bot.getServerSettings(message.guild.id);
         if (!serverSettings) return;
-
+        //TODO roles on and off
         let prefix = serverSettings.prefix;
         let valid_channel = false;
         let activeChannel;
