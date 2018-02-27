@@ -89,27 +89,6 @@ module.exports = (bot = Discord.Client) => {
                     joinChan(message, serverSettings, command);
                     break;
 
-                //Music to be added at a later date
-
-                /*  case "music":
- 
-                 musicChan(message, serverSettings, command);
-                     break; */
-
-                //Edited messages
-
-                case "edit":
-                    console.log("Crash at edit");
-                    editChan(message, serverSettings, command, args);
-                    break;
-
-                //Deleted messages
-
-                case "delete":
-                    console.log("Crash at delete");
-                    delChan(message, serverSettings, command, args);
-                    break;
-
                 default:
 
                     message.channel.send(`\`\`\`md\nTo use start please use one of the following subcommands: \n${command} <help|messagelogs|logs|roles|music>\`\`\``);
@@ -258,8 +237,8 @@ module.exports = (bot = Discord.Client) => {
                 let embed = new Discord.RichEmbed()
                     .setColor("#a893f9")
                     .setTitle("Server Help");
-                    ownerServerHelp(message, prefix, embed);
-                    message.channel.send(embed);
+                ownerServerHelp(message, prefix, embed);
+                message.channel.send(embed);
                 return;
             }
             switch (args[0].toLowerCase()) {
@@ -273,13 +252,13 @@ module.exports = (bot = Discord.Client) => {
                     break;
 
                 case "settings":
-                    //TODO shows settings per server
+                    serverModSettings(message, args);
                     break;
 
                 default:
                     let embed = new Discord.RichEmbed()
-                    .setColor("#a893f9")
-                    .setTitle("Server Help");
+                        .setColor("#a893f9")
+                        .setTitle("Server Help");
                     ownerServerHelp(message, prefix, embed);
                     message.channel.send(embed);
                     break;
@@ -321,7 +300,7 @@ module.exports = (bot = Discord.Client) => {
                         });
 
                     break;
-                
+
                 case "start":
                     //Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
                     // *relay start <relay> <type> <channel> <channel> [channel...]
@@ -414,10 +393,10 @@ module.exports = (bot = Discord.Client) => {
                 default:
                     //Relay command help
                     let embed = new Discord.RichEmbed()
-                    .setColor("#A021ED")
-                    .setTitle("Relay Help");
-                relayHelp(message, prefix, embed);
-                message.channel.send(embed);
+                        .setColor("#A021ED")
+                        .setTitle("Relay Help");
+                    relayHelp(message, prefix, embed);
+                    message.channel.send(embed);
                     break;
             }
 

@@ -96,13 +96,40 @@ module.exports = (bot = Discord.Client) => {
 
     }
 
-   // serverModSettings = function serverModSettings(message){
+    //Checks what's enabled on a server
+
+    serverModSettings = function serverModSettings(message, args) {
+        if (args.length === 1) {
+            let serverSettings = bot.getServerSettings(message.guild.id);
+            if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
+            let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "roleChannelID"];
+            let embed = new Discord.RichEmbed()
+            .setTitle(`Settings for ${message.guild.name}`)
+            .setColor("#228B22");
+            for (const key of list) {
+                embed.addField(key, serverSettings[key]);
+            }
+            message.channel.send(embed);
+            return;
+        }else if (args.length === 2){
+            let id = args[1];
+            if (!bot.guilds.has(id)) return;
+            let guild = bot.guilds.get(id);
+            let serverSettings = bot.getServerSettings(id);
+            if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
+            let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "roleChannelID"];
+            let embed = new Discord.RichEmbed()
+            .setTitle(`Settings for ${guild.name}`)
+            .setColor("#228B22");
+            for (const key of list) {
+                embed.addField(key, serverSettings[key] + "­");
+            }
+            message.channel.send(embed);
+            return;
+        }
+    }
 
 
-
-
-        
-  //  }
 
 
 }

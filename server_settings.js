@@ -8,7 +8,6 @@ const defaultSettings = {
     channelID: "",
     roleChannelID: "",
     joinChannelID: "",
-    musicChannelID: "",
     editChannelID: "",
     deleteChannelID: "",
     imageChannelID: "",
@@ -17,8 +16,9 @@ const defaultSettings = {
     centEnabled: "",
     //Toggles
     imageEmbed: true,
+    autoRoleOn: false,
     //Welcome message
-    welcomeOn: true,
+    welcomeOn: false,
     welcomeEmbed: true,
     welcomeChannelID: "",
     welcomeTitle: "",

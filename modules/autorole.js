@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
         let serverSettings = bot.getServerSettings(message.guild.id);
-
+    
         let messageArray = message.content.split(" ");
         let command = messageArray[0];
         let args = messageArray.slice(1);
@@ -24,11 +24,19 @@ module.exports = (bot = Discord.Client) => {
 
             if (!(message.guild.member(message.author).hasPermission(perms))) return;
 
-            if (!args.length === 0) {
+            if (args.length === 0) {
                 message.channel.send(`To use auto-role please do ${command} <roleName>`);
                 return;
             }
+            
             db.updateText(`autoRole_${message.guild.id}`, args.join(" ").trim()).then(i => {
+               
+                if (i.text.toLowerCase() === "none"){
+                    serverSettings.autoRoleOn = false;
+                }else{
+                serverSettings.autoRoleOn = true;
+                }
+                bot.setServerSettings(message.guild.id, serverSettings);
                 message.channel.send(`Auto-role set to ${i.text}`);
             })
         }
