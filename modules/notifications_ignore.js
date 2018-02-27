@@ -7,10 +7,8 @@ const Discord = require("discord.js");
 const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
 
-const guildIgnProvider = new EnmapLevel({ name: 'ignored-guild' });
-const guildIgnored = new Enmap({ provider: guildIgnProvider });
-const userIgnProvider = new EnmapLevel({ name: 'ignored-user' });
-const userIgnored = new Enmap({ provider: userIgnProvider });
+const guildIgnored = new Enmap({ provider: new EnmapLevel({ name: 'ignored-guild' }) });
+const userIgnored = new Enmap({ provider: new EnmapLevel({ name: 'ignored-user' }) });
 
 const userDefault = {
     guilds: [],

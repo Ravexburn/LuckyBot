@@ -23,6 +23,8 @@ const SQL_RELAY_FORMAT = "relay_format";
 const DATA_TYPE = "type";
 const DATA_FORMAT = "format";
 
+let db = null;
+
 module.exports = class Relays_Data {
     constructor(sqlFile = SQL_FILE) {
 
@@ -37,8 +39,12 @@ module.exports = class Relays_Data {
                     console.error(error);
                 } else {
                     sql.open(sqlFile, { Promise, cached: true })
-                        .then(() => { return _initDb(); })
-                        .catch((error) => { console.error(error); });
+                        .then((database) => {
+                            db = database;
+                            return _initDb();
+                        }).catch((error) => {
+                            console.error(error);
+                        });
                 }
             });
         }
@@ -222,7 +228,7 @@ function _createChannelsTable() {
         PRIMARY KEY('${SQL_CHANNEL_ID}')
     )`;
 
-    return sql.run(sqlCreateTable);
+    return db.run(sqlCreateTable);
 }
 
 function _createDataTable() {
@@ -234,12 +240,12 @@ function _createDataTable() {
         PRIMARY KEY('${SQL_RELAY_NAME}')
     )`;
 
-    return sql.run(sqlCreateTable);
+    return db.run(sqlCreateTable);
 }
 
 function _hasChannelsTable() {
     let exists = false;
-    return sql.get(`SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?`, [SQL_TABLE_CHANNELS])
+    return db.get(`SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?`, [SQL_TABLE_CHANNELS])
         .then(row => {
             if (row["COUNT(*)"] !== 0) {
                 exists = true;
@@ -252,7 +258,7 @@ function _hasChannelsTable() {
 
 function _hasDataTable() {
     let exists = false;
-    return sql.get(`SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?`, [SQL_TABLE_RELAYS_DATA])
+    return db.get(`SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?`, [SQL_TABLE_RELAYS_DATA])
         .then(row => {
             if (row["COUNT(*)"] !== 0) {
                 exists = true;
@@ -273,7 +279,7 @@ function _cleanRelays() {
  */
 function _getAllRelays() {
     const relays = new Set();
-    return sql.all(`SELECT DISTINCT ${SQL_RELAY_NAME} FROM ${SQL_TABLE_CHANNELS}`)
+    return db.all(`SELECT DISTINCT ${SQL_RELAY_NAME} FROM ${SQL_TABLE_CHANNELS}`)
         .then((rows) => {
             rows.forEach((row) => {
                 relays.add(row[SQL_RELAY_NAME]);
@@ -290,7 +296,7 @@ function _getAllRelays() {
  */
 function _getAllChannels() {
     const channels = new Set();
-    return sql.all(`SELECT ${SQL_CHANNEL_ID} FROM ${SQL_TABLE_CHANNELS}`)
+    return db.all(`SELECT ${SQL_CHANNEL_ID} FROM ${SQL_TABLE_CHANNELS}`)
         .then((rows) => {
             rows.forEach((row) => {
                 channels.add(row[SQL_CHANNEL_ID]);
@@ -307,7 +313,7 @@ function _getAllChannels() {
  */
 function _getRelaysCollection() {
     const collection = new Collection();
-    return sql.all(`SELECT * FROM ${SQL_TABLE_CHANNELS}`)
+    return db.all(`SELECT * FROM ${SQL_TABLE_CHANNELS}`)
         .then((rows) => {
             rows.forEach((row) => {
                 const relay = row[SQL_RELAY_NAME];
@@ -329,7 +335,7 @@ function _getRelaysCollection() {
  * @returns {Promise<boolean>} exists - Whether the relay name exists.
  */
 function _hasRelay(relay) {
-    return sql.get(`SELECT COUNT(*) FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.get(`SELECT COUNT(*) FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(row => {
             const exists = (row["COUNT(*)"] !== 0);
             return Promise.resolve(exists);
@@ -344,7 +350,7 @@ function _hasRelay(relay) {
  * @returns {Promise<boolean>} exists - Whether the channel exists.
  */
 function _hasChannel(channelID) {
-    return sql.get(`SELECT COUNT(*) FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_CHANNEL_ID} = ?`, [channelID])
+    return db.get(`SELECT COUNT(*) FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_CHANNEL_ID} = ?`, [channelID])
         .then(row => {
             const exists = (row["COUNT(*)"] !== 0);
             return Promise.resolve(exists);
@@ -360,7 +366,7 @@ function _hasChannel(channelID) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _addRelayChannel(relay, channelID) {
-    return sql.run(`INSERT INTO ${SQL_TABLE_CHANNELS} (${SQL_CHANNEL_ID}, ${SQL_RELAY_NAME}) VALUES (?, ?)`, [channelID, relay])
+    return db.run(`INSERT INTO ${SQL_TABLE_CHANNELS} (${SQL_CHANNEL_ID}, ${SQL_RELAY_NAME}) VALUES (?, ?)`, [channelID, relay])
         .then(() => {
             return Promise.resolve(true);
         }).catch(reason => {
@@ -419,7 +425,7 @@ function _canAddChannel(channelID) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _removeRelay(relay) {
-    return sql.run(`DELETE FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.run(`DELETE FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(() => {
             return Promise.resolve(true);
         }).catch(reason => {
@@ -433,7 +439,7 @@ function _removeRelay(relay) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _removeChannel(channelID) {
-    return sql.run(`DELETE FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_CHANNEL_ID} = ?`, [channelID])
+    return db.run(`DELETE FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_CHANNEL_ID} = ?`, [channelID])
         .then(() => {
             return Promise.resolve(true);
         }).catch(reason => {
@@ -447,7 +453,7 @@ function _removeChannel(channelID) {
  * @returns {Promise<string>} Promise
  */
 function _getChannelRelay(channelID) {
-    return sql.all(`SELECT ${SQL_RELAY_NAME} FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_CHANNEL_ID} = ?`, [channelID])
+    return db.all(`SELECT ${SQL_RELAY_NAME} FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_CHANNEL_ID} = ?`, [channelID])
         .then((rows) => {
             if ((!rows) || (rows.length === 0)) {
                 return Promise.reject(`Error: No results returned by channel ID: [${channelID}].`);
@@ -470,7 +476,7 @@ function _getRelayChannels(relay) {
         return Promise.reject(`Invalid relay. [${relay}]`);
     }
     const channels = new Set();
-    return sql.all(`SELECT ${SQL_CHANNEL_ID} FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.all(`SELECT ${SQL_CHANNEL_ID} FROM ${SQL_TABLE_CHANNELS} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(rows => {
             if ((!rows) || (rows.length === 0)) {
                 return Promise.reject(`Error: No results returned by relay: ${relay}.`);
@@ -490,7 +496,7 @@ function _getRelayChannels(relay) {
  * @returns {Promise<boolean>} exists - Whether relay data exists.
  */
 function _hasRelayData(relay) {
-    return sql.get(`SELECT * FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.get(`SELECT * FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(row => {
             const exists = (row["COUNT(*)"] !== 0);
             return Promise.resolve(exists);
@@ -507,10 +513,10 @@ function _hasRelayData(relay) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _addRelayData(relay, type, format) {
-    return sql.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ?, ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, format, relay])
+    return db.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ?, ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, format, relay])
         .then((statement) => {
             if (statement.stmt.changes === 0) {
-                return sql.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}, ${SQL_RELAY_FORMAT}) VALUES (?, ?, ?)`, [relay, type, format])
+                return db.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}, ${SQL_RELAY_FORMAT}) VALUES (?, ?, ?)`, [relay, type, format])
             }
         }).then(() => {
             return Promise.resolve(true);
@@ -531,7 +537,7 @@ function _addRelayData(relay, type, format) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _removeRelayData(relay) {
-    return sql.run(`DELETE FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.run(`DELETE FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(() => {
             return Promise.resolve(true);
         }).catch((reason) => {
@@ -547,10 +553,10 @@ function _removeRelayData(relay) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _setRelayData(relay, type, format) {
-    return sql.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ?, ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, format, relay])
+    return db.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ?, ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, format, relay])
         .then((statement) => {
             if (statement.stmt.changes === 0) {
-                return sql.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}, ${SQL_RELAY_FORMAT}) VALUES (?, ?, ?)`, [relay, type, format])
+                return db.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}, ${SQL_RELAY_FORMAT}) VALUES (?, ?, ?)`, [relay, type, format])
             }
         }).then(() => {
             return Promise.resolve(true);
@@ -566,10 +572,10 @@ function _setRelayData(relay, type, format) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _setRelayType(relay, type) {
-    return sql.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, relay])
+    return db.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_TYPE} = ? WHERE ${SQL_RELAY_NAME} = ?`, [type, relay])
         .then((statement) => {
             if (statement.stmt.changes === 0) {
-                return sql.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}) VALUES (?, ?)`, [relay, type])
+                return db.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_TYPE}) VALUES (?, ?)`, [relay, type])
             }
         }).then(() => {
             return Promise.resolve(true);
@@ -585,10 +591,10 @@ function _setRelayType(relay, type) {
  * @returns {Promise<boolean>} success - True, if the sql executed successfully. Rejects promise otherwise.
  */
 function _setRelayFormat(relay, format) {
-    return sql.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [format, relay])
+    return db.run(`UPDATE ${SQL_TABLE_RELAYS_DATA} SET ${SQL_RELAY_FORMAT} = ? WHERE ${SQL_RELAY_NAME} = ?`, [format, relay])
         .then((statement) => {
             if (statement.stmt.changes === 0) {
-                return sql.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_FORMAT}) VALUES (?, ?)`, [relay, format]);
+                return db.run(`INSERT INTO ${SQL_TABLE_RELAYS_DATA} (${SQL_RELAY_NAME}, ${SQL_RELAY_FORMAT}) VALUES (?, ?)`, [relay, format]);
             }
         }).then(() => {
             return Promise.resolve(true);
@@ -603,7 +609,7 @@ function _setRelayFormat(relay, format) {
  * @returns {Promise<Object>} data
  */
 function _getRelayData(relay) {
-    return sql.get(`SELECT * FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.get(`SELECT * FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(row => {
             let data = {};
             data[DATA_TYPE] = "";
@@ -624,7 +630,7 @@ function _getRelayData(relay) {
  * @returns {Promise<string>} type
  */
 function _getRelayType(relay) {
-    return sql.get(`SELECT ${SQL_RELAY_TYPE} FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.get(`SELECT ${SQL_RELAY_TYPE} FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(row => {
             let type = "";
             if (row) {
@@ -642,7 +648,7 @@ function _getRelayType(relay) {
  * @returns {Promise<string>} format
  */
 function _getRelayFormat(relay) {
-    return sql.get(`SELECT ${SQL_RELAY_FORMAT} FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
+    return db.get(`SELECT ${SQL_RELAY_FORMAT} FROM ${SQL_TABLE_RELAYS_DATA} WHERE ${SQL_RELAY_NAME} = ?`, [relay])
         .then(row => {
             let format = "";
             if (row) {
