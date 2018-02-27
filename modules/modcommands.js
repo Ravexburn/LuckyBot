@@ -12,6 +12,7 @@ module.exports = (bot = Discord.Client) => {
     require("./relays.js")(bot);
     require("./whitelist.js")(bot);
 
+
     //Admin and Mod Settings
 
     modCmds = async function modCmds(message) {
@@ -318,8 +319,9 @@ module.exports = (bot = Discord.Client) => {
                         }).catch((reason) => {
                             console.log(reason);
                         });
-                    break;
 
+                    break;
+                
                 case "start":
                     //Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
                     // *relay start <relay> <type> <channel> <channel> [channel...]

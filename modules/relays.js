@@ -8,7 +8,7 @@ const Message = Discord.Message;
 const Channel = Discord.TextChannel;
 
 const Relays_Data = require("./relays_data");
-const relays_data = new Relays_Data("./data/notifications/notifications.sqlite");
+const relays_data = new Relays_Data();
 
 module.exports = (bot = new Discord.Client()) => {
 
@@ -281,6 +281,7 @@ module.exports = (bot = new Discord.Client()) => {
                 }).catch((reason) => {
                     console.log(reason);
                 });
+
         }
     }
 }

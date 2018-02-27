@@ -7,6 +7,8 @@ const Discord = require("discord.js");
 
 const sql = require("sqlite");
 
+const mkdirp = require('mkdirp');
+
 /*
  * Default values
  */
@@ -26,7 +28,24 @@ module.exports = class Notifications {
         if ((!sqlFile) || (sqlFile === "")) {
             sqlFile = SQL_FILE;
         }
-        sql.open(sqlFile);
+        
+        this.db = null;
+        const matches = sqlFile.match(new RegExp(`([./\\w]+)\\/\\w+.sqlite`));
+        if (matches) {
+            const dir = matches[1];
+            mkdirp(dir, (error) => {
+                if (error) {
+                    console.error(error);
+                } else {
+                    sql.open(sqlFile, { Promise, cached: true })
+                        .then((database) => {
+                            this.db = database;
+                        }).catch((error) => {
+                            console.error(error);
+                        });
+                }
+            });
+        }
 
         const sqlTable = sqlTableName;
         const sqlUserID = sqlUserIDColName;
@@ -59,7 +78,7 @@ module.exports = class Notifications {
          */
         this.createTable = function createTable(guildID = null) {
             const sqlTableName = this.tableName(guildID);
-            return sql.run(`CREATE TABLE IF NOT EXISTS ${sqlTableName} 
+            return this.db.run(`CREATE TABLE IF NOT EXISTS ${sqlTableName} 
                 (
                 ${sqlUserID} TEXT NOT NULL, 
                 ${sqlKeyword} TEXT NOT NULL, 
@@ -74,7 +93,7 @@ module.exports = class Notifications {
          */
         this.dropTable = function dropTable(guildID = null) {
             const sqlTableName = this.tableName(guildID);
-            return sql.run(`DROP TABLE ${sqlTableName}`);
+            return this.db.run(`DROP TABLE ${sqlTableName}`);
         }
 
         /**
@@ -94,7 +113,7 @@ module.exports = class Notifications {
         this.tableExists = function tableExists(guildID = null) {
             const sqlTableName = this.tableName(guildID);
             let exists = false;
-            return sql.get(`SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?`, [sqlTableName])
+            return this.db.get(`SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?`, [sqlTableName])
                 .then(row => {
                     if (row["COUNT(*)"] !== 0) {
                         exists = true;
@@ -120,7 +139,7 @@ module.exports = class Notifications {
                         return Promise.reject(`User/Keyword pair exists.`);
                     }
                 }).then(() => {
-                    return sql.run(`INSERT INTO ${sqlTableName} (${sqlUserID}, ${sqlKeyword}) VALUES (?, ?)`, [userID, keyword])
+                    return this.db.run(`INSERT INTO ${sqlTableName} (${sqlUserID}, ${sqlKeyword}) VALUES (?, ?)`, [userID, keyword])
                         .then(() => {
                             return Promise.resolve(true);
                         }).catch(reason => {
@@ -146,7 +165,7 @@ module.exports = class Notifications {
                         return Promise.reject(`User/Keyword pair doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.run(`DELETE FROM ${sqlTableName} WHERE ${sqlUserID} = ? AND ${sqlKeyword} = ?`, [userID, keyword])
+                    return this.db.run(`DELETE FROM ${sqlTableName} WHERE ${sqlUserID} = ? AND ${sqlKeyword} = ?`, [userID, keyword])
                         .then(() => {
                             return Promise.resolve(true);
                         }).catch(reason => {
@@ -172,7 +191,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.get(`SELECT COUNT(*) FROM ${sqlTableName} WHERE ${sqlUserID} = ? AND ${sqlKeyword} = ?`, [userID, keyword])
+                    return this.db.get(`SELECT COUNT(*) FROM ${sqlTableName} WHERE ${sqlUserID} = ? AND ${sqlKeyword} = ?`, [userID, keyword])
                         .then(row => {
                             const exists = (row["COUNT(*)"] !== 0);
                             return Promise.resolve(exists);
@@ -198,7 +217,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.get(`SELECT COUNT(*) FROM ${sqlTableName} WHERE ${sqlUserID} = ?`, [userID])
+                    return this.db.get(`SELECT COUNT(*) FROM ${sqlTableName} WHERE ${sqlUserID} = ?`, [userID])
                         .then(row => {
                             const exists = (row["COUNT(*)"] !== 0);
                             return Promise.resolve(exists);
@@ -224,7 +243,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.get(`SELECT COUNT(*) FROM ${sqlTableName} WHERE ${sqlKeyword} = ?`, [keyword])
+                    return this.db.get(`SELECT COUNT(*) FROM ${sqlTableName} WHERE ${sqlKeyword} = ?`, [keyword])
                         .then(row => {
                             const exists = (row["COUNT(*)"] !== 0);
                             return Promise.resolve(exists);
@@ -251,7 +270,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.all(`SELECT ${sqlKeyword} FROM ${sqlTableName} WHERE ${sqlUserID} = ?`, [userID])
+                    return this.db.all(`SELECT ${sqlKeyword} FROM ${sqlTableName} WHERE ${sqlUserID} = ?`, [userID])
                         .then(rows => {
                             rows.forEach(row => {
                                 keywords.add(row[sqlKeyword]);
@@ -278,7 +297,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.all(`SELECT ${sqlUserID} FROM ${sqlTableName} WHERE ${sqlKeyword} = ?`, [keyword])
+                    return this.db.all(`SELECT ${sqlUserID} FROM ${sqlTableName} WHERE ${sqlKeyword} = ?`, [keyword])
                         .then(rows => {
                             rows.forEach(row => {
                                 users.add(row[sqlUserID]);
@@ -304,7 +323,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.all(`SELECT ${sqlUserID} FROM ${sqlTableName}`)
+                    return this.db.all(`SELECT ${sqlUserID} FROM ${sqlTableName}`)
                         .then(rows => {
                             rows.forEach(row => {
                                 users.add(row[sqlUserID]);
@@ -330,7 +349,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.all(`SELECT ${sqlKeyword} FROM ${sqlTableName}`)
+                    return this.db.all(`SELECT ${sqlKeyword} FROM ${sqlTableName}`)
                         .then(rows => {
                             rows.forEach(row => {
                                 keywords.add(row[sqlKeyword]);
@@ -357,7 +376,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.each(`SELECT * FROM ${sqlTableName}`, function (err, row) {
+                    return this.db.each(`SELECT * FROM ${sqlTableName}`, function (err, row) {
                         if (err) throw err;
                         if (!row) return;
                         const keyword = row[sqlKeyword];
@@ -383,7 +402,7 @@ module.exports = class Notifications {
                         return Promise.reject(`Table doesn't exist.`);
                     }
                 }).then(() => {
-                    return sql.run(`DELETE FROM ${sqlTableName} WHERE ${sqlUserID} = ?`, [userID])
+                    return this.db.run(`DELETE FROM ${sqlTableName} WHERE ${sqlUserID} = ?`, [userID])
                         .then(() => {
                             return Promise.resolve(true);
                         }).catch(reason => {
