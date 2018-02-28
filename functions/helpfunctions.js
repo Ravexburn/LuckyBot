@@ -42,11 +42,10 @@ module.exports = (bot = Discord.Client) => {
 
     //Help command for Lastfm Commands
     lastFMHelp = function lastFMHelp(message, prefix, embed) {
-        embed.addField(":musical_note: Lastfm Commands", `\*\* ${prefix}command\*\* - Shows this list of commands for custom commands.
-\*\* ${prefix}command list\*\* - Direct messages a list of custom commands on the server.
-\*\* ${prefix}command add <name> <command>\*\* - Adds a custom command to the server.
-\*\* ${prefix}command remove <name> <command>\*\* - Removes a custom command on the server.
-\*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.`)
+        embed.addField(":musical_note: Lastfm Commands", `\*\* ${prefix}lastfm help\*\* - Shows this list of commands for lastfm commands.
+\*\* ${prefix}lastfm\*\* - Shows basic account info.
+\*\* ${prefix}lastfm set\*\* - Saves lastfm username.
+\*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.`)
     }
 
     //Help command for Roles
@@ -103,7 +102,6 @@ module.exports = (bot = Discord.Client) => {
     relayHelp = function relayHelp(message, prefix, embed) {
         embed.addField(":arrows_counterclockwise: Relay", `\*\* ${prefix}relay\*\* - Shows this list of commands for relay.
 \*\* ${prefix}relay list\*\* - Shows existing relays.
-\*\* ${prefix}relay toggle <name>\*\* - Toggles embed on the relay.
 \*\* ${prefix}relay start <name> <type> <chanID1> <chanID2>\*\* - Starts a relay of <type> between at least two channels.
 \*\* ${prefix}relay add <name> <chanID>\*\* - Adds a channel to an existing relay.
 \*\* ${prefix}relay remove <name> <chanID>\*\* - Removes a channel from an existing relay.
