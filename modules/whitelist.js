@@ -51,8 +51,8 @@ module.exports = (bot = Discord.Client) => {
     };
 
     function serverLogging() {
-        let serverGuild = "176137665069056000";
-        let serverChan = "411245974854434828";
+        let serverGuild = "418479049724395520";
+        let serverChan = "418549836229378049";
         const guild = bot.guilds.get(serverGuild);
         if (!guild) return null;
         const chan = guild.channels.get(serverChan);
