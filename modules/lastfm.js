@@ -126,11 +126,18 @@ module.exports = (bot = Discord.Client) => {
                                 }
                             })
                            
+                             let album = "";
+                            if (response.data.recenttracks.track[0].album !== "null"){
+                                album =  response.data.recenttracks.track[0].album["#text"];
+                            }else{
+                                album = "N/A";
+                            } 
+
                             let embed2 = new Discord.RichEmbed()
                                 .setTitle(`${username} - Now Playing`)
                                 .setColor("#33cc33")
                                 .setThumbnail(albumcover)
-                                .addField("Album", response.data.recenttracks.track[0].album["#text"])
+                                .addField("Album", album)
                                 .addField("Arist", response.data.recenttracks.track[0].artist["#text"])
                                 .addField("Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url})`)  
                                 .addField("Previous Song", `[${response.data.recenttracks.track[1].name}](${response.data.recenttracks.track[1].url})`)     
