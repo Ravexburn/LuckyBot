@@ -112,7 +112,8 @@ module.exports = (bot = Discord.Client) => {
             if (member.colorRole) { color = member.colorRole.color; }
             embed.setColor(color);
             chan.send(embed);
-
+            message.channel.send(`Suggestion sent!`);
+            return;
         }
 
         //Issues
@@ -142,7 +143,8 @@ module.exports = (bot = Discord.Client) => {
             if (member.colorRole) { color = member.colorRole.color; }
             embed.setColor(color);
             chan.send(embed);
-
+            message.channel.send(`Issue sent!`);
+            return;
         }
 
     };
