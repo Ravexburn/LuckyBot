@@ -127,7 +127,7 @@ module.exports = (bot = Discord.Client) => {
                             })
                            
                              let album = "";
-                            if (response.data.recenttracks.track[0].album !== "null"){
+                            if (response.data.recenttracks.track[0].album["#text"]){
                                 album =  response.data.recenttracks.track[0].album["#text"];
                             }else{
                                 album = "N/A";
