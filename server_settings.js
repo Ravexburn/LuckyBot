@@ -18,7 +18,7 @@ const defaultSettings = {
     imageEmbed: true,
     autoRoleOn: false,
     //Welcome message
-    welcomeOn: false,
+    welcomeOn: true,
     welcomeEmbed: true,
     welcomeChannelID: "",
     welcomeTitle: "",

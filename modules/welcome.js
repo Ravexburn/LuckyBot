@@ -12,8 +12,6 @@ module.exports = (bot = Discord.Client) => {
         if (!serverSettings.welcomeChannelID) return;
         const welcomeChannelID = serverSettings.welcomeChannelID;
 
-        if (serverSettings.welcomeOn === false) return;
-
         if (!guild.channels.has(welcomeChannelID)) {
             return;
         }
