@@ -91,11 +91,10 @@ module.exports = (bot = Discord.Client) => {
             .addField("Text Channels", message.guild.channels.array().filter(channel => channel.type === "text").length, true)
             .addField("Voice Channels", message.guild.channels.array().filter(channel => channel.type === "voice").length, true)
             .setFooter(`Server ID: ${message.guild.id}`);
-
         message.channel.send(embed);
-
         return;
     }
+
     /**
      * Bot Info
      * @param {Message} message 
@@ -124,6 +123,7 @@ module.exports = (bot = Discord.Client) => {
             .addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
             .addField("Bot ID", bot.user.id, true);
         message.channel.send(embed);
+        return;
     }
 
 }
