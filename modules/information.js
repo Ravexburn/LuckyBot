@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const link = "https://trello.com/b/0uytHSPL";
 const link2 = "https://github.com/Ravexburn/LuckyBot";
+const invite = "https://discord.gg/z4thPtW";
 
 module.exports = (bot = Discord.Client) => {
 
@@ -48,6 +49,7 @@ module.exports = (bot = Discord.Client) => {
         if (command === `${prefix}trello`) {
             console.log("Crash at trello");
             message.channel.send(`View upcoming features here: ${link}`);
+            return;
         }
 
         //Github
@@ -55,6 +57,16 @@ module.exports = (bot = Discord.Client) => {
         if ((command === `${prefix}github`) || (command === `${prefix}git`)) {
             console.log("Crash at git");
             message.channel.send(`View upcoming features here: ${link2}`);
+            return;
+        }
+
+        //Invite
+
+        if ((command === `${prefix}invite`) || (command === `${prefix}inv`)) {
+            console.log("Crash at invite");
+            message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`);
+            message.author.send(`Want Lucky Bot for your server? Have any questions on how to use Lucky Bot? Join here ${invite}`);
+            return;
         }
 
         //Command help
@@ -68,7 +80,7 @@ module.exports = (bot = Discord.Client) => {
             generalHelp(message, prefix, embed);
             notifyHelp(message, prefix, embed);
             commandsHelp(message, prefix, embed);
-            rolesHelp(message, prefix, embed);
+            lastFMHelp(message, prefix, embed)
             sendEmbed(message, embed);
         }
 
@@ -136,8 +148,8 @@ module.exports = (bot = Discord.Client) => {
     };
 
     function getSuggestionChannel() {
-        let suggestGuild = "367509256884322305"; //367509256884322305
-        let suggestChan = "367760957646307328"; //367760957646307328
+        let suggestGuild = "418479049724395520";
+        let suggestChan = "418541520304603137";
         const guild = bot.guilds.get(suggestGuild);
         if (!guild) return null;
         const chan = guild.channels.get(suggestChan);
@@ -147,8 +159,8 @@ module.exports = (bot = Discord.Client) => {
     }
 
     function getIssueChannel() {
-        let issueGuild = "367509256884322305"; //367509256884322305
-        let issueChan = "399310698586308619"; //399310698586308619
+        let issueGuild = "418479049724395520";
+        let issueChan = "418541543301971988";
         const guild = bot.guilds.get(issueGuild);
         if (!guild) return null;
         const chan = guild.channels.get(issueChan);
