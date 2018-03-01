@@ -10,6 +10,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}userinfo\*\* - Shows a user's information.
 \*\* ${prefix}serverinfo\*\* - Shows the server's information.
 \*\* ${prefix}botinfo\*\* - Shows Lucky Bot's information.
+\*\* ${prefix}invite\*\* - Info on how to get Lucky Bot for your server.
 \*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
 \*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
 \*\* ${prefix}issue\*\* - Please report any issues you are having with Lucky Bot using this command.
@@ -48,12 +49,12 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.`)
     }
 
-    //Help command for Roles
+    /* //Help command for Roles
     rolesHelp = function rolesHelp(message, prefix, embed) {
         embed.addField(":art: Roles", `\*\*+<role> \*\* - Allows user to add the <role>.
 \*\*-<role> \*\* - Allows user to remove the <role>.
 :warning: When adding and removing roles, names must match role name exactly!`)
-    }
+    } */
 
     //Mod Help Commands
     //Help for General Mod Commands
