@@ -574,7 +574,7 @@ module.exports = (bot = Discord.Client) => {
                                 if (!member) return;
                                 const canRead = message.channel.permissionsFor(member).has("READ_MESSAGES");
                                 if (!canRead) return;
-                                member.send(`:round_pushpin: User **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
+                                member.send(`:round_pushpin: User **${message.author.username}** **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
                             })
                         }
                     })
