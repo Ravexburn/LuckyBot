@@ -139,8 +139,8 @@ module.exports = (bot = Discord.Client) => {
                                 .setThumbnail(albumcover)
                                 .addField("Album", album)
                                 .addField("Arist", response.data.recenttracks.track[0].artist["#text"])
-                                .addField("Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url})`)  
-                                .addField("Previous Song", `[${response.data.recenttracks.track[1].name}](${response.data.recenttracks.track[1].url})`)     
+                                .addField("Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace("(", "%28").replace(")", "%29")})`)  
+                                .addField("Previous Song", `[${response.data.recenttracks.track[1].name}](${response.data.recenttracks.track[1].url.replace("(", "%28").replace(")", "%29")})`)     
                                 .setTimestamp(message.createdAt)
                                 .setFooter("Powered by last.fm");
                             sendEmbed(message, embed2);
