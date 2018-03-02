@@ -53,6 +53,11 @@ module.exports = (bot = Discord.Client) => {
             return;
         }
 
+        if(!message.member.hasPermission("BAN_MEMBERS")){
+            message.channel.send(`You do not have the Kick Member permission.`);
+            return;
+        }
+
         if (member) {
 
             if (member.hasPermission(perms)) {
@@ -112,12 +117,18 @@ module.exports = (bot = Discord.Client) => {
             return;
         }
 
+        if(!message.member.hasPermission("KICK_MEMBERS")){
+            message.channel.send(`You do not have the Kick Member permission.`);
+            return;
+        }
+
         if (member) {
 
             if (member.hasPermission(perms)) {
                 message.channel.send("You can't kick that person");
                 return;
             }
+
         }
 
         let reason = args.slice(1).join(" ");
