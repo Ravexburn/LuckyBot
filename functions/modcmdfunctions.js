@@ -54,7 +54,7 @@ module.exports = (bot = Discord.Client) => {
         }
 
         if(!message.member.hasPermission("BAN_MEMBERS")){
-            message.channel.send(`You do not have the Kick Member permission.`);
+            message.channel.send(`You do not have the Ban Member permission.`);
             return;
         }
 
