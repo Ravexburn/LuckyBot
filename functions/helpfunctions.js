@@ -112,7 +112,9 @@ module.exports = (bot = Discord.Client) => {
     //Sends embed in channel if bot has permission otherwise dms
     sendEmbed = function sendEmbed(message, embed) {
         if (!message.guild.member(bot.user.id).hasPermission("EMBED_LINKS")) {
-            message.author.send(embed);
+            message.author.send(embed).catch((error) => {
+                console.log(error);
+            });
             return;
         } else {
             message.channel.send(embed);
