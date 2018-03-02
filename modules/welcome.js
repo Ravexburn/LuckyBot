@@ -16,7 +16,7 @@ module.exports = (bot = Discord.Client) => {
             return;
         }
         const chan = guild.channels.get(welcomeChannelID);
-
+        if (serverSettings.welcomeOn === false) return;
         if (!serverSettings.welcomeMessage) {
             serverSettings.welcomeMessage = bot.getDefaultSettings().welcomeMessage;
             bot.setServerSettings(guild.id, serverSettings);
