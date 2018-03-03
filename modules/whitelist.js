@@ -67,7 +67,7 @@ module.exports = (bot = Discord.Client) => {
             return;
         }
         let id = args[0];
-        let name = args[1].slice(1).join(" ");
+        let name = args.slice(1).join(" ");
         fs.readFile(path, (err, data) =>{
             if(err){
                 console.log(err);
