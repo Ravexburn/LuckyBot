@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const Message = Discord.Message;
+const discordlink = "https://discord.gg/z4thPtW";
 
 module.exports = (bot = Discord.Client) => {
     /**
@@ -99,7 +100,7 @@ module.exports = (bot = Discord.Client) => {
      * Bot Info
      * @param {Message} message 
      */
-    botInfo = function botInfo(message) {
+    botInfo = function botInfo(message, prefix) {
         let time = bot.uptime;
         time = Math.floor(time / 1000);
         let seconds = time % 60;
@@ -118,10 +119,11 @@ module.exports = (bot = Discord.Client) => {
             .setThumbnail(bot.user.displayAvatarURL)
             .addField("Authors", "Rave#0737 and OrigamiCoder#1375")
             .addField("Uptime", date)
-            .addField("Websites", `[Trello](${trello}) [Github](${git})`, true)
+            .addField("Links", `[Trello](${trello})**-**[Github](${git})**-**[Discord](${discordlink})`, true)
             .addField("Servers", bot.guilds.size, true)
             .addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
-            .addField("Bot ID", bot.user.id, true);
+            .addField("Suggestion", `Have a suggestion? Use ${prefix}suggestion <your suggestion>`)
+            .setFooter(`Bot ID ${bot.user.id}`);
         message.channel.send(embed);
         return;
     }

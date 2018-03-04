@@ -39,9 +39,9 @@ module.exports = (bot = Discord.Client) => {
 
         //Bot Info
 
-        if (command === `${prefix}botinfo`) {
+        if (command === `${prefix}botinfo` || command === `${prefix}about` || command === `${prefix}info`) {
             console.log("Crash at botinfo");
-            botInfo(message);
+            botInfo(message, prefix);
         }
 
         //Trello
