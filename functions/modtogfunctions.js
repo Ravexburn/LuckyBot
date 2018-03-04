@@ -48,6 +48,21 @@ module.exports = (bot = Discord.Client) => {
         message.channel.send(`\*\*Welcome status:\*\* ${emote}`);
     }
 
+     /**
+     * Turns welcome setting on and off
+     * @param {Message} message
+     */
+    rolesTog = function rolesTog(message, serverSettings) {
+        serverSettings.rolesOn = !serverSettings.rolesOn;
+        bot.setServerSettings(message.guild.id, serverSettings);
+        if (serverSettings.rolesOn === true) {
+            emote = ":white_check_mark: **Enabled**";
+        } else {
+            emote = ":x: **Disabled**";
+        }
+        message.channel.send(`\*\*Roles status:\*\* ${emote}`);
+    }
+
 /**
      * Turns mod logs on and off
      * @param {Message} message 

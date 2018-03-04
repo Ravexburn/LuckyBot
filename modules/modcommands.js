@@ -11,7 +11,7 @@ module.exports = (bot = Discord.Client) => {
     require("./../functions/ownercmdfunctions.js")(bot);
     require("./relays.js")(bot);
     require("./whitelist.js")(bot);
-
+    
 
     //Admin and Mod Settings
 
@@ -124,6 +124,12 @@ module.exports = (bot = Discord.Client) => {
                     console.log("Crash at toggle welcome");
                     welTog(message, serverSettings);
                     return;
+
+                //Toggle Roles  
+                case "roles":
+                    console.log("Crash at toggle welcome");
+                    rolesTog(message, serverSettings);
+                    return;  
 
                 default:
                     let embed = new Discord.RichEmbed()
@@ -247,6 +253,11 @@ module.exports = (bot = Discord.Client) => {
                 .then(message => message.delete(10 * 1000));
             message.delete(10 * 1000);
             return;
+        }
+
+        //Test Levels
+        if ((command === `${prefix}testlevel`)){
+            testFunction(message, args);
         }
 
         //Whitelist add

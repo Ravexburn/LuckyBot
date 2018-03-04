@@ -117,7 +117,7 @@ module.exports = (bot = Discord.Client) => {
             let guild = bot.guilds.get(id);
             let serverSettings = bot.getServerSettings(id);
             if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
-            let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "roleChannelID"];
+            let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "rolesOn"];
             let embed = new Discord.RichEmbed()
             .setTitle(`Settings for ${guild.name}`)
             .setColor("#228B22");

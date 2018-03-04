@@ -17,6 +17,7 @@ const defaultSettings = {
     //Toggles
     imageEmbed: true,
     autoRoleOn: false,
+    rolesOn: true,
     //Welcome message
     welcomeOn: true,
     welcomeEmbed: true,

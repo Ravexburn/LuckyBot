@@ -8,6 +8,7 @@ module.exports = (bot = Discord.Client) => {
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
         const serverSettings = bot.getServerSettings(message.guild.id);
+        if (serverSettings.rolesOn === false) return;
         if (!serverSettings) return;
         //TODO roles on and off
         let prefix = serverSettings.prefix;
