@@ -6,7 +6,7 @@ module.exports = (bot = Discord.Client) => {
     //Help command for General Commands
     generalHelp = function generalHelp(message, prefix, embed) {
         embed.addField(":information_source: Information", `\*\* ${prefix}help\*\* - Shows this list of commands.
-\*\* **help\*\* - Will direct message a list of music bot commands.
+\*\* \\*\\*help\*\* - Will direct message a list of music bot commands.
 \*\* ${prefix}mod\*\* - Shows a list of mod commands.
 \*\* ${prefix}userinfo\*\* - Shows a user's information.
 \*\* ${prefix}serverinfo\*\* - Shows the server's information.
