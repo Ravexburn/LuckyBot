@@ -6,6 +6,7 @@ module.exports = (bot = Discord.Client) => {
     //Help command for General Commands
     generalHelp = function generalHelp(message, prefix, embed) {
         embed.addField(":information_source: Information", `\*\* ${prefix}help\*\* - Shows this list of commands.
+\*\* **help\*\* - Will direct message a list of music bot commands.
 \*\* ${prefix}mod\*\* - Shows a list of mod commands.
 \*\* ${prefix}userinfo\*\* - Shows a user's information.
 \*\* ${prefix}serverinfo\*\* - Shows the server's information.
@@ -88,7 +89,8 @@ module.exports = (bot = Discord.Client) => {
         embed.addField(":arrows_counterclockwise: Toggle Commands", `\*\* ${prefix}toggle\*\* - Shows this list of commands for toggles.
 \*\* ${prefix}toggle image\*\* - Changes between embed disabled for images in message logs.
 \*\* ${prefix}toggle logs\*\* - Turns message logs on and off.
-\*\* ${prefix}toggle welcome\*\* - Turns welcome messages on and off.`);
+\*\* ${prefix}toggle welcome\*\* - Turns welcome messages on and off.
+\*\* ${prefix}toggle roles\*\* - Turns roles channel on and off.`);
     }
 
     //Help for Server Commands
