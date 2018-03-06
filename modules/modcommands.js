@@ -228,6 +228,7 @@ module.exports = (bot = Discord.Client) => {
             welcomeHelp(message, prefix, embed);
             startHelp(message, prefix, embed);
             toggleHelp(message, prefix, embed);
+            relayHelp2(message, embed);
             sendEmbed(message, embed);
         }
     };
