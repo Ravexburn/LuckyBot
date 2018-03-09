@@ -47,7 +47,7 @@ bot.on("guildCreate", guild => {
 
 bot.on("guildDelete", guild => {
     bot.log('guildDelete');
-    bot.delServerSettings(guild.id);
+   // bot.delServerSettings(guild.id);
     bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
 });
 
