@@ -22,7 +22,7 @@
         "setprefix",
         "start",
         "toggle",
-        "welcome",
+        "greeter",
         "relay",
         "ban",
         "kick",

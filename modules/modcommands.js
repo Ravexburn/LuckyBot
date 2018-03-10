@@ -120,15 +120,15 @@ module.exports = (bot = Discord.Client) => {
 					logsTog(message, serverSettings);
 					return;
 
-				//Toggle Welcome     
-				case "welcome":
-					console.log("Crash at toggle welcome");
+				//Toggle Greeter     
+				case "greeter":
+					console.log("Crash at toggle greeter");
 					welTog(message, serverSettings);
 					return;
 
 				//Toggle Roles  
 				case "roles":
-					console.log("Crash at toggle welcome");
+					console.log("Crash at toggle roles");
 					rolesTog(message, serverSettings);
 					return;
 
@@ -143,17 +143,14 @@ module.exports = (bot = Discord.Client) => {
 			}
 		}
 
-		//Welcome setup
-		//*welcome <help|channel|message>
-		//*welcome channel in #channel
-		//*welcome channel #channel
-
-		if ((command === `${prefix}welcome`)) {
-			console.log("Crash at welcome");
+		//Greeter setup
+	
+		if ((command === `${prefix}greeter`)) {
+			console.log("Crash at greeter");
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed()
 					.setColor("#ff8533")
-					.setTitle("Welcome Help")
+					.setTitle("Greeter Help")
 					.setFooter("If you have any other questions please contact Rave#0737");
 				welcomeHelp(message, prefix, embed);
 				sendEmbed(message, embed);
@@ -162,26 +159,26 @@ module.exports = (bot = Discord.Client) => {
 			switch (args[0].toLowerCase()) {
 
 				case "help":
-					console.log("Crash at welcome help");
+					console.log("Crash at greeter help");
 					message.channel.send("<:monkaS:372547459840475146> h-help");
 					break;
 
 				case "chan":
 				case "channel":
-					console.log("Crash at welcome chan");
+					console.log("Crash at greeter chan");
 					welChan(message, serverSettings, command);
 					break;
 
 				case "msg":
 				case "message":
-					console.log("Crash at welcome chan");
+					console.log("Crash at greeter chan");
 					welMsg(message, command, args, serverSettings);
 					break;
 
 				default:
 					let embed = new Discord.RichEmbed()
 						.setColor("#ff8533")
-						.setTitle("Welcome Help")
+						.setTitle("Greeter Help")
 						.setFooter("If you have any other questions please contact Rave#0737");
 					welcomeHelp(message, prefix, embed);
 					sendEmbed(message, embed);
