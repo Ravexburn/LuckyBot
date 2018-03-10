@@ -10,6 +10,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}mod\*\* - Shows a list of mod commands.
 \*\* ${prefix}userinfo\*\* - Shows a user's information.
 \*\* ${prefix}serverinfo\*\* - Shows the server's information.
+\*\* ${prefix}profile\*\* - Shows the profile for the user.
 \*\* ${prefix}botinfo\*\* - Shows Lucky Bot's information.
 \*\* ${prefix}invite\*\* - Info on how to get Lucky Bot for your server.
 \*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
@@ -111,14 +112,14 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}relay delete <name>\*\* - Deletes an existing relay.`)
 	}
 
-	relayHelp2 = function relayHelp2(message, embed){
+	relayHelp2 = function relayHelp2(message, embed) {
 		embed.addField(":arrows_counterclockwise: Relay", `Relays connect a two way chat system between two channels on a server or between servers. Please contact Rave#0737 or OrigamiCoder#1375 to have one set up.`)
 	}
 
 	//Sends embed in channel if bot has permission otherwise dms
 	sendEmbed = function sendEmbed(message, embed) {
 		let permsOvr = message.channel.permissionsFor(bot.user);
-		if(!permsOvr) {
+		if (!permsOvr) {
 			console.log(`No perms returned`);
 			return;
 		}
