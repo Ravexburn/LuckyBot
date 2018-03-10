@@ -48,7 +48,7 @@ module.exports = (bot = Discord.Client) => {
 
 					command = arg.charAt(0);
 					arg = arg.slice(1);
-					break;
+					
 
 				default:
 					if (rolename !== "") {
