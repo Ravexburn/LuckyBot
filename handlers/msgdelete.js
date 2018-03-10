@@ -2,15 +2,15 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
-    //Requires
+	//Requires
 
-    require("./../modules/messagelogs.js")(bot);
+	require("./../modules/messagelogs.js")(bot);
 
-    delHandler = async function delHandler(message) {
+	delHandler = async function delHandler(message) {
 
-        //Functions
+		//Functions
 
-        delLog(message);
+		delLog(message);
 
-    };
-}
+	};
+};

@@ -1,8 +1,6 @@
 const Discord = require("discord.js");
-const Message = Discord.Message;
 
 module.exports = (bot = Discord.Client) => {
-
 	/**
      * Message logs channel and options
      * @param {Message} message 
@@ -30,7 +28,7 @@ module.exports = (bot = Discord.Client) => {
 
 5. All features.
 
-After you have made your decision react with the :floppy_disk: to save.`)
+After you have made your decision react with the :floppy_disk: to save.`);
 
 		message.channel.send(embed)
 			.then(async function (message) {
@@ -50,7 +48,7 @@ After you have made your decision react with the :floppy_disk: to save.`)
 							editLog: false,
 							deleteLog: false,
 							imageLog: false,
-						}
+						};
 						reactions.forEach(r => {
 							if (!r.me) return;
 
@@ -222,11 +220,8 @@ After you have made your decision react with the :floppy_disk: to save.`)
 			message.channel.send("Now doing roles in: " + chan);
 			serverSettings.roleChannelID = chan.id;
 			bot.setServerSettings(message.guild.id, serverSettings);
-
 		} else {
-
 			message.channel.send(`Please mention a channel ${command} <roles> <#channelname>`);
-
 		}
 	};
 
@@ -240,11 +235,8 @@ After you have made your decision react with the :floppy_disk: to save.`)
 			message.channel.send("Now logging joins and leaves in: " + chan);
 			serverSettings.joinChannelID = chan.id;
 			bot.setServerSettings(message.guild.id, serverSettings);
-
 		} else {
-
 			message.channel.send(`Please mention a channel ${command} <join> <#channelname>`);
-
 		}
 	};
 
@@ -258,11 +250,8 @@ After you have made your decision react with the :floppy_disk: to save.`)
 			message.channel.send("Now accepting music commands in: " + chan);
 			serverSettings.musicChannelID = chan.id;
 			bot.setServerSettings(message.guild.id, serverSettings);
-
 		} else {
-
 			message.channel.send(`Please mention a channel ${command} <music> <#channelname>`);
-
 		}
 	};
 
@@ -276,11 +265,8 @@ After you have made your decision react with the :floppy_disk: to save.`)
 			message.channel.send("Now logging edits in: " + chan);
 			serverSettings.editChannelID = chan.id;
 			bot.setServerSettings(message.guild.id, serverSettings);
-
 		} else {
-
 			message.channel.send(`Please mention a channel ${command} ${args[0]} <#channelname>`);
-
 		}
 	};
 
@@ -294,11 +280,8 @@ After you have made your decision react with the :floppy_disk: to save.`)
 			message.channel.send("Now logging deletes in: " + chan);
 			serverSettings.deleteChannelID = chan.id;
 			bot.setServerSettings(message.guild.id, serverSettings);
-
 		} else {
-
 			message.channel.send(`Please mention a channel ${command} ${args[0]} <#channelname>`);
-
 		}
 	};
 
@@ -312,10 +295,8 @@ After you have made your decision react with the :floppy_disk: to save.`)
 			message.channel.send("Greeter channel set to: " + chan);
 			serverSettings.welcomeChannelID = chan.id;
 			bot.setServerSettings(message.guild.id, serverSettings);
-
 		} else {
 			message.channel.send(`Please mention a channel ${command} <channel> <#channelname>`);
-
 		}
 	};
 };

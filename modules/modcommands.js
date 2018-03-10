@@ -1,6 +1,4 @@
 const Discord = require("discord.js");
-const invite = "";
-const Message = Discord.Message;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -105,7 +103,8 @@ module.exports = (bot = Discord.Client) => {
 				sendEmbed(message, embed);
 				return;
 			}
-			let emote = "";
+
+			let embed;
 			switch (args[0].toLowerCase()) {
 
 				//Toggle Image Embed
@@ -133,7 +132,7 @@ module.exports = (bot = Discord.Client) => {
 					return;
 
 				default:
-					let embed = new Discord.RichEmbed()
+					embed = new Discord.RichEmbed()
 						.setColor("#3498db")
 						.setTitle("Toggle Help")
 						.setFooter("If you have any other questions please contact Rave#0737");
@@ -144,7 +143,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		//Greeter setup
-	
+
 		if ((command === `${prefix}greeter`)) {
 			console.log("Crash at greeter");
 			if (args.length === 0) {
@@ -156,6 +155,8 @@ module.exports = (bot = Discord.Client) => {
 				sendEmbed(message, embed);
 				return;
 			}
+
+			let embed;
 			switch (args[0].toLowerCase()) {
 
 				case "help":
@@ -176,7 +177,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					let embed = new Discord.RichEmbed()
+					embed = new Discord.RichEmbed()
 						.setColor("#ff8533")
 						.setTitle("Greeter Help")
 						.setFooter("If you have any other questions please contact Rave#0737");
@@ -274,6 +275,8 @@ module.exports = (bot = Discord.Client) => {
 				sendEmbed(message, embed);
 				return;
 			}
+
+			let embed;
 			switch (args[0].toLowerCase()) {
 
 				case "list":
@@ -289,7 +292,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					let embed = new Discord.RichEmbed()
+					embed = new Discord.RichEmbed()
 						.setColor("#a893f9")
 						.setTitle("Server Help");
 					ownerServerHelp(message, prefix, embed);
@@ -313,11 +316,13 @@ module.exports = (bot = Discord.Client) => {
 			let channels = [];
 			let type = "";
 			let format = "";
+			let embed;
+			let msg = "";
+			let channel = args[2];
 			switch (args[0].toLowerCase()) {
 				//TODO add functions with help commands for relay in mod commands
 				case "list":
 					//Lists the existing relays. Shows relay type and name of servers and name of channels(?)
-					let msg = "";
 					relays.getRelaysCollection()
 						.then((collection) => {
 							for (let relay of collection) {
@@ -345,7 +350,7 @@ module.exports = (bot = Discord.Client) => {
 					type = args[2].toLowerCase();
 					channels = args.slice(3);
 					relays.addRelay(relay, channels, type)
-						.then(message.channel.send(`Relay created with name: \`${relay}\` and type: \`${type}\``))
+						.then(message.channel.send(`Relay created with name: \`${relay}\` with the type: \`${type}\``))
 						.catch((reason) => { console.log(reason); });
 					break;
 
@@ -359,6 +364,7 @@ module.exports = (bot = Discord.Client) => {
 					relay = args[1].toLowerCase();
 					channels = args.slice(2);
 					relays.addChannel(relay, channels)
+						.then(message.channel.send(`Channel added to: \`${relay}\`. Added channel(s): \`${channels}\``))
 						.catch((reason) => { console.log(reason); });
 					break;
 
@@ -370,8 +376,8 @@ module.exports = (bot = Discord.Client) => {
 						return;
 					}
 					relay = args[1].toLowerCase();
-					let channel = args[2];
 					relays.removeChannel(channel)
+						.then(message.channel.send(`Channel removed from: \`${relay}\`. Removed channel(s): \`${channels}\``))
 						.catch((reason) => { console.log(reason); });
 					break;
 
@@ -384,6 +390,7 @@ module.exports = (bot = Discord.Client) => {
 					}
 					relay = args[1].toLowerCase();
 					relays.removeRelay(relay)
+						.then(message.channel.send(`Deleted: \`${relay}\`.`))
 						.catch((reason) => { console.log(reason); });
 					break;
 
@@ -425,15 +432,13 @@ module.exports = (bot = Discord.Client) => {
 
 				default:
 					//Relay command help
-					let embed = new Discord.RichEmbed()
+					embed = new Discord.RichEmbed()
 						.setColor("#A021ED")
 						.setTitle("Relay Help");
 					relayHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
 			}
-
 		}
 	};
-
-}
+};

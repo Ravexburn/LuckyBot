@@ -1,6 +1,5 @@
 {
     "commands": [
-       
         "autorole",
         "command",
         "userinfo",
@@ -30,7 +29,12 @@
         "intset",
         "server",
         "getmeout",
-        "notify"
+		"notify",
+		"profile",
+		"invite",
+		"info",
+		"about",
+		"rep"
     ]
 
 }

@@ -2,15 +2,15 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
-    //Requires
+	//Requires
 
-    require("./../modules/whitelist.js")(bot);
+	require("./../modules/whitelist.js")(bot);
 
-    guildCreateHandler = function guildCreateHandler(guild) {
+	guildCreateHandler = function guildCreateHandler(guild) {
 
-        //Functions
+		//Functions
 
-        whitelist(guild);
-        
-    };    
-}
+		whitelist(guild);
+
+	};
+};

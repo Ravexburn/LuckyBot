@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const Message = Discord.Message;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -16,7 +15,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
 \*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
 \*\* ${prefix}issue\*\* - Please report any issues you are having with Lucky Bot using this command.
-\*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`)
+\*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`);
 	};
 
 	//Help command for Notifications
@@ -31,7 +30,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}notify global add <keyword>\*\* - Adds a <keyword> to notify you about on all servers.
 \*\* ${prefix}notify global remove <keyword>\*\* - Removes a <keyword> you were notified about on all servers.
 \*\* ${prefix}notify ignore <channel> <#channel>\*\* - Ignores all keyword triggers in <#channel>.
-\*\* ${prefix}notify ignore server\*\* - Ignores all keyword triggers in the server.`)
+\*\* ${prefix}notify ignore server\*\* - Ignores all keyword triggers in the server.`);
 	};
 
 	//Help command for Custom Commands
@@ -40,7 +39,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}command list\*\* - Direct messages a list of custom commands on the server.
 \*\* ${prefix}command add <name> <command>\*\* - Adds a custom command to the server.
 \*\* ${prefix}command remove <name> <command>\*\* - Removes a custom command on the server.
-\*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.`)
+\*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.`);
 	};
 
 	//Help command for Lastfm Commands
@@ -48,7 +47,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(":musical_note: Lastfm Commands", `\*\* ${prefix}lastfm help\*\* - Shows this list of commands for lastfm commands.
 \*\* ${prefix}lastfm\*\* - Shows basic account info.
 \*\* ${prefix}lastfm set\*\* - Saves lastfm username.
-\*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.`)
+\*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.`);
 	};
 
 	/* //Help command for Roles
@@ -65,7 +64,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}setprefix\*\* - Changes the prefix for Lucky Bot.
 \*\* ${prefix}autorole\*\* - Sets a role to be added to a user when they join the server.
 \*\* ${prefix}ban <user> [days] [reason]\*\* - Bans a <user> and removes the messages from [days] for [reason]. Days default is 0.     
-\*\* ${prefix}kick <user> [reason]\*\* - Kicks a <user> for [reason]`)
+\*\* ${prefix}kick <user> [reason]\*\* - Kicks a <user> for [reason]`);
 	};
 
 	//Help for Greeter Commands
@@ -73,7 +72,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(":wave: Greeter Commands", `\*\* ${prefix}greeter\*\* - Shows this list of commands for greeter.
 \*\* ${prefix}greeter help\*\* - Shows a detailed list of commands for greeter.
 \*\* ${prefix}greeter channel <channel name>\*\* - Sets the channel the bot should greeter new members in.
-\*\* ${prefix}greeter message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`)
+\*\* ${prefix}greeter message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`);
 	};
 
 	//Help for Start Commands
@@ -82,7 +81,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}start help\*\* - Shows a detailed list of commands for start.
 \*\* ${prefix}start roles <channel name>\*\* - Sets the channel for the role system.
 \*\* ${prefix}start logs <channel name>\*\* - Sets the channel for message logs.  
-\*\* ${prefix}start join <channel name>\*\* - Sets the channel for users joining and leaving. (Message cannot be changed on this)`)
+\*\* ${prefix}start join <channel name>\*\* - Sets the channel for users joining and leaving. (Message cannot be changed on this)`);
 	};
 
 	//Help for Toggle Commands
@@ -99,7 +98,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(":speech_left: Sever Commands", `\*\* ${prefix}server\*\* - Shows this list of commands for server.
 \*\* ${prefix}server list\*\* - Shows the servers Lucky Bot is in.
 \*\* ${prefix}server leave\*\* - Allows Lucky Bot to leave a server it is in.
-\*\* ${prefix}server settings <serverid>\*\* - Shows enabled settings on <server>. Defaults to current server if no id is provided.`)
+\*\* ${prefix}server settings <serverid>\*\* - Shows enabled settings on <server>. Defaults to current server if no id is provided.`);
 	};
 
 	//Help for Relay Commands
@@ -109,11 +108,11 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}relay start <name> <type> <chanID1> <chanID2>\*\* - Starts a relay of <type> between at least two channels.
 \*\* ${prefix}relay add <name> <chanID>\*\* - Adds a channel to an existing relay.
 \*\* ${prefix}relay remove <name> <chanID>\*\* - Removes a channel from an existing relay.
-\*\* ${prefix}relay delete <name>\*\* - Deletes an existing relay.`)
+\*\* ${prefix}relay delete <name>\*\* - Deletes an existing relay.`);
 	};
 
 	relayHelp2 = function relayHelp2(message, embed) {
-		embed.addField(":arrows_counterclockwise: Relay", `Relays connect a two way chat system between two channels on a server or between servers. Please contact Rave#0737 or OrigamiCoder#1375 to have one set up.`)
+		embed.addField(":arrows_counterclockwise: Relay", `Relays connect a two way chat system between two channels on a server or between two servers. Please contact Rave#0737 or OrigamiCoder#1375 to have one set up.`);
 	};
 
 	//Sends embed in channel if bot has permission otherwise dms

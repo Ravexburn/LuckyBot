@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const sql = require("sqlite");
 const mkdirp = require("mkdirp");
 
@@ -80,10 +79,10 @@ module.exports = class Profiles {
 		this.setProfileData = function setProfileData(userID, level, exp, rep, background, bio, title, month, day, age) {
 			return _dbExist()
 				.then((db) => {
-					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ?, ${SQL_REP} =?, ${SQL_BACKGROUND} =?, ${SQL_BIO} =?, ${SQL_TITLE} =?, ${SQL_BIRTHDAY_MONTH} =?, ${SQL_BIRTHDAY_DAY} =?, ${SQL_AGE} =? WHERE ${SQL_USER_ID} =?`, [level, exp, rep, background, bio, title, month, day, age, userID])
+					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ?, ${SQL_REP} =?, ${SQL_BACKGROUND} =?, ${SQL_BIO} =?, ${SQL_TITLE} =?, ${SQL_BIRTHDAY_MONTH} =?, ${SQL_BIRTHDAY_DAY} =?, ${SQL_AGE} =? WHERE ${SQL_USER_ID} =?`, [level, exp, rep, background, bio, title, month, day, age, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP}, ${SQL_REP}, ${SQL_BACKGROUND}, ${SQL_BIO}, ${SQL_TITLE}, ${SQL_BIRTHDAY_MONTH}, ${SQL_BIRTHDAY_DAY}, ${SQL_AGE}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [userID, level, exp, rep, background, bio, title, month, day, age])
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP}, ${SQL_REP}, ${SQL_BACKGROUND}, ${SQL_BIO}, ${SQL_TITLE}, ${SQL_BIRTHDAY_MONTH}, ${SQL_BIRTHDAY_DAY}, ${SQL_AGE}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [userID, level, exp, rep, background, bio, title, month, day, age]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);
@@ -95,10 +94,10 @@ module.exports = class Profiles {
 		this.setLvlXp = function setLvlXp(userID, level, exp) {
 			return _dbExist()
 				.then((db) => {
-					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ? WHERE ${SQL_USER_ID} =?`, [level, exp, userID])
+					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ? WHERE ${SQL_USER_ID} =?`, [level, exp, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP}) VALUES (?, ?, ?)`, [userID, level, exp])
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP}) VALUES (?, ?, ?)`, [userID, level, exp]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);
@@ -110,10 +109,10 @@ module.exports = class Profiles {
 		this.setRep = function setRep(userID, rep) {
 			return _dbExist()
 				.then((db) => {
-					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_REP} =? WHERE ${SQL_USER_ID} =?`, [rep, userID])
+					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_REP} =? WHERE ${SQL_USER_ID} =?`, [rep, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_REP} VALUES (?, ?)`, [userID, rep])
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_REP} VALUES (?, ?)`, [userID, rep]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);
@@ -150,10 +149,10 @@ module.exports = class Profiles {
 		this.setLvlXpLocal = function setLvlXpLocal(userID, guildID, level, exp) {
 			return _dbExist()
 				.then((db) => {
-					return db.run(`UPDATE ${SQL_TABLE_LOCAL} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ? WHERE ${SQL_USER_ID} =? AND ${SQL_GUILD} = ?`, [level, exp, userID, guildID])
+					return db.run(`UPDATE ${SQL_TABLE_LOCAL} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ? WHERE ${SQL_USER_ID} =? AND ${SQL_GUILD} = ?`, [level, exp, userID, guildID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_LOCAL} (${SQL_USER_ID}, ${SQL_GUILD}, ${SQL_LEVEL}, ${SQL_EXP}) VALUES (?, ?, ?, ?)`, [userID, guildID, level, exp])
+						return db.run(`INSERT INTO ${SQL_TABLE_LOCAL} (${SQL_USER_ID}, ${SQL_GUILD}, ${SQL_LEVEL}, ${SQL_EXP}) VALUES (?, ?, ?, ?)`, [userID, guildID, level, exp]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);

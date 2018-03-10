@@ -2,15 +2,15 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
-    //Requires
+	//Requires
 
-    require("./../modules/messagelogs.js")(bot);
+	require("./../modules/messagelogs.js")(bot);
 
-    msgUpdateHandler = async function msgUpdateHandler(oldMessage, message) {
+	msgUpdateHandler = async function msgUpdateHandler(oldMessage, message) {
 
-        //Functions
+		//Functions
 
-        editLogs(oldMessage, message);
+		editLogs(oldMessage, message);
 
-    };
-}
+	};
+};

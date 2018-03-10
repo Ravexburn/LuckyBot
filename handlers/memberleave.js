@@ -1,14 +1,14 @@
 module.exports = (bot = Discord.Client) => {
 
-    //Requires
+	//Requires
 
-    require("./../modules/messagelogs.js")(bot);
+	require("./../modules/messagelogs.js")(bot);
 
-    leaveHandler = async function leaveHandler(member) {
+	leaveHandler = async function leaveHandler(member) {
 
-        //Functions
+		//Functions
 
-        leaveMsg(member);
+		leaveMsg(member);
 
-    };
-}
+	};
+};

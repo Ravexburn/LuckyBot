@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const Message = Discord.Message;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -15,7 +14,7 @@ module.exports = (bot = Discord.Client) => {
 		} else {
 			emote = ":x: **Disabled**";
 		}
-		message.channel.send(`\*\*Embed images status:\*\* ${emote}`);
+		message.channel.send(`**Embed images status:** ${emote}`);
 	};
 
 	/**
@@ -30,7 +29,7 @@ module.exports = (bot = Discord.Client) => {
 		} else {
 			emote = ":x: **Disabled**";
 		}
-		message.channel.send(`\*\*Logs status:\*\* ${emote}`);
+		message.channel.send(`**Logs status:** ${emote}`);
 	};
 
 	/**
@@ -45,7 +44,7 @@ module.exports = (bot = Discord.Client) => {
 		} else {
 			emote = ":x: **Disabled**";
 		}
-		message.channel.send(`\*\*Greeter status:\*\* ${emote}`);
+		message.channel.send(`**Greeter status:** ${emote}`);
 	};
 
 	/**
@@ -60,7 +59,7 @@ module.exports = (bot = Discord.Client) => {
 		} else {
 			emote = ":x: **Disabled**";
 		}
-		message.channel.send(`\*\*Roles status:\*\* ${emote}`);
+		message.channel.send(`**Roles status:** ${emote}`);
 	};
 
 	/**
@@ -75,9 +74,7 @@ module.exports = (bot = Discord.Client) => {
 		} else {
 			emote = ":x: **Disabled**";
 		}
-		message.channel.send(`\*\*Mod Log status:\*\* ${emote}`);
+		message.channel.send(`**Mod Log status:** ${emote}`);
 	};
-
-
 
 };

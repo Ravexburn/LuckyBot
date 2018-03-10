@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const Message = Discord.Message;
 
 module.exports = (bot = Discord.Client) => {
 
