@@ -86,7 +86,6 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 	};
-
 };
 
 function addRole(member, rolename, message) {
