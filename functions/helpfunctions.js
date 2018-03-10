@@ -17,7 +17,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
 \*\* ${prefix}issue\*\* - Please report any issues you are having with Lucky Bot using this command.
 \*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`)
-	}
+	};
 
 	//Help command for Notifications
 	notifyHelp = function notifyHelp(message, prefix, embed) {
@@ -32,7 +32,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}notify global remove <keyword>\*\* - Removes a <keyword> you were notified about on all servers.
 \*\* ${prefix}notify ignore <channel> <#channel>\*\* - Ignores all keyword triggers in <#channel>.
 \*\* ${prefix}notify ignore server\*\* - Ignores all keyword triggers in the server.`)
-	}
+	};
 
 	//Help command for Custom Commands
 	commandsHelp = function commandsHelp(message, prefix, embed) {
@@ -41,7 +41,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}command add <name> <command>\*\* - Adds a custom command to the server.
 \*\* ${prefix}command remove <name> <command>\*\* - Removes a custom command on the server.
 \*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.`)
-	}
+	};
 
 	//Help command for Lastfm Commands
 	lastFMHelp = function lastFMHelp(message, prefix, embed) {
@@ -49,7 +49,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}lastfm\*\* - Shows basic account info.
 \*\* ${prefix}lastfm set\*\* - Saves lastfm username.
 \*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.`)
-	}
+	};
 
 	/* //Help command for Roles
     rolesHelp = function rolesHelp(message, prefix, embed) {
@@ -66,15 +66,15 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}autorole\*\* - Sets a role to be added to a user when they join the server.
 \*\* ${prefix}ban <user> [days] [reason]\*\* - Bans a <user> and removes the messages from [days] for [reason]. Days default is 0.     
 \*\* ${prefix}kick <user> [reason]\*\* - Kicks a <user> for [reason]`)
-	}
+	};
 
-	//Help for Welcome Commands
+	//Help for Greeter Commands
 	welcomeHelp = function welcomeHelp(message, prefix, embed) {
-		embed.addField("<a:hyperdab:415998364245557259> Welcome Commands", `\*\* ${prefix}welcome\*\* - Shows this list of commands for welcome.
-\*\* ${prefix}welcome help\*\* - Shows a detailed list of commands for welcome.
-\*\* ${prefix}welcome channel <channel name>\*\* - Sets the channel the bot should welcome new members in.
-\*\* ${prefix}welcome message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`)
-	}
+		embed.addField(":wave: Greeter Commands", `\*\* ${prefix}greeter\*\* - Shows this list of commands for greeter.
+\*\* ${prefix}greeter help\*\* - Shows a detailed list of commands for greeter.
+\*\* ${prefix}greeter channel <channel name>\*\* - Sets the channel the bot should greeter new members in.
+\*\* ${prefix}greeter message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`)
+	};
 
 	//Help for Start Commands
 	startHelp = function startHelp(message, prefix, embed) {
@@ -83,16 +83,16 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}start roles <channel name>\*\* - Sets the channel for the role system.
 \*\* ${prefix}start logs <channel name>\*\* - Sets the channel for message logs.  
 \*\* ${prefix}start join <channel name>\*\* - Sets the channel for users joining and leaving. (Message cannot be changed on this)`)
-	}
+	};
 
 	//Help for Toggle Commands
 	toggleHelp = function toggleHelp(message, prefix, embed) {
 		embed.addField(":arrows_counterclockwise: Toggle Commands", `\*\* ${prefix}toggle\*\* - Shows this list of commands for toggles.
 \*\* ${prefix}toggle image\*\* - Changes between embed disabled for images in message logs.
 \*\* ${prefix}toggle logs\*\* - Turns message logs on and off.
-\*\* ${prefix}toggle welcome\*\* - Turns welcome messages on and off.
+\*\* ${prefix}toggle greeter\*\* - Turns welcome messages on and off.
 \*\* ${prefix}toggle roles\*\* - Turns roles channel on and off.`);
-	}
+	};
 
 	//Help for Server Commands
 	ownerServerHelp = function ownerServerHelp(message, prefix, embed) {
@@ -100,7 +100,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}server list\*\* - Shows the servers Lucky Bot is in.
 \*\* ${prefix}server leave\*\* - Allows Lucky Bot to leave a server it is in.
 \*\* ${prefix}server settings <serverid>\*\* - Shows enabled settings on <server>. Defaults to current server if no id is provided.`)
-	}
+	};
 
 	//Help for Relay Commands
 	relayHelp = function relayHelp(message, prefix, embed) {
@@ -110,11 +110,11 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}relay add <name> <chanID>\*\* - Adds a channel to an existing relay.
 \*\* ${prefix}relay remove <name> <chanID>\*\* - Removes a channel from an existing relay.
 \*\* ${prefix}relay delete <name>\*\* - Deletes an existing relay.`)
-	}
+	};
 
 	relayHelp2 = function relayHelp2(message, embed) {
 		embed.addField(":arrows_counterclockwise: Relay", `Relays connect a two way chat system between two channels on a server or between servers. Please contact Rave#0737 or OrigamiCoder#1375 to have one set up.`)
-	}
+	};
 
 	//Sends embed in channel if bot has permission otherwise dms
 	sendEmbed = function sendEmbed(message, embed) {
@@ -132,6 +132,6 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send(embed);
 			return;
 		}
-	}
+	};
 
-}
+};
