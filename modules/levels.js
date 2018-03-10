@@ -48,7 +48,7 @@ module.exports = (bot = Discord.Client) => {
 					let nextExp = nextLevelGlobal(level);
 					if (xp >= nextExp) {
 						xp = xp - nextExp;
-						level = glevel + 1;
+						level = level + 1;
 					}
 					profile.setLvlXp(userID, level, xp);
 				}).catch((error) => {
