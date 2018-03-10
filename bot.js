@@ -87,6 +87,10 @@ bot.on("guildMemberRemove", member => {
 	leaveHandler(member);
 });
 
+bot.on("error", error => {
+	console.log(error);
+});
+
 bot.login(botSettings.token);
 
 //SHIFT ALT F to format
