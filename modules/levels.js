@@ -12,6 +12,7 @@ const MSG_TIME = 60000;
 module.exports = (bot = Discord.Client) => {
 
 	expFunction = function expFunction(message) {
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 		let guild = message.guild;
@@ -57,6 +58,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	tempLevelProfile = function tempLevelProfile(message) {
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 		let xp;
