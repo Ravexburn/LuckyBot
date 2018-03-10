@@ -90,7 +90,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(":arrows_counterclockwise: Toggle Commands", `\*\* ${prefix}toggle\*\* - Shows this list of commands for toggles.
 \*\* ${prefix}toggle image\*\* - Changes between embed disabled for images in message logs.
 \*\* ${prefix}toggle logs\*\* - Turns message logs on and off.
-\*\* ${prefix}toggle greeter\*\* - Turns welcome messages on and off.
+\*\* ${prefix}toggle greeter\*\* - Turns greeter message on and off.
 \*\* ${prefix}toggle roles\*\* - Turns roles channel on and off.`);
 	};
 
