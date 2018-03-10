@@ -230,6 +230,11 @@ module.exports = (bot = Discord.Client) => {
 			relayHelp2(message, embed);
 			sendEmbed(message, embed);
 		}
+
+		if (command === `${prefix}say`) {
+			sayFunction(message, command, args);
+		}
+
 	};
 
 	//Intial Settings (Owner Only)

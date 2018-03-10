@@ -232,7 +232,7 @@ module.exports = (bot = Discord.Client) => {
      * @param {Message} message 
      */
 	welMsg = function welMsg(message, command, args, serverSettings) {
-		if (args.length == 1) {
+		if (args.length === 1) {
 			message.channel.send("Please enter a greeter message: ({mention} tags the new user, {server} is server name, {user} shows user tag)");
 			return;
 		}
@@ -240,6 +240,19 @@ module.exports = (bot = Discord.Client) => {
 		message.channel.send("Greeter message set as: " + msg);
 		serverSettings.welcomeMessage = msg;
 		bot.setServerSettings(message.guild.id, serverSettings);
+	};
+
+	sayFunction = function sayFunction(message, command, args){
+		if (args.length === 0){
+			message.channel.send(`Please enter a channel and message to send ${command}say <channel> message.`);
+			return;
+		}
+
+		let chan = message.mentions.channels.first();
+		let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
+		chan.send(msg);
+		return;
+
 	};
 
 };
