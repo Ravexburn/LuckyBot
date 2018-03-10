@@ -11,3 +11,4 @@ nodemon.json
 template.js
 serverlist.json
 *.log
+.eslintrc.json

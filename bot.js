@@ -19,71 +19,72 @@ require("./functions/functions.js")(bot);
 //Generates join link and shows ready status.
 
 bot.on("ready", async () => {
-    bot.log('Ready');
-    try {
-        let link = await bot.generateInvite();
-        console.log(link);
-    } catch (error) {
-        bot.log(error.stack);
-    }
+	bot.log('Ready');
+	try {
+		let link = await bot.generateInvite();
+		console.log(link);
+	} catch (error) {
+		bot.log(error.stack);
+	}
 
-    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
-    bot.guilds.forEach(guild => {
-        bot.invCache.guildInvites(guild).catch(console.error);
-    });
+	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
+	bot.guilds.forEach(guild => {
+		bot.invCache.guildInvites(guild).catch(console.error);
+	});
 });
 
 //When the bot joins a server.
 
 bot.on("guildCreate", guild => {
-    bot.log('guildCreate');
-    bot.initServerSettings(guild.id);
-    bot.invCache.guildInvites(guild).catch(console.error);
-    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
-    guildCreateHandler(guild);
+	bot.log('guildCreate');
+	bot.initServerSettings(guild.id);
+	bot.invCache.guildInvites(guild).catch(console.error);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
+	guildCreateHandler(guild);
 });
 
 //When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
-    bot.log('guildDelete');
-   // bot.delServerSettings(guild.id);
-    bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
+	bot.log('guildDelete');
+	// bot.delServerSettings(guild.id);
+	console.log(guild.id);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
 });
 
 //All the commands the bot runs.
 
 bot.on("message", async message => {
-    bot.log('on message');
-    msgHandler(message);
+	bot.log('on message');
+	msgHandler(message);
 });
 
 //When a message is updated.
 
 bot.on("messageUpdate", (oldMessage, message) => {
-    bot.log('messageUpdate');
-    msgUpdateHandler(oldMessage, message);
+	bot.log('messageUpdate');
+	msgUpdateHandler(oldMessage, message);
 });
 
 //When a message is deleted.
 
 bot.on("messageDelete", message => {
-    bot.log('messageDelete');
-    delHandler(message);
+	bot.log('messageDelete');
+	delHandler(message);
 });
 
 //When a member joins a server.
 
 bot.on("guildMemberAdd", member => {
-    bot.log('guildMemberAdd');
-    memberJoinHandler(member);
+	bot.log('guildMemberAdd');
+	memberJoinHandler(member);
 });
 
 //When a member leaves a server.
 
 bot.on("guildMemberRemove", member => {
-    bot.log('guildMemberRemove');
-    leaveHandler(member);
+	bot.log('guildMemberRemove');
+	leaveHandler(member);
 });
 
 bot.login(botSettings.token);
