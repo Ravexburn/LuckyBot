@@ -412,7 +412,7 @@ module.exports = (bot = Discord.Client) => {
 											break;
 
 										default:
-											 embed = new Discord.RichEmbed()
+											embed = new Discord.RichEmbed()
 												.setTitle("Notification Help")
 												.setColor("#b19cd9")
 												.setFooter("If you have any other questions please contact Rave#0737");
@@ -478,7 +478,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					let embed = new Discord.RichEmbed()
+					embed = new Discord.RichEmbed()
 						.setTitle("Notification Help")
 						.setColor("#b19cd9")
 						.setFooter("If you have any other questions please contact Rave#0737");
