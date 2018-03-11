@@ -505,14 +505,8 @@ module.exports = (bot = Discord.Client) => {
 		}
 		const serverSettings = bot.getServerSettings(guild.id);
 		const prefix = (serverSettings.prefix ? serverSettings.prefix : bot.botSettings.prefix);
-
-		if (message.content.startsWith(prefix)) {
-
-			let messageArray = message.content.split(" ");
-			let command = messageArray[0];
-			if ((command === `${prefix}notify`)) return;
-
-		}
+		
+		if (message.content.startsWith(prefix)) return;
 
 		ignorenoti.isGuildIgnoredChannel(guild.id, message.channel.id)
 			.then((ignored) => {
