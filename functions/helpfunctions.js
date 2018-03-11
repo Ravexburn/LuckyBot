@@ -30,7 +30,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}notify global add <keyword>\*\* - Adds a <keyword> to notify you about on all servers.
 \*\* ${prefix}notify global remove <keyword>\*\* - Removes a <keyword> you were notified about on all servers.
 \*\* ${prefix}notify ignore <channel> <#channel>\*\* - Ignores all keyword triggers in <#channel>.
-\*\* ${prefix}notify ignore server\*\* - Ignores all keyword triggers in the server.`);
+\*\* ${prefix}notify ignore server\*\* - Ignores all global keyword triggers in the server.`);
 	};
 
 	//Help command for Custom Commands

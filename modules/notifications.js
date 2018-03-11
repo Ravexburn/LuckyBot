@@ -35,7 +35,6 @@ module.exports = (bot = Discord.Client) => {
 		//Commands for notifications
 
 		if ((command === `${prefix}notify`)) {
-			console.log("Crash at notify");
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed()
 					.setTitle("Notification Help")
@@ -51,7 +50,6 @@ module.exports = (bot = Discord.Client) => {
 
 				//Lists the notification on server
 				case "list":
-					console.log("Crash at noti list");
 					notify.tableExists(guild.id)
 						.then(exists => {
 							if (!exists) {
@@ -84,7 +82,6 @@ module.exports = (bot = Discord.Client) => {
 
 				//Clears notification on server
 				case "clear":
-					console.log("Crash at noti clear");
 					notify.tableExists(guild.id)
 						.then(exists => {
 							if (!exists) {
@@ -112,7 +109,6 @@ module.exports = (bot = Discord.Client) => {
 
 				//Adds per server notification
 				case "add":
-					console.log("Crash at noti add");
 					if (args.length === 1) {
 						let embed = new Discord.RichEmbed()
 							.setTitle("Notification Help")
@@ -143,7 +139,6 @@ module.exports = (bot = Discord.Client) => {
 								return;
 							}
 						})
-
 						.catch(() => {
 							console.error;
 
@@ -152,7 +147,6 @@ module.exports = (bot = Discord.Client) => {
 
 				//Removes per server notification
 				case "remove":
-					console.log("Crash at noti remove");
 					if (args.length === 1) {
 						let embed = new Discord.RichEmbed()
 							.setTitle("Notification Help")
@@ -183,16 +177,13 @@ module.exports = (bot = Discord.Client) => {
 								return;
 							}
 						})
-
 						.catch(() => {
 							console.error;
-
 						});
 
 					break;
 
 				case "global":
-					console.log("Crash at noti glo");
 					if (args.length === 1) {
 						let embed = new Discord.RichEmbed()
 							.setTitle("Notification Help")
@@ -208,7 +199,6 @@ module.exports = (bot = Discord.Client) => {
 
 						//Lists all global notificatons 
 						case "list":
-							console.log("Crash at global list");
 							notify.tableExists()
 								.then(exists => {
 									if (!exists) {
@@ -227,21 +217,16 @@ module.exports = (bot = Discord.Client) => {
 									let msg = "";
 									for (let item of keywords) {
 										msg += ((msg.length === 0) ? "" : "\n") + `\`${item}\``;
-
 									}
 									message.reply("A message has been sent to your direct messages.");
 									user.send(`:earth_americas: Global Keywords: \n${msg}`);
-
-
 								}).catch(() => {
 									console.error;
-
 								});
 							break;
 
 						//Clears all global notifications
 						case "clear":
-							console.log("Crash at global clear");
 							notify.tableExists(guild.id)
 								.then(exists => {
 									if (!exists) {
@@ -263,13 +248,11 @@ module.exports = (bot = Discord.Client) => {
 								})
 								.catch(() => {
 									console.error;
-
 								});
 							break;
 
 						//Adds a global notificaton
 						case "add":
-							console.log("Crash at global add");
 							if (args.length === 2) {
 								let embed = new Discord.RichEmbed()
 									.setTitle("Notification Help")
@@ -302,13 +285,11 @@ module.exports = (bot = Discord.Client) => {
 								})
 								.catch(() => {
 									console.error;
-
 								});
 							break;
 
 						//Removes global notification
 						case "remove":
-							console.log("Crash at global remove");
 							if (args.length === 2) {
 								let embed = new Discord.RichEmbed()
 									.setTitle("Notification Help")
@@ -339,12 +320,9 @@ module.exports = (bot = Discord.Client) => {
 										return;
 									}
 								})
-
 								.catch(() => {
 									console.error;
-
 								});
-
 							break;
 
 						default:
@@ -360,12 +338,9 @@ module.exports = (bot = Discord.Client) => {
 
 				//Toggles ignore between channel and server
 				case "ignore":
-					console.log("Crash at noti ignore");
 					switch (args[1]) {
-
 						case "channel":
 						case "chan":
-							console.log("Crash at ignore chan");
 							if (message.mentions.channels !== null && message.mentions.channels.size !== 0) {
 								channel = message.mentions.channels.first();
 							} else {
@@ -383,7 +358,7 @@ module.exports = (bot = Discord.Client) => {
 											break;
 
 										default:
-											let embed = new Discord.RichEmbed()
+											 embed = new Discord.RichEmbed()
 												.setTitle("Notification Help")
 												.setColor("#b19cd9")
 												.setFooter("If you have any other questions please contact Rave#0737");
@@ -398,7 +373,6 @@ module.exports = (bot = Discord.Client) => {
 
 						case "guild":
 						case "server":
-							console.log("Crash at ignore server");
 							ignorenoti.userToggleIgnoreGuild(user.id, guild.id)
 								.then((result) => {
 									let embed;
@@ -426,7 +400,7 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						default:
-							let embed = new Discord.RichEmbed()
+							embed = new Discord.RichEmbed()
 								.setTitle("Notification Help")
 								.setColor("#b19cd9")
 								.setFooter("If you have any other questions please contact Rave#0737");
@@ -439,7 +413,6 @@ module.exports = (bot = Discord.Client) => {
 
 				//Allows a server to ignore a channel for notifications
 				case "serverignore":
-					console.log("Crash at noti serverignore");
 					let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 					let allowed = false;
 
@@ -486,9 +459,7 @@ module.exports = (bot = Discord.Client) => {
 					message.channel.send(embed);
 					break;
 			}
-
 		}
-
 	};
 
 	//Notiifcations
@@ -505,7 +476,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 		const serverSettings = bot.getServerSettings(guild.id);
 		const prefix = (serverSettings.prefix ? serverSettings.prefix : bot.botSettings.prefix);
-		
+
 		if (message.content.startsWith(prefix)) return;
 
 		ignorenoti.isGuildIgnoredChannel(guild.id, message.channel.id)
@@ -522,7 +493,7 @@ module.exports = (bot = Discord.Client) => {
 								return Promise.reject("User Ignored the Channel");
 							}
 						}).then(() => {
-							return ignorenoti.isUserIgnoredGuild(userID, guild.id)
+							return ignorenoti.isUserIgnoredGuild(userID, guild.id);
 						}).then((ignored) => {
 							if (ignored) {
 								return Promise.reject("User Ignored the Guild");
@@ -535,7 +506,7 @@ module.exports = (bot = Discord.Client) => {
 							userSet.add(userID);
 							notifications.set(keyword, userSet);
 						}).catch((reason) => {
-
+							console.log(reason);
 						});
 				}).then(() => {
 					return notify.forEachKeyword((keyword, userID) => {
@@ -545,12 +516,6 @@ module.exports = (bot = Discord.Client) => {
 									return Promise.reject("User Ignored the Channel");
 								}
 							}).then(() => {
-								return ignorenoti.isUserIgnoredGuild(userID, guild.id)
-							}).then((ignored) => {
-								if (ignored) {
-									return Promise.reject("User Ignored the Guild");
-								}
-							}).then(() => {
 								let userSet = notifications.get(keyword);
 								if (!userSet) {
 									userSet = new Set();
@@ -558,7 +523,7 @@ module.exports = (bot = Discord.Client) => {
 								userSet.add(userID);
 								notifications.set(keyword, userSet);
 							}).catch((reason) => {
-
+								console.log(reason);
 							});
 					}, guild.id);
 				}).then(() => {
@@ -573,9 +538,9 @@ module.exports = (bot = Discord.Client) => {
 								const canRead = message.channel.permissionsFor(member).has("READ_MESSAGES");
 								if (!canRead) return;
 								member.send(`:round_pushpin: User **${message.author.username}** **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
-							})
+							});
 						}
-					})
+					});
 				}).catch(() => {
 					console.error;
 				});
@@ -585,5 +550,4 @@ module.exports = (bot = Discord.Client) => {
 				}
 			});
 	};
-
 };
