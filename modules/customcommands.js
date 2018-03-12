@@ -27,8 +27,7 @@ module.exports = (bot = Discord.Client) => {
 
 		const guild = message.guild;
 
-		if (command === `${prefix}command`) {
-			console.log("Crash at command");
+		if ((command === `${prefix}command`) || (command === `${prefix}commands`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed()
 					.setTitle("Custom Command Help")
@@ -47,7 +46,6 @@ module.exports = (bot = Discord.Client) => {
 			switch (args[0]) {
 
 				case "add":
-					console.log("Crash at cmd add");
 					if (args.length < 3) {
 						message.channel.send("**Please add a command name and the command.**");
 						return;
@@ -79,7 +77,6 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				case "edit":
-					console.log("Crash at cmd edit");
 					if (args.length < 3) {
 						message.channel.send("**Please add a command name and the command.**");
 						return;
@@ -109,7 +106,6 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				case "remove":
-					console.log("Crash at cmd remove");
 					if (args.length < 2) {
 						message.channel.send("**Please add a command name to remove.**");
 						return;
@@ -139,7 +135,6 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				case "list":
-					console.log("Crash at cmd list");
 					if (cmds.has(guild.id)) {
 						custom = cmds.get(guild.id);
 					}
@@ -162,7 +157,7 @@ module.exports = (bot = Discord.Client) => {
 
 					message.channel.send("**List of commands sent to direct messages.**");
 					message.author.send(`\`\`\`List of custom commands for ${message.guild.name}:
-${list.join(`\n`)}\`\`\``);
+${list.sort().join(`\n`)}\`\`\``);
 					break;
 
 				default:

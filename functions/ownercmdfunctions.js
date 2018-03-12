@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let msg = "```md\n";
 		let i = 1;
-		bot.guilds.forEach(guild => {
+		bot.guilds.array().sort().forEach(guild => {
 			msg += `${i++}. ${guild.name} - <${guild.id}>\n`;
 		});
 		msg += "```";
@@ -24,7 +24,7 @@ module.exports = (bot = Discord.Client) => {
 			let msg = "```md\n";
 			let i = 1;
 			let guilds = [];
-			bot.guilds.forEach(guild => {
+			bot.guilds.array().sort().forEach(guild => {
 				guilds[i] = guild;
 				msg += `${i++}. ${guild.name} - <${guild.id}>\n`;
 			});

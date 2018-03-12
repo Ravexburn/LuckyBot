@@ -64,7 +64,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (member.roles) {
-			let roleString = member.roles.array().join(", ");
+			let roleString = member.roles.array().sort().join(", ");
 			embed.addField("Roles", roleString);
 		}
 
