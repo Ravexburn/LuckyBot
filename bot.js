@@ -36,7 +36,6 @@ bot.on("ready", async () => {
 //When the bot joins a server.
 
 bot.on("guildCreate", guild => {
-	bot.log('guildCreate');
 	bot.initServerSettings(guild.id);
 	bot.invCache.guildInvites(guild).catch(console.error);
 	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
@@ -46,7 +45,6 @@ bot.on("guildCreate", guild => {
 //When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
-	bot.log('guildDelete');
 	// bot.delServerSettings(guild.id);
 	console.log(guild.id);
 	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
@@ -55,35 +53,30 @@ bot.on("guildDelete", guild => {
 //All the commands the bot runs.
 
 bot.on("message", async message => {
-	bot.log('on message');
 	msgHandler(message);
 });
 
 //When a message is updated.
 
 bot.on("messageUpdate", (oldMessage, message) => {
-	bot.log('messageUpdate');
 	msgUpdateHandler(oldMessage, message);
 });
 
 //When a message is deleted.
 
 bot.on("messageDelete", message => {
-	bot.log('messageDelete');
 	delHandler(message);
 });
 
 //When a member joins a server.
 
 bot.on("guildMemberAdd", member => {
-	bot.log('guildMemberAdd');
 	memberJoinHandler(member);
 });
 
 //When a member leaves a server.
 
 bot.on("guildMemberRemove", member => {
-	bot.log('guildMemberRemove');
 	leaveHandler(member);
 });
 
