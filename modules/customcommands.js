@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const customcmds = require("./commandnames.json");
 let commandnames = customcmds.commands;
+const MAX_CHAR = 2000;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -42,6 +43,7 @@ module.exports = (bot = Discord.Client) => {
 			let cmdName = "";
 			let embed;
 			let list = [];
+			let sendCmd;
 
 			switch (args[0]) {
 
@@ -105,6 +107,7 @@ module.exports = (bot = Discord.Client) => {
 					message.channel.send("**Custom command edited.**");
 					break;
 
+				case "delete":
 				case "remove":
 					if (args.length < 2) {
 						message.channel.send("**Please add a command name to remove.**");
@@ -156,8 +159,15 @@ module.exports = (bot = Discord.Client) => {
 					}
 
 					message.channel.send("**List of commands sent to direct messages.**");
-					message.author.send(`\`\`\`List of custom commands for ${message.guild.name}:
-${list.sort().join(`\n`)}\`\`\``);
+
+					sendCmd = `List of custom commands for ${message.guild.name}:
+${list.sort().join(`\n`)}`;
+
+					while (sendCmd.length > MAX_CHAR - 6) {
+						message.author.send("```" + sendCmd.substring(0, MAX_CHAR - 6) + "```");
+						sendCmd = sendCmd.slice(MAX_CHAR - 6);
+					}
+					message.author.send("```" + sendCmd + "```");
 					break;
 
 				default:
@@ -168,7 +178,6 @@ ${list.sort().join(`\n`)}\`\`\``);
 					message.channel.send(embed);
 					return;
 			}
-
 		}
 	};
 
