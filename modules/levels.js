@@ -57,7 +57,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 	};
 
-	tempLevelProfile = function tempLevelProfile(message) {
+	tempLevelProfile = function tempLevelProfile(message, args) {
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
@@ -66,8 +66,24 @@ module.exports = (bot = Discord.Client) => {
 		let nextExp;
 		let glevel;
 		let userID = message.author.id;
-		let guild = message.guild;
-
+		let guild = message.guild;	
+		
+		if (args.length !== 0) {
+			const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
+			if (matches) {
+				userID = matches[1];
+			}
+			if (!userID) {
+				userID = args[0];
+			}
+		}
+		let target = message.member.id;
+		if (message.guild.members.has(userID)) {
+			target = message.guild.member(userID);
+		}
+		if (!target) return;
+		let member = target;
+		
 		profile.getProfileLevelLocal(userID, guild.id)
 			.then((data) => {
 				xp = data.exp;
@@ -79,7 +95,7 @@ module.exports = (bot = Discord.Client) => {
 				glevel = data.level;
 			}).then(() => {
 				let embed = new Discord.RichEmbed()
-					.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+					.setAuthor(member.user.tag, member.user.displayAvatarURL.split("?")[0])
 					.setTitle("Profile")
 					.setColor("#FF6347")
 					.addField("Level", level, true)
