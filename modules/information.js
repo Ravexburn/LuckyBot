@@ -73,7 +73,7 @@ module.exports = (bot = Discord.Client) => {
 		//Temp profile
 
 		if (command === `${prefix}profile`){
-			tempLevelProfile(message);
+			tempLevelProfile(message, args);
 		}
 
 		//Command help
