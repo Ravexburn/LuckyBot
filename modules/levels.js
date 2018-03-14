@@ -7,7 +7,7 @@ const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
 const timerProvider = new EnmapLevel({ name: 'timer' });
 timer = new Enmap({ provider: timerProvider });
-const MSG_TIME = 60000;
+const MSG_TIME = 60;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -37,6 +37,9 @@ module.exports = (bot = Discord.Client) => {
 					if (xp >= nextExp) {
 						xp = xp - nextExp;
 						level = level + 1;
+						if (guild.id == 261337708406898688) {
+							message.reply(`**Congratulations you have reached level: ${level}**`);
+						}
 					}
 					profile.setLvlXpLocal(userID, guild.id, level, xp);
 				}).then(() => {
@@ -66,8 +69,8 @@ module.exports = (bot = Discord.Client) => {
 		let nextExp;
 		let glevel;
 		let userID = message.author.id;
-		let guild = message.guild;	
-		
+		let guild = message.guild;
+
 		if (args.length !== 0) {
 			const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 			if (matches) {
@@ -83,7 +86,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 		if (!target) return;
 		let member = target;
-		
+
 		profile.getProfileLevelLocal(userID, guild.id)
 			.then((data) => {
 				xp = data.exp;
