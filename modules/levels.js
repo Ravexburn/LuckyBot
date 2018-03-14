@@ -7,7 +7,7 @@ const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
 const timerProvider = new EnmapLevel({ name: 'timer' });
 timer = new Enmap({ provider: timerProvider });
-const MSG_TIME = 60;
+const MSG_TIME = 60000;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -15,6 +15,7 @@ module.exports = (bot = Discord.Client) => {
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
+		if (message.content.startsWith(prefix)) return;
 		let guild = message.guild;
 		let userID = message.author.id;
 		if (!timer.has(guild.id)) {
