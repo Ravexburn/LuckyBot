@@ -15,7 +15,6 @@ module.exports = (bot = Discord.Client) => {
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
-		if (message.content.startsWith(prefix)) return;
 		let guild = message.guild;
 		let userID = message.author.id;
 		if (!timer.has(guild.id)) {
