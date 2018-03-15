@@ -40,7 +40,7 @@ module.exports = (bot = Discord.Client) => {
 						if (guild.id == 261337708406898688) {
 							const chan = getLevelChannel();
 							if (!chan) return;
-							chan.send("**" + message.author + `Congratulations you have reached level: ${level}**`);
+							chan.send("**" + message.author + ` Congratulations you have reached level: ${level}**`);
 						}
 					}
 					profile.setLvlXpLocal(userID, guild.id, level, xp);
