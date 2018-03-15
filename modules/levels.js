@@ -37,9 +37,9 @@ module.exports = (bot = Discord.Client) => {
 					if (xp >= nextExp) {
 						xp = xp - nextExp;
 						level = level + 1;
-						if (guild.id == 261337708406898688) {
-							message.reply(`**Congratulations you have reached level: ${level}**`);
-						}
+						const chan = getLevelChannel();
+						if (!chan) return;
+						chan.send("**" + message.author + `Congratulations you have reached level: ${level}**`);
 					}
 					profile.setLvlXpLocal(userID, guild.id, level, xp);
 				}).then(() => {
@@ -111,6 +111,17 @@ module.exports = (bot = Discord.Client) => {
 				console.log(error);
 			});
 	};
+
+	function getLevelChannel() {
+		let levelGuild = "261337708406898688";
+		let levelChan = "421533856831897600";
+		const guild = bot.guilds.get(levelGuild);
+		if (!guild) return null;
+		const chan = guild.channels.get(levelChan);
+		if (!chan) return null;
+	
+		return chan;
+	}
 };
 
 nextLevelLocal = function nextLevelLocal(level) {
