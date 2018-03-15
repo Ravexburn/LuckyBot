@@ -47,7 +47,8 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(":musical_note: Lastfm Commands", `\*\* ${prefix}lastfm help\*\* - Shows this list of commands for lastfm commands.
 \*\* ${prefix}lastfm\*\* - Shows basic account info.
 \*\* ${prefix}lastfm set\*\* - Saves lastfm username.
-\*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.`);
+\*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.
+\*\* ${prefix}lastfm toptracks\*\* - Shows the top tracks of all time.`);
 	};
 
 	/* //Help command for Roles
