@@ -188,43 +188,146 @@ module.exports = (bot = Discord.Client) => {
 					}
 					break;
 
+				case "tt":
 				case "toptracks":
 					if (lastfm.has(message.author.id)) {
 						username = lastfm.get(message.author.id);
+						let time;
+						url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
 
-						url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&format=json`;
+						switch (args[1]) {
+							//All time
+							default:
+							case "alltime":
+								time = "overall";
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url3).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.toptracks) {
+										console.log(`No Toptrack`);
+										return;
+									}
+									embedAlltime = new Discord.RichEmbed()
+										.setAuthor(`${username}'s All Time Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+									toptracks(message, embedAlltime, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
 
-						axios.get(url3).then(response => {
-							if (response.error) {
-								message.reply(response.message);
-								return Promise.reject(response.message);
-							}
+							//Week								
+							case "week":
+								time = "7day";
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url3).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.toptracks) {
+										console.log(`No Toptrack`);
+										return;
+									}
+									embedWeek = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Weekly Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+									toptracks(message, embedWeek, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
 
-							let embed3 = new Discord.RichEmbed()
-								.setAuthor(`${username}'s Top Tracks`, message.author.displayAvatarURL.split("?")[0])
-								.setColor("#33cc33")
-								.setDescription(`1. [${response.data.toptracks.track[0].name}](${response.data.toptracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[0].artist.name}](${response.data.toptracks.track[0].artist.url}) (${response.data.toptracks.track[0].playcount} plays)
-2. [${response.data.toptracks.track[1].name}](${response.data.toptracks.track[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[1].artist.name}](${response.data.toptracks.track[1].artist.url}) (${response.data.toptracks.track[1].playcount} plays)							
-3. [${response.data.toptracks.track[2].name}](${response.data.toptracks.track[2].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[2].artist.name}](${response.data.toptracks.track[2].artist.url}) (${response.data.toptracks.track[2].playcount} plays)				
-4. [${response.data.toptracks.track[3].name}](${response.data.toptracks.track[3].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[3].artist.name}](${response.data.toptracks.track[3].artist.url}) (${response.data.toptracks.track[3].playcount} plays)
-5. [${response.data.toptracks.track[4].name}](${response.data.toptracks.track[4].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[4].artist.name}](${response.data.toptracks.track[4].artist.url}) (${response.data.toptracks.track[4].playcount} plays)
-6. [${response.data.toptracks.track[5].name}](${response.data.toptracks.track[5].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[5].artist.name}](${response.data.toptracks.track[5].artist.url}) (${response.data.toptracks.track[5].playcount} plays)
-7. [${response.data.toptracks.track[6].name}](${response.data.toptracks.track[6].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[6].artist.name}](${response.data.toptracks.track[6].artist.url}) (${response.data.toptracks.track[6].playcount} plays)
-8. [${response.data.toptracks.track[7].name}](${response.data.toptracks.track[7].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[7].artist.name}](${response.data.toptracks.track[7].artist.url}) (${response.data.toptracks.track[7].playcount} plays)
-9. [${response.data.toptracks.track[8].name}](${response.data.toptracks.track[8].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[8].artist.name}](${response.data.toptracks.track[8].artist.url}) (${response.data.toptracks.track[8].playcount} plays)
-10. [${response.data.toptracks.track[9].name}](${response.data.toptracks.track[9].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[9].artist.name}](${response.data.toptracks.track[9].artist.url}) (${response.data.toptracks.track[9].playcount} plays)`)
-								.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-							sendEmbed(message, embed3);
-							return;
+							//Month	
+							case "month":
+								time = "1month";
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url3).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.toptracks) {
+										console.log(`No Toptrack`);
+										return;
+									}
+									embedMonth = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Monthly Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+									toptracks(message, embedMonth, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+							
+							//3 Month	
+							case "3-month":
+								time = "3month";
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url3).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.toptracks) {
+										console.log(`No Toptrack`);
+										return;
+									}
+									embedTMonth = new Discord.RichEmbed()
+										.setAuthor(`${username}'s 3 Month Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+									toptracks(message, embedTMonth, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
 
-						}).catch((error) => {
-							console.log(error);
-						});
+							//Half Year	
+							case "half-year":
+							case "6-month":
+								time = "6month";
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url3).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.toptracks) {
+										console.log(`No Toptrack`);
+										return;
+									}
+									embedHalf = new Discord.RichEmbed()
+										.setAuthor(`${username}'s 6 Month Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+									toptracks(message, embedHalf, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+
+							//Year	
+							case "year":
+								time = "12month";
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url3).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.toptracks) {
+										console.log(`No Toptrack`);
+										return;
+									}
+									embedYear = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Yearly Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+									toptracks(message, embedYear, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+						}
 					} else {
 						message.channel.send(regusername);
 						return;
 					}
-
 					break;
 
 				default:
@@ -234,10 +337,7 @@ module.exports = (bot = Discord.Client) => {
 						.setFooter("If you have any other questions please contact Rave#0737");
 					lastFMHelp(message, prefix, embedDef);
 					sendEmbed(message, embedDef);
-
 					return;
-
-
 			}
 
 			return;
@@ -245,4 +345,52 @@ module.exports = (bot = Discord.Client) => {
 
 	};
 
+};
+
+
+toptracks = function toptracks(message, embed, response) {
+	if (!response.data.toptracks.track[0]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[1]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[2]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[3]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[4]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[5]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[6]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[7]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[8]) {
+		console.log(`No Track`);
+		return;
+	}if (!response.data.toptracks.track[9]) {
+		console.log(`No Track`);
+		return;
+	}
+	embed.setColor("#33cc33");
+	embed.setDescription(`1. [${response.data.toptracks.track[0].name}](${response.data.toptracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[0].artist.name}](${response.data.toptracks.track[0].artist.url}) (${response.data.toptracks.track[0].playcount} plays)
+2. [${response.data.toptracks.track[1].name}](${response.data.toptracks.track[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[1].artist.name}](${response.data.toptracks.track[1].artist.url}) (${response.data.toptracks.track[1].playcount} plays)							
+3. [${response.data.toptracks.track[2].name}](${response.data.toptracks.track[2].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[2].artist.name}](${response.data.toptracks.track[2].artist.url}) (${response.data.toptracks.track[2].playcount} plays)				
+4. [${response.data.toptracks.track[3].name}](${response.data.toptracks.track[3].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[3].artist.name}](${response.data.toptracks.track[3].artist.url}) (${response.data.toptracks.track[3].playcount} plays)
+5. [${response.data.toptracks.track[4].name}](${response.data.toptracks.track[4].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[4].artist.name}](${response.data.toptracks.track[4].artist.url}) (${response.data.toptracks.track[4].playcount} plays)
+6. [${response.data.toptracks.track[5].name}](${response.data.toptracks.track[5].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[5].artist.name}](${response.data.toptracks.track[5].artist.url}) (${response.data.toptracks.track[5].playcount} plays)
+7. [${response.data.toptracks.track[6].name}](${response.data.toptracks.track[6].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[6].artist.name}](${response.data.toptracks.track[6].artist.url}) (${response.data.toptracks.track[6].playcount} plays)
+8. [${response.data.toptracks.track[7].name}](${response.data.toptracks.track[7].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[7].artist.name}](${response.data.toptracks.track[7].artist.url}) (${response.data.toptracks.track[7].playcount} plays)
+9. [${response.data.toptracks.track[8].name}](${response.data.toptracks.track[8].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[8].artist.name}](${response.data.toptracks.track[8].artist.url}) (${response.data.toptracks.track[8].playcount} plays)
+10. [${response.data.toptracks.track[9].name}](${response.data.toptracks.track[9].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[9].artist.name}](${response.data.toptracks.track[9].artist.url}) (${response.data.toptracks.track[9].playcount} plays)`);
+	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
+	sendEmbed(message, embed);
 };
