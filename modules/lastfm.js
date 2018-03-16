@@ -259,7 +259,7 @@ module.exports = (bot = Discord.Client) => {
 									console.log(error);
 								});
 								break;
-							
+
 							//3 Month	
 							case "3-month":
 								time = "3month";
@@ -330,6 +330,126 @@ module.exports = (bot = Discord.Client) => {
 					}
 					break;
 
+				case "ta":	
+				case "topartists":
+					if (lastfm.has(message.author.id)) {
+						username = lastfm.get(message.author.id);
+						let time;
+						url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+
+						switch (args[1]) {
+							//All time
+							default:
+							case "alltime":
+								time = "overall";
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url4).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedAlltime = new Discord.RichEmbed()
+										.setAuthor(`${username}'s All Time Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+									topartist(message, embedAlltime, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+
+							//Week								
+							case "week":
+								time = "7day";
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url4).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedWeek = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Weekly Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+									topartist(message, embedWeek, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+
+							//Month	
+							case "month":
+								time = "1month";
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url4).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedMonth = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Monthly Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+									topartist(message, embedMonth, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+
+							//3 Month	
+							case "3-month":
+								time = "3month";
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url4).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedTMonth = new Discord.RichEmbed()
+										.setAuthor(`${username}'s 3 Month Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+									topartist(message, embedTMonth, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+
+							//Half Year	
+							case "half-year":
+							case "6-month":
+								time = "6month";
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url4).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedHalf = new Discord.RichEmbed()
+										.setAuthor(`${username}'s 6 Month Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+									topartist(message, embedHalf, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+
+							//Year	
+							case "year":
+								time = "12month";
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								axios.get(url4).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedYear = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Yearly Top Artists`, message.author.displayAvatarURL.split("?")[0]);
+									topartist(message, embedYear, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+								break;
+						}
+					} else {
+						message.channel.send(regusername);
+						return;
+					}
+					break;
+
+
+
 				default:
 					embedDef = new Discord.RichEmbed()
 						.setTitle("LastFM Commands")
@@ -352,31 +472,31 @@ toptracks = function toptracks(message, embed, response) {
 	if (!response.data.toptracks.track[0]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[1]) {
+	} if (!response.data.toptracks.track[1]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[2]) {
+	} if (!response.data.toptracks.track[2]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[3]) {
+	} if (!response.data.toptracks.track[3]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[4]) {
+	} if (!response.data.toptracks.track[4]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[5]) {
+	} if (!response.data.toptracks.track[5]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[6]) {
+	} if (!response.data.toptracks.track[6]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[7]) {
+	} if (!response.data.toptracks.track[7]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[8]) {
+	} if (!response.data.toptracks.track[8]) {
 		console.log(`No Track`);
 		return;
-	}if (!response.data.toptracks.track[9]) {
+	} if (!response.data.toptracks.track[9]) {
 		console.log(`No Track`);
 		return;
 	}
@@ -391,6 +511,53 @@ toptracks = function toptracks(message, embed, response) {
 8. [${response.data.toptracks.track[7].name}](${response.data.toptracks.track[7].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[7].artist.name}](${response.data.toptracks.track[7].artist.url}) (${response.data.toptracks.track[7].playcount} plays)
 9. [${response.data.toptracks.track[8].name}](${response.data.toptracks.track[8].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[8].artist.name}](${response.data.toptracks.track[8].artist.url}) (${response.data.toptracks.track[8].playcount} plays)
 10. [${response.data.toptracks.track[9].name}](${response.data.toptracks.track[9].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[9].artist.name}](${response.data.toptracks.track[9].artist.url}) (${response.data.toptracks.track[9].playcount} plays)`);
+	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
+	sendEmbed(message, embed);
+};
+
+topartist = function topartist(message, embed, response) {
+	if (!response.data.topartists.artist[0]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[1]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[2]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[3]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[4]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[5]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[6]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[7]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[8]) {
+		console.log(`No Artist`);
+		return;
+	} if (!response.data.topartists.artist[9]) {
+		console.log(`No Artist`);
+		return;
+	}
+	embed.setColor("#33cc33");
+	embed.setDescription(`1. [${response.data.topartists.artist[0].name}](${response.data.topartists.artist[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[0].playcount} plays)
+2. [${response.data.topartists.artist[1].name}](${response.data.topartists.artist[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[1].playcount} plays)							
+3. [${response.data.topartists.artist[2].name}](${response.data.topartists.artist[2].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[2].playcount} plays)				
+4. [${response.data.topartists.artist[3].name}](${response.data.topartists.artist[3].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[3].playcount} plays)
+5. [${response.data.topartists.artist[4].name}](${response.data.topartists.artist[4].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[4].playcount} plays)
+6. [${response.data.topartists.artist[5].name}](${response.data.topartists.artist[5].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[5].playcount} plays)
+7. [${response.data.topartists.artist[6].name}](${response.data.topartists.artist[6].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[6].playcount} plays)
+8. [${response.data.topartists.artist[7].name}](${response.data.topartists.artist[7].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[7].playcount} plays)
+9. [${response.data.topartists.artist[8].name}](${response.data.topartists.artist[8].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[8].playcount} plays)
+10. [${response.data.topartists.artist[9].name}](${response.data.topartists.artist[9].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${response.data.topartists.artist[9].playcount} plays)`);
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };
