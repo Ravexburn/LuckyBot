@@ -121,7 +121,7 @@ module.exports = (bot = Discord.Client) => {
 			.setURL(bot.user.displayAvatarURL)
 			.addField("Authors", "Rave#0737 and OrigamiCoder#1375")
 			.addField("Uptime", date)
-			.addField("Links", `[Trello](${trello})**-**[Github](${git})**-**[Discord](${discordlink})`, true)
+			.addField("Links", `[Trello](${trello}) **-** [Github](${git}) **-** [Discord](${discordlink})`, true)
 			.addField("Servers", bot.guilds.size, true)
 			.addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
 			.addField("Suggestion", `Have a suggestion? Use ${prefix}suggestion <your suggestion>`)
