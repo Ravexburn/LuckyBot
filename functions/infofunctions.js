@@ -39,6 +39,7 @@ module.exports = (bot = Discord.Client) => {
 			.setAuthor(member.user.tag, avatarURL)
 			.setColor(color)
 			.setThumbnail(avatarURL)
+			.setURL(avatarURL)
 			.addField("ID", member.user.id, true);
 
 
@@ -83,6 +84,7 @@ module.exports = (bot = Discord.Client) => {
 			.setAuthor(message.guild.name, message.guild.iconURL)
 			.setColor("#a8e8eb")
 			.setThumbnail(message.guild.iconURL)
+			.setURL(message.guild.iconURL)
 			.addField("Server created on", message.guild.createdAt.toLocaleString(), true)
 			.addField("Owner", message.guild.owner.user.tag, true)
 			.addField("Region", message.guild.region, true)
