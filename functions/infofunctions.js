@@ -118,6 +118,7 @@ module.exports = (bot = Discord.Client) => {
 			.setAuthor("About Lucky Bot", bot.user.displayAvatarURL)
 			.setColor("#a8e8eb")
 			.setThumbnail(bot.user.displayAvatarURL)
+			.setURL(bot.user.displayAvatarURL)
 			.addField("Authors", "Rave#0737 and OrigamiCoder#1375")
 			.addField("Uptime", date)
 			.addField("Links", `[Trello](${trello})**-**[Github](${git})**-**[Discord](${discordlink})`, true)
