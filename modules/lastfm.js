@@ -177,6 +177,7 @@ module.exports = (bot = Discord.Client) => {
 
 				//Top Tracks
 				case "tt":
+				case "toptrack":
 				case "toptracks":
 					if (lastfm.has(message.author.id)) {
 						username = lastfm.get(message.author.id);
@@ -319,6 +320,7 @@ module.exports = (bot = Discord.Client) => {
 
 				//Top Artist	
 				case "ta":
+				case "topartist":
 				case "topartists":
 					if (lastfm.has(message.author.id)) {
 						username = lastfm.get(message.author.id);
@@ -437,6 +439,7 @@ module.exports = (bot = Discord.Client) => {
 
 				//Top Album
 				case "talb":
+				case "topalbum":
 				case "topalbums":
 					if (lastfm.has(message.author.id)) {
 						username = lastfm.get(message.author.id);
