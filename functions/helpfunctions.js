@@ -49,7 +49,8 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}lastfm set\*\* - Saves lastfm username.
 \*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.
 \*\* ${prefix}lastfm toptracks <week|month|3-month|half-year|year>\*\* - Shows the top tracks of <period>.
-\*\* ${prefix}lastfm topartist <week|month|3-month|half-year|year>\*\* - Shows the top artists of <period>.`);
+\*\* ${prefix}lastfm topartist <week|month|3-month|half-year|year>\*\* - Shows the top artists of <period>.
+\*\* ${prefix}lastfm topalbums <week|month|3-month|half-year|year>\*\* - Shows the top albums of <period>.`);
 	};
 
 	/* //Help command for Roles
