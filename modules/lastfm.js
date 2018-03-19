@@ -182,13 +182,13 @@ module.exports = (bot = Discord.Client) => {
 					if (lastfm.has(message.author.id)) {
 						username = lastfm.get(message.author.id);
 						let time;
-						url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+						url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 						switch (args[1]) {
 							//All time
 							default:
 							case "alltime":
 								time = "overall";
-								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url3).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -209,7 +209,7 @@ module.exports = (bot = Discord.Client) => {
 							//Week								
 							case "week":
 								time = "7day";
-								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url3).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -230,7 +230,7 @@ module.exports = (bot = Discord.Client) => {
 							//Month	
 							case "month":
 								time = "1month";
-								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url3).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -251,7 +251,7 @@ module.exports = (bot = Discord.Client) => {
 							//3 Month	
 							case "3-month":
 								time = "3month";
-								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url3).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -273,7 +273,7 @@ module.exports = (bot = Discord.Client) => {
 							case "half-year":
 							case "6-month":
 								time = "6month";
-								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url3).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -294,7 +294,7 @@ module.exports = (bot = Discord.Client) => {
 							//Year	
 							case "year":
 								time = "12month";
-								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url3).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -325,13 +325,13 @@ module.exports = (bot = Discord.Client) => {
 					if (lastfm.has(message.author.id)) {
 						username = lastfm.get(message.author.id);
 						let time;
-						url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+						url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 						switch (args[1]) {
 							//All time
 							default:
 							case "alltime":
 								time = "overall";
-								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url4).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -348,7 +348,7 @@ module.exports = (bot = Discord.Client) => {
 							//Week								
 							case "week":
 								time = "7day";
-								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url4).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -365,7 +365,7 @@ module.exports = (bot = Discord.Client) => {
 							//Month	
 							case "month":
 								time = "1month";
-								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url4).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -382,7 +382,7 @@ module.exports = (bot = Discord.Client) => {
 							//3 Month	
 							case "3-month":
 								time = "3month";
-								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url4).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -400,7 +400,7 @@ module.exports = (bot = Discord.Client) => {
 							case "half-year":
 							case "6-month":
 								time = "6month";
-								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url4).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -417,7 +417,7 @@ module.exports = (bot = Discord.Client) => {
 							//Year	
 							case "year":
 								time = "12month";
-								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url4).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -444,13 +444,13 @@ module.exports = (bot = Discord.Client) => {
 					if (lastfm.has(message.author.id)) {
 						username = lastfm.get(message.author.id);
 						let time;
-						url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+						url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 						switch (args[1]) {
 							//All time
 							default:
 							case "alltime":
 								time = "overall";
-								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url5).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -467,7 +467,7 @@ module.exports = (bot = Discord.Client) => {
 							//Week								
 							case "week":
 								time = "7day";
-								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url5).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -484,7 +484,7 @@ module.exports = (bot = Discord.Client) => {
 							//Month	
 							case "month":
 								time = "1month";
-								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url5).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -501,7 +501,7 @@ module.exports = (bot = Discord.Client) => {
 							//3 Month	
 							case "3-month":
 								time = "3month";
-								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url5).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -519,7 +519,7 @@ module.exports = (bot = Discord.Client) => {
 							case "half-year":
 							case "6-month":
 								time = "6month";
-								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url5).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -536,7 +536,7 @@ module.exports = (bot = Discord.Client) => {
 							//Year	
 							case "year":
 								time = "12month";
-								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&format=json`;
+								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 								axios.get(url5).then(response => {
 									if (response.error) {
 										message.reply(response.message);
@@ -554,8 +554,8 @@ module.exports = (bot = Discord.Client) => {
 						message.channel.send(regusername);
 						return;
 					}
-
 					break;
+					
 				default:
 					embedDef = new Discord.RichEmbed()
 						.setTitle("LastFM Commands")
@@ -573,148 +573,56 @@ module.exports = (bot = Discord.Client) => {
 
 };
 
-
 toptracks = function toptracks(message, embed, response) {
-	if (!response.data.toptracks.track[0]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[1]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[2]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[3]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[4]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[5]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[6]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[7]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[8]) {
-		console.log(`No Track`);
-		return;
-	} if (!response.data.toptracks.track[9]) {
-		console.log(`No Track`);
-		return;
+	let responseA = response.data.toptracks.track;
+	for (i = 0; i < responseA.length; i++) {
+		if (!responseA[i]) {
+			console.log(`No Artist`);
+			return;
+		}
+	}
+	let msg =  "";
+	for (i = 0; i < responseA.length; i++) {
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[i].artist.name}](${responseA[i].artist.url}) (${responseA[i].playcount} plays)\n`;
 	}
 	embed.setColor("#33cc33");
-	embed.setDescription(`1. [${response.data.toptracks.track[0].name}](${response.data.toptracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[0].artist.name}](${response.data.toptracks.track[0].artist.url}) (${response.data.toptracks.track[0].playcount} plays)
-2. [${response.data.toptracks.track[1].name}](${response.data.toptracks.track[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[1].artist.name}](${response.data.toptracks.track[1].artist.url}) (${response.data.toptracks.track[1].playcount} plays)							
-3. [${response.data.toptracks.track[2].name}](${response.data.toptracks.track[2].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[2].artist.name}](${response.data.toptracks.track[2].artist.url}) (${response.data.toptracks.track[2].playcount} plays)				
-4. [${response.data.toptracks.track[3].name}](${response.data.toptracks.track[3].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[3].artist.name}](${response.data.toptracks.track[3].artist.url}) (${response.data.toptracks.track[3].playcount} plays)
-5. [${response.data.toptracks.track[4].name}](${response.data.toptracks.track[4].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[4].artist.name}](${response.data.toptracks.track[4].artist.url}) (${response.data.toptracks.track[4].playcount} plays)
-6. [${response.data.toptracks.track[5].name}](${response.data.toptracks.track[5].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[5].artist.name}](${response.data.toptracks.track[5].artist.url}) (${response.data.toptracks.track[5].playcount} plays)
-7. [${response.data.toptracks.track[6].name}](${response.data.toptracks.track[6].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[6].artist.name}](${response.data.toptracks.track[6].artist.url}) (${response.data.toptracks.track[6].playcount} plays)
-8. [${response.data.toptracks.track[7].name}](${response.data.toptracks.track[7].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[7].artist.name}](${response.data.toptracks.track[7].artist.url}) (${response.data.toptracks.track[7].playcount} plays)
-9. [${response.data.toptracks.track[8].name}](${response.data.toptracks.track[8].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[8].artist.name}](${response.data.toptracks.track[8].artist.url}) (${response.data.toptracks.track[8].playcount} plays)
-10. [${response.data.toptracks.track[9].name}](${response.data.toptracks.track[9].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[9].artist.name}](${response.data.toptracks.track[9].artist.url}) (${response.data.toptracks.track[9].playcount} plays)`);
+	embed.setDescription(msg);
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };
 
 topartist = function topartist(message, embed, response) {
 	let responseA = response.data.topartists.artist;
-
-	if (!responseA[0]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[1]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[2]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[3]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[4]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[5]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[6]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[7]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[8]) {
-		console.log(`No Artist`);
-		return;
-	} if (!responseA[9]) {
-		console.log(`No Artist`);
-		return;
+	for (i = 0; i < responseA.length; i++) {
+		if (!responseA[i]) {
+			console.log(`No Artist`);
+			return;
+		}
+	}
+	let msg =  "";
+	for (i = 0; i < responseA.length; i++) {
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays)\n`;
 	}
 	embed.setColor("#33cc33");
-	embed.setDescription(`1. [${responseA[0].name}](${responseA[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[0].playcount} plays)
-2. [${responseA[1].name}](${responseA[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[1].playcount} plays)							
-3. [${responseA[2].name}](${responseA[2].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[2].playcount} plays)				
-4. [${responseA[3].name}](${responseA[3].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[3].playcount} plays)
-5. [${responseA[4].name}](${responseA[4].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[4].playcount} plays)
-6. [${responseA[5].name}](${responseA[5].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[5].playcount} plays)
-7. [${responseA[6].name}](${responseA[6].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[6].playcount} plays)
-8. [${responseA[7].name}](${responseA[7].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[7].playcount} plays)
-9. [${responseA[8].name}](${responseA[8].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[8].playcount} plays)
-10. [${responseA[9].name}](${responseA[9].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[9].playcount} plays)`);
+	embed.setDescription(msg);
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };
 
 topalbum = function topalbum(message, embed, response) {
 	let responseA = response.data.topalbums.album;
-
-	if (!responseA[0]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[1]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[2]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[3]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[4]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[5]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[6]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[7]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[8]) {
-		console.log(`No Album`);
-		return;
-	} if (!responseA[9]) {
-		console.log(`No Album`);
-		return;
+	for (i = 0; i < responseA.length; i++) {
+		if (!responseA[i]) {
+			console.log(`No Album`);
+			return;
+		}
+	}
+	let msg =  "";
+	for (i = 0; i < responseA.length; i++) {
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays)\n`;
 	}
 	embed.setColor("#33cc33");
-	embed.setDescription(`1. [${responseA[0].name}](${responseA[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[0].playcount} plays)
-2. [${responseA[1].name}](${responseA[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[1].playcount} plays)							
-3. [${responseA[2].name}](${responseA[2].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[2].playcount} plays)				
-4. [${responseA[3].name}](${responseA[3].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[3].playcount} plays)
-5. [${responseA[4].name}](${responseA[4].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[4].playcount} plays)
-6. [${responseA[5].name}](${responseA[5].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[5].playcount} plays)
-7. [${responseA[6].name}](${responseA[6].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[6].playcount} plays)
-8. [${responseA[7].name}](${responseA[7].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[7].playcount} plays)
-9. [${responseA[8].name}](${responseA[8].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[8].playcount} plays)
-10. [${responseA[9].name}](${responseA[9].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[9].playcount} plays)`);
+	embed.setDescription(msg);
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };
