@@ -583,7 +583,7 @@ toptracks = function toptracks(message, embed, response) {
 	}
 	let msg =  "";
 	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[i].artist.name}](${responseA[i].artist.url}) (${responseA[i].playcount} plays)\n`;
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
 	embed.setColor("#33cc33");
 	embed.setDescription(msg);
@@ -601,7 +601,7 @@ topartist = function topartist(message, embed, response) {
 	}
 	let msg =  "";
 	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays)\n`;
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
 	embed.setColor("#33cc33");
 	embed.setDescription(msg);
@@ -619,7 +619,7 @@ topalbum = function topalbum(message, embed, response) {
 	}
 	let msg =  "";
 	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays)\n`;
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
 	embed.setColor("#33cc33");
 	embed.setDescription(msg);
