@@ -20,7 +20,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Help command for Notifications
 	notifyHelp = function notifyHelp(message, prefix, embed) {
-		embed.addField(":round_pushpin: Notificatons", `\*\* ${prefix}notify\*\* - Shows this list of commands for notifications.
+		embed.addField(":round_pushpin: Notifications", `\*\* ${prefix}notify\*\* - Shows this list of commands for notifications.
 \*\* ${prefix}notify list\*\* - Direct messages a list of keywords for the server.
 \*\* ${prefix}notify clear\*\* - Removes all keywords for the server.
 \*\* ${prefix}notify add <keyword>\*\* - Adds a <keyword> to notify you about on the server.
@@ -73,7 +73,6 @@ module.exports = (bot = Discord.Client) => {
 	//Help for Greeter Commands
 	welcomeHelp = function welcomeHelp(message, prefix, embed) {
 		embed.addField(":wave: Greeter Commands", `\*\* ${prefix}greeter\*\* - Shows this list of commands for greeter.
-\*\* ${prefix}greeter help\*\* - Shows a detailed list of commands for greeter.
 \*\* ${prefix}greeter channel <channel name>\*\* - Sets the channel the bot should greeter new members in.
 \*\* ${prefix}greeter message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`);
 	};
