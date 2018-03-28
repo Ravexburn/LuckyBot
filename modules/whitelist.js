@@ -30,6 +30,7 @@ module.exports = (bot = Discord.Client) => {
 				}
 
 				else {
+					guild.owner.send("Your server is not currently whitelisted. Please join here to have Lucky Bot be added to your server. https://discord.gg/z4thPtW");
 					guild.leave();
 
 					const chan = serverLogging();
