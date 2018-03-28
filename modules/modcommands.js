@@ -159,11 +159,6 @@ module.exports = (bot = Discord.Client) => {
 			let embed;
 			switch (args[0].toLowerCase()) {
 
-				case "help":
-					console.log("Crash at greeter help");
-					message.channel.send("<:monkaS:372547459840475146> h-help");
-					break;
-
 				case "chan":
 				case "channel":
 					console.log("Crash at greeter chan");
