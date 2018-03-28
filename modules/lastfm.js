@@ -146,8 +146,8 @@ module.exports = (bot = Discord.Client) => {
 									.setColor("#33cc33")
 									.setThumbnail(albumcover)
 									.addField("Previous Album", album)
-									.addField("Previous Artist", `${response.data.recenttracks.track[0].artist["#text"]}`, true)
 									.addField("Previous Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
+									.addField("Previous Artist", response.data.recenttracks.track[0].artist["#text"], true)
 									.setTimestamp(message.createdAt)
 									.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 								sendEmbed(message, embed2);
@@ -158,10 +158,10 @@ module.exports = (bot = Discord.Client) => {
 								.setColor("#33cc33")
 								.setThumbnail(albumcover)
 								.addField("Album", album)
-								.addField("Artist", response.data.recenttracks.track[0].artist["#text"], true)
 								.addField("Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
-								.addField("Previous Artist", `${response.data.recenttracks.track[1].artist["#text"]}`, true)
+								.addField("Artist", response.data.recenttracks.track[0].artist["#text"], true)
 								.addField("Previous Song", `[${response.data.recenttracks.track[1].name}](${response.data.recenttracks.track[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
+								.addField("Previous Artist", response.data.recenttracks.track[1].artist["#text"], true)
 								.setTimestamp(message.createdAt)
 								.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 							sendEmbed(message, embed2);
