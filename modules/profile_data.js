@@ -14,6 +14,7 @@ const SQL_TITLE = "title";
 const SQL_BIRTHDAY_MONTH = "bday_month";
 const SQL_BIRTHDAY_DAY = "bday_day";
 const SQL_AGE = "age";
+const SQL_TICKETS = "tickets";
 
 const SQL_TABLE_LOCAL = "levels_local";
 const SQL_GUILD = "guild_id";
@@ -56,6 +57,7 @@ module.exports = class Profiles {
 						data[SQL_LEVEL] = 0;
 						data[SQL_REP] = 0;
 						data[SQL_TITLE] = null;
+						data[SQL_TICKETS] = 0;
 						data[SQL_USER_ID] = userID;
 						return Promise.resolve(data);
 					}
@@ -69,6 +71,7 @@ module.exports = class Profiles {
 					data[SQL_LEVEL] = row[SQL_LEVEL];
 					data[SQL_REP] = row[SQL_REP];
 					data[SQL_TITLE] = row[SQL_TITLE];
+					data[SQL_TICKETS] = row[SQL_TICKETS];
 					data[SQL_USER_ID] = row[SQL_USER_ID];
 					return Promise.resolve(data);
 				}).catch((reason) => {
@@ -76,13 +79,13 @@ module.exports = class Profiles {
 				});
 		};
 
-		this.setProfileData = function setProfileData(userID, level, exp, rep, background, bio, title, month, day, age) {
+		this.setProfileData = function setProfileData(userID, level, exp, rep, background, bio, title, month, day, age, tickets) {
 			return _dbExist()
 				.then((db) => {
-					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ?, ${SQL_REP} =?, ${SQL_BACKGROUND} =?, ${SQL_BIO} =?, ${SQL_TITLE} =?, ${SQL_BIRTHDAY_MONTH} =?, ${SQL_BIRTHDAY_DAY} =?, ${SQL_AGE} =? WHERE ${SQL_USER_ID} =?`, [level, exp, rep, background, bio, title, month, day, age, userID]);
+					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =?, ${SQL_EXP} = ?, ${SQL_REP} =?, ${SQL_BACKGROUND} =?, ${SQL_BIO} =?, ${SQL_TITLE} =?, ${SQL_BIRTHDAY_MONTH} =?, ${SQL_BIRTHDAY_DAY} =?, ${SQL_AGE} =?, ${SQL_TICKETS} WHERE ${SQL_USER_ID} =?`, [level, exp, rep, background, bio, title, month, day, age, tickets, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP}, ${SQL_REP}, ${SQL_BACKGROUND}, ${SQL_BIO}, ${SQL_TITLE}, ${SQL_BIRTHDAY_MONTH}, ${SQL_BIRTHDAY_DAY}, ${SQL_AGE}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [userID, level, exp, rep, background, bio, title, month, day, age]);
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP}, ${SQL_REP}, ${SQL_BACKGROUND}, ${SQL_BIO}, ${SQL_TITLE}, ${SQL_BIRTHDAY_MONTH}, ${SQL_BIRTHDAY_DAY}, ${SQL_AGE}, ${SQL_TICKETS}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [userID, level, exp, rep, background, bio, title, month, day, age, tickets]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);
@@ -116,6 +119,39 @@ module.exports = class Profiles {
 					}
 				}).then(() => {
 					return Promise.resolve(true);
+				}).catch((reason) => {
+					return Promise.reject(reason);
+				});
+		};
+
+		this.setLevelG = function setLevelG(userID, level) {
+			return _dbExist()
+				.then((db) => {
+					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =? WHERE ${SQL_USER_ID} =?`, [level, userID]);
+				}).then((statement) => {
+					if (statement.stmt.changes === 0) {
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL} VALUES (?, ?)`, [userID, level]);
+					}
+				}).then(() => {
+					return Promise.resolve(true);
+				}).catch((reason) => {
+					return Promise.reject(reason);
+				});
+		};
+
+		this.sortLevels = function sortLevels(limit) {
+			return _dbExist()
+				.then((db) => {
+					return db.all(`SELECT ${SQL_USER_ID}, ${SQL_LEVEL} FROM ${SQL_TABLE_PROFILE} ORDER BY ${SQL_LEVEL} DESC LIMIT ${limit}`);
+				}).then((rows) => {
+					let arr = [];
+					rows.forEach(row => {
+						let data = {};
+						data[SQL_USER_ID] = row[SQL_USER_ID];
+						data[SQL_LEVEL] = row[SQL_LEVEL];
+						arr.push(data);
+					});
+					return Promise.resolve(arr);	
 				}).catch((reason) => {
 					return Promise.reject(reason);
 				});
@@ -186,7 +222,8 @@ function _initGlobal() {
         ${SQL_TITLE} TEXT,
         ${SQL_BIRTHDAY_MONTH} INTEGER,
         ${SQL_BIRTHDAY_DAY} INTEGER,
-        ${SQL_AGE} INTEGER,
+		${SQL_AGE} INTEGER,
+		${SQL_TICKETS} INTEGER,
         PRIMARY KEY ('${SQL_USER_ID}')
     )`;
 

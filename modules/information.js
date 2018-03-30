@@ -76,6 +76,11 @@ module.exports = (bot = Discord.Client) => {
 			tempLevelProfile(message, args);
 		}
 
+		if(command == `${prefix}leaderboard`){
+			leaderboardGlobal(message, args);
+		}
+
+
 		//Command help
 
 		if (command === `${prefix}help`) {

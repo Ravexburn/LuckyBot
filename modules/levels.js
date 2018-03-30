@@ -109,8 +109,43 @@ module.exports = (bot = Discord.Client) => {
 					.addField("Global Level", glevel, true)
 					.setFooter("Prototype Profile");
 				message.channel.send(embed);
-			})
-			.catch((error) => {
+			}).catch((error) => {
+				console.log(error);
+			});
+	};
+
+	leaderboardGlobal = async function leaderboardGlobal(message) {
+		let limit = 25;
+		profile.sortLevels(limit)
+			.then(async (data) => {
+				console.log(data);
+				let arr = [];
+				for (i = 0; i < data.length; i++) {
+					let userID = data[i].user_id;
+					let level = data[i].level;
+					console.log(userID);
+					let user = bot.users.get(userID);
+					let name = "";
+					if(!user){
+						user = await bot.fetchUser(userID);
+					}
+					if (!user) {
+						name = userID;
+					}else{
+						name = user.username;
+					}
+					let rank = (i + 1 < 10) ? ` ${i + 1}`: `${i + 1}`;
+					let str = `${rank}.  ${name} (${level})`;
+					arr.push(str);
+				}
+				return Promise.resolve(arr);
+			}).then((arr) => {
+				let embed = new Discord.RichEmbed()
+					.setAuthor("Global Leaderboard")
+					.setTitle("Rank - User - Level", true)
+					.setDescription("```css\n" + arr.join("\n") + "```");
+				message.channel.send(embed);
+			}).catch((error) => {
 				console.log(error);
 			});
 	};
