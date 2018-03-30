@@ -26,7 +26,6 @@ bot.on("ready", async () => {
 	} catch (error) {
 		bot.log(error.stack);
 	}
-
 	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
 	bot.guilds.forEach(guild => {
 		bot.invCache.guildInvites(guild).catch(console.error);
@@ -36,7 +35,6 @@ bot.on("ready", async () => {
 //When the bot joins a server.
 
 bot.on("guildCreate", guild => {
-	bot.initServerSettings(guild.id);
 	bot.invCache.guildInvites(guild).catch(console.error);
 	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
 	guildCreateHandler(guild);
@@ -45,7 +43,6 @@ bot.on("guildCreate", guild => {
 //When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
-	// bot.delServerSettings(guild.id);
 	console.log(guild.id);
 	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
 });
