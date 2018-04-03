@@ -124,6 +124,21 @@ module.exports = class Profiles {
 				});
 		};
 
+		this.setCur = function setCur(userID, tickets) {
+			return _dbExist()
+				.then((db) => {
+					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_TICKETS} =? WHERE ${SQL_USER_ID} =?`, [tickets, userID]);
+				}).then((statement) => {
+					if (statement.stmt.changes === 0) {
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_TICKETS} VALUES (?, ?)`, [userID, tickets]);
+					}
+				}).then(() => {
+					return Promise.resolve(true);
+				}).catch((reason) => {
+					return Promise.reject(reason);
+				});
+		};
+
 		this.setLevelG = function setLevelG(userID, level) {
 			return _dbExist()
 				.then((db) => {
@@ -197,7 +212,23 @@ module.exports = class Profiles {
 				});
 		};
 
-
+		this.sortLevelsLocal = function sortLevelsLocal(guildID, limit) {
+			return _dbExist()
+				.then((db) => {
+					return db.all(`SELECT ${SQL_USER_ID}, ${SQL_LEVEL} FROM ${SQL_TABLE_LOCAL} WHERE ${SQL_GUILD} = ? ORDER BY ${SQL_LEVEL} DESC LIMIT ${limit}`, [guildID]);
+				}).then((rows) => {
+					let arr = [];
+					rows.forEach(row => {
+						let data = {};
+						data[SQL_USER_ID] = row[SQL_USER_ID];
+						data[SQL_LEVEL] = row[SQL_LEVEL];
+						arr.push(data);
+					});
+					return Promise.resolve(arr);	
+				}).catch((reason) => {
+					return Promise.reject(reason);
+				});
+		};
 	}
 
 };

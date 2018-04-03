@@ -6,7 +6,7 @@ const profile = new Profile();
 const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
 const timerProvider = new EnmapLevel({ name: 'timer' });
-timer = new Enmap({ provider: timerProvider });
+const timer = new Enmap({ provider: timerProvider });
 const MSG_TIME = 60000;
 
 module.exports = (bot = Discord.Client) => {
@@ -63,7 +63,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 	};
 
-	tempLevelProfile = function tempLevelProfile(message, args) {
+	tempLevelProfile = async function tempLevelProfile(message, args) {
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
@@ -71,7 +71,7 @@ module.exports = (bot = Discord.Client) => {
 		let level;
 		let nextExp;
 		let glevel;
-		let userID = message.author.id;
+		let userID = null;
 		let guild = message.guild;
 
 		if (args.length !== 0) {
@@ -83,30 +83,39 @@ module.exports = (bot = Discord.Client) => {
 				userID = args[0];
 			}
 		}
-		let target = message.member.id;
+
+		let target = message.member;
+
 		if (message.guild.members.has(userID)) {
 			target = message.guild.member(userID);
 		}
-		if (!target) return;
+
+		if (!target) {
+			target = await bot.fetchUser(userID);
+		}
 		let member = target;
 
-		profile.getProfileLevelLocal(userID, guild.id)
+		profile.getProfileLevelLocal(member.id, guild.id)
 			.then((data) => {
 				xp = data.exp;
 				level = data.level;
 				nextExp = nextLevelLocal(level);
 			}).then(() => {
-				return profile.getProfileData(userID);
+				return profile.getProfileData(member.id);
 			}).then((data) => {
 				glevel = data.level;
+				ticket = data.tickets;
+				rep = data.rep;
 			}).then(() => {
 				let embed = new Discord.RichEmbed()
 					.setAuthor(member.user.tag, member.user.displayAvatarURL.split("?")[0])
 					.setTitle("Profile")
 					.setColor("#FF6347")
-					.addField("Level", level, true)
-					.addField("Exp", `${xp}/${nextExp}`, true)
+					.addField("Local Level", level, true)
+					.addField("Local Exp", `${xp}/${nextExp}`, true)
 					.addField("Global Level", glevel, true)
+					.addField("Tickets", ticket, true)
+					.addField("Rep", rep, true)
 					.setFooter("Prototype Profile");
 				message.channel.send(embed);
 			}).catch((error) => {
@@ -118,23 +127,21 @@ module.exports = (bot = Discord.Client) => {
 		let limit = 25;
 		profile.sortLevels(limit)
 			.then(async (data) => {
-				console.log(data);
 				let arr = [];
 				for (i = 0; i < data.length; i++) {
 					let userID = data[i].user_id;
 					let level = data[i].level;
-					console.log(userID);
 					let user = bot.users.get(userID);
 					let name = "";
-					if(!user){
+					if (!user) {
 						user = await bot.fetchUser(userID);
 					}
 					if (!user) {
 						name = userID;
-					}else{
+					} else {
 						name = user.username;
 					}
-					let rank = (i + 1 < 10) ? ` ${i + 1}`: `${i + 1}`;
+					let rank = (i + 1 < 10) ? ` ${i + 1}` : `${i + 1}`;
 					let str = `${rank}.  ${name} (${level})`;
 					arr.push(str);
 				}
@@ -142,6 +149,44 @@ module.exports = (bot = Discord.Client) => {
 			}).then((arr) => {
 				let embed = new Discord.RichEmbed()
 					.setAuthor("Global Leaderboard")
+					.setColor("#fa4384")
+					.setTitle("Rank - User - Level", true)
+					.setDescription("```css\n" + arr.join("\n") + "```");
+				message.channel.send(embed);
+			}).catch((error) => {
+				console.log(error);
+			});
+	};
+
+	leaderboardLocal = async function leaderboardLocal(message) {
+		let limit = 25;
+		let guild = message.guild;
+		profile.sortLevelsLocal(guild.id, limit)
+			.then(async (data) => {
+				console.log(data);
+				let arr = [];
+				for (i = 0; i < data.length; i++) {
+					let userID = data[i].user_id;
+					let level = data[i].level;
+					let user = bot.users.get(userID);
+					let name = "";
+					if (!user) {
+						user = await bot.fetchUser(userID);
+					}
+					if (!user) {
+						name = userID;
+					} else {
+						name = user.username;
+					}
+					let rank = (i + 1 < 10) ? ` ${i + 1}` : `${i + 1}`;
+					let str = `${rank}.  ${name} (${level})`;
+					arr.push(str);
+				}
+				return Promise.resolve(arr);
+			}).then((arr) => {
+				let embed = new Discord.RichEmbed()
+					.setAuthor(`Leaderboard for ${guild.name}`)
+					.setColor("#fa4384")
 					.setTitle("Rank - User - Level", true)
 					.setDescription("```css\n" + arr.join("\n") + "```");
 				message.channel.send(embed);
