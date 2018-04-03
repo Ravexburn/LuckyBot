@@ -9,21 +9,15 @@ module.exports = (bot = Discord.Client) => {
 	userInfo = function userInfo(message, args) {
 
 		let target_id = null;
-
 		if (args.length !== 0) {
-
 			const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
-
 			if (matches) {
 				target_id = matches[1];
 			}
-
 			if (!target_id) {
 				target_id = args[0];
 			}
-
 		}
-
 		let target = message.member;
 
 		if (message.guild.members.has(target_id)) {
