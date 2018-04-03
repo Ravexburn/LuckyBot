@@ -8,6 +8,7 @@ module.exports = (bot = Discord.Client) => {
 	require("./../functions/helpfunctions.js")(bot);
 	require("./../functions/infofunctions.js")(bot);
 	require("./levels.js")(bot);
+	require("./currency.js")(bot);
 
 	infoMsg = async function infoMsg(message) {
 
@@ -72,14 +73,27 @@ module.exports = (bot = Discord.Client) => {
 
 		//Temp profile
 
-		if (command === `${prefix}profile`){
+		if (command === `${prefix}profile`) {
 			tempLevelProfile(message, args);
 		}
 
-		if(command == `${prefix}leaderboard`){
-			leaderboardGlobal(message, args);
+		if (command === `${prefix}daily`) {
+			curFunction(message);
 		}
 
+		if (command == `${prefix}leaderboard`) {
+			switch (args[0]) {
+				default:
+				case "local":
+					leaderboardLocal(message, args);
+					break;
+
+				case "global":
+					leaderboardGlobal(message, args);
+					break;
+			}
+			return;
+		}
 
 		//Command help
 
