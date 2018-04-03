@@ -626,3 +626,22 @@ topalbum = function topalbum(message, embed, response) {
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };
+
+
+
+
+
+
+
+/* //now playing stuff
+let embed2 = new Discord.RichEmbed()
+.setAuthor(`${username} - Now Playing`, message.author.displayAvatarURL.split("?")[0])
+.setColor("#33cc33")
+.setThumbnail(albumcover)
+.addField("Album", album)
+.addField("Song - Artist", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) - ${response.data.recenttracks.track[0].artist["#text"]}`, true)
+.addField("Previous Song - Artist", `[${response.data.recenttracks.track[1].name}](${response.data.recenttracks.track[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) - ${response.data.recenttracks.track[1].artist["#text"]}`, true)
+.setTimestamp(message.createdAt)
+.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
+sendEmbed(message, embed2);
+return; */

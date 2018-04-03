@@ -351,14 +351,14 @@ module.exports = (bot = Discord.Client) => {
 								.then((result) => {
 									switch (result) {
 										case 1:
-											message.author.send(`You will no longer recieve notifications from ${channel}`);
+											message.author.send(`You will no longer receive notifications from ${channel}`);
 											break;
 										case -1:
-											message.author.send(`You will now recieve notifications from ${channel}`);
+											message.author.send(`You will now receive notifications from ${channel}`);
 											break;
 
 										default:
-											 embed = new Discord.RichEmbed()
+											embed = new Discord.RichEmbed()
 												.setTitle("Notification Help")
 												.setColor("#b19cd9")
 												.setFooter("If you have any other questions please contact Rave#0737");
@@ -378,11 +378,11 @@ module.exports = (bot = Discord.Client) => {
 									let embed;
 									switch (result) {
 										case 1:
-											message.author.send(`You will no longer recieve notifications from ${guild}`);
+											message.author.send(`You will no longer receive notifications from ${guild}`);
 											break;
 
 										case -1:
-											message.author.send(`You will now recieve notifications from ${guild}`);
+											message.author.send(`You will now receive notifications from ${guild}`);
 											break;
 
 										default:
