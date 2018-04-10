@@ -10,6 +10,8 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}userinfo\*\* - Shows a user's information.
 \*\* ${prefix}serverinfo\*\* - Shows the server's information.
 \*\* ${prefix}profile\*\* - Shows the profile for the user.
+\*\* ${prefix}ticket\*\* - Adds a ticket to your account once every 6 hours. Can be used for badges.
+\*\* ${prefix}rep <user or id>\*\* - Give someone a reputation point!.
 \*\* ${prefix}botinfo\*\* - Shows Lucky Bot's information.
 \*\* ${prefix}invite\*\* - Info on how to get Lucky Bot for your server.
 \*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
