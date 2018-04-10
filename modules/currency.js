@@ -29,7 +29,7 @@ module.exports = (bot = Discord.Client) => {
 				.then((data) => {
 					let tickets = data.tickets;
 					tickets = tickets + 1;
-					message.channel.send("A ticket has been added to your account!");
+					message.channel.send("A ticket has been added to your account! <:rooDuck:432962760570044417>");
 					profile.setCur(userID, tickets);
 				}).catch((error) => {
 					console.log(error);
@@ -42,7 +42,7 @@ module.exports = (bot = Discord.Client) => {
 			let minutes = time % 60;
 			time = Math.floor(time / 60);
 			let hours = time % 24;
-			message.channel.send(`**Please wait ${hours}h ${minutes}m and ${seconds}s for a new ticket!**`);
+			message.channel.send(`**Please wait ${hours}h ${minutes}m and ${seconds}s for a new ticket! <:rooScared:433018721326596117>**`);
 		}
 	};
 };
