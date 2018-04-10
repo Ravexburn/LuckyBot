@@ -22,14 +22,17 @@ module.exports = (bot = Discord.Client) => {
 		if (!repTimer) {
 			repTimer = 0;
 		}
+
+		if (args.length === 0){
+			message.channel.send("Please give me someone to rep!");
+			return;
+		}
+
 		const timedif = message.createdTimestamp - repTimer;
 		if (repTimer <= message.createdTimestamp && timedif >= MSG_TIME) {
 			repTimer = message.createdTimestamp;
 			rep.set(userID, repTimer);
-			if (args.length === 0){
-				message.channel.send("Please give me someone to rep!");
-				return;
-			}
+	
 			if (args.length !== 0) {
 				const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 				if (matches) {
