@@ -9,6 +9,7 @@ module.exports = (bot = Discord.Client) => {
 	require("./../functions/infofunctions.js")(bot);
 	require("./levels.js")(bot);
 	require("./currency.js")(bot);
+	require("./rep.js")(bot);
 
 	infoMsg = async function infoMsg(message) {
 
@@ -77,8 +78,12 @@ module.exports = (bot = Discord.Client) => {
 			tempLevelProfile(message, args);
 		}
 
-		if (command === `${prefix}daily`) {
+		if (command === `${prefix}ticket`) {
 			curFunction(message);
+		}
+
+		if (command === `${prefix}rep`) {
+			repFunction(message, args);
 		}
 
 		if (command == `${prefix}leaderboard`) {
@@ -95,14 +100,13 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		//Command help
+		//Command help To learn more about a command use ${prefix}help <command name>
 
 		if (command === `${prefix}help`) {
-			console.log("Crash at help");
 			let embed = new Discord.RichEmbed()
 				.setTitle("List of Commands")
 				.setColor("#17487d")
-				.setFooter("If you have any other questions please contact Rave#0737");
+				.setFooter(`If you have any other questions please contact Rave#0737`);
 			generalHelp(message, prefix, embed);
 			notifyHelp(message, prefix, embed);
 			commandsHelp(message, prefix, embed);
