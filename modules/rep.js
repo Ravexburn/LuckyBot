@@ -14,6 +14,11 @@ module.exports = (bot = Discord.Client) => {
 		if (message.author.bot) return;
 		let repped = null;
 
+		if (args.length === 0){
+			message.channel.send("Please give me someone to rep!");
+			return;
+		}
+
 		let userID = message.author.id;
 		if (!rep.has(userID)) {
 			rep.set(userID, 0);
@@ -21,11 +26,6 @@ module.exports = (bot = Discord.Client) => {
 		let repTimer = rep.get(userID);
 		if (!repTimer) {
 			repTimer = 0;
-		}
-
-		if (args.length === 0){
-			message.channel.send("Please give me someone to rep!");
-			return;
 		}
 
 		const timedif = message.createdTimestamp - repTimer;
