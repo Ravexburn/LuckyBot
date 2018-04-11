@@ -30,7 +30,6 @@ module.exports = (bot = Discord.Client) => {
 				message.channel.send("Please give me someone to rep! <:rooGun:433064572761538561>");
 				return;
 			}
-			rep.set(userID, repTimer);
 	
 			if (args.length !== 0) {
 				const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
@@ -64,6 +63,7 @@ module.exports = (bot = Discord.Client) => {
 				return;
 			}
 
+			rep.set(userID, repTimer);
 			profile.getProfileData(member.id)
 				.then((data) => {
 					let rep = data.rep;
