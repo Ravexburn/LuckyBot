@@ -29,28 +29,24 @@ module.exports = (bot = Discord.Client) => {
 		//User Info Settings
 
 		if (command === `${prefix}userinfo`) {
-			console.log("Crash at userinfo");
 			userInfo(message, args);
 		}
 
 		//Server Info Settings
 
 		if (command === `${prefix}serverinfo`) {
-			console.log("Crash at serverinfo");
 			serverInfo(message);
 		}
 
 		//Bot Info
 
 		if (command === `${prefix}botinfo` || command === `${prefix}about` || command === `${prefix}info`) {
-			console.log("Crash at botinfo");
 			botInfo(message, prefix);
 		}
 
 		//Trello
 
 		if (command === `${prefix}trello`) {
-			console.log("Crash at trello");
 			message.channel.send(`View upcoming features here: ${link}`);
 			return;
 		}
@@ -58,7 +54,6 @@ module.exports = (bot = Discord.Client) => {
 		//Github
 
 		if ((command === `${prefix}github`) || (command === `${prefix}git`)) {
-			console.log("Crash at git");
 			message.channel.send(`View upcoming features here: ${link2}`);
 			return;
 		}
@@ -66,7 +61,6 @@ module.exports = (bot = Discord.Client) => {
 		//Invite
 
 		if ((command === `${prefix}invite`) || (command === `${prefix}inv`)) {
-			console.log("Crash at invite");
 			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`);
 			message.author.send(`Want Lucky Bot for your server? Have any questions on how to use Lucky Bot? Join here ${invite}`);
 			return;
@@ -117,7 +111,6 @@ module.exports = (bot = Discord.Client) => {
 		//Suggestions
 
 		if (command === `${prefix}suggestion` || command === `${prefix}suggest` || command === `${prefix}sgt`) {
-			console.log("Crash at suggestion");
 			const chan = getSuggestionChannel();
 			if (!chan) {
 				//Stuffs
@@ -148,7 +141,6 @@ module.exports = (bot = Discord.Client) => {
 
 		//Issues
 		if (command === `${prefix}issue` || command === `${prefix}issues` || command === `${prefix}isu`) {
-			console.log("Crash at issue");
 			const chan = getIssueChannel();
 			if (!chan) {
 				//Stuffs
