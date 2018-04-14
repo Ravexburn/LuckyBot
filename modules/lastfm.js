@@ -73,6 +73,8 @@ module.exports = (bot = Discord.Client) => {
 			let embed;
 			let userID;
 			let username;
+			let target;
+			let member;
 			//Cases for LF
 			switch (args[0]) {
 				//Help
@@ -117,7 +119,29 @@ module.exports = (bot = Discord.Client) => {
 				case "np":
 				case "nowplaying":
 					userID = message.author.id;
-					lastfm.getLastfmData(userID)
+
+					if (args.length !== 1) {
+						const matches = args[1].match(new RegExp(`<@!?(\\d+)>`));
+						if (matches) {
+							userID = matches[1];
+						}
+						if (!userID) {
+							userID = args[1];
+						}
+					}
+
+					target = message.member;
+
+					if (message.guild.members.has(userID)) {
+						target = message.guild.member(userID);
+					}
+
+					if (!target) {
+						target = await bot.fetchUser(userID);
+					}
+					member = target;
+
+					lastfm.getLastfmData(member.id)
 						.then((data) => {
 							if (data.username !== null) {
 								let username = data.username;
@@ -153,7 +177,7 @@ module.exports = (bot = Discord.Client) => {
 									}
 									if (!response.data.recenttracks.track[0]["@attr"]) {
 										let embed2 = new Discord.RichEmbed()
-											.setAuthor(`${username} - No Current Song`, message.author.displayAvatarURL.split("?")[0])
+											.setAuthor(`${username} - No Current Song`, member.user.displayAvatarURL.split("?")[0])
 											.setColor("#33cc33")
 											.setThumbnail(albumcover)
 											.addField("Previous Album", album)
@@ -165,7 +189,7 @@ module.exports = (bot = Discord.Client) => {
 										return;
 									}
 									let embed2 = new Discord.RichEmbed()
-										.setAuthor(`${username} - Now Playing`, message.author.displayAvatarURL.split("?")[0])
+										.setAuthor(`${username} - Now Playing`, member.user.displayAvatarURL.split("?")[0])
 										.setColor("#33cc33")
 										.setThumbnail(albumcover)
 										.addField("Album", album)
@@ -195,7 +219,29 @@ module.exports = (bot = Discord.Client) => {
 				case "toptrack":
 				case "toptracks":
 					userID = message.author.id;
-					lastfm.getLastfmData(userID)
+
+					if (args.length !== 1) {
+						const matches = args[1].match(new RegExp(`<@!?(\\d+)>`));
+						if (matches) {
+							userID = matches[1];
+						}
+						if (!userID) {
+							userID = args[1];
+						}
+					}
+
+					target = message.member;
+
+					if (message.guild.members.has(userID)) {
+						target = message.guild.member(userID);
+					}
+
+					if (!target) {
+						target = await bot.fetchUser(userID);
+					}
+					member = target;
+
+					lastfm.getLastfmData(member.id)
 						.then((data) => {
 							if (data.username !== null) {
 								let username = data.username;
@@ -217,7 +263,7 @@ module.exports = (bot = Discord.Client) => {
 												return;
 											}
 											embedAlltime = new Discord.RichEmbed()
-												.setAuthor(`${username}'s All Time Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s All Time Top Tracks`, member.user.displayAvatarURL.split("?")[0]);
 											toptracks(message, embedAlltime, response);
 										}).catch((error) => {
 											console.log(error);
@@ -238,7 +284,7 @@ module.exports = (bot = Discord.Client) => {
 												return;
 											}
 											embedWeek = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Weekly Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Weekly Top Tracks`, member.user.displayAvatarURL.split("?")[0]);
 											toptracks(message, embedWeek, response);
 										}).catch((error) => {
 											console.log(error);
@@ -259,7 +305,7 @@ module.exports = (bot = Discord.Client) => {
 												return;
 											}
 											embedMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Monthly Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Monthly Top Tracks`, member.user.displayAvatarURL.split("?")[0]);
 											toptracks(message, embedMonth, response);
 										}).catch((error) => {
 											console.log(error);
@@ -280,7 +326,7 @@ module.exports = (bot = Discord.Client) => {
 												return;
 											}
 											embedTMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 3 Month Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s 3 Month Top Tracks`, member.user.displayAvatarURL.split("?")[0]);
 											toptracks(message, embedTMonth, response);
 										}).catch((error) => {
 											console.log(error);
@@ -302,7 +348,7 @@ module.exports = (bot = Discord.Client) => {
 												return;
 											}
 											embedHalf = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 6 Month Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s 6 Month Top Tracks`, member.user.displayAvatarURL.split("?")[0]);
 											toptracks(message, embedHalf, response);
 										}).catch((error) => {
 											console.log(error);
@@ -323,7 +369,7 @@ module.exports = (bot = Discord.Client) => {
 												return;
 											}
 											embedYear = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Yearly Top Tracks`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Yearly Top Tracks`, member.user.displayAvatarURL.split("?")[0]);
 											toptracks(message, embedYear, response);
 										}).catch((error) => {
 											console.log(error);
@@ -344,7 +390,29 @@ module.exports = (bot = Discord.Client) => {
 				case "topartist":
 				case "topartists":
 					userID = message.author.id;
-					lastfm.getLastfmData(userID)
+
+					if (args.length !== 1) {
+						const matches = args[1].match(new RegExp(`<@!?(\\d+)>`));
+						if (matches) {
+							userID = matches[1];
+						}
+						if (!userID) {
+							userID = args[1];
+						}
+					}
+
+					target = message.member;
+
+					if (message.guild.members.has(userID)) {
+						target = message.guild.member(userID);
+					}
+
+					if (!target) {
+						target = await bot.fetchUser(userID);
+					}
+					member = target;
+
+					lastfm.getLastfmData(member.id)
 						.then((data) => {
 							if (data.username !== null) {
 								let username = data.username;
@@ -362,7 +430,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedAlltime = new Discord.RichEmbed()
-												.setAuthor(`${username}'s All Time Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s All Time Top Artist`, member.user.displayAvatarURL.split("?")[0]);
 											topartist(message, embedAlltime, response);
 										}).catch((error) => {
 											console.log(error);
@@ -379,7 +447,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedWeek = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Weekly Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Weekly Top Artist`, member.user.displayAvatarURL.split("?")[0]);
 											topartist(message, embedWeek, response);
 										}).catch((error) => {
 											console.log(error);
@@ -396,7 +464,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Monthly Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Monthly Top Artist`, member.user.displayAvatarURL.split("?")[0]);
 											topartist(message, embedMonth, response);
 										}).catch((error) => {
 											console.log(error);
@@ -413,7 +481,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedTMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 3 Month Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s 3 Month Top Artist`, member.user.displayAvatarURL.split("?")[0]);
 											topartist(message, embedTMonth, response);
 										}).catch((error) => {
 											console.log(error);
@@ -431,7 +499,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedHalf = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 6 Month Top Artist`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s 6 Month Top Artist`, member.user.displayAvatarURL.split("?")[0]);
 											topartist(message, embedHalf, response);
 										}).catch((error) => {
 											console.log(error);
@@ -448,7 +516,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedYear = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Yearly Top Artists`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Yearly Top Artists`, member.user.displayAvatarURL.split("?")[0]);
 											topartist(message, embedYear, response);
 										}).catch((error) => {
 											console.log(error);
@@ -469,7 +537,29 @@ module.exports = (bot = Discord.Client) => {
 				case "topalbum":
 				case "topalbums":
 					userID = message.author.id;
-					lastfm.getLastfmData(userID)
+
+					if (args.length !== 1) {
+						const matches = args[1].match(new RegExp(`<@!?(\\d+)>`));
+						if (matches) {
+							userID = matches[1];
+						}
+						if (!userID) {
+							userID = args[1];
+						}
+					}
+
+					target = message.member;
+
+					if (message.guild.members.has(userID)) {
+						target = message.guild.member(userID);
+					}
+
+					if (!target) {
+						target = await bot.fetchUser(userID);
+					}
+					member = target;
+
+					lastfm.getLastfmData(member.id)
 						.then((data) => {
 							if (data.username !== null) {
 								let username = data.username;
@@ -487,7 +577,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedAlltime = new Discord.RichEmbed()
-												.setAuthor(`${username}'s All Time Top Albums`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s All Time Top Albums`, member.user.displayAvatarURL.split("?")[0]);
 											topalbum(message, embedAlltime, response);
 										}).catch((error) => {
 											console.log(error);
@@ -504,7 +594,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedWeek = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Weekly Top Albums`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Weekly Top Albums`, member.user.displayAvatarURL.split("?")[0]);
 											topalbum(message, embedWeek, response);
 										}).catch((error) => {
 											console.log(error);
@@ -521,7 +611,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Monthly Top Albums`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Monthly Top Albums`, member.user.displayAvatarURL.split("?")[0]);
 											topalbum(message, embedMonth, response);
 										}).catch((error) => {
 											console.log(error);
@@ -538,7 +628,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedTMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 3 Month Top Albums`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s 3 Month Top Albums`, member.user.displayAvatarURL.split("?")[0]);
 											topalbum(message, embedTMonth, response);
 										}).catch((error) => {
 											console.log(error);
@@ -556,7 +646,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedHalf = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 6 Month Top Albums`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s 6 Month Top Albums`, member.user.displayAvatarURL.split("?")[0]);
 											topalbum(message, embedHalf, response);
 										}).catch((error) => {
 											console.log(error);
@@ -573,7 +663,7 @@ module.exports = (bot = Discord.Client) => {
 												return Promise.reject(response.message);
 											}
 											embedYear = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Yearly Top Albums`, message.author.displayAvatarURL.split("?")[0]);
+												.setAuthor(`${username}'s Yearly Top Albums`, member.user.displayAvatarURL.split("?")[0]);
 											topalbum(message, embedYear, response);
 										}).catch((error) => {
 											console.log(error);
