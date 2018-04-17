@@ -219,7 +219,13 @@ module.exports = (bot = Discord.Client) => {
 				case "top-tracks":
 					userID = message.author.id;
 
-					if (args.length >= 3) {
+					if (args.length == 3) { //lf tt week <mention/id>
+						if (message.mentions.users.first() != undefined) {
+							userID = message.mentions.users.first().id;
+						} else if (message.mentions.users.first() == undefined) {
+							userID = args[args.length - 1];
+						}
+					} else if (args.length == 2) { //!lf tt <mention/id>
 						if (message.mentions.users.first() != undefined) {
 							userID = message.mentions.users.first().id;
 						} else if (message.mentions.users.first() == undefined) {
@@ -271,7 +277,7 @@ module.exports = (bot = Discord.Client) => {
 									case "week":
 									case "7-day":
 									case "7day":
-									case "weekly":	
+									case "weekly":
 										time = "7day";
 										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 										axios.get(url3).then(response => {
@@ -401,7 +407,13 @@ module.exports = (bot = Discord.Client) => {
 				case "top-artists":
 					userID = message.author.id;
 
-					if (args.length >= 3) {
+					if (args.length == 3) { //lf tt week <mention/id>
+						if (message.mentions.users.first() != undefined) {
+							userID = message.mentions.users.first().id;
+						} else if (message.mentions.users.first() == undefined) {
+							userID = args[args.length - 1];
+						}
+					} else if (args.length == 2) { //!lf tt <mention/id>
 						if (message.mentions.users.first() != undefined) {
 							userID = message.mentions.users.first().id;
 						} else if (message.mentions.users.first() == undefined) {
@@ -418,7 +430,6 @@ module.exports = (bot = Discord.Client) => {
 					if (!target) {
 						target = await bot.fetchUser(userID);
 					}
-
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -559,7 +570,13 @@ module.exports = (bot = Discord.Client) => {
 				case "top-albums":
 					userID = message.author.id;
 
-					if (args.length >= 3) {
+					if (args.length == 3) { //lf tt week <mention/id>
+						if (message.mentions.users.first() != undefined) {
+							userID = message.mentions.users.first().id;
+						} else if (message.mentions.users.first() == undefined) {
+							userID = args[args.length - 1];
+						}
+					} else if (args.length == 2) { //!lf tt <mention/id>
 						if (message.mentions.users.first() != undefined) {
 							userID = message.mentions.users.first().id;
 						} else if (message.mentions.users.first() == undefined) {
@@ -722,7 +739,6 @@ module.exports = (bot = Discord.Client) => {
 	};
 };
 
-
 toptracks = function toptracks(message, embed, response) {
 	let responseA = response.data.toptracks.track;
 	for (i = 0; i < responseA.length; i++) {
@@ -776,4 +792,3 @@ topalbum = function topalbum(message, embed, response) {
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };
-
