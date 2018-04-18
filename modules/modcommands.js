@@ -4,7 +4,6 @@ module.exports = (bot = Discord.Client) => {
 
 	require("./../functions/modchanfunctions.js")(bot);
 	require("./../functions/modcmdfunctions.js")(bot);
-	//require("./../functions/modlogfunctions.js")(bot);
 	require("./../functions/modtogfunctions.js")(bot);
 	require("./../functions/ownercmdfunctions.js")(bot);
 	require("./relays.js")(bot);
@@ -36,14 +35,12 @@ module.exports = (bot = Discord.Client) => {
 		//Prefix
 
 		if ((command === `${prefix}setprefix`)) {
-			console.log("Crash at setprefix");
 			setPrefix(message, command, args, serverSettings);
 		}
 
 		//Starting logs, roles, join, and music
 
 		if ((command === `${prefix}start`)) {
-			console.log("Crash at start");
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed()
 					.setColor("#2ecc71")
@@ -61,21 +58,18 @@ module.exports = (bot = Discord.Client) => {
 
 				case "logs":
 				case "messagelogs":
-					console.log("Crash at logs");
 					logChan(message);
 					break;
 
 				//Roles
 
 				case "roles":
-					console.log("Crash at roles");
 					rolesChan(message, serverSettings, command);
 					break;
 
 				//Join
 
 				case "join":
-					console.log("Crash at join");
 					joinChan(message, serverSettings, command);
 					break;
 
@@ -93,7 +87,6 @@ module.exports = (bot = Discord.Client) => {
 		//Toggles
 
 		if ((command === `${prefix}toggle`)) {
-			console.log("Crash at toggle");
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed()
 					.setColor("#3498db")
@@ -109,25 +102,21 @@ module.exports = (bot = Discord.Client) => {
 
 				//Toggle Image Embed
 				case "image":
-					console.log("Crash at image");
 					imgTog(message, serverSettings);
 					return;
 
 				//Toggle Logs
 				case "logs":
-					console.log("Crash at toggle logs");
 					logsTog(message, serverSettings);
 					return;
 
 				//Toggle Greeter     
 				case "greeter":
-					console.log("Crash at toggle greeter");
 					welTog(message, serverSettings);
 					return;
 
 				//Toggle Roles  
 				case "roles":
-					console.log("Crash at toggle roles");
 					rolesTog(message, serverSettings);
 					return;
 
@@ -145,7 +134,6 @@ module.exports = (bot = Discord.Client) => {
 		//Greeter setup
 
 		if ((command === `${prefix}greeter`)) {
-			console.log("Crash at greeter");
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed()
 					.setColor("#ff8533")
@@ -161,13 +149,11 @@ module.exports = (bot = Discord.Client) => {
 
 				case "chan":
 				case "channel":
-					console.log("Crash at greeter chan");
 					welChan(message, serverSettings, command);
 					break;
 
 				case "msg":
 				case "message":
-					console.log("Crash at greeter chan");
 					welMsg(message, command, args, serverSettings);
 					break;
 
@@ -185,35 +171,30 @@ module.exports = (bot = Discord.Client) => {
 		//Ban Command
 
 		if ((command === `${prefix}ban`)) {
-			console.log("Crash at ban");
 			banUser(message, command, args, perms);
 		}
 
 		//Kick command
 
 		if ((command === `${prefix}kick`)) {
-			console.log("Crash at kick");
 			kickUser(message, command, args, perms);
 		}
 
 		//Mute Command
 
 		if ((command === `${prefix}mute`)) {
-			console.log("Crash at mute");
 			muteUser(message, command, args, perms);
 		}
 
 		//Prune Command
 
 		if ((command === `${prefix}prune`)) {
-			console.log("Crash at prune");
 			pruneMessage(message, args);
 		}
 
 		//Mod help
 
 		if (command === `${prefix}mod`) {
-			console.log("Crash at mod");
 			let embed = new Discord.RichEmbed()
 				.setTitle("Mod Commands")
 				.setColor("#990000")
@@ -258,9 +239,7 @@ module.exports = (bot = Discord.Client) => {
 		//Whitelist add
 
 		if ((command === `${prefix}whitelist`)) {
-
 			writingWL(message, args);
-
 		}
 
 		//Servers' info
