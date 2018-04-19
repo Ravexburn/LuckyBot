@@ -7,8 +7,9 @@ module.exports = (bot = Discord.Client) => {
 
 	require("./../functions/helpfunctions.js")(bot);
 	require("./../functions/infofunctions.js")(bot);
-	require("./levels.js")(bot);
+	require("./color.js")(bot);
 	require("./currency.js")(bot);
+	require("./levels.js")(bot);
 	require("./rep.js")(bot);
 
 	infoMsg = async function infoMsg(message) {
@@ -94,6 +95,9 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
+		if (command === `${prefix}color`) {
+			color(message, args);
+		}
 		//Command help To learn more about a command use ${prefix}help <command name>
 
 		if (command === `${prefix}help`) {
