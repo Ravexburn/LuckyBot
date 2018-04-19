@@ -16,6 +16,7 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}invite\*\* - Info on how to get Lucky Bot for your server.
 \*\* ${prefix}trello\*\* - Sends a link to Lucky Bot's trello page.
 \*\* ${prefix}github\*\* - Sends a link to Lucky Bot's github page.
+\*\* ${prefix}color <hex or random\*\* - Returns an image of the color or random color.
 \*\* ${prefix}issue\*\* - Please report any issues you are having with Lucky Bot using this command.
 \*\* ${prefix}suggestion\*\* - Have a suggestion for Lucky Bot? Use this command to have it heard!`);
 	};
@@ -69,7 +70,8 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}setprefix\*\* - Changes the prefix for Lucky Bot.
 \*\* ${prefix}autorole\*\* - Sets a role to be added to a user when they join the server.
 \*\* ${prefix}ban <user> [days] [reason]\*\* - Bans a <user> and removes the messages from [days] for [reason]. Days default is 0.     
-\*\* ${prefix}kick <user> [reason]\*\* - Kicks a <user> for [reason]`);
+\*\* ${prefix}kick <user> [reason]\*\* - Kicks a <user> for [reason].
+\*\* ${prefix}prune <number of messages>\*\* - Deletes <number of messages> plus the command line.`);
 	};
 
 	//Help for Greeter Commands
