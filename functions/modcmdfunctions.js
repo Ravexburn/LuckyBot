@@ -24,7 +24,7 @@ module.exports = (bot = Discord.Client) => {
      * Banning a user
      * @param {Message} message  
      */
-	banUser = function banUser(message, command, args, perms) {
+	banUser = function banUser(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please do ${command} <user> [days] [reason]`);
 			return;
@@ -53,13 +53,12 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send(`You do not have the Ban Member permission.`);
+			message.channel.send("You do not have the Ban Member permission.");
 			return;
 		}
 
 		if (member) {
-
-			if (member.hasPermission(perms)) {
+			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
 				message.channel.send("You can't ban that person");
 				return;
 			}
@@ -75,11 +74,11 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		message.guild.ban(member_id, { days, reason }).then((user) => {
-
-			message.channel.send(`**${user}** has been banned`);
-
+			if(!reason){
+				reason = "no reason provided";
+			}
+			message.channel.send(`**${user}** has been banned for ${reason}`);
 		}).catch(() => {
-
 			message.channel.send("Failed to ban user");
 		});
 	};
@@ -88,7 +87,7 @@ module.exports = (bot = Discord.Client) => {
      * Kicks a user
      * @param {Message} message 
      */
-	kickUser = function kickUser(message, command, args, perms) {
+	kickUser = function kickUser(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please do ${command} <user> [reason]`);
 			return;
@@ -122,8 +121,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (member) {
-
-			if (member.hasPermission(perms)) {
+			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
 				message.channel.send("You can't kick that person");
 				return;
 			}
@@ -133,11 +131,11 @@ module.exports = (bot = Discord.Client) => {
 		let reason = args.slice(1).join(" ");
 
 		member.kick(reason).then((member) => {
-
+			if(!reason){
+				reason = "no reason provided";
+			}
 			message.channel.send(`**${member.displayName}** has been kicked for ${reason}`);
-
 		}).catch(() => {
-
 			message.channel.send("Failed to kick");
 		});
 	};
@@ -147,7 +145,7 @@ module.exports = (bot = Discord.Client) => {
      * Description: Mutes a tagged user. Unmutes if user is already muted.
       * Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
       */
-	muteUser = function muteUser(message, command, args, perms) {
+	muteUser = function muteUser(message, command, args) {
 		if (args.length === 0) { // Checks if no args given 
 			message.channel.send(`No one to mute, please do ${command} [userid] **or** @user`);
 			return;
@@ -242,8 +240,8 @@ module.exports = (bot = Discord.Client) => {
 		bot.setServerSettings(message.guild.id, serverSettings);
 	};
 
-	sayFunction = function sayFunction(message, command, args){
-		if (args.length === 0){
+	sayFunction = function sayFunction(message, command, args) {
+		if (args.length === 0) {
 			message.channel.send(`Please enter a channel and message to send ${command}say <channel> message.`);
 			return;
 		}
