@@ -32,6 +32,7 @@ module.exports = (bot = Discord.Client) => {
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
 			.setThumbnail(member.user.displayAvatarURL)
+			.setURL(member.user.displayAvatarURL)
 			.setTitle("Member Join!")
 			.setDescription(msg);
 		chan.send(embed);
@@ -57,6 +58,7 @@ module.exports = (bot = Discord.Client) => {
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
 			.setThumbnail(member.user.displayAvatarURL)
+			.setURL(member.user.displayAvatarURL)
 			.setTitle("Member Join!")
 			.setDescription(`${user} joined the server`);
 		bot.invCache.usedInvite(guild).then(invite => {
@@ -89,6 +91,7 @@ module.exports = (bot = Discord.Client) => {
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
 			.setThumbnail(member.user.displayAvatarURL)
+			.setURL(member.user.displayAvatarURL)
 			.setTitle("Member Left!")
 			.setDescription(`${user} left the server`);
 		chan.send(embed);
