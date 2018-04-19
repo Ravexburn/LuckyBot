@@ -16,12 +16,10 @@ module.exports = (bot = Discord.Client) => {
 		if (message.channel.type === "dm") return;
 
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-		let allowed = false;
+		
+		let hasPerms = perms.some(i => message.member.hasPermission(i));
 
-		for (i = 0; i < perms.length; i++) {
-			if (message.member.hasPermission(perms[i])) allowed = true;
-		}
-		if (!allowed) return;
+		if(!hasPerms) return;
 
 		let serverSettings = bot.getServerSettings(message.guild.id);
 
@@ -171,13 +169,13 @@ module.exports = (bot = Discord.Client) => {
 		//Ban Command
 
 		if ((command === `${prefix}ban`)) {
-			banUser(message, command, args, perms);
+			banUser(message, command, args);
 		}
 
 		//Kick command
 
 		if ((command === `${prefix}kick`)) {
-			kickUser(message, command, args, perms);
+			kickUser(message, command, args);
 		}
 
 		//Mute Command

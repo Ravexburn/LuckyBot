@@ -20,12 +20,10 @@ module.exports = (bot = Discord.Client) => {
 
 		if (command === `${prefix}autorole`) {
 			let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-			let allowed = false;
 
-			for (i = 0; i < perms.length; i++) {
-				if (message.member.hasPermission(perms[i])) allowed = true;
-			}
-			if (!allowed) return;
+			let hasPerms = perms.some(i => message.member.hasPermission(i));
+
+			if (!hasPerms) return;
 
 			if (args.length === 0) {
 				message.channel.send(`To use auto-role please do ${command} <role name>`);
