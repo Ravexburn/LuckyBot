@@ -171,7 +171,8 @@ ${list.sort().join(`\n`)}`;
 					break;
 
 				default:
-					embed.setTitle("Custom Command Help")
+					embed = new Discord.RichEmbed()
+						.setTitle("Custom Command Help")
 						.setColor("#40e0d0")
 						.setFooter("If you have any other questions please contact Rave#0737");
 					commandsHelp(message, prefix, embed);
