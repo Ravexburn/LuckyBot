@@ -50,6 +50,20 @@ module.exports = (bot = Discord.Client) => {
 		});
 	};
 
+	serverLeave = function serverLeave(guild) {
+		const chan = serverLogging();
+		if (!chan) {
+			return;
+		}
+
+		let embed = new Discord.RichEmbed()
+			.setAuthor(bot.user.tag, bot.user.displayAvatarURL)
+			.setColor("#ce1827")
+			.setDescription(`:exclamation: Lucky Bot has left: **${guild.name}** \`(#${guild.id})\`. Owner: **${guild.owner.user.tag}**`);
+		chan.send(embed);
+		return;
+
+	};
 	function serverLogging() {
 		let serverGuild = "418479049724395520";
 		let serverChan = "418549836229378049";
