@@ -5,17 +5,14 @@ module.exports = (bot = Discord.Client) => {
 	//Lists the servers LB is in.
 
 	serverList = function serverList(message) {
-
-		let msg = "```md\n";
 		let i = 1;
-		bot.guilds.array().sort().forEach(guild => {
-			msg += `${i++}. ${guild.name} - <${guild.id}>\n`;
-		});
-		msg += "```";
-		message.channel.send(msg);
-
+		let list = bot.guilds.array().sort().slice(0,25).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
+		let listtwo = bot.guilds.array().sort().slice(25,50).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
+		let listthree = bot.guilds.array().sort().slice(50,75).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
+		message.channel.send(list);
+		message.channel.send(listtwo);
+		message.channel.send(listthree);
 	};
-
 	//Tells LB to leave a server.
 
 	serverLeave = function serverLeave(message, args) {
