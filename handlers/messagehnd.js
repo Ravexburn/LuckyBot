@@ -17,7 +17,7 @@ module.exports = (bot = Discord.Client) => {
 	msgHandler = async function msgHandler(message) {
 
 		if (!message.member && message.guild) {
-			bot.fetchMember(message.author.id);
+			guild.fetchMember(message.author.id);
 		}
 
 		//Functions
