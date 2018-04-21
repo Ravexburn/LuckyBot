@@ -16,22 +16,26 @@ module.exports = (bot = Discord.Client) => {
 
 	msgHandler = async function msgHandler(message) {
 
+		if (!message.member && message.guild) {
+			bot.fetchMember(message.author.id);
+		}
+
 		//Functions
 
 		autoRoleMsg(message);
 		commands(message);
 		customCommands(message);
+		expFunction(message);
+		imgLog(message);
 		infoMsg(message);
 		lastFM(message);
-		msgLog(message);
-		imgLog(message);
 		modCmds(message);
-		owner(message);
-		notifySet(message);
+		msgLog(message);
 		notifyPing(message);
-		rolesAdd(message);
+		notifySet(message);
+		owner(message);
 		relays.relayMessage(message, relays.relayRave);
-		expFunction(message);
+		rolesAdd(message);
 
 	};
 };
