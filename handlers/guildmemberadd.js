@@ -9,10 +9,6 @@ module.exports = (bot = Discord.Client) => {
 
 	memberJoinHandler = function memberJoinHandler(member) {
 
-		if (!message.member && message.guild) {
-			bot.fetchMember(message.author.id);
-		}
-
 		//Functions
 
 		autoRoleAdd(member);

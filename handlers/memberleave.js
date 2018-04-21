@@ -6,10 +6,6 @@ module.exports = (bot = Discord.Client) => {
 
 	leaveHandler = async function leaveHandler(member) {
 
-		if (!message.member && message.guild) {
-			bot.fetchMember(message.author.id);
-		}
-
 		//Functions
 
 		leaveMsg(member);
