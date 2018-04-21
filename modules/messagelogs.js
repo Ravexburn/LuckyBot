@@ -87,6 +87,8 @@ module.exports = (bot = Discord.Client) => {
 		}
 		const chan = message.guild.channels.get(editChannelID);
 
+		if (oldMessage.content === message.content) return;
+
 		let embed = new Discord.RichEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 			.addField(":pencil: Old Message", (oldMessage.content + "­").substring(0, MAX_CHAR))
