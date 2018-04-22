@@ -8,14 +8,6 @@ module.exports = (bot = Discord.Client) => {
 
 	delHandler = async function delHandler(message) {
 
-		try {
-			if (!message.member && message.guild) {
-				message.guild.fetchMember(message.author.id);
-			}
-		} catch (error) {
-			bot.log(error);
-		}
-
 		//Functions
 
 		delLog(message);
