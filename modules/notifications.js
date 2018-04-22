@@ -506,7 +506,9 @@ module.exports = (bot = Discord.Client) => {
 							userSet.add(userID);
 							notifications.set(keyword, userSet);
 						}).catch((reason) => {
-							console.log(reason);
+							if (reason !== "User Ignored the Guild") {
+								console.log(reason);
+							}
 						});
 				}).then(() => {
 					return notify.forEachKeyword((keyword, userID) => {
@@ -523,7 +525,9 @@ module.exports = (bot = Discord.Client) => {
 								userSet.add(userID);
 								notifications.set(keyword, userSet);
 							}).catch((reason) => {
-								console.log(reason);
+								if (reason !== "User Ignored the Channel") {
+									console.log(reason);
+								}
 							});
 					}, guild.id);
 				}).then(() => {
