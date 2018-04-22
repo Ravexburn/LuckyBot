@@ -40,7 +40,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Join
 
-	joinMsg = function joinMsg(member) {
+	joinMsg = async function joinMsg(member) {
 		const guild = member.guild;
 		const serverSettings = bot.getServerSettings(guild.id);
 		if (!serverSettings) return;
@@ -54,13 +54,35 @@ module.exports = (bot = Discord.Client) => {
 
 		let user = member.user;
 		let serverName = guild.name;
+		let sharedguilds = 0;
+
+		bot.guilds.forEach(guild => {
+			if (member.guild.id !== guild.id && guild.members.has(user.id)) {
+				sharedguilds++;
+			}
+		});
+
+		let bans = bot.guilds.map(guild => guild.fetchBans().catch(() => { }));
+		bans = await Promise.all(bans);
+		const banned = bans.filter(list => {
+			if (!list) return false;
+			return list.has(member.id);
+		});
+		const numOfBans = banned.length;
 
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
 			.setThumbnail(member.user.displayAvatarURL)
 			.setURL(member.user.displayAvatarURL)
 			.setTitle("Member Join!")
+			.addField("Account Age", `Account was created on: ${user.createdAt.toUTCString()}\nAccount joined server on: ${member.joinedAt.toUTCString()}`)
+			.addField("Shared Servers", `This account shares: ${sharedguilds} other server(s) with Lucky Bot.`)
 			.setDescription(`${user} joined the server`);
+		if (numOfBans) {
+			embed.addField("Bans", `:warning: This user is banned on ${numOfBans} server(s).`);
+		} else {
+			embed.addField("Bans", `This user is not banned on any servers.`);
+		}
 		bot.invCache.usedInvite(guild).then(invite => {
 			if (invite) {
 				embed.setDescription(`${user} joined from ${invite.url} created by ${invite.inviter}. Uses: ${invite.uses}`);
