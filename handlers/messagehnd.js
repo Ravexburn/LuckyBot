@@ -16,10 +16,14 @@ module.exports = (bot = Discord.Client) => {
 
 	msgHandler = async function msgHandler(message) {
 
-		if (!message.member && message.guild) {
-			message.guild.fetchMember(message.author.id);
+		try {
+			if (!message.member && message.guild) {
+				message.guild.fetchMember(message.author.id);
+			}
+		} catch (error) {
+			bot.log(error);
 		}
-
+		
 		//Functions
 
 		autoRoleMsg(message);
