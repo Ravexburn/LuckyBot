@@ -9,7 +9,7 @@ module.exports = (bot = Discord.Client) => {
 	delHandler = async function delHandler(message) {
 
 		if (!message.member && message.guild) {
-			guild.fetchMember(message.author.id);
+			message.guild.fetchMember(message.author.id);
 		}
 
 		//Functions
