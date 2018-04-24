@@ -74,7 +74,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		message.guild.ban(member_id, { days, reason }).then((user) => {
-			if(!reason){
+			if (!reason) {
 				reason = "no reason provided";
 			}
 			message.channel.send(`**${user}** has been banned for ${reason}`);
@@ -131,7 +131,7 @@ module.exports = (bot = Discord.Client) => {
 		let reason = args.slice(1).join(" ");
 
 		member.kick(reason).then((member) => {
-			if(!reason){
+			if (!reason) {
 				reason = "no reason provided";
 			}
 			message.channel.send(`**${member.displayName}** has been kicked for ${reason}`);
@@ -247,9 +247,16 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		let chan = message.mentions.channels.first();
-		let image = { file: message.attachments.first().url };
+		let image;
+		if (message.attachments.size > 0) {
+			image = { file: message.attachments.first().url };
+		}
 		let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
-		chan.send(msg, image);
+		if (image) {
+			chan.send(msg, image);
+		} else {
+			chan.send(msg);
+		}
 		return;
 
 	};
