@@ -26,6 +26,7 @@ module.exports = (bot = Discord.Client) => {
 		let mention = member.user;
 		let serverName = guild.name;
 		let user = member.user.tag;
+		let image = serverSettings.welcomeImage;
 
 		msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
 
@@ -34,7 +35,8 @@ module.exports = (bot = Discord.Client) => {
 			.setThumbnail(member.user.displayAvatarURL)
 			.setURL(member.user.displayAvatarURL)
 			.setTitle("Member Join!")
-			.setDescription(msg);
+			.setDescription(msg)
+			.setImage(image);
 		chan.send(embed);
 	};
 

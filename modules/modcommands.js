@@ -16,10 +16,10 @@ module.exports = (bot = Discord.Client) => {
 		if (message.channel.type === "dm") return;
 
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-		
+
 		let hasPerms = perms.some(i => message.member.hasPermission(i));
 
-		if(!hasPerms) return;
+		if (!hasPerms) return;
 
 		let serverSettings = bot.getServerSettings(message.guild.id);
 
@@ -153,6 +153,11 @@ module.exports = (bot = Discord.Client) => {
 				case "msg":
 				case "message":
 					welMsg(message, command, args, serverSettings);
+					break;
+
+				case "image":
+				case "img":
+					welImage(message, serverSettings, args);
 					break;
 
 				default:

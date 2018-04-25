@@ -241,21 +241,6 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	/**
-     * Music Channel 
-     * @param {Message} message 
-     */
-	musicChan = function musicChan(message, serverSettings, command) {
-		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
-			let chan = message.mentions.channels.first();
-			message.channel.send("Now accepting music commands in: " + chan);
-			serverSettings.musicChannelID = chan.id;
-			bot.setServerSettings(message.guild.id, serverSettings);
-		} else {
-			message.channel.send(`Please mention a channel ${command} <music> <#channelname>`);
-		}
-	};
-
-	/**
      * Edited messages channel
      * @param {Message} message 
      */
@@ -298,5 +283,16 @@ After you have made your decision react with the :floppy_disk: to save.`);
 		} else {
 			message.channel.send(`Please mention a channel ${command} <channel> <#channelname>`);
 		}
+	};
+
+	welImage = function welImage(message, serverSettings, args) {
+		if (args.length === 1){
+			message.channel.send("Please provide a link for your image. For `gifv` links remove the `v`.");
+			return;
+		}
+		let image = args[1];
+		message.channel.send(`Welcome image set ${image}`);
+		serverSettings.welcomeImage = image;
+		bot.setServerSettings(message.guild, serverSettings);
 	};
 };
