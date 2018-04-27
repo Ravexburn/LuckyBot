@@ -157,7 +157,7 @@ module.exports = class Profiles {
 		this.sortLevels = function sortLevels(limit) {
 			return _dbExist()
 				.then((db) => {
-					return db.all(`SELECT ${SQL_USER_ID}, ${SQL_LEVEL} FROM ${SQL_TABLE_PROFILE} ORDER BY ${SQL_LEVEL} DESC LIMIT ${limit}`);
+					return db.all(`SELECT ${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP} FROM ${SQL_TABLE_PROFILE} ORDER BY ${SQL_LEVEL} DESC, ${SQL_EXP} DESC LIMIT ${limit}`);
 				}).then((rows) => {
 					let arr = [];
 					rows.forEach(row => {
@@ -215,7 +215,7 @@ module.exports = class Profiles {
 		this.sortLevelsLocal = function sortLevelsLocal(guildID, limit) {
 			return _dbExist()
 				.then((db) => {
-					return db.all(`SELECT ${SQL_USER_ID}, ${SQL_LEVEL} FROM ${SQL_TABLE_LOCAL} WHERE ${SQL_GUILD} = ? ORDER BY ${SQL_LEVEL} DESC LIMIT ${limit}`, [guildID]);
+					return db.all(`SELECT ${SQL_USER_ID}, ${SQL_LEVEL}, ${SQL_EXP} FROM ${SQL_TABLE_LOCAL} WHERE ${SQL_GUILD} = ? ORDER BY ${SQL_LEVEL} DESC, ${SQL_EXP} DESC LIMIT ${limit}`, [guildID]);
 				}).then((rows) => {
 					let arr = [];
 					rows.forEach(row => {
