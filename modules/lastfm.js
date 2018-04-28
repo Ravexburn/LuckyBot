@@ -74,6 +74,7 @@ module.exports = (bot = Discord.Client) => {
 			let userID;
 			let username;
 			let target;
+			let layout;
 			//Cases for LF
 			switch (args[0]) {
 				//Help
@@ -95,15 +96,16 @@ module.exports = (bot = Discord.Client) => {
 					}
 					userID = message.author.id;
 					username = args[1];
-					lastfm.getLastfmData(userID, username)
-						.then((data) => {
+					layout = 0;
+					lastfm.getLastfmData(userID, username, layout)
+						.then(() => {
 							url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${bot.botSettings.lastfm}&format=json`;
 							axios.get(url).then(response => {
 								if (response.data.error) {
 									message.reply(response.data.message);
 									return Promise.reject(response.data.message);
 								}
-								lastfm.setUsername(userID, username);
+								lastfm.setUsername(userID, username, layout);
 								message.reply(`Username saved as: ${username}`);
 								return;
 							}).catch((error) => {
@@ -114,6 +116,22 @@ module.exports = (bot = Discord.Client) => {
 						});
 					break;
 
+				case "layout":
+				case "lo":
+					if (args.length === 1) {
+						message.reply(`Please select a layout between 0 and 5.`);
+						return;
+					}
+					userID = message.author.id;
+					layout = args[1];
+					lastfm.getLastfmData(userID, layout)
+						.then(() => {
+							lastfm.setLayout(userID, layout);
+							message.reply(`Layout format set as: ${layout}`);
+						}).catch((error) => {
+							console.log(error);
+						});
+					break;
 				//Now Playing	
 				case "np":
 				case "nowplaying":
@@ -209,7 +227,6 @@ module.exports = (bot = Discord.Client) => {
 							console.log(error);
 						});
 					break;
-
 
 				//Top Tracks
 				case "tt":
