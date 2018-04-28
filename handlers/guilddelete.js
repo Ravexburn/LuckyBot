@@ -6,11 +6,11 @@ module.exports = (bot = Discord.Client) => {
 
 	require("./../modules/whitelist.js")(bot);
 
-	guildCreateHandler = function guildCreateHandler(guild) {
+	guildDeleteHandler = function guildDeleteHandler(guild) {
 
 		//Functions
 
-		whitelist(guild);
+		serverLeave(guild);
 
 	};
 };

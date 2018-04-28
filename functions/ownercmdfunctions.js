@@ -1,135 +1,127 @@
 const Discord = require("discord.js");
-const Message = Discord.Message;
 
 module.exports = (bot = Discord.Client) => {
 
-    //Lists the servers LB is in.
+	//Lists the servers LB is in.
 
-    serverList = function serverList(message) {
+	serverList = function serverList(message) {
+		let i = 1;
+		let list = bot.guilds.array().sort().slice(0,25).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
+		let listtwo = bot.guilds.array().sort().slice(25,50).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
+		let listthree = bot.guilds.array().sort().slice(50,75).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
+		message.channel.send(list);
+		message.channel.send(listtwo);
+		message.channel.send(listthree);
+	};
+	//Tells LB to leave a server.
 
-        let msg = "```md\n"
-        let i = 1;
-        bot.guilds.forEach(guild => {
-            msg += `${i++}. ${guild.name} - <${guild.id}>\n`;
-        });
-        msg += "```";
-        message.channel.send(msg);
+	serverLeave = function serverLeave(message, args) {
+		if (args.length < 2) {
+			message.channel.send("Put a server id or server number <:yfist:378373231079587840>");
+			let msg = "```md\n";
+			let i = 1;
+			let guilds = [];
+			bot.guilds.array().sort().forEach(guild => {
+				guilds[i] = guild;
+				msg += `${i++}. ${guild.name} - <${guild.id}>\n`;
+			});
+			msg += "```";
+			message.channel.send(msg);
+			let author = message.author;
+			message.channel.send("You have 60 seconds to choose a server to leave")
+				.then(() => {
+					message.channel.awaitMessages(response => response.author.id === author.id, { max: 1, time: 60000, errors: ['time'] })
+						.then(collected => {
+							message.channel.send(`Acknowledged ${collected.first().content}`);
+							let input = collected.first().content;
 
-    }
+							if (input.length < 18) {
+								let num = parseInt(input);
 
-    //Tells LB to leave a server.
+								if (num === isNaN) {
+									message.channel.send("Not a valid server <:yfist:378373231079587840>");
+									return;
+								}
 
-    serverLeave = function serverLeave(message, args) {
-        if (args.length < 2) {
-            message.channel.send("Put a server id or server number <:yfist:378373231079587840>");
-            let msg = "```md\n"
-            let i = 1;
-            let guilds = [];
-            bot.guilds.forEach(guild => {
-                guilds[i] = guild;
-                msg += `${i++}. ${guild.name} - <${guild.id}>\n`;
-            });
-            msg += "```";
-            message.channel.send(msg);
-            let author = message.author;
-            message.channel.send("You have 60 seconds to choose a server to leave")
-                .then(() => {
-                    message.channel.awaitMessages(response => response.author.id === author.id, { max: 1, time: 60000, errors: ['time'] })
-                        .then(collected => {
-                            message.channel.send(`Acknowledged ${collected.first().content}`);
-                            let input = collected.first().content;
+								if ((num <= 0) || (num > guilds.length)) {
+									message.channel.send("Not a valid server <:yfist:378373231079587840>");
+									return;
+								}
 
-                            if (input.length < 18) {
-                                let num = parseInt(input);
+								message.channel.send(`Successfully left \`${guilds[num]}\``);
+								guilds[num].leave().catch(console.error);
 
-                                if (num === NaN) {
-                                    message.channel.send("Not a valid server <:yfist:378373231079587840>");
-                                    return;
-                                }
+							} else {
 
+								let id = input;
+								if (!bot.guilds.has(id)) {
+									message.channel.send("Bot is not in that server <:yfist:378373231079587840>");
+									return;
+								}
 
-                                if ((num <= 0) || (num > guilds.length)) {
-                                    message.channel.send("Not a valid server <:yfist:378373231079587840>");
-                                    return;
-                                }
+								let guild = bot.guilds.get(id);
+								message.channel.send(`Successfully left \`${guild}\``);
+								guild.leave().catch(console.error);
+							}
 
-                                message.channel.send(`Successfully left \`${guilds[num]}\``);
-                                guilds[num].leave().catch(console.error);
+						})
 
-                            } else {
+						.catch(() => {
+							message.channel.send("No server sent in time limit");
+							console.error;
+						});
 
-                                let id = input;
-                                if (!bot.guilds.has(id)) {
-                                    message.channel.send("Bot is not in that server <:yfist:378373231079587840>");
-                                    return;
-                                }
-
-                                let guild = bot.guilds.get(id);
-                                message.channel.send(`Successfully left \`${guild}\``);
-                                guild.leave().catch(console.error);
-                            }
-
-                        })
-
-                        .catch(() => {
-                            message.channel.send("No server sent in time limit");
-                            console.error;
-                        });
-
-                }).catch(() => console.error);
-            return;
-        }
-        if (args[1].length > bot.guilds.size.toString().length) {
+				}).catch(() => console.error);
+			return;
+		}
+		if (args[1].length > bot.guilds.size.toString().length) {
 
 
-            let id = args[1];
-            if (!bot.guilds.has(id)) {
-                message.channel.send("Bot is not in that server <:yfist:378373231079587840>");
-                return;
-            }
+			let id = args[1];
+			if (!bot.guilds.has(id)) {
+				message.channel.send("Bot is not in that server <:yfist:378373231079587840>");
+				return;
+			}
 
-            let guild = bot.guilds.get(id);
-            message.channel.send(`Successfully left \`${guild}\``);
-            guild.leave().catch(console.error);
+			let guild = bot.guilds.get(id);
+			message.channel.send(`Successfully left \`${guild}\``);
+			guild.leave().catch(console.error);
 
-        }
+		}
 
-    }
+	};
 
-    //Checks what's enabled on a server
+	//Checks what's enabled on a server
 
-    serverModSettings = function serverModSettings(message, args) {
-        if (args.length === 1) {
-            let serverSettings = bot.getServerSettings(message.guild.id);
-            if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
-            let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "roleChannelID"];
-            let embed = new Discord.RichEmbed()
-            .setTitle(`Settings for ${message.guild.name}`)
-            .setColor("#228B22");
-            for (const key of list) {
-                embed.addField(key, serverSettings[key]);
-            }
-            message.channel.send(embed);
-            return;
-        }else if (args.length === 2){
-            let id = args[1];
-            if (!bot.guilds.has(id)) return;
-            let guild = bot.guilds.get(id);
-            let serverSettings = bot.getServerSettings(id);
-            if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
-            let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "rolesOn"];
-            let embed = new Discord.RichEmbed()
-            .setTitle(`Settings for ${guild.name}`)
-            .setColor("#228B22");
-            for (const key of list) {
-                embed.addField(key, serverSettings[key] + "­");
-            }
-            message.channel.send(embed);
-            return;
-        }
-    }
+	serverModSettings = function serverModSettings(message, args) {
+		if (args.length === 1) {
+			let serverSettings = bot.getServerSettings(message.guild.id);
+			if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
+			let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "roleChannelID"];
+			let embed = new Discord.RichEmbed()
+				.setTitle(`Settings for ${message.guild.name}`)
+				.setColor("#228B22");
+			for (const key of list) {
+				embed.addField(key, serverSettings[key]);
+			}
+			message.channel.send(embed);
+			return;
+		} else if (args.length === 2) {
+			let id = args[1];
+			if (!bot.guilds.has(id)) return;
+			let guild = bot.guilds.get(id);
+			let serverSettings = bot.getServerSettings(id);
+			if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
+			let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "rolesOn"];
+			let embed = new Discord.RichEmbed()
+				.setTitle(`Settings for ${guild.name}`)
+				.setColor("#228B22");
+			for (const key of list) {
+				embed.addField(key, serverSettings[key] + "­");
+			}
+			message.channel.send(embed);
+			return;
+		}
+	};
 
-
-
-
-}
+};
