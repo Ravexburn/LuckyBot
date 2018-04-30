@@ -42,7 +42,7 @@ module.exports = (bot = Discord.Client) => {
 			let minutes = time % 60;
 			time = Math.floor(time / 60);
 			let hours = time % 24;
-			message.channel.send(`**Please wait ${hours}h ${minutes}m and ${seconds}s for a new ticket! <:rooScared:433018721326596117>**`);
+			message.channel.send(`Please wait ${hours}h ${minutes}m and ${seconds}s for a new ticket! <:rooScared:433018721326596117>`);
 		}
 	};
 };

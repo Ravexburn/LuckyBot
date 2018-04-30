@@ -68,7 +68,7 @@ module.exports = (bot = Discord.Client) => {
 				.then((data) => {
 					let rep = data.rep;
 					rep = rep + 1;
-					message.channel.send(`**I have given a reputation point to ${member.user.username}!** <a:rooClap:432961197323714580>`);
+					message.channel.send(`I have given a reputation point to ${member.user.username}! <a:rooClap:432961197323714580>`);
 					profile.setRep(member.id, rep);
 				}).catch((error) => {
 					console.log(error);
@@ -81,7 +81,7 @@ module.exports = (bot = Discord.Client) => {
 			let minutes = time % 60;
 			time = Math.floor(time / 60);
 			let hours = time % 24;
-			message.channel.send(`**Please wait ${hours}h ${minutes}m and ${seconds}s to be able to give another rep!** <:rooScared:433018721326596117>`);
+			message.channel.send(`Please wait ${hours}h ${minutes}m and ${seconds}s to be able to give another rep! <:rooScared:433018721326596117>`);
 		}
 	};
 };
