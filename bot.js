@@ -44,7 +44,6 @@ bot.on("guildCreate", guild => {
 //When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
-	console.log(guild.id);
 	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
 	guildDeleteHandler(guild);
 });

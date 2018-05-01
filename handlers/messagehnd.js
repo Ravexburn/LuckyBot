@@ -15,14 +15,6 @@ module.exports = (bot = Discord.Client) => {
 	require("./../modules/levels.js")(bot);
 
 	msgHandler = async function msgHandler(message) {
-
-		try {
-			if (!message.member && message.guild) {
-				message.guild.fetchMember(message.author.id);
-			}
-		} catch (error) {
-			bot.log(error);
-		}
 		
 		//Functions
 
