@@ -163,7 +163,6 @@ module.exports = (bot = Discord.Client) => {
 		let guild = message.guild;
 		profile.sortLevelsLocal(guild.id, limit)
 			.then(async (data) => {
-				console.log(data);
 				let arr = [];
 				for (i = 0; i < data.length; i++) {
 					let userID = data[i].user_id;
