@@ -95,7 +95,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		if (command === `${prefix}color`) {
+		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
 			color(message, args);
 		}
 		//Command help To learn more about a command use ${prefix}help <command name>

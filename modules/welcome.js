@@ -90,8 +90,8 @@ module.exports = (bot = Discord.Client) => {
 				embed.setDescription(`${user} joined from ${invite.url} created by ${invite.inviter}. Uses: ${invite.uses}`);
 			}
 			chan.send(embed);
-		}).catch(() => {
-			console.error();
+		}).catch((error) => {
+			console.log(error);
 		});
 	};
 
