@@ -212,7 +212,11 @@ module.exports = (bot = Discord.Client) => {
 	//Prunes messages
 	pruneMessage = function pruneMessage(message, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please provide a number of messages to delete.`);
+			message.channel.send("Please provide a number of messages to delete. `MAX: 99`");
+			return;
+		}
+		if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
+			message.channel.send("Please enable the `MANAGE_MESSAGES` permisson to be able to prune.");
 			return;
 		}
 
@@ -222,7 +226,15 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send(`Please provide a number of messages to delete.`);
 			return;
 		}
-		message.channel.fetchMessages({ limit: num }).then(messages => message.channel.bulkDelete(messages));
+		if (num > 100){
+			message.channel.send("Please enter a number less than or equal to 99.");
+			return;
+		}
+		message.channel.fetchMessages({ limit: num })
+			.then(messages => message.channel.bulkDelete(messages))
+			.catch((error) => {
+				message.channel.send(error.message);
+			});
 	};
 
 	/**
