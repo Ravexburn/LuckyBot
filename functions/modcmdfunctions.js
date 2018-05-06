@@ -52,8 +52,13 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
+		if (!message.channel.permissionsFor(bot.user).has("BAN_MEMBERS")) {
+			message.channel.send("Please enable the `BAN_MEMBERS` permisson to be able to ban");
+			return;
+		}
+
 		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send("You do not have the Ban Member permission.");
+			message.channel.send("You do not have the `BAN_MEMBERS` permission");
 			return;
 		}
 
@@ -77,9 +82,9 @@ module.exports = (bot = Discord.Client) => {
 			if (!reason) {
 				reason = "no reason provided";
 			}
-			message.channel.send(`**${user}** has been banned for ${reason}`);
-		}).catch(() => {
-			message.channel.send("Failed to ban user");
+			message.channel.send(`**${user}** has been banned for \`${reason}\``);
+		}).catch((error) => {
+			message.channel.send(error.message);
 		});
 	};
 
@@ -115,8 +120,13 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
+		if (!message.channel.permissionsFor(bot.user).has("KICK_MEMBERS")) {
+			message.channel.send("Please enable the `KICK_MEMBERS` permisson to be able to kick");
+			return;
+		}
+
 		if (!message.member.hasPermission("KICK_MEMBERS")) {
-			message.channel.send(`You do not have the Kick Member permission.`);
+			message.channel.send("You do not have the `KICK_MEMBERS` permission");
 			return;
 		}
 
@@ -134,9 +144,9 @@ module.exports = (bot = Discord.Client) => {
 			if (!reason) {
 				reason = "no reason provided";
 			}
-			message.channel.send(`**${member.displayName}** has been kicked for ${reason}`);
-		}).catch(() => {
-			message.channel.send("Failed to kick");
+			message.channel.send(`**${member.displayName}** has been kicked for \`${reason}\``);
+		}).catch((error) => {
+			message.channel.send(error.message);
 		});
 	};
 
@@ -212,22 +222,22 @@ module.exports = (bot = Discord.Client) => {
 	//Prunes messages
 	pruneMessage = function pruneMessage(message, args) {
 		if (args.length === 0) {
-			message.channel.send("Please provide a number of messages to delete. `MAX: 99`");
+			message.channel.send("Please provide a number of messages to delete `MAX: 99`");
 			return;
 		}
 		if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
-			message.channel.send("Please enable the `MANAGE_MESSAGES` permisson to be able to prune.");
+			message.channel.send("Please enable the `MANAGE_MESSAGES` permisson to be able to prune");
 			return;
 		}
 
 		let msg = args[0];
 		let num = parseInt(msg) + 1;
 		if (isNaN(num)) {
-			message.channel.send(`Please provide a number of messages to delete.`);
+			message.channel.send("Please provide a number of messages to delete");
 			return;
 		}
-		if (num > 100){
-			message.channel.send("Please enter a number less than or equal to 99.");
+		if (num > 100) {
+			message.channel.send("Please enter a number less than or equal to 99");
 			return;
 		}
 		message.channel.fetchMessages({ limit: num })
