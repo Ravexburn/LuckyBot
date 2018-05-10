@@ -6,15 +6,6 @@ module.exports = (bot = Discord.Client) => {
 
 	serverList = function serverList(message) {
 		let i = 1;
-		let list = bot.guilds.array().sort().slice(0, 25).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
-		let listtwo = bot.guilds.array().sort().slice(25, 50).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
-		let listthree = bot.guilds.array().sort().slice(50, 75).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
-		message.channel.send(list);
-		message.channel.send(listtwo);
-		message.channel.send(listthree);
-
-		/* Consider a loop
-		let i = 1;
 		const limit = 25;
 		let arr = bot.guilds.array().sort();
 		while (arr.length > 0) {
@@ -22,7 +13,6 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send(list);
 			arr = arr.slice(limit);
 		}
-		*/
 	};
 
 	//Tells LB to leave a server.
