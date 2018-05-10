@@ -264,7 +264,7 @@ module.exports = (bot = Discord.Client) => {
 
 	sayFunction = function sayFunction(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please enter a channel and message to send ${command}say <channel> message.`);
+			message.channel.send(`Please enter a channel and message to send ${command} <channel> message.`);
 			return;
 		}
 
