@@ -76,31 +76,60 @@ module.exports = (bot = Discord.Client) => {
 	}
 
 	writingWL = function writingWL(message, args) {
+		if (args.length === 0) {
+			message.channel.send("Missing arguments.");
+			return;
+		}
+
+		// Add by invite. (https://discord.gg/qJq5C)
+		const inviteRegExp = new RegExp("(https:\/\/discord\.gg\/)?([-\\w]+)");
+		const matches = args[0].match(inviteRegExp);
+		if (matches) {
+			const inv = matches[0];
+			return bot.fetchInvite(inv)
+				.then((invite) => {
+					const guild = invite.guild;
+					whitelistAdd(guild.id, guild.name);
+				}).catch((err) => {
+					console.log(err);
+				});
+		}
+
 		if (args.length < 2) {
 			message.channel.send("Add id and server name");
 			return;
 		}
 		let id = args[0];
 		let name = args.slice(1).join(" ");
-		fs.readFile(path, (err, data) => {
-			if (err) {
-				console.log(err);
-			}
-			else {
-				let whitelist = JSON.parse(data);
-				whitelist.servers[id] = name;
-				let json = JSON.stringify(whitelist);
-				fs.writeFile(path, json, "utf8", (err) => {
-					if (err) {
-						console.log(err);
-					}
-					else {
-						message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
-					}
-				});
-			}
-		});
+		whitelistAdd(id, name);
 
 	};
 
 };
+
+
+/**
+ * Adds a guild to whitelist by guild id and name.
+ * @param {string} id 
+ * @param {string} name 
+ */
+function whitelistAdd(id, name) {
+	fs.readFile(path, (err, data) => {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			let whitelist = JSON.parse(data);
+			whitelist.servers[id] = name;
+			let json = JSON.stringify(whitelist);
+			fs.writeFile(path, json, "utf8", (err) => {
+				if (err) {
+					console.log(err);
+				}
+				else {
+					message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
+				}
+			});
+		}
+	});
+}
