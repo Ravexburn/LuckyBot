@@ -117,7 +117,7 @@ After you have made your decision react with the :floppy_disk: to save.`);
 							}
 						}
 
-						msg += `\*\*These settings will be logged in: ${chan}.\*\*`;
+						msg += `**These settings will be logged in: ${chan}.**`;
 
 						embed.setDescription(msg);
 						message.channel.send(embed);
