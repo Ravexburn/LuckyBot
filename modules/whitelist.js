@@ -87,12 +87,20 @@ module.exports = (bot = Discord.Client) => {
 		if (matches) {
 			const inv = matches[0];
 			return bot.fetchInvite(inv)
-				.then((invite) => {
+				.then(invite => {
 					const guild = invite.guild;
-					if (whitelistAdd(guild.id, guild.name)) {
-						message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
-						console.log(`Added server to whitelist. \`${id} ${name}\``);
+					return guild;
+				}).then(guild => {
+					return whitelistAdd(guild.id, guild.name);
+				}).then((success) => {
+					let msg = "";
+					if (success) {
+						msg = `Added server to whitelist. \`${guild.id} ${guild.name}\``;
+					} else {
+						msg = `Unable to add server to whitelist. \`${guild.id} ${guild.name}\``;
 					}
+					console.log(msg);
+					message.channel.send(msg);
 				}).catch((err) => {
 					console.log(err);
 				});
@@ -123,7 +131,7 @@ function whitelistAdd(id, name) {
 	fs.readFile(path, (err, data) => {
 		if (err) {
 			console.log(err);
-			return false;
+			return Promise.resolve(false);
 		}
 		else {
 			let whitelist = JSON.parse(data);
@@ -132,10 +140,10 @@ function whitelistAdd(id, name) {
 			fs.writeFile(path, json, "utf8", (err) => {
 				if (err) {
 					console.log(err);
-					return false;
+					return Promise.resolve(false);
 				}
 				else {
-					return true;
+					return Promise.resolve(true);
 				}
 			});
 		}
