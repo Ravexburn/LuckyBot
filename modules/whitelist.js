@@ -89,7 +89,10 @@ module.exports = (bot = Discord.Client) => {
 			return bot.fetchInvite(inv)
 				.then((invite) => {
 					const guild = invite.guild;
-					whitelistAdd(guild.id, guild.name, message);
+					if (whitelistAdd(guild.id, guild.name)) {
+						message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
+						console.log(`Added server to whitelist. \`${id} ${name}\``);
+					}
 				}).catch((err) => {
 					console.log(err);
 				});
@@ -101,7 +104,10 @@ module.exports = (bot = Discord.Client) => {
 		}
 		let id = args[0];
 		let name = args.slice(1).join(" ");
-		whitelistAdd(id, name, message);
+		if (whitelistAdd(id, name)) {
+			message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
+			console.log(`Added server to whitelist. \`${id} ${name}\``);
+		}
 
 	};
 
@@ -110,14 +116,14 @@ module.exports = (bot = Discord.Client) => {
 
 /**
  * Adds a guild to whitelist by guild id and name.
- * @param {string} id 
- * @param {string} name 
- * @param {Message} message
+ * @param {string} id - The id of the guild being whitelisted.
+ * @param {string} name - The name of the guild being whitelisted.
  */
-function whitelistAdd(id, name, message) {
+function whitelistAdd(id, name) {
 	fs.readFile(path, (err, data) => {
 		if (err) {
 			console.log(err);
+			return false;
 		}
 		else {
 			let whitelist = JSON.parse(data);
@@ -126,12 +132,10 @@ function whitelistAdd(id, name, message) {
 			fs.writeFile(path, json, "utf8", (err) => {
 				if (err) {
 					console.log(err);
+					return false;
 				}
 				else {
-					if (message) {
-						message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
-					}
-					console.log(`Added server to whitelist. \`${id} ${name}\``);
+					return true;
 				}
 			});
 		}

@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const link = "https://trello.com/b/0uytHSPL";
 const link2 = "https://github.com/Ravexburn/LuckyBot";
 const invite = "https://discord.gg/z4thPtW";
+const website = "http://www.luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 
@@ -98,18 +99,9 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
 			color(message, args);
 		}
-		//Command help To learn more about a command use ${prefix}help <command name>
 
 		if (command === `${prefix}help`) {
-			let embed = new Discord.RichEmbed()
-				.setTitle("List of Commands")
-				.setColor("#17487d")
-				.setFooter(`If you have any other questions please contact Rave#0737`);
-			generalHelp(message, prefix, embed);
-			notifyHelp(message, prefix, embed);
-			commandsHelp(message, prefix, embed);
-			lastFMHelp(message, prefix, embed);
-			sendEmbed(message, embed);
+			message.reply(`Help can be found here: ${website}`);
 		}
 
 		//Suggestions

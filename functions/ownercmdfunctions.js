@@ -11,6 +11,12 @@ module.exports = (bot = Discord.Client) => {
 		while (arr.length > 0) {
 			let list = arr.slice(0, limit).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
 			message.channel.send(list);
+			/* (consider for formatting instead of just sending the list)
+			let msg = "```md\n";
+			msg += list.join("\n");
+			msg += "```";
+			message.channel.send(msg);
+			*/
 			arr = arr.slice(limit);
 		}
 	};

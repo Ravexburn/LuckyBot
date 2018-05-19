@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const website = "http://www.luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 
@@ -198,16 +199,7 @@ module.exports = (bot = Discord.Client) => {
 		//Mod help
 
 		if (command === `${prefix}mod`) {
-			let embed = new Discord.RichEmbed()
-				.setTitle("Mod Commands")
-				.setColor("#990000")
-				.setFooter("If you have any other questions please contact Rave#0737");
-			modHelpGeneral(message, prefix, embed);
-			welcomeHelp(message, prefix, embed);
-			startHelp(message, prefix, embed);
-			toggleHelp(message, prefix, embed);
-			relayHelp2(message, embed);
-			sendEmbed(message, embed);
+			message.reply(`Help can be found here: ${website}`);
 		}
 
 		if (command === `${prefix}say`) {
