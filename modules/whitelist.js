@@ -86,11 +86,15 @@ module.exports = (bot = Discord.Client) => {
 		const matches = args[0].match(inviteRegExp);
 		if (matches) {
 			const inv = matches[0];
+			let guild = null;
 			return bot.fetchInvite(inv)
 				.then(invite => {
-					const guild = invite.guild;
+					guild = invite.guild;
 					return guild;
 				}).then(guild => {
+					if (!guild) {
+						return Promise.reject("Error: No guild.");
+					}
 					return whitelistAdd(guild.id, guild.name);
 				}).then((success) => {
 					let msg = "";
