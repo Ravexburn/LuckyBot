@@ -10,7 +10,7 @@ module.exports = (bot = Discord.Client) => {
 
 		//Functions
 
-		serverLeave(guild);
+		guildLeave(guild);
 
 	};
 };
