@@ -9,14 +9,32 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		let color = args[0].replace("#", "");
-		if (["random", "rand", "r", "ran"].includes(color)) {
-			color = getRandomColor();
+		let color = args[0].replace("#", "").toUpperCase();
+		let len = color.length;
+		if (len > 6 || len < 6) {
+			message.reply("Please provide a 6 digit hex code");
+			return;
 		}
-		let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
-		message.reply(`Color \`${color}\``, { files: [url] });
+
+		const colorregexp = new RegExp("[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]");
+		const matches = color.match(colorregexp);
+		if (matches) {
+			let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
+			message.reply(`Color \`#${color}\``, { files: [url] });
+			return;
+		} else {
+			message.reply("Please provide a valid hex code");
+			return;
+		}
 
 	};
+};
+
+colorRandom = function colorRandom(message) {
+	let color = getRandomColor();
+	let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
+	message.reply(`Color \`#${color}\``, { files: [url] });
+	return;
 };
 
 function getRandomColor() {
