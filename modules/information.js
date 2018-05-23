@@ -98,7 +98,6 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
 			switch (args[0]) {
-
 				case "rand":
 				case "random":
 				case "r":
@@ -110,7 +109,6 @@ module.exports = (bot = Discord.Client) => {
 					color(message, args);
 					return;
 			}
-
 		}
 
 		if (command === `${prefix}help`) {
