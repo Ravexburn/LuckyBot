@@ -81,7 +81,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		// Add by invite. (https://discord.gg/qJq5C)
+		// Add by invite. (example: https://discord.gg/qJq5C)
 		const inviteRegExp = new RegExp("(https:\/\/discord\.gg\/)?([-\\w]+)");
 		const matches = args[0].match(inviteRegExp);
 		if (matches) {
@@ -120,7 +120,6 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
 			console.log(`Added server to whitelist. \`${id} ${name}\``);
 		}
-
 	};
 
 };
@@ -132,24 +131,31 @@ module.exports = (bot = Discord.Client) => {
  * @param {string} name - The name of the guild being whitelisted.
  */
 function whitelistAdd(id, name) {
-	fs.readFile(path, (err, data) => {
-		if (err) {
-			console.log(err);
-			return Promise.resolve(false);
-		}
-		else {
-			let whitelist = JSON.parse(data);
-			whitelist.servers[id] = name;
-			let json = JSON.stringify(whitelist);
-			fs.writeFile(path, json, "utf8", (err) => {
-				if (err) {
-					console.log(err);
-					return Promise.resolve(false);
-				}
-				else {
-					return Promise.resolve(true);
-				}
-			});
-		}
+	return new Promise(function (resolve, reject) {
+		fs.readFile(path, (err, data) => {
+			if (err) {
+				console.log(err);
+				reject(false);
+			}
+			else {
+				let whitelist = JSON.parse(data);
+				whitelist.servers[id] = name;
+				let json = JSON.stringify(whitelist);
+				fs.writeFile(path, json, "utf8", (err) => {
+					if (err) {
+						console.log(err);
+						reject(false);
+					}
+					else {
+						resolve(true);
+					}
+				});
+			}
+		});
+	}).then((success) => {
+		return success;
+	}).catch((err) => {
+		console.log(err);
+		return false;
 	});
 }
