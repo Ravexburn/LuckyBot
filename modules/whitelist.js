@@ -81,18 +81,30 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		// Add by invite. (https://discord.gg/qJq5C)
+		// Add by invite. (example: https://discord.gg/qJq5C)
 		const inviteRegExp = new RegExp("(https:\/\/discord\.gg\/)?([-\\w]+)");
 		const matches = args[0].match(inviteRegExp);
 		if (matches) {
 			const inv = matches[0];
+			let guild = null;
 			return bot.fetchInvite(inv)
-				.then((invite) => {
-					const guild = invite.guild;
-					if (whitelistAdd(guild.id, guild.name)) {
-						message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
-						console.log(`Added server to whitelist. \`${id} ${name}\``);
+				.then(invite => {
+					guild = invite.guild;
+					return guild;
+				}).then(guild => {
+					if (!guild) {
+						return Promise.reject("Error: No guild.");
 					}
+					return whitelistAdd(guild.id, guild.name);
+				}).then((success) => {
+					let msg = "";
+					if (success) {
+						msg = `Added server to whitelist. \`${guild.id} ${guild.name}\``;
+					} else {
+						msg = `Unable to add server to whitelist. \`${guild.id} ${guild.name}\``;
+					}
+					console.log(msg);
+					message.channel.send(msg);
 				}).catch((err) => {
 					console.log(err);
 				});
@@ -108,7 +120,6 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
 			console.log(`Added server to whitelist. \`${id} ${name}\``);
 		}
-
 	};
 
 };
@@ -120,24 +131,31 @@ module.exports = (bot = Discord.Client) => {
  * @param {string} name - The name of the guild being whitelisted.
  */
 function whitelistAdd(id, name) {
-	fs.readFile(path, (err, data) => {
-		if (err) {
-			console.log(err);
-			return false;
-		}
-		else {
-			let whitelist = JSON.parse(data);
-			whitelist.servers[id] = name;
-			let json = JSON.stringify(whitelist);
-			fs.writeFile(path, json, "utf8", (err) => {
-				if (err) {
-					console.log(err);
-					return false;
-				}
-				else {
-					return true;
-				}
-			});
-		}
+	return new Promise(function (resolve, reject) {
+		fs.readFile(path, (err, data) => {
+			if (err) {
+				console.log(err);
+				reject(false);
+			}
+			else {
+				let whitelist = JSON.parse(data);
+				whitelist.servers[id] = name;
+				let json = JSON.stringify(whitelist);
+				fs.writeFile(path, json, "utf8", (err) => {
+					if (err) {
+						console.log(err);
+						reject(false);
+					}
+					else {
+						resolve(true);
+					}
+				});
+			}
+		});
+	}).then((success) => {
+		return success;
+	}).catch((err) => {
+		console.log(err);
+		return false;
 	});
 }

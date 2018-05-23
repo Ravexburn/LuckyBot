@@ -97,7 +97,18 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
-			color(message, args);
+			switch (args[0]) {
+				case "rand":
+				case "random":
+				case "r":
+				case "ran":
+					colorRandom(message);
+					break;
+
+				default:
+					color(message, args);
+					return;
+			}
 		}
 
 		if (command === `${prefix}help`) {

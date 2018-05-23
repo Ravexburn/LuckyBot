@@ -69,11 +69,9 @@ module.exports = (bot = Discord.Client) => {
 			if (command !== "") {
 				switch (command) {
 					case "+":
-						console.log("Crash at role add");
 						addRole(message.member, rolename, message);
 						break;
 					case "-":
-						console.log("Crash at role remove");
 						removeRole(message.member, rolename, message);
 						break;
 					default:
