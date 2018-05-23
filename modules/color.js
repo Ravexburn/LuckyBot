@@ -3,7 +3,6 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	color = function color(message, args) {
-
 		if (args.length === 0) {
 			message.channel.send("Please provide a hex color or ask for a random color with `color random`");
 			return;
@@ -26,15 +25,14 @@ module.exports = (bot = Discord.Client) => {
 			message.reply("Please provide a valid hex code");
 			return;
 		}
-
 	};
-};
 
-colorRandom = function colorRandom(message) {
-	let color = getRandomColor();
-	let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
-	message.reply(`Color \`#${color}\``, { files: [url] });
-	return;
+	colorRandom = function colorRandom(message) {
+		let color = getRandomColor();
+		let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
+		message.reply(`Color \`#${color}\``, { files: [url] });
+		return;
+	};
 };
 
 function getRandomColor() {
