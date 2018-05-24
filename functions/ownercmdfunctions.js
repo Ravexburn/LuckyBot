@@ -11,12 +11,6 @@ module.exports = (bot = Discord.Client) => {
 		while (arr.length > 0) {
 			let list = arr.slice(0, limit).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
 			message.channel.send(list);
-			/* (consider for formatting instead of just sending the list)
-			let msg = "```md\n";
-			msg += list.join("\n");
-			msg += "```";
-			message.channel.send(msg);
-			*/
 			arr = arr.slice(limit);
 		}
 	};
@@ -25,16 +19,14 @@ module.exports = (bot = Discord.Client) => {
 
 	serverLeave = function serverLeave(message, args) {
 		if (args.length < 2) {
-			message.channel.send("Put a server id or server number <:yfist:378373231079587840>");
-			let msg = "```md\n";
 			let i = 1;
-			let guilds = [];
-			bot.guilds.array().sort().forEach(guild => {
-				guilds[i] = guild;
-				msg += `${i++}. ${guild.name} - <${guild.id}>\n`;
-			});
-			msg += "```";
-			message.channel.send(msg);
+			const limit = 25;
+			let arr = bot.guilds.array().sort();
+			while (arr.length > 0) {
+				let list = arr.slice(0, limit).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
+				message.channel.send(list);
+				arr = arr.slice(limit);
+			}
 			let author = message.author;
 			message.channel.send("You have 60 seconds to choose a server to leave")
 				.then(() => {
@@ -96,7 +88,6 @@ module.exports = (bot = Discord.Client) => {
 			guild.leave().catch(console.error);
 
 		}
-
 	};
 
 	//Checks what's enabled on a server
@@ -131,5 +122,4 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 	};
-
 };

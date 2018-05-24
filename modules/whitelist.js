@@ -50,7 +50,7 @@ module.exports = (bot = Discord.Client) => {
 		});
 	};
 
-	serverLeave = function serverLeave(guild) {
+	guildLeave = function guildLeave(guild) {
 		const chan = serverLogging();
 		if (!chan) {
 			return;

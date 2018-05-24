@@ -485,6 +485,7 @@ module.exports = (bot = Discord.Client) => {
 					return Promise.reject("Guild Ignored the Channel");
 				}
 			}).then(() => {
+				const keywordsCollection = new Discord.Collection();
 				const notifications = new Discord.Collection();
 				return notify.forEachKeyword((keyword, userID) => {
 					return ignorenoti.isUserIgnoredChannel(userID, message.channel.id)
@@ -499,12 +500,12 @@ module.exports = (bot = Discord.Client) => {
 								return Promise.reject("User Ignored the Guild");
 							}
 						}).then(() => {
-							let userSet = notifications.get(keyword);
+							let userSet = keywordsCollection.get(keyword);
 							if (!userSet) {
 								userSet = new Set();
 							}
 							userSet.add(userID);
-							notifications.set(keyword, userSet);
+							keywordsCollection.set(keyword, userSet);
 						}).catch((reason) => {
 							if (reason !== "User Ignored the Guild") {
 								console.log(reason);
@@ -518,12 +519,12 @@ module.exports = (bot = Discord.Client) => {
 									return Promise.reject("User Ignored the Channel");
 								}
 							}).then(() => {
-								let userSet = notifications.get(keyword);
+								let userSet = keywordsCollection.get(keyword);
 								if (!userSet) {
 									userSet = new Set();
 								}
 								userSet.add(userID);
-								notifications.set(keyword, userSet);
+								keywordsCollection.set(keyword, userSet);
 							}).catch((reason) => {
 								if (reason !== "User Ignored the Channel") {
 									console.log(reason);
@@ -531,7 +532,7 @@ module.exports = (bot = Discord.Client) => {
 							});
 					}, guild.id);
 				}).then(() => {
-					notifications.forEach((userSet, keyword) => {
+					return keywordsCollection.forEach((userSet, keyword) => {
 						const regex = new RegExp(`\\b(${keyword})\\b`, "ig");
 						let msg = message.content;
 						if (msg.search(regex) !== -1) {
@@ -541,9 +542,25 @@ module.exports = (bot = Discord.Client) => {
 								if (!member) return;
 								const canRead = message.channel.permissionsFor(member).has("READ_MESSAGES");
 								if (!canRead) return;
-								member.send(`:round_pushpin: User **${message.author.username}** **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
+								// member.send(`:round_pushpin: User **${message.author.username}** **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
+								let keywordSet = notifications.get(userID);
+								if (!keywordSet) {
+									keywordSet = new Set();
+								}
+								keywordSet.add(keyword);
+								notifications.set(userID, keywordSet);
 							});
 						}
+					});
+				}).then(() => {
+					if (!notifications) return;
+					if (notifications.size === 0) return;
+					notifications.forEach((keywordSet, userID) => {
+						const member = guild.members.get(userID);
+						if (!member) return;
+						let msg = message.content;
+						const keywords = Array.from(keywordSet).map(key => `\`${key}\``).join(", ");
+						member.send(`:round_pushpin: User **${message.author.username}** **(${message.author})** has mentioned ${keywords} in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
 					});
 				}).catch(() => {
 					console.error;
