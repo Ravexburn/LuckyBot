@@ -42,7 +42,8 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}command list\*\* - Direct messages a list of custom commands on the server.
 \*\* ${prefix}command add <name> <command>\*\* - Adds a custom command to the server.
 \*\* ${prefix}command remove <name> <command>\*\* - Removes a custom command on the server.
-\*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.`);
+\*\* ${prefix}command edit <name> <command>\*\* - Edits a custom command on the server.
+\*\* ${prefix}command search <name>\*\* - Search for custom commands on the server containing a given word.`);
 	};
 
 	//Help command for Lastfm Commands
@@ -138,5 +139,80 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 	};
+
+	//Sends paginated embed to channel with listeners for page-turning emote reaction
+	embedPages = function embedPages(message, embed, pages) {
+		let currentPage = 0;
+		
+		embed.setDescription(pages[0])
+			 .setFooter(`Page 1 of ${pages.length}`);
+
+		if (pages.length > 1) {
+			message.channel.send(embed).then(function (msg) {
+				//Promise is used to ensure emoji reacts are placed in correct order and
+				//event listeners are not triggered by the bot's own reactions
+				msg.react("⬅").then(() => msg.react("➡")).then(function () {
+					//User has 60 seconds to turn pages before the listener expires, this could be tweaked if needed
+					const pageBack = msg.createReactionCollector((reaction) => reaction.emoji.name === "⬅", {time: 60000});
+					const pageForward = msg.createReactionCollector((reaction) => reaction.emoji.name === "➡", {time: 60000});
+				
+					pageBack.on('collect', react => {
+						//Ensure the correct embed is being controlled, and the the bot is not triggering page turn
+						if (react.message.id == msg.id && react.users.size > 1) {
+							if (currentPage === 0) return;
+							currentPage--;
+							embed.setDescription(pages[currentPage])
+								.setFooter(`Page ${currentPage+1} of ${pages.length}`);
+							msg.edit(embed);
+						}
+					});
+		
+					pageForward.on('collect', react => {
+						//Ensure the correct embed is being controlled, and the the bot is not triggering page turn
+						if (react.message.id == msg.id && react.users.size > 1) {
+							if (currentPage === pages.length - 1) return;
+							currentPage++;
+							embed.setDescription(pages[currentPage])
+								.setFooter(`Page ${currentPage+1} of ${pages.length}`);
+							msg.edit(embed);
+						}
+					});
+				});				
+			});
+		} else {
+			//With only one page present, reaction listeners are not needed
+			message.channel.send(embed);
+		}
+	}
+
+	//Converts an array of list items to 25-item pages with an optionally-provided header
+	toEmbedPages = function toEmbedPages(items, header) {
+		//Array containing all pages
+		var pages = [];
+
+		//Number of items added to current page
+		var pageLength = 0;
+
+		var page = ``;
+		if (header) page += `${header}\n`;
+
+		for (var item in items) {
+			page += `${items[item]}\n`
+			pageLength++;
+
+			//Limit each page to 25 items
+			if (pageLength == 25) {
+				pages.push(page);
+				page = ``;
+			}
+		}
+
+		//Include final page if it has at least one item but didn't reach capacity
+		if (page != ``) {
+			pages.push(page);
+		}
+
+		return pages;
+	}
 
 };
