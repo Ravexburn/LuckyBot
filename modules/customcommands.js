@@ -170,6 +170,43 @@ ${list.sort().join(`\n`)}`;
 					message.author.send("```" + sendCmd + "```");
 					break;
 
+				case "search":
+					if (args.length < 2) {
+						message.channel.send("**Please enter a search term.**");
+						return;
+					}
+
+					custom = cmds.get(guild.id);
+
+					if (!custom) {
+						message.channel.send("**There are no custom commands on the server.**");
+						return;
+					}
+
+					searchTerm = args[1].toLowerCase();
+
+					for (var key in custom) {
+						if (key.includes(searchTerm)) {
+							list.push(`${prefix}${key}`);
+						}
+					}
+
+					if (list.length === 0) {
+						message.channel.send("**No commands were found containing the given search term.**")
+						return;
+					}
+
+					// Convert list of commands to embed pages and send to requested channel
+					var singularPlural = list.length > 1 ? `commands` : `command`;
+					var pageHeader = `**Found ${list.length} ${singularPlural} matching "${searchTerm}" in ${message.guild.name}:**`;
+					var pages = toEmbedPages(list, pageHeader);
+
+					embed = new Discord.RichEmbed()
+						.setTitle("Command Search Results")
+						.setColor("#40e0d0");
+					embedPages(message, embed, pages);
+					break;
+
 				default:
 					embed = new Discord.RichEmbed()
 						.setTitle("Custom Command Help")
