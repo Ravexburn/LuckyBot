@@ -204,6 +204,7 @@ module.exports = (bot = Discord.Client) => {
 			if (pageLength == 25) {
 				pages.push(page);
 				page = ``;
+				pageLength = 0;
 			}
 		}
 
