@@ -192,7 +192,7 @@ ${list.sort().join(`\n`)}`;
 					}
 
 					if (list.length === 0) {
-						message.channel.send("**No commands were found containing the given search term.**")
+						message.channel.send("**No commands were found containing the given search term.**");
 						return;
 					}
 
