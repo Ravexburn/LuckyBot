@@ -1,6 +1,5 @@
 {
     "commands": [
-       
         "autorole",
         "command",
         "userinfo",
@@ -22,7 +21,7 @@
         "setprefix",
         "start",
         "toggle",
-        "welcome",
+        "greeter",
         "relay",
         "ban",
         "kick",
@@ -30,7 +29,12 @@
         "intset",
         "server",
         "getmeout",
-        "notify"
+		"notify",
+		"profile",
+		"invite",
+		"info",
+		"about",
+		"rep"
     ]
 
 }

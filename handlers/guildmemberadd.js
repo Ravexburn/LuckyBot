@@ -2,18 +2,18 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
-    //Requires
+	//Requires
 
-    require("./../modules/autorole.js")(bot);
-    require("./../modules/welcome.js")(bot);
+	require("./../modules/autorole.js")(bot);
+	require("./../modules/welcome.js")(bot);
 
-    memberJoinHandler = function memberJoinHandler(member) {
+	memberJoinHandler = function memberJoinHandler(member) {
 
-        //Functions
+		//Functions
 
-        autoRoleAdd(member);
-        welcomeMsg(member);
-        joinMsg(member);
-        
-    };    
-}
+		autoRoleAdd(member);
+		joinMsg(member);
+		welcomeMsg(member);
+
+	};
+}; 
