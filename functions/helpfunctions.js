@@ -143,9 +143,9 @@ module.exports = (bot = Discord.Client) => {
 	//Sends paginated embed to channel with listeners for page-turning emote reaction
 	embedPages = function embedPages(message, embed, pages) {
 		let currentPage = 0;
-		
+
 		embed.setDescription(pages[0])
-			 .setFooter(`Page 1 of ${pages.length}`);
+			.setFooter(`Page 1 of ${pages.length}`);
 
 		if (pages.length > 1) {
 			message.channel.send(embed).then(function (msg) {
@@ -153,31 +153,31 @@ module.exports = (bot = Discord.Client) => {
 				//event listeners are not triggered by the bot's own reactions
 				msg.react("⬅").then(() => msg.react("➡")).then(function () {
 					//User has 60 seconds to turn pages before the listener expires, this could be tweaked if needed
-					const pageBack = msg.createReactionCollector((reaction) => reaction.emoji.name === "⬅", {time: 60000});
-					const pageForward = msg.createReactionCollector((reaction) => reaction.emoji.name === "➡", {time: 60000});
-				
+					const pageBack = msg.createReactionCollector((reaction) => reaction.emoji.name === "⬅", { time: 600000 });
+					const pageForward = msg.createReactionCollector((reaction) => reaction.emoji.name === "➡", { time: 600000 });
+
 					pageBack.on('collect', react => {
 						//Ensure the correct embed is being controlled, and the the bot is not triggering page turn
 						if (react.message.id == msg.id && react.users.size > 1) {
 							if (currentPage === 0) return;
 							currentPage--;
 							embed.setDescription(pages[currentPage])
-								.setFooter(`Page ${currentPage+1} of ${pages.length}`);
+								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
 							msg.edit(embed);
 						}
 					});
-		
+
 					pageForward.on('collect', react => {
 						//Ensure the correct embed is being controlled, and the the bot is not triggering page turn
 						if (react.message.id == msg.id && react.users.size > 1) {
 							if (currentPage === pages.length - 1) return;
 							currentPage++;
 							embed.setDescription(pages[currentPage])
-								.setFooter(`Page ${currentPage+1} of ${pages.length}`);
+								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
 							msg.edit(embed);
 						}
 					});
-				});				
+				});
 			});
 		} else {
 			//With only one page present, reaction listeners are not needed
@@ -204,6 +204,7 @@ module.exports = (bot = Discord.Client) => {
 			if (pageLength == 25) {
 				pages.push(page);
 				page = ``;
+				pageLength = 0;
 			}
 		}
 
