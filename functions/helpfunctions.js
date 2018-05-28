@@ -183,7 +183,7 @@ module.exports = (bot = Discord.Client) => {
 			//With only one page present, reaction listeners are not needed
 			message.channel.send(embed);
 		}
-	}
+	};
 
 	//Converts an array of list items to 25-item pages with an optionally-provided header
 	toEmbedPages = function toEmbedPages(items, header) {
@@ -197,7 +197,7 @@ module.exports = (bot = Discord.Client) => {
 		if (header) page += `${header}\n`;
 
 		for (var item in items) {
-			page += `${items[item]}\n`
+			page += `${items[item]}\n`;
 			pageLength++;
 
 			//Limit each page to 25 items
@@ -214,6 +214,6 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		return pages;
-	}
+	};
 
 };
