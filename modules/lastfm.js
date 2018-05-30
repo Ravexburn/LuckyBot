@@ -228,6 +228,11 @@ module.exports = (bot = Discord.Client) => {
 						});
 					break;
 
+				/* //Recent
+				case "recent":
+
+					break; */
+					
 				//Top Tracks
 				case "tt":
 				case "toptrack":
@@ -760,7 +765,7 @@ toptracks = function toptracks(message, embed, response) {
 	let responseA = response.data.toptracks.track;
 	for (i = 0; i < responseA.length; i++) {
 		if (!responseA[i]) {
-			console.log(`No Artist`);
+			console.log(`No Track`);
 			return;
 		}
 	}
