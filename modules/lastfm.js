@@ -2,8 +2,11 @@ const Discord = require("discord.js");
 const axios = require("axios");
 const Lastfm = require("./lastfm_data.js");
 const lastfm = new Lastfm();
+const MAX_CHAR = 2048;
 
 module.exports = (bot = Discord.Client) => {
+
+	require("./../functions/helpfunctions.js")(bot);
 
 	lastFM = async function lastFM(message) {
 		if (message.system) return;
@@ -228,11 +231,62 @@ module.exports = (bot = Discord.Client) => {
 						});
 					break;
 
-				/* //Recent
+				//Recent
 				case "recent":
+					userID = message.author.id;
 
-					break; */
-					
+					if (args.length >= 2) {
+						if (message.mentions.users.first() != undefined) {
+							userID = message.mentions.users.first().id;
+						} else if (message.mentions.users.first() == undefined) {
+							userID = args[args.length - 1];
+						}
+					}
+
+					target = message.member;
+
+					if (message.guild.members.has(userID)) {
+						target = message.guild.member(userID);
+					}
+
+					if (!target) {
+						target = await bot.fetchUser(userID);
+					}
+
+					lastfm.getLastfmData(target.id)
+						.then((data) => {
+							if (data.username !== null) {
+								let username = data.username;
+								url2 = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${bot.botSettings.lastfm}&limit=10&format=json`;
+								axios.get(url2).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.recenttracks) {
+										console.log(`No Recent`);
+										return;
+									}
+									if (!response.data.recenttracks.track[0]) {
+										console.log(`No Track`);
+										return;
+									}
+									let recentEmbed = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Recent Tracks`, target.user.displayAvatarURL.split("?")[0]);
+									rectrack(message, recentEmbed, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+							} else {
+								message.channel.send(regusername);
+								return;
+							}
+						}).catch((error) => {
+							console.log(error);
+						});
+
+					break;
+
 				//Top Tracks
 				case "tt":
 				case "toptrack":
@@ -771,12 +825,10 @@ toptracks = function toptracks(message, embed, response) {
 	}
 	let msg = "";
 	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${responseA[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
-	embed.setColor("#33cc33");
-	embed.setDescription(msg);
-	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-	sendEmbed(message, embed);
+	console.log(responseA[9]);
+	embedcss(message, embed, msg);
 };
 
 topartist = function topartist(message, embed, response) {
@@ -791,10 +843,7 @@ topartist = function topartist(message, embed, response) {
 	for (i = 0; i < responseA.length; i++) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
-	embed.setColor("#33cc33");
-	embed.setDescription(msg);
-	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-	sendEmbed(message, embed);
+	embedcss(message, embed, msg);
 };
 
 topalbum = function topalbum(message, embed, response) {
@@ -809,8 +858,28 @@ topalbum = function topalbum(message, embed, response) {
 	for (i = 0; i < responseA.length; i++) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
+	embedcss(message, embed, msg);
+};
+
+rectrack = function rectrack(message, embed, response) {
+	let responseA = response.data.recenttracks.track;
+	for (i = 0; i < responseA.length; i++) {
+		if (!responseA[i]) {
+			console.log(`No Recent Tracks`);
+			return;
+		}
+	}
+
+	let msg = "";
+	for (i = 0; i < responseA.length; i++) {
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by ${responseA[i].artist["#text"]} \n`;
+	}
+	embedcss(message, embed, msg);
+};
+
+embedcss = function embedcss(message, embed, msg) {
 	embed.setColor("#33cc33");
-	embed.setDescription(msg);
+	embed.setDescription(msg.substring(0, MAX_CHAR));
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };
