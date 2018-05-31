@@ -48,21 +48,18 @@ module.exports = (bot = Discord.Client) => {
 
 	//Help command for Lastfm Commands
 	lastFMHelp = function lastFMHelp(message, prefix, embed) {
+		embed.setTitle("LastFM Commands");
+		embed.setColor("#ffff4d");
+		embed.setFooter("If you have any other questions please contact Rave#0737");
 		embed.addField(":musical_note: Lastfm Commands", `\*\* ${prefix}lastfm help\*\* - Shows this list of commands for lastfm commands.
 \*\* ${prefix}lastfm\*\* - Shows basic account info.
 \*\* ${prefix}lastfm set\*\* - Saves lastfm username.
 \*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.
+\*\* ${prefix}lastfm recent\*\* - Shows the songs recently listened to.
 \*\* ${prefix}lastfm toptracks <week|month|3-month|half-year|year>\*\* - Shows the top tracks of <period>.
 \*\* ${prefix}lastfm topartist <week|month|3-month|half-year|year>\*\* - Shows the top artists of <period>.
 \*\* ${prefix}lastfm topalbums <week|month|3-month|half-year|year>\*\* - Shows the top albums of <period>.`);
 	};
-
-	/* //Help command for Roles
-    rolesHelp = function rolesHelp(message, prefix, embed) {
-        embed.addField(":art: Roles", `\*\*+<role> \*\* - Allows user to add the <role>.
-\*\*-<role> \*\* - Allows user to remove the <role>.
-:warning: When adding and removing roles, names must match role name exactly!`)
-    } */
 
 	//Mod Help Commands
 	//Help for General Mod Commands
