@@ -138,26 +138,7 @@ module.exports = (bot = Discord.Client) => {
 				case "np":
 				case "nowplaying":
 				case "now-playing":
-					userID = message.author.id;
-
-					if (args.length >= 2) {
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
-
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -232,26 +213,7 @@ module.exports = (bot = Discord.Client) => {
 
 				//Recent
 				case "recent":
-					userID = message.author.id;
-
-					if (args.length >= 2) {
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
-
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -283,7 +245,6 @@ module.exports = (bot = Discord.Client) => {
 						}).catch((error) => {
 							console.log(error);
 						});
-
 					break;
 
 				//Top Tracks
@@ -292,32 +253,7 @@ module.exports = (bot = Discord.Client) => {
 				case "toptracks":
 				case "top-track":
 				case "top-tracks":
-					userID = message.author.id;
-
-					if (args.length == 3) { //lf tt week <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					} else if (args.length == 2) { //!lf tt <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
-
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -480,31 +416,7 @@ module.exports = (bot = Discord.Client) => {
 				case "topartists":
 				case "top-artist":
 				case "top-artists":
-					userID = message.author.id;
-
-					if (args.length == 3) { //lf tt week <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					} else if (args.length == 2) { //!lf tt <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -643,32 +555,7 @@ module.exports = (bot = Discord.Client) => {
 				case "topalbums":
 				case "top-album":
 				case "top-albums":
-					userID = message.author.id;
-
-					if (args.length == 3) { //lf tt week <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					} else if (args.length == 2) { //!lf tt <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
-
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -867,12 +754,37 @@ rectrack = function rectrack(message, embed, response) {
 			return;
 		}
 	}
-
 	let msg = "";
 	for (i = 0; i < responseA.length; i++) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by ${responseA[i].artist["#text"]} \n`;
 	}
 	embedcss(message, embed, msg);
+};
+
+mentionFunc = async function mentionFunc(message, args) {
+	let target;
+	userID = message.author.id;
+	if (args.length == 3) { //lf tt week <mention/id>
+		if (message.mentions.users.first() != undefined) {
+			userID = message.mentions.users.first().id;
+		} else if (message.mentions.users.first() == undefined) {
+			userID = args[args.length - 1];
+		}
+	} else if (args.length == 2) { //!lf tt <mention/id>
+		if (message.mentions.users.first() != undefined) {
+			userID = message.mentions.users.first().id;
+		} else if (message.mentions.users.first() == undefined) {
+			userID = args[args.length - 1];
+		}
+	}
+	target = message.member;
+	if (message.guild.members.has(userID)) {
+		target = message.guild.member(userID);
+	}
+	if (!target) {
+		target = await bot.fetchUser(userID);
+	}
+	return target;
 };
 
 embedcss = function embedcss(message, embed, msg) {
