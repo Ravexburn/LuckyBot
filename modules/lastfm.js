@@ -99,8 +99,7 @@ module.exports = (bot = Discord.Client) => {
 					}
 					userID = message.author.id;
 					username = args[1];
-					layout = 0;
-					lastfm.getLastfmData(userID, username, layout)
+					lastfm.getLastfmData(userID, username)
 						.then(() => {
 							url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${bot.botSettings.lastfm}&format=json`;
 							axios.get(url).then(response => {
@@ -108,7 +107,7 @@ module.exports = (bot = Discord.Client) => {
 									message.reply(response.data.message);
 									return Promise.reject(response.data.message);
 								}
-								lastfm.setUsername(userID, username, layout);
+								lastfm.setUsername(userID, username);
 								message.reply(`Username saved as: ${username}`);
 								return;
 							}).catch((error) => {
@@ -377,7 +376,7 @@ module.exports = (bot = Discord.Client) => {
 									case "month":
 									case "1-month":
 									case "1month":
-									case "monthy":
+									case "monthly":
 										time = "1month";
 										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 										axios.get(url3).then(response => {
@@ -556,7 +555,7 @@ module.exports = (bot = Discord.Client) => {
 									case "month":
 									case "1-month":
 									case "1month":
-									case "monthy":
+									case "monthly":
 										time = "1month";
 										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 										axios.get(url4).then(response => {
@@ -720,7 +719,7 @@ module.exports = (bot = Discord.Client) => {
 									case "month":
 									case "1-month":
 									case "1month":
-									case "monthy":
+									case "monthly":
 										time = "1month";
 										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 										axios.get(url5).then(response => {
