@@ -82,10 +82,7 @@ module.exports = (bot = Discord.Client) => {
 			switch (args[0]) {
 				//Help
 				case "help":
-					embed = new Discord.RichEmbed()
-						.setTitle("LastFM Commands")
-						.setColor("#ffff4d")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					lastFMHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
@@ -689,10 +686,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embedDef = new Discord.RichEmbed()
-						.setTitle("LastFM Commands")
-						.setColor("#ffff4d")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embedDef = new Discord.RichEmbed();
 					lastFMHelp(message, prefix, embedDef);
 					sendEmbed(message, embedDef);
 					return;
@@ -701,6 +695,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 };
 
+//Function for top tracks
 toptracks = function toptracks(message, embed, response) {
 	let responseA = response.data.toptracks.track;
 	for (i = 0; i < responseA.length; i++) {
@@ -716,6 +711,7 @@ toptracks = function toptracks(message, embed, response) {
 	embedcss(message, embed, msg);
 };
 
+//Function for top artist
 topartist = function topartist(message, embed, response) {
 	let responseA = response.data.topartists.artist;
 	for (i = 0; i < responseA.length; i++) {
@@ -731,6 +727,7 @@ topartist = function topartist(message, embed, response) {
 	embedcss(message, embed, msg);
 };
 
+//Function for top albums
 topalbum = function topalbum(message, embed, response) {
 	let responseA = response.data.topalbums.album;
 	for (i = 0; i < responseA.length; i++) {
@@ -746,6 +743,7 @@ topalbum = function topalbum(message, embed, response) {
 	embedcss(message, embed, msg);
 };
 
+//Function for recent track
 rectrack = function rectrack(message, embed, response) {
 	let responseA = response.data.recenttracks.track;
 	for (i = 0; i < responseA.length; i++) {
@@ -761,6 +759,7 @@ rectrack = function rectrack(message, embed, response) {
 	embedcss(message, embed, msg);
 };
 
+//Function for checking mentions
 mentionFunc = async function mentionFunc(message, args) {
 	let target;
 	userID = message.author.id;
@@ -787,6 +786,7 @@ mentionFunc = async function mentionFunc(message, args) {
 	return target;
 };
 
+//Embed colors, message, and footer function
 embedcss = function embedcss(message, embed, msg) {
 	embed.setColor("#33cc33");
 	embed.setDescription(msg.substring(0, MAX_CHAR));
