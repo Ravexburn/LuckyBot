@@ -827,7 +827,6 @@ toptracks = function toptracks(message, embed, response) {
 	for (i = 0; i < responseA.length; i++) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${responseA[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
-	console.log(responseA[9]);
 	embedcss(message, embed, msg);
 };
 
