@@ -175,9 +175,9 @@ module.exports = (bot = Discord.Client) => {
 											.setAuthor(`${username} - No Current Song`, target.user.displayAvatarURL.split("?")[0])
 											.setColor("#33cc33")
 											.setThumbnail(albumcover)
-											.addField("Previous Album", album)
 											.addField("Previous Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
 											.addField("Previous Artist", response.data.recenttracks.track[0].artist["#text"], true)
+											.addField("Previous Album", album)
 											.setTimestamp(message.createdAt)
 											.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 										sendEmbed(message, embed2);
@@ -187,9 +187,9 @@ module.exports = (bot = Discord.Client) => {
 										.setAuthor(`${username} - Now Playing`, target.user.displayAvatarURL.split("?")[0])
 										.setColor("#33cc33")
 										.setThumbnail(albumcover)
-										.addField("Album", album)
 										.addField("Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
 										.addField("Artist", response.data.recenttracks.track[0].artist["#text"], true)
+										.addField("Album", album)
 										.addField("Previous Song", `[${response.data.recenttracks.track[1].name}](${response.data.recenttracks.track[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
 										.addField("Previous Artist", response.data.recenttracks.track[1].artist["#text"], true)
 										.setTimestamp(message.createdAt)
@@ -255,149 +255,24 @@ module.exports = (bot = Discord.Client) => {
 						.then((data) => {
 							if (data.username !== null) {
 								let username = data.username;
-								let time;
-								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-								switch (args[1]) {
-									//All time
-									default:
-									case "alltime":
-									case "overall":
-										time = "overall";
-										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url3).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											if (!response.data.toptracks) {
-												console.log(`No Toptrack`);
-												return;
-											}
-											embedAlltime = new Discord.RichEmbed()
-												.setAuthor(`${username}'s All Time Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
-											toptracks(message, embedAlltime, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
+								let time = getTime(args[1]);
 
-									//Week								
-									case "week":
-									case "7-day":
-									case "7day":
-									case "weekly":
-										time = "7day";
-										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url3).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											if (!response.data.toptracks) {
-												console.log(`No Toptrack`);
-												return;
-											}
-											embedWeek = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Weekly Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
-											toptracks(message, embedWeek, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Month	
-									case "month":
-									case "1-month":
-									case "1month":
-									case "monthly":
-										time = "1month";
-										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url3).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											if (!response.data.toptracks) {
-												console.log(`No Toptrack`);
-												return;
-											}
-											embedMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Monthly Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
-											toptracks(message, embedMonth, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//3 Month	
-									case "3-month":
-									case "3month":
-										time = "3month";
-										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url3).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											if (!response.data.toptracks) {
-												console.log(`No Toptrack`);
-												return;
-											}
-											embedTMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 3 Month Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
-											toptracks(message, embedTMonth, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Half Year	
-									case "half-year":
-									case "6-month":
-									case "6month":
-										time = "6month";
-										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url3).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											if (!response.data.toptracks) {
-												console.log(`No Toptrack`);
-												return;
-											}
-											embedHalf = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 6 Month Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
-											toptracks(message, embedHalf, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Year	
-									case "year":
-									case "12-month":
-									case "12month":
-									case "yearly":
-										time = "12month";
-										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url3).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											if (!response.data.toptracks) {
-												console.log(`No Toptrack`);
-												return;
-											}
-											embedYear = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Yearly Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
-											toptracks(message, embedYear, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-								}
+								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time.period}&limit=10&format=json`;
+								axios.get(url3).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.toptracks) {
+										console.log(`No Toptrack`);
+										return;
+									}
+									embedAlltime = new Discord.RichEmbed()
+										.setAuthor(`${username}'s ${time.name} Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
+									toptracks(message, embedAlltime, response);
+								}).catch((error) => {
+									console.log(error);
+								});
 							} else {
 								message.channel.send(regusername);
 								return;
@@ -418,125 +293,20 @@ module.exports = (bot = Discord.Client) => {
 						.then((data) => {
 							if (data.username !== null) {
 								let username = data.username;
-								let time;
-								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-								switch (args[1]) {
-									//All time
-									default:
-									case "alltime":
-									case "overall":
-										time = "overall";
-										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url4).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedAlltime = new Discord.RichEmbed()
-												.setAuthor(`${username}'s All Time Top Artist`, target.user.displayAvatarURL.split("?")[0]);
-											topartist(message, embedAlltime, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
+								let time = getTime(args[1]);
 
-									//Week								
-									case "week":
-									case "7-day":
-									case "7day":
-									case "weekly":
-										time = "7day";
-										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url4).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedWeek = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Weekly Top Artist`, target.user.displayAvatarURL.split("?")[0]);
-											topartist(message, embedWeek, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Month	
-									case "month":
-									case "1-month":
-									case "1month":
-									case "monthly":
-										time = "1month";
-										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url4).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Monthly Top Artist`, target.user.displayAvatarURL.split("?")[0]);
-											topartist(message, embedMonth, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//3 Month	
-									case "3-month":
-									case "3month":
-										time = "3month";
-										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url4).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedTMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 3 Month Top Artist`, target.user.displayAvatarURL.split("?")[0]);
-											topartist(message, embedTMonth, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Half Year	
-									case "half-year":
-									case "6-month":
-									case "6month":
-										time = "6month";
-										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url4).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedHalf = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 6 Month Top Artist`, target.user.displayAvatarURL.split("?")[0]);
-											topartist(message, embedHalf, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Year	
-									case "year":
-									case "12-month":
-									case "12month":
-									case "yearly":
-										time = "12month";
-										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url4).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedYear = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Yearly Top Artists`, target.user.displayAvatarURL.split("?")[0]);
-											topartist(message, embedYear, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-								}
+								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time.period}&limit=10&format=json`;
+								axios.get(url4).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedAlltime = new Discord.RichEmbed()
+										.setAuthor(`${username}'s ${time.name} Top Artists`, target.user.displayAvatarURL.split("?")[0]);
+									topartist(message, embedAlltime, response);
+								}).catch((error) => {
+									console.log(error);
+								});
 							} else {
 								message.channel.send(regusername);
 								return;
@@ -556,126 +326,21 @@ module.exports = (bot = Discord.Client) => {
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
-								let username = data.username;
-								let time;
-								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-								switch (args[1]) {
-									//All time
-									default:
-									case "alltime":
-									case "overall":
-										time = "overall";
-										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url5).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedAlltime = new Discord.RichEmbed()
-												.setAuthor(`${username}'s All Time Top Albums`, target.user.displayAvatarURL.split("?")[0]);
-											topalbum(message, embedAlltime, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
+								let username = data.username;								
+								let time = getTime(args[1]);
 
-									//Week								
-									case "week":
-									case "7-day":
-									case "7day":
-									case "weekly":
-										time = "7day";
-										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url5).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedWeek = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Weekly Top Albums`, target.user.displayAvatarURL.split("?")[0]);
-											topalbum(message, embedWeek, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Month	
-									case "month":
-									case "1-month":
-									case "1month":
-									case "monthly":
-										time = "1month";
-										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url5).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Monthly Top Albums`, target.user.displayAvatarURL.split("?")[0]);
-											topalbum(message, embedMonth, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//3 Month	
-									case "3-month":
-									case "3month":
-										time = "3month";
-										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url5).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedTMonth = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 3 Month Top Albums`, target.user.displayAvatarURL.split("?")[0]);
-											topalbum(message, embedTMonth, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Half Year	
-									case "half-year":
-									case "6-month":
-									case "6month":
-										time = "6month";
-										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url5).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedHalf = new Discord.RichEmbed()
-												.setAuthor(`${username}'s 6 Month Top Albums`, target.user.displayAvatarURL.split("?")[0]);
-											topalbum(message, embedHalf, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-
-									//Year	
-									case "year":
-									case "12-month":
-									case "12month":
-									case "yearly":
-										time = "12month";
-										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
-										axios.get(url5).then(response => {
-											if (response.error) {
-												message.reply(response.message);
-												return Promise.reject(response.message);
-											}
-											embedYear = new Discord.RichEmbed()
-												.setAuthor(`${username}'s Yearly Top Albums`, target.user.displayAvatarURL.split("?")[0]);
-											topalbum(message, embedYear, response);
-										}).catch((error) => {
-											console.log(error);
-										});
-										break;
-								}
+								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time.period}&limit=10&format=json`;
+								axios.get(url5).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									embedAlltime = new Discord.RichEmbed()
+										.setAuthor(`${username}'s ${time.name} Top Albums`, target.user.displayAvatarURL.split("?")[0]);
+									topalbum(message, embedAlltime, response);
+								}).catch((error) => {
+									console.log(error);
+								});
 							} else {
 								message.channel.send(regusername);
 								return;
@@ -738,7 +403,9 @@ topalbum = function topalbum(message, embed, response) {
 	}
 	let msg = "";
 	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) `;
+		msg += `by [${responseA[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) `;
+		msg += `(${responseA[i].playcount} plays) \n`;
 	}
 	embedcss(message, embed, msg);
 };
@@ -792,4 +459,67 @@ embedcss = function embedcss(message, embed, msg) {
 	embed.setDescription(msg.substring(0, MAX_CHAR));
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
+};
+
+//Function for parsing user input into time period
+getTime = function getTime(arg) {
+	let time;
+	let timeName;
+
+	switch (arg) {
+		//All time
+		default:
+		case "alltime":
+		case "overall":
+			time = "overall";
+			timeName = "All Time";
+			break;
+
+		//Week								
+		case "week":
+		case "7-day":
+		case "7day":
+		case "weekly":
+			time = "7day";
+			timeName = "Weekly";
+			break;
+
+		//Month	
+		case "month":
+		case "1-month":
+		case "1month":
+		case "monthly":
+			time = "1month";
+			timeName = "Monthly";
+			break;
+
+		//3 Month	
+		case "3-month":
+		case "3month":
+			time = "3month";
+			timeName = "3 Month";
+			break;
+
+		//Half Year	
+		case "half-year":
+		case "6-month":
+		case "6month":
+			time = "6month";
+			timeName = "6 Month";
+			break;
+
+		//Year	
+		case "year":
+		case "12-month":
+		case "12month":
+		case "yearly":
+			time = "12month";
+			timeName = "Yearly";
+			break;
+	}
+
+	return {
+		"period": time,
+		"name": timeName
+	};
 };
