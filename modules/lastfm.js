@@ -422,7 +422,7 @@ rectrack = function rectrack(message, embed, response) {
 	let msg = "";
 	for (i = 0; i < responseA.length; i++) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) `;
-		msg += `by [${responseA[i].artist["#text"]}](https://www.last.fm/music/${responseA[i].artist["#text"].replace(" ", "+").replace(/\(/g, "%28").replace(/\)/g, "%29")}) \n`;
+		msg += `by [${responseA[i].artist["#text"]}](https://www.last.fm/music/${responseA[i].artist["#text"].replace(/\b /g, "+").replace(/\(/g, "%28").replace(/\)/g, "%29")}) \n`;
 	}
 	embedcss(message, embed, msg);
 };
