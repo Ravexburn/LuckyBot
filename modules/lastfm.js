@@ -522,4 +522,4 @@ getTime = function getTime(arg) {
 		"period": time,
 		"name": timeName
 	};
-}
+};
