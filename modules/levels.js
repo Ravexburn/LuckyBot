@@ -11,6 +11,8 @@ const MSG_TIME = 60000;
 
 module.exports = (bot = Discord.Client) => {
 
+	require("./../functions/helpfunctions.js")(bot);
+
 	expFunction = function expFunction(message) {
 		if (message.system) return;
 		if (message.author.bot) return;
@@ -124,7 +126,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	leaderboardGlobal = async function leaderboardGlobal(message) {
-		let limit = 25;
+		let limit = 100;
 		profile.sortLevels(limit)
 			.then(async (data) => {
 				let arr = [];
@@ -147,19 +149,21 @@ module.exports = (bot = Discord.Client) => {
 				}
 				return Promise.resolve(arr);
 			}).then((arr) => {
+				var pages = toEmbedPages(arr);
+				var css = "```css\n" + pages.join("\n") + "```";
 				let embed = new Discord.RichEmbed()
 					.setAuthor("Global Leaderboard")
 					.setColor("#fa4384")
 					.setTitle("Rank - User - Level", true)
 					.setDescription("```css\n" + arr.join("\n") + "```");
-				message.channel.send(embed);
+				embedPages(message, embed, pages, css);
 			}).catch((error) => {
 				console.log(error);
 			});
 	};
 
 	leaderboardLocal = async function leaderboardLocal(message) {
-		let limit = 25;
+		let limit = 100;
 		let guild = message.guild;
 		profile.sortLevelsLocal(guild.id, limit)
 			.then(async (data) => {
@@ -183,12 +187,13 @@ module.exports = (bot = Discord.Client) => {
 				}
 				return Promise.resolve(arr);
 			}).then((arr) => {
+				var pages = toEmbedPages(arr);
 				let embed = new Discord.RichEmbed()
 					.setAuthor(`Leaderboard for ${guild.name}`)
 					.setColor("#fa4384")
 					.setTitle("Rank - User - Level", true)
 					.setDescription("```css\n" + arr.join("\n") + "```");
-				message.channel.send(embed);
+				embedPages(message, embed, pages);
 			}).catch((error) => {
 				console.log(error);
 			});

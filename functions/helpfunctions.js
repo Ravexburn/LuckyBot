@@ -48,21 +48,18 @@ module.exports = (bot = Discord.Client) => {
 
 	//Help command for Lastfm Commands
 	lastFMHelp = function lastFMHelp(message, prefix, embed) {
+		embed.setTitle("LastFM Commands");
+		embed.setColor("#ffff4d");
+		embed.setFooter("If you have any other questions please contact Rave#0737");
 		embed.addField(":musical_note: Lastfm Commands", `\*\* ${prefix}lastfm help\*\* - Shows this list of commands for lastfm commands.
 \*\* ${prefix}lastfm\*\* - Shows basic account info.
 \*\* ${prefix}lastfm set\*\* - Saves lastfm username.
 \*\* ${prefix}lastfm nowplaying\*\* - Shows the song currently playing.
+\*\* ${prefix}lastfm recent\*\* - Shows the songs recently listened to.
 \*\* ${prefix}lastfm toptracks <week|month|3-month|half-year|year>\*\* - Shows the top tracks of <period>.
 \*\* ${prefix}lastfm topartist <week|month|3-month|half-year|year>\*\* - Shows the top artists of <period>.
 \*\* ${prefix}lastfm topalbums <week|month|3-month|half-year|year>\*\* - Shows the top albums of <period>.`);
 	};
-
-	/* //Help command for Roles
-    rolesHelp = function rolesHelp(message, prefix, embed) {
-        embed.addField(":art: Roles", `\*\*+<role> \*\* - Allows user to add the <role>.
-\*\*-<role> \*\* - Allows user to remove the <role>.
-:warning: When adding and removing roles, names must match role name exactly!`)
-    } */
 
 	//Mod Help Commands
 	//Help for General Mod Commands
@@ -143,9 +140,9 @@ module.exports = (bot = Discord.Client) => {
 	//Sends paginated embed to channel with listeners for page-turning emote reaction
 	embedPages = function embedPages(message, embed, pages) {
 		let currentPage = 0;
-		
+
 		embed.setDescription(pages[0])
-			 .setFooter(`Page 1 of ${pages.length}`);
+			.setFooter(`Page 1 of ${pages.length}`);
 
 		if (pages.length > 1) {
 			message.channel.send(embed).then(function (msg) {
@@ -153,37 +150,37 @@ module.exports = (bot = Discord.Client) => {
 				//event listeners are not triggered by the bot's own reactions
 				msg.react("⬅").then(() => msg.react("➡")).then(function () {
 					//User has 60 seconds to turn pages before the listener expires, this could be tweaked if needed
-					const pageBack = msg.createReactionCollector((reaction) => reaction.emoji.name === "⬅", {time: 60000});
-					const pageForward = msg.createReactionCollector((reaction) => reaction.emoji.name === "➡", {time: 60000});
-				
+					const pageBack = msg.createReactionCollector((reaction) => reaction.emoji.name === "⬅", { time: 600000 });
+					const pageForward = msg.createReactionCollector((reaction) => reaction.emoji.name === "➡", { time: 600000 });
+
 					pageBack.on('collect', react => {
 						//Ensure the correct embed is being controlled, and the the bot is not triggering page turn
 						if (react.message.id == msg.id && react.users.size > 1) {
 							if (currentPage === 0) return;
 							currentPage--;
 							embed.setDescription(pages[currentPage])
-								.setFooter(`Page ${currentPage+1} of ${pages.length}`);
+								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
 							msg.edit(embed);
 						}
 					});
-		
+
 					pageForward.on('collect', react => {
 						//Ensure the correct embed is being controlled, and the the bot is not triggering page turn
 						if (react.message.id == msg.id && react.users.size > 1) {
 							if (currentPage === pages.length - 1) return;
 							currentPage++;
 							embed.setDescription(pages[currentPage])
-								.setFooter(`Page ${currentPage+1} of ${pages.length}`);
+								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
 							msg.edit(embed);
 						}
 					});
-				});				
+				});
 			});
 		} else {
 			//With only one page present, reaction listeners are not needed
 			message.channel.send(embed);
 		}
-	}
+	};
 
 	//Converts an array of list items to 25-item pages with an optionally-provided header
 	toEmbedPages = function toEmbedPages(items, header) {
@@ -197,7 +194,7 @@ module.exports = (bot = Discord.Client) => {
 		if (header) page += `${header}\n`;
 
 		for (var item in items) {
-			page += `${items[item]}\n`
+			page += `${items[item]}\n`;
 			pageLength++;
 
 			//Limit each page to 25 items
@@ -214,6 +211,6 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		return pages;
-	}
+	};
 
 };

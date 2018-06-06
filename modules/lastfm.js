@@ -2,8 +2,11 @@ const Discord = require("discord.js");
 const axios = require("axios");
 const Lastfm = require("./lastfm_data.js");
 const lastfm = new Lastfm();
+const MAX_CHAR = 2048;
 
 module.exports = (bot = Discord.Client) => {
+
+	require("./../functions/helpfunctions.js")(bot);
 
 	lastFM = async function lastFM(message) {
 		if (message.system) return;
@@ -79,10 +82,7 @@ module.exports = (bot = Discord.Client) => {
 			switch (args[0]) {
 				//Help
 				case "help":
-					embed = new Discord.RichEmbed()
-						.setTitle("LastFM Commands")
-						.setColor("#ffff4d")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					lastFMHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
@@ -96,8 +96,7 @@ module.exports = (bot = Discord.Client) => {
 					}
 					userID = message.author.id;
 					username = args[1];
-					layout = 0;
-					lastfm.getLastfmData(userID, username, layout)
+					lastfm.getLastfmData(userID, username)
 						.then(() => {
 							url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${bot.botSettings.lastfm}&format=json`;
 							axios.get(url).then(response => {
@@ -105,7 +104,7 @@ module.exports = (bot = Discord.Client) => {
 									message.reply(response.data.message);
 									return Promise.reject(response.data.message);
 								}
-								lastfm.setUsername(userID, username, layout);
+								lastfm.setUsername(userID, username);
 								message.reply(`Username saved as: ${username}`);
 								return;
 							}).catch((error) => {
@@ -136,26 +135,7 @@ module.exports = (bot = Discord.Client) => {
 				case "np":
 				case "nowplaying":
 				case "now-playing":
-					userID = message.author.id;
-
-					if (args.length >= 2) {
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
-
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -228,38 +208,49 @@ module.exports = (bot = Discord.Client) => {
 						});
 					break;
 
+				//Recent
+				case "recent":
+					target = await mentionFunc(message, args);
+					lastfm.getLastfmData(target.id)
+						.then((data) => {
+							if (data.username !== null) {
+								let username = data.username;
+								url2 = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${bot.botSettings.lastfm}&limit=10&format=json`;
+								axios.get(url2).then(response => {
+									if (response.error) {
+										message.reply(response.message);
+										return Promise.reject(response.message);
+									}
+									if (!response.data.recenttracks) {
+										console.log(`No Recent`);
+										return;
+									}
+									if (!response.data.recenttracks.track[0]) {
+										console.log(`No Track`);
+										return;
+									}
+									let recentEmbed = new Discord.RichEmbed()
+										.setAuthor(`${username}'s Recent Tracks`, target.user.displayAvatarURL.split("?")[0]);
+									rectrack(message, recentEmbed, response);
+								}).catch((error) => {
+									console.log(error);
+								});
+							} else {
+								message.channel.send(regusername);
+								return;
+							}
+						}).catch((error) => {
+							console.log(error);
+						});
+					break;
+
 				//Top Tracks
 				case "tt":
 				case "toptrack":
 				case "toptracks":
 				case "top-track":
 				case "top-tracks":
-					userID = message.author.id;
-
-					if (args.length == 3) { //lf tt week <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					} else if (args.length == 2) { //!lf tt <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
-
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -318,7 +309,7 @@ module.exports = (bot = Discord.Client) => {
 									case "month":
 									case "1-month":
 									case "1month":
-									case "monthy":
+									case "monthly":
 										time = "1month";
 										url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 										axios.get(url3).then(response => {
@@ -422,31 +413,7 @@ module.exports = (bot = Discord.Client) => {
 				case "topartists":
 				case "top-artist":
 				case "top-artists":
-					userID = message.author.id;
-
-					if (args.length == 3) { //lf tt week <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					} else if (args.length == 2) { //!lf tt <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -497,7 +464,7 @@ module.exports = (bot = Discord.Client) => {
 									case "month":
 									case "1-month":
 									case "1month":
-									case "monthy":
+									case "monthly":
 										time = "1month";
 										url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 										axios.get(url4).then(response => {
@@ -585,32 +552,7 @@ module.exports = (bot = Discord.Client) => {
 				case "topalbums":
 				case "top-album":
 				case "top-albums":
-					userID = message.author.id;
-
-					if (args.length == 3) { //lf tt week <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					} else if (args.length == 2) { //!lf tt <mention/id>
-						if (message.mentions.users.first() != undefined) {
-							userID = message.mentions.users.first().id;
-						} else if (message.mentions.users.first() == undefined) {
-							userID = args[args.length - 1];
-						}
-					}
-
-					target = message.member;
-
-					if (message.guild.members.has(userID)) {
-						target = message.guild.member(userID);
-					}
-
-					if (!target) {
-						target = await bot.fetchUser(userID);
-					}
-
+					target = await mentionFunc(message, args);
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
@@ -661,7 +603,7 @@ module.exports = (bot = Discord.Client) => {
 									case "month":
 									case "1-month":
 									case "1month":
-									case "monthy":
+									case "monthly":
 										time = "1month";
 										url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time}&limit=10&format=json`;
 										axios.get(url5).then(response => {
@@ -744,10 +686,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embedDef = new Discord.RichEmbed()
-						.setTitle("LastFM Commands")
-						.setColor("#ffff4d")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embedDef = new Discord.RichEmbed();
 					lastFMHelp(message, prefix, embedDef);
 					sendEmbed(message, embedDef);
 					return;
@@ -756,24 +695,23 @@ module.exports = (bot = Discord.Client) => {
 	};
 };
 
+//Function for top tracks
 toptracks = function toptracks(message, embed, response) {
 	let responseA = response.data.toptracks.track;
 	for (i = 0; i < responseA.length; i++) {
 		if (!responseA[i]) {
-			console.log(`No Artist`);
+			console.log(`No Track`);
 			return;
 		}
 	}
 	let msg = "";
 	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${response.data.toptracks.track[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${responseA[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
-	embed.setColor("#33cc33");
-	embed.setDescription(msg);
-	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-	sendEmbed(message, embed);
+	embedcss(message, embed, msg);
 };
 
+//Function for top artist
 topartist = function topartist(message, embed, response) {
 	let responseA = response.data.topartists.artist;
 	for (i = 0; i < responseA.length; i++) {
@@ -786,12 +724,10 @@ topartist = function topartist(message, embed, response) {
 	for (i = 0; i < responseA.length; i++) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
-	embed.setColor("#33cc33");
-	embed.setDescription(msg);
-	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-	sendEmbed(message, embed);
+	embedcss(message, embed, msg);
 };
 
+//Function for top albums
 topalbum = function topalbum(message, embed, response) {
 	let responseA = response.data.topalbums.album;
 	for (i = 0; i < responseA.length; i++) {
@@ -804,8 +740,56 @@ topalbum = function topalbum(message, embed, response) {
 	for (i = 0; i < responseA.length; i++) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
+	embedcss(message, embed, msg);
+};
+
+//Function for recent track
+rectrack = function rectrack(message, embed, response) {
+	let responseA = response.data.recenttracks.track;
+	for (i = 0; i < responseA.length; i++) {
+		if (!responseA[i]) {
+			console.log(`No Recent Tracks`);
+			return;
+		}
+	}
+	let msg = "";
+	for (i = 0; i < responseA.length; i++) {
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by ${responseA[i].artist["#text"]} \n`;
+	}
+	embedcss(message, embed, msg);
+};
+
+//Function for checking mentions
+mentionFunc = async function mentionFunc(message, args) {
+	let target;
+	userID = message.author.id;
+	if (args.length == 3) { //lf tt week <mention/id>
+		if (message.mentions.users.first() != undefined) {
+			userID = message.mentions.users.first().id;
+		} else if (message.mentions.users.first() == undefined) {
+			userID = args[args.length - 1];
+		}
+	} else if (args.length == 2) { //!lf tt <mention/id>
+		if (message.mentions.users.first() != undefined) {
+			userID = message.mentions.users.first().id;
+		} else if (message.mentions.users.first() == undefined) {
+			userID = args[args.length - 1];
+		}
+	}
+	target = message.member;
+	if (message.guild.members.has(userID)) {
+		target = message.guild.member(userID);
+	}
+	if (!target) {
+		target = await bot.fetchUser(userID);
+	}
+	return target;
+};
+
+//Embed colors, message, and footer function
+embedcss = function embedcss(message, embed, msg) {
 	embed.setColor("#33cc33");
-	embed.setDescription(msg);
+	embed.setDescription(msg.substring(0, MAX_CHAR));
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 };

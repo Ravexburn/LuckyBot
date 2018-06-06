@@ -11,6 +11,5 @@ nodemon.json
 template.js
 serverlist.json
 *.log
-.eslintrc.json
 oldlastfm.js
 newlf.js
