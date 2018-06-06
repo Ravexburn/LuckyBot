@@ -421,7 +421,7 @@ rectrack = function rectrack(message, embed, response) {
 	}
 	let msg = "";
 	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by ${responseA[i].artist["#text"]} \n`;
+		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${responseA[i].artist["#text"]}](https://www.last.fm/music/${responseA[i].artist["#text"].replace(" ", "+")}) \n`;
 	}
 	embedcss(message, embed, msg);
 };
