@@ -26,6 +26,9 @@ module.exports = (bot = Discord.Client) => {
 		const timedif = message.createdTimestamp - repTimer;
 		if (repTimer <= message.createdTimestamp && timedif >= MSG_TIME) {
 			repTimer = message.createdTimestamp;
+
+			args = args.filter(arg => arg.trim().length > 0);
+
 			if (args.length === 0){
 				message.channel.send("Please give me someone to rep! <:rooGun:433064572761538561>");
 				return;
