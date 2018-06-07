@@ -115,7 +115,7 @@ module.exports = class Profiles {
 					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_REP} =? WHERE ${SQL_USER_ID} =?`, [rep, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_REP} VALUES (?, ?)`, [userID, rep]);
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_REP}) VALUES (?, ?)`, [userID, rep]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);
@@ -130,7 +130,7 @@ module.exports = class Profiles {
 					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_TICKETS} =? WHERE ${SQL_USER_ID} =?`, [tickets, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_TICKETS} VALUES (?, ?)`, [userID, tickets]);
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_TICKETS}) VALUES (?, ?)`, [userID, tickets]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);
@@ -145,7 +145,7 @@ module.exports = class Profiles {
 					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LEVEL} =? WHERE ${SQL_USER_ID} =?`, [level, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL} VALUES (?, ?)`, [userID, level]);
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LEVEL}) VALUES (?, ?)`, [userID, level]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);
