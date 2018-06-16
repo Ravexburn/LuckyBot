@@ -119,6 +119,11 @@ module.exports = (bot = Discord.Client) => {
 					rolesTog(message, serverSettings);
 					return;
 
+				//Toggle Starboard  
+				case "starboard":
+					starboardTog(message, serverSettings);
+					return;
+
 				default:
 					embed = new Discord.RichEmbed()
 						.setColor("#3498db")
@@ -167,6 +172,46 @@ module.exports = (bot = Discord.Client) => {
 						.setTitle("Greeter Help")
 						.setFooter("If you have any other questions please contact Rave#0737");
 					welcomeHelp(message, prefix, embed);
+					sendEmbed(message, embed);
+					break;
+			}
+		}
+
+		//Starboard setup
+
+		if ((command === `${prefix}starboard`)) {
+			if (args.length === 0) {
+				let embed = new Discord.RichEmbed()
+					.setColor("#ff8533")
+					.setTitle("Starboard Help")
+					.setFooter("If you have any other questions please contact Rave#0737");
+				starboardHelp(message, prefix, embed);
+				sendEmbed(message, embed);
+				return;
+			}
+
+			let embed;
+			switch (args[0].toLowerCase()) {
+
+				case "chan":
+				case "channel":
+					starboardChan(message, serverSettings, command);
+					break;
+
+				case "emoji":
+					setStarboardEmoji(message, serverSettings);
+					break;
+
+				case "number":
+					setStarboardNumber(message, args, serverSettings);
+					break;
+
+				default:
+					embed = new Discord.RichEmbed()
+						.setColor("#ff8533")
+						.setTitle("Starboard Help")
+						.setFooter("If you have any other questions please contact Rave#0737");
+					starboardHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
 			}

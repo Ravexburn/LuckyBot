@@ -75,8 +75,16 @@ module.exports = (bot = Discord.Client) => {
 	//Help for Greeter Commands
 	welcomeHelp = function welcomeHelp(message, prefix, embed) {
 		embed.addField(":wave: Greeter Commands", `\*\* ${prefix}greeter\*\* - Shows this list of commands for greeter.
-\*\* ${prefix}greeter channel <channel name>\*\* - Sets the channel the bot should greeter new members in.
+\*\* ${prefix}greeter channel <channel name>\*\* - Sets the channel the bot should greet new members in.
 \*\* ${prefix}greeter message <message>\*\* - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`);
+	};
+
+	//Help for Starboard Commands
+	starboardHelp = function starboardHelp(message, prefix, embed) {
+		embed.addField(":star: Starboard Commands", `\*\* ${prefix}starboard\*\* - Shows this list of commands for starboard.
+\*\* ${prefix}starboard channel <channel name>\*\* - Sets the channel where the bot should place starred messages.
+\*\* ${prefix}starboard emoji\*\* - Prompts the user to react with the emoji the bot watches for to place messages on the board.
+\*\* ${prefix}starboard number <number>\*\* - Sets the number of reactions required to place messages on the board.`);
 	};
 
 	//Help for Start Commands
@@ -94,7 +102,8 @@ module.exports = (bot = Discord.Client) => {
 \*\* ${prefix}toggle image\*\* - Changes between embed disabled for images in message logs.
 \*\* ${prefix}toggle logs\*\* - Turns message logs on and off.
 \*\* ${prefix}toggle greeter\*\* - Turns greeter message on and off.
-\*\* ${prefix}toggle roles\*\* - Turns roles channel on and off.`);
+\*\* ${prefix}toggle roles\*\* - Turns roles channel on and off.
+\*\* ${prefix}toggle starboard\*\* - Turns starboard channel on and off.`);
 	};
 
 	//Help for Server Commands
@@ -164,6 +173,10 @@ module.exports = (bot = Discord.Client) => {
 						}
 					});
 
+					pageBack.on('end', collection => {
+						msg.clearReactions();
+					});
+
 					pageForward.on('collect', react => {
 						//Ensure the correct embed is being controlled, and the the bot is not triggering page turn
 						if (react.message.id == msg.id && react.users.size > 1) {
@@ -173,6 +186,10 @@ module.exports = (bot = Discord.Client) => {
 								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
 							msg.edit(embed);
 						}
+					});
+
+					pageForward.on('end', collection => {
+						msg.clearReactions();
 					});
 				});
 			});

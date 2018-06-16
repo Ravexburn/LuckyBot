@@ -295,4 +295,19 @@ After you have made your decision react with the :floppy_disk: to save.`);
 		serverSettings.welcomeImage = image;
 		bot.setServerSettings(message.guild, serverSettings);
 	};
+
+	/**
+     * Starboard channel
+     * @param {Message} message 
+     */
+	starboardChan = function starboardChan(message, serverSettings, command) {
+		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
+			let chan = message.mentions.channels.first();
+			message.channel.send("Starboard channel set to: " + chan);
+			serverSettings.starboardChannelID = chan.id;
+			bot.setServerSettings(message.guild.id, serverSettings);
+		} else {
+			message.channel.send(`Please mention a channel ${command} <channel> <#channelname>`);
+		}
+	};
 };

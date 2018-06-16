@@ -283,4 +283,42 @@ module.exports = (bot = Discord.Client) => {
 
 	};
 
+	/**
+     * Setting starboard emoji
+     * @param {Message} message 
+     */
+	setStarboardEmoji = function setStarboardEmoji(message, serverSettings) {
+		const prompt = message.author + " Please react to this message with the desired emoji.";
+		message.channel.send(prompt).then(function (msg) {
+			var filter = (reaction, user) => user.id == message.author.id;
+			msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+				.then(collected => {
+					const reaction = collected.first();
+					let newEmoji = reaction.emoji;
+					serverSettings.starboardEmoji = newEmoji.name;
+					bot.setServerSettings(message.guild.id, serverSettings);
+					message.channel.send("**Starboard emoji has been set to: **" + newEmoji);
+				});
+		});
+		return;
+	};
+
+	/**
+     * Setting starboard reaction number
+     * @param {Message} message 
+     */
+	setStarboardNumber = function setStarboardNumber(message, args, serverSettings) {
+		if (args.length <= 1 || isNaN(args[1])) {
+			message.channel.send(message.author + " Please enter a valid number.")
+				.then(message => message.delete(10 * 1000));
+			message.delete(10 * 1000);
+			return;
+		}
+		const newNumber = args[1];
+		serverSettings.starboardNumber = newNumber;
+		bot.setServerSettings(message.guild.id, serverSettings);
+		message.channel.send("**Starboard number has been set to: **" + newNumber);
+		return;
+	};
+
 };
