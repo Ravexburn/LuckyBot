@@ -33,6 +33,9 @@ module.exports = (bot = Discord.Client) => {
 		owner(message);
 		relays.relayMessage(message, relays.relayRave);
 		rolesAdd(message);
-		starboardListen(message);
+	};
+
+	reactHandler = async function reactHandler(reaction) {
+		starboardUpdate(reaction);
 	};
 };
