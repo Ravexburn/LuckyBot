@@ -298,8 +298,8 @@ module.exports = (bot = Discord.Client) => {
 					serverSettings.starboardEmoji = newEmoji.name;
 					bot.setServerSettings(message.guild.id, serverSettings);
 					message.channel.send("**Starboard emoji has been set to: **" + newEmoji);
-    			});
-		});		
+				});
+		});
 		return;
 	};
 
