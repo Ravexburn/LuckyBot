@@ -77,4 +77,19 @@ module.exports = (bot = Discord.Client) => {
 		message.channel.send(`**Mod Log status:** ${emote}`);
 	};
 
+	/**
+		 * Turns starboard on and off
+		 * @param {Message} message 
+		 */
+	starboardTog = function starboardTog(message, serverSettings) {
+		serverSettings.starboardOn = !serverSettings.starboardOn;
+		bot.setServerSettings(message.guild.id, serverSettings);
+		if (serverSettings.starboardOn === true) {
+			emote = ":white_check_mark: **Enabled**";
+		} else {
+			emote = ":x: **Disabled**";
+		}
+		message.channel.send(`**Starboard status:** ${emote}`);
+	};
+
 };

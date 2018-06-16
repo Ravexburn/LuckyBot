@@ -34,7 +34,8 @@
 		"invite",
 		"info",
 		"about",
-		"rep"
+        "rep",
+        "starboard"
     ]
 
 }

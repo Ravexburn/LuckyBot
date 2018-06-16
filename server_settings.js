@@ -34,6 +34,11 @@ const defaultSettings = {
 	imageLog: false,
 	//Mod logs
 	modLogOn: false,
+	//Starboard
+	starboardOn: false,
+	starboardChannelID: "",
+	starboardEmoji: "⭐",
+	starboardNumber: 1
 };
 
 module.exports = (bot = Discord.Client) => {
