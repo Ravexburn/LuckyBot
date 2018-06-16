@@ -48,7 +48,7 @@ module.exports = (bot = Discord.Client) => {
 			.setThumbnail(image)
 			.setTitle(author)
 			.setFooter("#" + channel.name)
-			.setDescription(msg)
+			.setDescription(msg);
 		boardChannel.send(embed);
 	};
 };

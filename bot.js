@@ -60,6 +60,12 @@ bot.on("messageUpdate", (oldMessage, message) => {
 	msgUpdateHandler(oldMessage, message);
 });
 
+//When a reaction is added to a message.
+
+bot.on("messageReactionAdd", async message => {
+	reactHandler(message);
+});
+
 //When a message is deleted.
 
 bot.on("messageDelete", message => {
