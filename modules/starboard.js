@@ -5,8 +5,8 @@ module.exports = (bot = Discord.Client) => {
     //Post message to starboard
 
     starboardUpdate = function starboardUpdate(reaction) {
-		const guild = reaction.message.guild;
-		const serverSettings = bot.getServerSettings(guild.id);
+        const guild = reaction.message.guild;
+        const serverSettings = bot.getServerSettings(guild.id);
         if (!serverSettings) return;
         if (!serverSettings.starboardOn) return;
         if (!serverSettings.starboardChannelID) return;
@@ -15,10 +15,10 @@ module.exports = (bot = Discord.Client) => {
 
         const starboardChannelID = serverSettings.starboardChannelID;
 
-		if (!guild.channels.has(starboardChannelID)) {
-			return;
-		}
-		const boardChannel = guild.channels.get(starboardChannelID);
+        if (!guild.channels.has(starboardChannelID)) {
+            return;
+        }
+        const boardChannel = guild.channels.get(starboardChannelID);
         if (serverSettings.starboardOn === false) return;
         
         let channel = reaction.message.channel;
@@ -32,8 +32,8 @@ module.exports = (bot = Discord.Client) => {
             .setColor("RANDOM")
             .setThumbnail(image)
             .setTitle(author)
-			.setFooter("#" + channel.name)
-			.setDescription(msg)
-		boardChannel.send(embed);
-	};
+            .setFooter("#" + channel.name)
+            .setDescription(msg)
+        boardChannel.send(embed);
+    };
 };
