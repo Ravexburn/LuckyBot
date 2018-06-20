@@ -19,6 +19,9 @@ module.exports = (bot = Discord.Client) => {
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 
 		let hasPerms = perms.some(i => message.member.hasPermission(i));
+		if (!message.member){
+			console.log("modcmd line 21 is null",`guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
+		}
 
 		if (!hasPerms) return;
 
