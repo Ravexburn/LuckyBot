@@ -18,6 +18,13 @@ module.exports = (bot = Discord.Client) => {
 
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 
+
+		if (!message.member) {
+			dmOwner(`mod command line 21 is null: guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
+			console.log("modcmd line 21 is null", `guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
+			return;
+		}
+
 		let hasPerms = perms.some(i => message.member.hasPermission(i));
 
 		if (!hasPerms) return;
@@ -460,4 +467,19 @@ module.exports = (bot = Discord.Client) => {
 			}
 		}
 	};
+};
+
+getOwner = function getOwner() {
+	let ownerID = botSettings.Owner_id;
+	let owner = bot.fetchUser(ownerID);
+	return owner;
+};
+
+dmOwner = function dmOwner(message) {
+	let owner = getOwner();
+	if(!owner){
+		console.log("Couldn't find owner");
+		return;
+	}
+	owner.send(message);
 };

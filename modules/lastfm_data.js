@@ -38,7 +38,7 @@ module.exports = class Lastfm {
 					if (!row) {
 						let data = {};
 						data[SQL_USERNAME] = null;
-						data[SQL_LAYOUT] = 0;
+						data[SQL_LAYOUT] = null;
 						data[SQL_USER_ID] = userID;
 						return Promise.resolve(data);
 					}
@@ -52,7 +52,7 @@ module.exports = class Lastfm {
 				});
 		};
 
-		this.setLfProfile = function setLfProfile(userID, username, layout) {
+		this.setProfile = function setProfile(userID, username, layout) {
 			return _dbExist()
 				.then((db) => {
 					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_USERNAME} =?, ${SQL_LAYOUT} = ? WHERE ${SQL_USER_ID} =?`, [username, layout, userID]);
@@ -88,7 +88,7 @@ module.exports = class Lastfm {
 					return db.run(`UPDATE ${SQL_TABLE_PROFILE} SET ${SQL_LAYOUT} =? WHERE ${SQL_USER_ID} =?`, [layout, userID]);
 				}).then((statement) => {
 					if (statement.stmt.changes === 0) {
-						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LAYOUT} VALUES (?, ?)`, [userID, layout]);
+						return db.run(`INSERT INTO ${SQL_TABLE_PROFILE} (${SQL_USER_ID}, ${SQL_LAYOUT}) VALUES (?, ?)`, [userID, layout]);
 					}
 				}).then(() => {
 					return Promise.resolve(true);

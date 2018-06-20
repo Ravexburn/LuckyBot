@@ -1,5 +1,8 @@
 const Discord = require("discord.js");
 const discordlink = "https://discord.gg/z4thPtW";
+let trello = "https://trello.com/b/0uytHSPL";
+let git = "https://github.com/Ravexburn/LuckyBot";
+const website = "http://www.luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 	/**
@@ -106,8 +109,6 @@ module.exports = (bot = Discord.Client) => {
 		time = Math.floor(time / 24);
 		let days = time;
 		let date = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
-		let trello = "https://trello.com/b/0uytHSPL";
-		let git = "https://github.com/Ravexburn/LuckyBot";
 		let embed = new Discord.RichEmbed()
 			.setAuthor("About Lucky Bot", bot.user.displayAvatarURL)
 			.setColor("#a8e8eb")
@@ -115,7 +116,7 @@ module.exports = (bot = Discord.Client) => {
 			.setURL(bot.user.displayAvatarURL)
 			.addField("Authors", "Rave#0737 and OrigamiCoder#1375")
 			.addField("Uptime", date)
-			.addField("Links", `[Trello](${trello}) **-** [Github](${git}) **-** [Discord](${discordlink})`, true)
+			.addField("Links", `[Website](${website}) **-** [Trello](${trello}) **-** [Github](${git}) **-** [Discord](${discordlink})`, true)
 			.addField("Servers", bot.guilds.size, true)
 			.addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
 			.addField("Suggestion", `Have a suggestion? Use ${prefix}suggestion <your suggestion>`)

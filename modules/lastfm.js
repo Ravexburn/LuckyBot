@@ -32,9 +32,8 @@ module.exports = (bot = Discord.Client) => {
 							let username = data.username;
 							url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${bot.botSettings.lastfm}&format=json`;
 							axios.get(url).then(response => {
-								if (response.error) {
-									message.reply(response.message);
-									return Promise.reject(response.message);
+								if (response.data.error) {
+									return Promise.reject(response);
 								}
 								if (!response.data.user) {
 									console.log(`Blank Account`);
@@ -62,7 +61,7 @@ module.exports = (bot = Discord.Client) => {
 								sendEmbed(message, embed);
 								return;
 							}).catch((error) => {
-								console.log(error);
+								errorCatch(message, error);
 							});
 						} else {
 							message.channel.send(regusername);
@@ -96,19 +95,19 @@ module.exports = (bot = Discord.Client) => {
 					}
 					userID = message.author.id;
 					username = args[1];
-					lastfm.getLastfmData(userID, username)
+					layout = null;
+					lastfm.getLastfmData(userID)
 						.then(() => {
 							url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${bot.botSettings.lastfm}&format=json`;
 							axios.get(url).then(response => {
 								if (response.data.error) {
-									message.reply(response.data.message);
 									return Promise.reject(response.data.message);
 								}
-								lastfm.setUsername(userID, username);
+								lastfm.setProfile(userID, username, layout);
 								message.reply(`Username saved as: ${username}`);
 								return;
 							}).catch((error) => {
-								console.log(error);
+								errorCatch(message, error);
 							});
 						}).catch((error) => {
 							console.log(error);
@@ -123,7 +122,7 @@ module.exports = (bot = Discord.Client) => {
 					}
 					userID = message.author.id;
 					layout = args[1];
-					lastfm.getLastfmData(userID, layout)
+					lastfm.getLastfmData(userID)
 						.then(() => {
 							lastfm.setLayout(userID, layout);
 							message.reply(`Layout format set as: ${layout}`);
@@ -142,9 +141,8 @@ module.exports = (bot = Discord.Client) => {
 								let username = data.username;
 								url2 = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${bot.botSettings.lastfm}&format=json`;
 								axios.get(url2).then(response => {
-									if (response.error) {
-										message.reply(response.message);
-										return Promise.reject(response.message);
+									if (response.data.error) {
+										return Promise.reject(response);
 									}
 									if (!response.data.recenttracks) {
 										console.log(`No Recent`);
@@ -197,7 +195,7 @@ module.exports = (bot = Discord.Client) => {
 									sendEmbed(message, embed2);
 									return;
 								}).catch((error) => {
-									console.log(error);
+									errorCatch(message, error);
 								});
 							} else {
 								message.channel.send(regusername);
@@ -217,9 +215,8 @@ module.exports = (bot = Discord.Client) => {
 								let username = data.username;
 								url2 = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${bot.botSettings.lastfm}&limit=10&format=json`;
 								axios.get(url2).then(response => {
-									if (response.error) {
-										message.reply(response.message);
-										return Promise.reject(response.message);
+									if (response.data.error) {
+										return Promise.reject(response);
 									}
 									if (!response.data.recenttracks) {
 										console.log(`No Recent`);
@@ -233,7 +230,7 @@ module.exports = (bot = Discord.Client) => {
 										.setAuthor(`${username}'s Recent Tracks`, target.user.displayAvatarURL.split("?")[0]);
 									rectrack(message, recentEmbed, response);
 								}).catch((error) => {
-									console.log(error);
+									errorCatch(message, error);
 								});
 							} else {
 								message.channel.send(regusername);
@@ -259,9 +256,8 @@ module.exports = (bot = Discord.Client) => {
 
 								url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time.period}&limit=10&format=json`;
 								axios.get(url3).then(response => {
-									if (response.error) {
-										message.reply(response.message);
-										return Promise.reject(response.message);
+									if (response.data.error) {
+										return Promise.reject(response);
 									}
 									if (!response.data.toptracks) {
 										console.log(`No Toptrack`);
@@ -271,7 +267,7 @@ module.exports = (bot = Discord.Client) => {
 										.setAuthor(`${username}'s ${time.name} Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
 									toptracks(message, embedAlltime, response);
 								}).catch((error) => {
-									console.log(error);
+									errorCatch(message, error);
 								});
 							} else {
 								message.channel.send(regusername);
@@ -297,15 +293,14 @@ module.exports = (bot = Discord.Client) => {
 
 								url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time.period}&limit=10&format=json`;
 								axios.get(url4).then(response => {
-									if (response.error) {
-										message.reply(response.message);
-										return Promise.reject(response.message);
+									if (response.data.error) {
+										return Promise.reject(response);
 									}
 									embedAlltime = new Discord.RichEmbed()
 										.setAuthor(`${username}'s ${time.name} Top Artists`, target.user.displayAvatarURL.split("?")[0]);
 									topartist(message, embedAlltime, response);
 								}).catch((error) => {
-									console.log(error);
+									errorCatch(message, error);
 								});
 							} else {
 								message.channel.send(regusername);
@@ -326,20 +321,19 @@ module.exports = (bot = Discord.Client) => {
 					lastfm.getLastfmData(target.id)
 						.then((data) => {
 							if (data.username !== null) {
-								let username = data.username;								
+								let username = data.username;
 								let time = getTime(args[1]);
 
 								url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${bot.botSettings.lastfm}&period=${time.period}&limit=10&format=json`;
 								axios.get(url5).then(response => {
-									if (response.error) {
-										message.reply(response.message);
-										return Promise.reject(response.message);
+									if (response.data.error) {
+										return Promise.reject(response);
 									}
 									embedAlltime = new Discord.RichEmbed()
 										.setAuthor(`${username}'s ${time.name} Top Albums`, target.user.displayAvatarURL.split("?")[0]);
 									topalbum(message, embedAlltime, response);
 								}).catch((error) => {
-									console.log(error);
+									errorCatch(message, error);
 								});
 							} else {
 								message.channel.send(regusername);
@@ -523,4 +517,18 @@ getTime = function getTime(arg) {
 		"period": time,
 		"name": timeName
 	};
+};
+
+errorCatch = function errorCatch(message, error) {
+	if (error.response) {
+		message.reply(`Error ${error.response.status}: ${error.response.data.message}`);
+		console.log(error.response.status, error.response.data.message);
+		return;
+	}
+	else if (error.status) {
+		message.reply(`Error ${error.status}: ${error.data.message}`);
+		console.log(error.status, error.data.message);
+		return;
+	}
+
 };
