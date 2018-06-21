@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
 
     //Post message to starboard
 
-    starboardUpdate = function starboardUpdate(reaction) {
+    starboardUpdate = async function starboardUpdate(reaction) {
         const guild = reaction.message.guild;
         const serverSettings = bot.getServerSettings(guild.id);
         if (!serverSettings) return;
@@ -33,6 +33,7 @@ module.exports = (bot = Discord.Client) => {
         let msg = reaction.message.content;
         let attachments = reaction.message.attachments;
         let timestamp = reaction.message.createdAt;
+        let footer = "#" + channel.name + " - " + timestamp.toLocaleString();
 
         let images = [];
 
@@ -46,11 +47,27 @@ module.exports = (bot = Discord.Client) => {
             }
         });
 
+        //Ensure same message isn't posted multiple times in succession
+        let isDuplicate = false;
+
+        await boardChannel.fetchMessages({ limit: 10 })
+            .then((channelMessages) => {
+                channelMessages.forEach(channelMsg => {
+                    if (channelMsg.embeds.length > 0 && channelMsg.embeds[0].title == author && channelMsg.embeds[0].description == msg) {
+                        isDuplicate = true;
+                    }
+                });
+            });
+
+        bot.log(isDuplicate);
+
+        if (isDuplicate) return;
+
         let embed = new Discord.RichEmbed()
             .setColor("RANDOM")
             .setThumbnail(image)
             .setTitle(author)
-            .setFooter("#" + channel.name + " - " + timestamp.toLocaleString())
+            .setFooter(footer)
             .setDescription(msg);
 
         if (attachments.size > 0) {
