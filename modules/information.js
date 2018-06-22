@@ -12,6 +12,7 @@ module.exports = (bot = Discord.Client) => {
 	require("./currency.js")(bot);
 	require("./levels.js")(bot);
 	require("./rep.js")(bot);
+	require("./rolelist.js")(bot);
 
 	infoMsg = async function infoMsg(message) {
 
@@ -109,6 +110,10 @@ module.exports = (bot = Discord.Client) => {
 					color(message, args);
 					return;
 			}
+		}
+
+		if ((command === `${prefix}roleslist`) || (command === `${prefix}rolelist`)){
+			rolelist(message);
 		}
 
 		if (command === `${prefix}help`) {
