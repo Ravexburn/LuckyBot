@@ -470,7 +470,7 @@ module.exports = (bot = Discord.Client) => {
 };
 
 getOwner = function getOwner() {
-	let ownerID = botSettings.Owner_id;
+	let ownerID = bot.botSettings.Owner_id;
 	let owner = bot.fetchUser(ownerID);
 	return owner;
 };
