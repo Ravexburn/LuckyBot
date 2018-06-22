@@ -37,7 +37,9 @@
         "rep",
 		"starboard",
 		"roleslist",
-		"rolelist"
+		"rolelist",
+		"color",
+		"colour"
     ]
 
 }
