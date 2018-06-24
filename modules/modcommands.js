@@ -467,19 +467,20 @@ module.exports = (bot = Discord.Client) => {
 			}
 		}
 	};
-};
 
-getOwner = function getOwner() {
-	let ownerID = bot.botSettings.Owner_id;
-	let owner = bot.fetchUser(ownerID);
-	return owner;
-};
+	getOwner = function getOwner() {
+		let ownerID = bot.botSettings.Owner_id;
+		let owner = bot.fetchUser(ownerID);
+		return owner;
+	};
 
-dmOwner = function dmOwner(message) {
-	let owner = getOwner();
-	if(!owner){
-		console.log("Couldn't find owner");
-		return;
-	}
-	owner.send(message);
+	dmOwner = function dmOwner(message) {
+		let owner = getOwner();
+		if (!owner) {
+			console.log("Couldn't find owner");
+			return;
+		}
+		owner.send(message);
+	};
+
 };
