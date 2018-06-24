@@ -71,7 +71,7 @@ module.exports = (bot = Discord.Client) => {
 			.setDescription(msg);
 
 		if (attachments.size > 0) {
-			embed.setImage(attachments.array()[0].proxyURL);
+			embed.setImage(attachments.array()[0].url);
 		}
 
 		//If image URL present, but no attachment, set the first image as the RichEmbed's image and remove it from the list
