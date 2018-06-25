@@ -21,6 +21,8 @@ Join the [Lucky Bot Discord server](https://discord.gg/z4thPtW) to:
 * become a contributor
 * play around with commands
 
+
+You can now also check out the [Lucky Bot Website](http://www.luckybot.io/) here.
 ---
 
 ¹ per server and globally where Lucky Bot is installed
