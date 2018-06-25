@@ -468,14 +468,14 @@ module.exports = (bot = Discord.Client) => {
 		}
 	};
 
-	getOwner = function getOwner() {
+	getOwner = async function getOwner() {
 		let ownerID = bot.botSettings.Owner_id;
-		let owner = bot.fetchUser(ownerID);
+		let owner = await bot.fetchUser(ownerID);
 		return owner;
 	};
 
-	dmOwner = function dmOwner(message) {
-		let owner = getOwner();
+	dmOwner = async function dmOwner(message) {
+		let owner = await getOwner();
 		if (!owner) {
 			console.log("Couldn't find owner");
 			return;
