@@ -264,23 +264,30 @@ module.exports = (bot = Discord.Client) => {
 
 	sayFunction = function sayFunction(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please enter a channel and message to send ${command} <channel> message.`);
+			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
 			return;
 		}
-
 		let chan = message.mentions.channels.first();
+		if (!chan) {
+			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
+			return;
+		}
 		let image;
 		if (message.attachments.size > 0) {
 			image = { file: message.attachments.first().url };
 		}
 		let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
+
+		if(!msg){
+			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
+			return;
+		}
 		if (image) {
 			chan.send(msg, image);
 		} else {
 			chan.send(msg);
 		}
 		return;
-
 	};
 
 	/**

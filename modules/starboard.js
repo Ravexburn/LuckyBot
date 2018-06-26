@@ -59,8 +59,6 @@ module.exports = (bot = Discord.Client) => {
 				});
 			});
 
-		bot.log(isDuplicate);
-
 		if (isDuplicate) return;
 
 		let embed = new Discord.RichEmbed()

@@ -9,8 +9,6 @@ module.exports = (bot = Discord.Client) => {
 		let roles = message.guild.roles.array().sort((a,b) => b.position - a.position).map(x => `${x.name} (\`#${x.id}\`, \`${x.hexColor}\`) \`# of members: ${x.members.size}\``);
 
 		var pages = toEmbedPages(roles);
-		
-		console.log(roles);
 
 		let embed = new Discord.RichEmbed()
 			.setColor("#FFAEB9")
