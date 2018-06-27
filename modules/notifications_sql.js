@@ -377,7 +377,7 @@ module.exports = class Notifications {
                     }
                 }).then(() => {
                     return this.db.each(`SELECT * FROM ${sqlTableName}`, function (err, row) {
-                        if (err) throw err;
+                        if (err) return Promise.reject(err);
                         if (!row) return;
                         const keyword = row[sqlKeyword];
                         const userID = row[sqlUserID];

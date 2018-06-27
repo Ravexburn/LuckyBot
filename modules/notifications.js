@@ -55,7 +55,7 @@ module.exports = (bot = Discord.Client) => {
 							if (!exists) {
 								message.reply("A message has been sent to your direct messages.");
 								user.send(":warning: You don't have any keywords! :warning:");
-								throw Error("Table doesn't exist");
+								return Promise.reject("Table doesn't exist");
 							}
 						})
 						.then(() => { return notify.getUserKeywords(user.id, guild.id); })
@@ -86,7 +86,7 @@ module.exports = (bot = Discord.Client) => {
 						.then(exists => {
 							if (!exists) {
 								message.reply("Can't find the keyword.");
-								throw Error("Table doesn't exist");
+								return Promise.reject("Table doesn't exist");
 							}
 						}).then(() => { return notify.removeAllUserKeywords(user.id, guild.id); })
 						.then(success => {
@@ -161,7 +161,7 @@ module.exports = (bot = Discord.Client) => {
 						.then(exists => {
 							if (!exists) {
 								message.reply("Can't find the keyword.");
-								throw Error("Table doesn't exist");
+								return Promise.reject("Table doesn't exist");
 							}
 						}).then(() => { return notify.removeUserKeyword(user.id, keyword, guild.id); })
 						.then(success => {
@@ -204,7 +204,7 @@ module.exports = (bot = Discord.Client) => {
 									if (!exists) {
 										message.reply("A message has been sent to your direct messages.");
 										user.send(":warning: You don't have any keywords! :warning:");
-										throw Error("Table doesn't exist");
+										return Promise.reject("Table doesn't exist");
 									}
 								})
 								.then(() => { return notify.getUserKeywords(user.id); })
@@ -231,7 +231,7 @@ module.exports = (bot = Discord.Client) => {
 								.then(exists => {
 									if (!exists) {
 										message.reply("Can't find the keyword.");
-										throw Error("Table doesn't exist");
+										return Promise.reject("Table doesn't exist");
 									}
 								}).then(() => { return notify.removeAllUserKeywords(user.id); })
 								.then(success => {
@@ -304,7 +304,7 @@ module.exports = (bot = Discord.Client) => {
 								.then(exists => {
 									if (!exists) {
 										message.reply("Can't find the keyword.");
-										throw Error("Table doesn't exist");
+										return Promise.reject("Table doesn't exist");
 									}
 								}).then(() => { return notify.removeUserKeyword(user.id, keyword); })
 								.then(success => {
