@@ -62,7 +62,8 @@ module.exports = (bot = Discord.Client) => {
 			});
 	};
 
-	horoInfo = function horoInfo(message, time) {
+	horoInfo = function horoInfo(message, time, prefix) {
+		let regsign = `Please save your sunsign by using \`${prefix}horoscope set <sunsign>\``;
 		let userID = message.author.id;
 		horoscope.getHoroscopeData(userID)
 			.then((data) => {
