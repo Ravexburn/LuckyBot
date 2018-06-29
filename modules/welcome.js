@@ -79,7 +79,7 @@ module.exports = (bot = Discord.Client) => {
 			.setTitle("Member Join!")
 			.addField("Account Age", `Account was created on: ${user.createdAt.toUTCString()}\nAccount joined server on: ${member.joinedAt.toUTCString()}`)
 			.addField("Shared Servers", `This account shares: ${sharedguilds} other server(s) with Lucky Bot.`)
-			.setDescription(`${user.id} joined the server`);
+			.setDescription(`${user} joined the server`);
 		if (numOfBans) {
 			embed.addField("Bans", `:warning: This user is banned on ${numOfBans} server(s).`);
 		} else {
