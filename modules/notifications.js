@@ -560,6 +560,17 @@ module.exports = (bot = Discord.Client) => {
 						if (!member) return;
 						let msg = message.content;
 						const keywords = Array.from(keywordSet).map(key => `\`${key}\``).join(", ");
+						/* let embed = new Discord.RichEmbed()
+							.setAuthor(message.author.username, message.author.displayAvatarURL.split("?")[0])
+							.setThumbnail(message.author.displayAvatarURL.split("?")[0])
+							.setTimestamp(message.createdAt)
+							.setColor('#124D39')
+							.addField("Mentioned", keywords)
+							.addField("Message", msg)
+							.addField("Channel", message.channel.toString(), true)
+							.addField("Guild", guild.name, true)
+							.addField("Context", `You can see the context of the message [here](http://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`);
+						member.send(embed); */
 						member.send(`:round_pushpin: User **${message.author.username}** **(${message.author})** has mentioned ${keywords} in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
 					});
 				}).catch(() => {

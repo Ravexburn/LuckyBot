@@ -8,7 +8,6 @@ module.exports = (bot = Discord.Client) => {
 
 	require("./../functions/helpfunctions.js")(bot);
 	require("./../functions/infofunctions.js")(bot);
-	require("./color.js")(bot);
 	require("./currency.js")(bot);
 	require("./levels.js")(bot);
 	require("./rep.js")(bot);
@@ -69,19 +68,25 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		//Temp profile
+		//Profile
 
 		if (command === `${prefix}profile`) {
 			tempLevelProfile(message, args);
 		}
 
+		//Tickets
+
 		if (command === `${prefix}ticket`) {
 			curFunction(message);
 		}
 
+		//Rep
+
 		if (command === `${prefix}rep`) {
 			repFunction(message, args);
 		}
+
+		//Leaderboard
 
 		if (command == `${prefix}leaderboard`) {
 			switch (args[0]) {
@@ -97,24 +102,13 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
-			switch (args[0]) {
-				case "rand":
-				case "random":
-				case "r":
-				case "ran":
-					colorRandom(message);
-					break;
-
-				default:
-					color(message, args);
-					return;
-			}
-		}
+		//Roles info
 
 		if ((command === `${prefix}roleslist`) || (command === `${prefix}rolelist`)){
 			rolelist(message);
 		}
+
+		//Help
 
 		if (command === `${prefix}help`) {
 			message.reply(`Help can be found here: ${website}`);

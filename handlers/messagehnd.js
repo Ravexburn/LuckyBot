@@ -14,6 +14,7 @@ module.exports = (bot = Discord.Client) => {
 	require("./../modules/roles.js")(bot);
 	require("./../modules/starboard.js")(bot);
 	require("./../modules/levels.js")(bot);
+	require("./../modules/misccommands.js")(bot);
 
 	msgHandler = async function msgHandler(message) {
 		
@@ -33,6 +34,7 @@ module.exports = (bot = Discord.Client) => {
 		owner(message);
 		relays.relayMessage(message, relays.relayRave);
 		rolesAdd(message);
+		miscCommands(message);
 	};
 
 	reactHandler = async function reactHandler(reaction) {
