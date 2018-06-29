@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const axios = require("axios");
 const Horoscope = require("./horoscope_data.js");
-const MAX_CHAR = 2045;
+const MAX_CHAR = 2048;
 const horoscope = new Horoscope();
 
 module.exports = (bot = Discord.Client) => {
@@ -95,7 +95,7 @@ module.exports = (bot = Discord.Client) => {
 			.setThumbnail(signPic[sign])
 			.setTitle(response.data.sunsign)
 			.setColor(signColor[sign])
-			.setDescription(response.data.horoscope.substring(0, MAX_CHAR)+ "...")
+			.setDescription(response.data.horoscope.substring(0, MAX_CHAR))
 			.setFooter(date[time]);
 		sendEmbed(message, embed);
 		return;
