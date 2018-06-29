@@ -37,14 +37,14 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if ((command === `${prefix}horoscope`)|| (command === `${prefix}hs`)) {
-			let regsign = `Please save your sunsign by using \`${prefix}horoscope set <sunsign>\``;
+			
 			switch (args[0]) {
 
 				default:
 				case "today":
 				case "day":
 					time = "today";
-					horoInfo(message, time);
+					horoInfo(message, time, prefix);
 					break;
 
 				case "set":
@@ -54,17 +54,17 @@ module.exports = (bot = Discord.Client) => {
 
 				case "week":
 					time = "week";
-					horoInfo(message, time);
+					horoInfo(message, time, prefix);
 					break;
 
 				case "month":
 					time = "month";
-					horoInfo(message, time);
+					horoInfo(message, time, prefix);
 					break;
 
 				case "year":
 					time = "year";
-					horoInfo(message, time);
+					horoInfo(message, time, prefix);
 					break;
 			}
 		}
