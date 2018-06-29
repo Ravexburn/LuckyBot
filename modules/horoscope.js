@@ -17,7 +17,7 @@ module.exports = (bot = Discord.Client) => {
 		Virgo: "#556B2F",
 		Libra: "#89cff0",
 		Scorpio: "#5d0000",
-		Sagitarius: "#000066",
+		Sagittarius: "#000066",
 		Capricorn: "#3f2a14",
 		Aquarius: "#40E0D0",
 		Pisces: "#a0d6b4"
@@ -32,7 +32,7 @@ module.exports = (bot = Discord.Client) => {
 		Virgo: "https://imgur.com/g5D4OEM.png",
 		Libra: "https://imgur.com/ftQ2kHn.png",
 		Scorpio: "https://imgur.com/Y6OjSdE.png",
-		Sagitarius: "https://imgur.com/pfJw8mC.png",
+		Sagittarius: "https://imgur.com/pfJw8mC.png",
 		Capricorn: "https://imgur.com/52u6hJq.png",
 		Aquarius: "https://imgur.com/flBYyKX.png",
 		Pisces: "https://imgur.com/4Mlu6fK.png"
