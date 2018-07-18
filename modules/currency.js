@@ -5,7 +5,7 @@ const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
 const currencyProvider = new EnmapLevel({ name: 'tickets' });
 const currency = new Enmap({ provider: currencyProvider });
-const MSG_TIME = 0 * 60 * 60 * 1000;
+const MSG_TIME = 6 * 60 * 60 * 1000;
 
 module.exports = (bot = Discord.Client) => {
 
