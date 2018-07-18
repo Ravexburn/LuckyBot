@@ -5,7 +5,7 @@ const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
 const currencyProvider = new EnmapLevel({ name: 'tickets' });
 const currency = new Enmap({ provider: currencyProvider });
-const MSG_TIME = 6 * 60 * 60 * 1000;
+const MSG_TIME = 0 * 60 * 60 * 1000;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -28,8 +28,9 @@ module.exports = (bot = Discord.Client) => {
 			profile.getProfileData(userID)
 				.then((data) => {
 					let tickets = data.tickets;
-					tickets = tickets + 1;
-					message.channel.send("A ticket has been added to your account! <:rooDuck:432962760570044417>");
+					let guildSize = Math.floor(bot.guilds.size / 100) + 1;
+					tickets = tickets + guildSize;
+					message.channel.send(`You have been grated ${guildSize} ticket(s)! <:rooDuck:432962760570044417>`);
 					profile.setCur(userID, tickets);
 				}).catch((error) => {
 					console.log(error);
