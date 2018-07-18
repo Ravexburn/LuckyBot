@@ -278,16 +278,19 @@ module.exports = (bot = Discord.Client) => {
 		}
 		let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
 
-		if(!msg){
-			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
-			return;
-		}
-		if (image) {
+		if (image && msg) {
 			chan.send(msg, image);
-		} else {
+			return;
+		} else if(msg && !image) {
 			chan.send(msg);
+			return;
+		} else if(image && !msg){
+			chan.send(image);
+			return;
+		} else{
+			message.channel.send(`Please enter a channel followed by a message and or image. \`${command} <channel> message\``);
+			return;	
 		}
-		return;
 	};
 
 	/**
