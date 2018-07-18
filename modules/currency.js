@@ -30,7 +30,7 @@ module.exports = (bot = Discord.Client) => {
 					let tickets = data.tickets;
 					let guildSize = Math.floor(bot.guilds.size / 100) + 1;
 					tickets = tickets + guildSize;
-					message.channel.send(`You have been grated ${guildSize} ticket(s)! <:rooDuck:432962760570044417>`);
+					message.channel.send(`You have been granted ${guildSize} ticket(s)! <:rooDuck:432962760570044417>`);
 					profile.setCur(userID, tickets);
 				}).catch((error) => {
 					console.log(error);
