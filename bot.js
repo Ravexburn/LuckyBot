@@ -66,6 +66,12 @@ bot.on("messageReactionAdd", async message => {
 	reactHandler(message);
 });
 
+//When a reaction is removed from a message.
+
+bot.on("messageReactionRemove", async message => {
+	reactHandler(message);
+});
+
 //When a message is deleted.
 
 bot.on("messageDelete", message => {
