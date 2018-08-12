@@ -84,7 +84,8 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(":star: Starboard Commands", `\*\* ${prefix}starboard\*\* - Shows this list of commands for starboard.
 \*\* ${prefix}starboard channel <channel name>\*\* - Sets the channel where the bot should place starred messages.
 \*\* ${prefix}starboard emoji\*\* - Prompts the user to react with the emoji the bot watches for to place messages on the board.
-\*\* ${prefix}starboard number <number>\*\* - Sets the number of reactions required to place messages on the board.`);
+\*\* ${prefix}starboard number <number>\*\* - Sets the number of reactions required to place messages on the board.
+\*\* ${prefix}toggle starboard\*\* - Toggles the starboard functionality.`);
 	};
 
 	//Help for Start Commands
