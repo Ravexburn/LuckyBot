@@ -1,6 +1,6 @@
 const botSettings = require("./botsettings.json");
 const Discord = require("discord.js");
-const bot = new Discord.Client({disableEveryone: true});
+const bot = new Discord.Client({ disableEveryone: true });
 bot.botSettings = botSettings;
 const InvCache = require("./modules/invites.js");
 bot.invCache = new InvCache(bot);
@@ -63,6 +63,12 @@ bot.on("messageUpdate", (oldMessage, message) => {
 //When a reaction is added to a message.
 
 bot.on("messageReactionAdd", async message => {
+	reactHandler(message);
+});
+
+//When a reaction is removed from a message.
+
+bot.on("messageReactionRemove", async message => {
 	reactHandler(message);
 });
 
