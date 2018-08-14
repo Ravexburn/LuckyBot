@@ -23,6 +23,9 @@ module.exports = (bot = Discord.Client) => {
 
 	//Help command for Notifications
 	notifyHelp = function notifyHelp(message, prefix, embed) {
+		embed.setTitle("Notification Help");
+		embed.setColor("#b19cd9");
+		embed.setFooter("If you have any other questions please contact Rave#0737");
 		embed.addField(":round_pushpin: Notifications", `\*\* ${prefix}notify\*\* - Shows this list of commands for notifications.
 \*\* ${prefix}notify list\*\* - Direct messages a list of keywords for the server.
 \*\* ${prefix}notify clear\*\* - Removes all keywords for the server.

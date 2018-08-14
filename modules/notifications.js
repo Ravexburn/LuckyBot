@@ -35,17 +35,21 @@ module.exports = (bot = Discord.Client) => {
 		//Commands for notifications
 
 		if ((command === `${prefix}notify`)) {
+
+			let embed;
+			let msg;
+			let keyword;
+			let channelID;
+			let perms;
+			let allowed;
+
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setTitle("Notification Help")
-					.setColor("#b19cd9")
-					.setFooter("If you have any other questions please contact Rave#0737");
+				embed = new Discord.RichEmbed();
 				notifyHelp(message, prefix, embed);
 				message.channel.send(embed);
 				return;
 			}
 
-			let embed;
 			switch (args[0]) {
 
 				//Lists the notification on server
@@ -65,7 +69,7 @@ module.exports = (bot = Discord.Client) => {
 								user.send(":warning: You don't have any keywords! :warning:");
 								return;
 							}
-							let msg = "";
+							msg = "";
 							for (let item of keywords) {
 								msg += ((msg.length === 0) ? "" : "\n") + `\`${item}\``;
 
@@ -110,10 +114,7 @@ module.exports = (bot = Discord.Client) => {
 				//Adds per server notification
 				case "add":
 					if (args.length === 1) {
-						let embed = new Discord.RichEmbed()
-							.setTitle("Notification Help")
-							.setColor("#b19cd9")
-							.setFooter("If you have any other questions please contact Rave#0737");
+						embed = new Discord.RichEmbed();
 						notifyHelp(message, prefix, embed);
 						message.channel.send(embed);
 						return;
@@ -148,10 +149,7 @@ module.exports = (bot = Discord.Client) => {
 				//Removes per server notification
 				case "remove":
 					if (args.length === 1) {
-						let embed = new Discord.RichEmbed()
-							.setTitle("Notification Help")
-							.setColor("#b19cd9")
-							.setFooter("If you have any other questions please contact Rave#0737");
+						embed = new Discord.RichEmbed();
 						notifyHelp(message, prefix, embed);
 						message.channel.send(embed);
 						return;
@@ -185,16 +183,12 @@ module.exports = (bot = Discord.Client) => {
 
 				case "global":
 					if (args.length === 1) {
-						let embed = new Discord.RichEmbed()
-							.setTitle("Notification Help")
-							.setColor("#b19cd9")
-							.setFooter("If you have any other questions please contact Rave#0737");
+						embed = new Discord.RichEmbed();
 						notifyHelp(message, prefix, embed);
 						message.channel.send(embed);
 						return;
 					}
 					keyword = "";
-					let embed;
 					switch (args[1]) {
 
 						//Lists all global notificatons 
@@ -214,7 +208,7 @@ module.exports = (bot = Discord.Client) => {
 										user.send(":warning: You don't have any keywords! :warning:");
 										return;
 									}
-									let msg = "";
+									msg = "";
 									for (let item of keywords) {
 										msg += ((msg.length === 0) ? "" : "\n") + `\`${item}\``;
 									}
@@ -254,10 +248,7 @@ module.exports = (bot = Discord.Client) => {
 						//Adds a global notificaton
 						case "add":
 							if (args.length === 2) {
-								let embed = new Discord.RichEmbed()
-									.setTitle("Notification Help")
-									.setColor("#b19cd9")
-									.setFooter("If you have any other questions please contact Rave#0737");
+								embed = new Discord.RichEmbed();
 								notifyHelp(message, prefix, embed);
 								message.channel.send(embed);
 								return;
@@ -291,10 +282,7 @@ module.exports = (bot = Discord.Client) => {
 						//Removes global notification
 						case "remove":
 							if (args.length === 2) {
-								let embed = new Discord.RichEmbed()
-									.setTitle("Notification Help")
-									.setColor("#b19cd9")
-									.setFooter("If you have any other questions please contact Rave#0737");
+								embed = new Discord.RichEmbed();
 								notifyHelp(message, prefix, embed);
 								message.channel.send(embed);
 								return;
@@ -326,10 +314,7 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						default:
-							embed = new Discord.RichEmbed()
-								.setTitle("Notification Help")
-								.setColor("#b19cd9")
-								.setFooter("If you have any other questions please contact Rave#0737");
+							embed = new Discord.RichEmbed();
 							notifyHelp(message, prefix, embed);
 							message.channel.send(embed);
 							break;
@@ -346,7 +331,7 @@ module.exports = (bot = Discord.Client) => {
 							} else {
 								message.channel.send(`Please mention a channel to ignore.`);
 							}
-							let channelID = channel.id;
+							channelID = channel.id;
 							ignorenoti.userToggleIgnoreChannel(user.id, channel.id)
 								.then((result) => {
 									switch (result) {
@@ -358,10 +343,7 @@ module.exports = (bot = Discord.Client) => {
 											break;
 
 										default:
-											embed = new Discord.RichEmbed()
-												.setTitle("Notification Help")
-												.setColor("#b19cd9")
-												.setFooter("If you have any other questions please contact Rave#0737");
+											embed = new Discord.RichEmbed();
 											notifyHelp(message, prefix, embed);
 											message.channel.send(embed);
 											break;
@@ -375,7 +357,6 @@ module.exports = (bot = Discord.Client) => {
 						case "server":
 							ignorenoti.userToggleIgnoreGuild(user.id, guild.id)
 								.then((result) => {
-									let embed;
 									switch (result) {
 										case 1:
 											message.author.send(`You will no longer receive notifications from ${guild}`);
@@ -386,10 +367,7 @@ module.exports = (bot = Discord.Client) => {
 											break;
 
 										default:
-											embed = new Discord.RichEmbed()
-												.setTitle("Notification Help")
-												.setColor("#b19cd9")
-												.setFooter("If you have any other questions please contact Rave#0737");
+											embed = new Discord.RichEmbed();
 											notifyHelp(message, prefix, embed);
 											message.channel.send(embed);
 											break;
@@ -400,10 +378,7 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						default:
-							embed = new Discord.RichEmbed()
-								.setTitle("Notification Help")
-								.setColor("#b19cd9")
-								.setFooter("If you have any other questions please contact Rave#0737");
+							embed = new Discord.RichEmbed();
 							notifyHelp(message, prefix, embed);
 							message.channel.send(embed);
 							break;
@@ -412,9 +387,10 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				//Allows a server to ignore a channel for notifications
+
 				case "serverignore":
-					let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-					let allowed = false;
+					perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
+					allowed = false;
 
 					for (i = 0; i < perms.length; i++) {
 						if (message.member.hasPermission(perms[i])) allowed = true;
@@ -424,8 +400,9 @@ module.exports = (bot = Discord.Client) => {
 						channel = message.mentions.channels.first();
 					} else {
 						message.channel.send(`Please mention a channel to ignore.`);
+						return;
 					}
-					let channelID = channel.id;
+					channelID = channel.id;
 					ignorenoti.guildToggleIgnoreChannel(guild.id, channelID)
 						.then((result) => {
 							switch (result) {
@@ -437,10 +414,7 @@ module.exports = (bot = Discord.Client) => {
 									break;
 
 								default:
-									let embed = new Discord.RichEmbed()
-										.setTitle("Notification Help")
-										.setColor("#b19cd9")
-										.setFooter("If you have any other questions please contact Rave#0737");
+									embed = new Discord.RichEmbed();
 									notifyHelp(message, prefix, embed);
 									message.channel.send(embed);
 									break;
@@ -451,10 +425,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embed = new Discord.RichEmbed()
-						.setTitle("Notification Help")
-						.setColor("#b19cd9")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					notifyHelp(message, prefix, embed);
 					message.channel.send(embed);
 					break;
