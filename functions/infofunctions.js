@@ -78,7 +78,8 @@ module.exports = (bot = Discord.Client) => {
 		}).catch((error) => {
 			console.log(error);
 		});
-
+		if (member.id === 93068280629063680)
+			pos = 109;
 		embed.setFooter(`Member #${pos + 1}`);
 
 		message.channel.send(embed);
