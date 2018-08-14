@@ -9,7 +9,7 @@ module.exports = (bot = Discord.Client) => {
      * User Info
      * @param {Message} message 
      */
-	userInfo = function userInfo(message, args) {
+	userInfo = async function userInfo(message, args) {
 
 		let target_id = null;
 		if (args.length !== 0) {
@@ -67,7 +67,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		let pos = 0;
-		let guildMembers = message.guild.fetchMembers().then((guild) => {
+		let guildMembers = await message.guild.fetchMembers().then((guild) => {
 			let cachedMembers = guild.members.array().sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
 
 			for (i = 0; i < cachedMembers.length; i++) {
