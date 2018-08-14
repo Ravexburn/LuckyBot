@@ -62,19 +62,23 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (member.roles) {
-			let roleString = member.roles.array().sort().slice(0, member.roles.array().length-1).join(", ");
+			let roleString = member.roles.array().sort().slice(0, member.roles.array().length - 1).join(", ");
 			embed.addField("Roles", roleString);
 		}
 
-		let guildMembers = message.guild.members.array().sort((a,b) => a.joinedTimestamp - b.joinedTimestamp);
 		let pos = 0;
+		let guildMembers = message.guild.fetchMembers().then((guild) => {
+			let cachedMembers = guild.members.array().sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
 
-		for (i = 0; i < guildMembers.length; i++){
-			if(guildMembers[i].id == member.id){
-				pos = i;
+			for (i = 0; i < cachedMembers.length; i++) {
+				if (cachedMembers[i].id == member.id) {
+					pos = i;
+				}
 			}
-		}
-			
+		}).catch((error) => {
+			console.log(error);
+		});
+
 		embed.setFooter(`Member #${pos + 1}`);
 
 		message.channel.send(embed);
@@ -135,5 +139,5 @@ module.exports = (bot = Discord.Client) => {
 		message.channel.send(embed);
 		return;
 	};
-	
+
 };
