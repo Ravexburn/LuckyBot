@@ -46,7 +46,7 @@ module.exports = (bot = Discord.Client) => {
 			if (args.length === 0) {
 				embed = new Discord.RichEmbed();
 				notifyHelp(message, prefix, embed);
-				message.channel.send(embed);
+				sendEmbed(message, embed);
 				return;
 			}
 
@@ -116,7 +116,7 @@ module.exports = (bot = Discord.Client) => {
 					if (args.length === 1) {
 						embed = new Discord.RichEmbed();
 						notifyHelp(message, prefix, embed);
-						message.channel.send(embed);
+						sendEmbed(message, embed);
 						return;
 					}
 					keyword = args.slice(1).join(" ").toLowerCase();
@@ -151,7 +151,7 @@ module.exports = (bot = Discord.Client) => {
 					if (args.length === 1) {
 						embed = new Discord.RichEmbed();
 						notifyHelp(message, prefix, embed);
-						message.channel.send(embed);
+						sendEmbed(message, embed);
 						return;
 					}
 					keyword = args.slice(1).join(" ").toLowerCase();
@@ -185,7 +185,7 @@ module.exports = (bot = Discord.Client) => {
 					if (args.length === 1) {
 						embed = new Discord.RichEmbed();
 						notifyHelp(message, prefix, embed);
-						message.channel.send(embed);
+						sendEmbed(message, embed);
 						return;
 					}
 					keyword = "";
@@ -250,7 +250,7 @@ module.exports = (bot = Discord.Client) => {
 							if (args.length === 2) {
 								embed = new Discord.RichEmbed();
 								notifyHelp(message, prefix, embed);
-								message.channel.send(embed);
+								sendEmbed(message, embed);
 								return;
 							}
 							keyword = args.slice(2).join(" ").toLowerCase();
@@ -284,7 +284,7 @@ module.exports = (bot = Discord.Client) => {
 							if (args.length === 2) {
 								embed = new Discord.RichEmbed();
 								notifyHelp(message, prefix, embed);
-								message.channel.send(embed);
+								sendEmbed(message, embed);
 								return;
 							}
 							keyword = args.slice(2).join(" ").toLowerCase();
@@ -316,7 +316,7 @@ module.exports = (bot = Discord.Client) => {
 						default:
 							embed = new Discord.RichEmbed();
 							notifyHelp(message, prefix, embed);
-							message.channel.send(embed);
+							sendEmbed(message, embed);
 							break;
 					}
 					break;
@@ -345,7 +345,7 @@ module.exports = (bot = Discord.Client) => {
 										default:
 											embed = new Discord.RichEmbed();
 											notifyHelp(message, prefix, embed);
-											message.channel.send(embed);
+											sendEmbed(message, embed);
 											break;
 									}
 								}).catch((reason) => {
@@ -369,7 +369,7 @@ module.exports = (bot = Discord.Client) => {
 										default:
 											embed = new Discord.RichEmbed();
 											notifyHelp(message, prefix, embed);
-											message.channel.send(embed);
+											sendEmbed(message, embed);
 											break;
 									}
 								}).catch((reason) => {
@@ -380,7 +380,7 @@ module.exports = (bot = Discord.Client) => {
 						default:
 							embed = new Discord.RichEmbed();
 							notifyHelp(message, prefix, embed);
-							message.channel.send(embed);
+							sendEmbed(message, embed);
 							break;
 
 					}
@@ -416,7 +416,7 @@ module.exports = (bot = Discord.Client) => {
 								default:
 									embed = new Discord.RichEmbed();
 									notifyHelp(message, prefix, embed);
-									message.channel.send(embed);
+									sendEmbed(message, embed);
 									break;
 							}
 						}).catch((reason) => {
@@ -427,7 +427,7 @@ module.exports = (bot = Discord.Client) => {
 				default:
 					embed = new Discord.RichEmbed();
 					notifyHelp(message, prefix, embed);
-					message.channel.send(embed);
+					sendEmbed(message, embed);
 					break;
 			}
 		}
