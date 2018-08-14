@@ -66,7 +66,7 @@ module.exports = (bot = Discord.Client) => {
 			embed.addField("Roles", roleString);
 		}
 
-		let guildMembers = message.guild.members.array().sort((a,b) => a.joinedAt - b.joinedAt);
+		let guildMembers = message.guild.members.array().sort((a,b) => a.joinedTimestamp - b.joinedTimestamp);
 		let pos = 0;
 
 		for (i = 0; i < guildMembers.length; i++){
