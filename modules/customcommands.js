@@ -30,10 +30,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}command`) || (command === `${prefix}commands`)) {
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setTitle("Custom Command Help")
-					.setColor("#40e0d0")
-					.setFooter("If you have any other questions please contact Rave#0737");
+				let embed = new Discord.RichEmbed();
 				commandsHelp(message, prefix, embed);
 				message.channel.send(embed);
 				return;
@@ -208,10 +205,7 @@ ${list.sort().join(`\n`)}`;
 					break;
 
 				default:
-					embed = new Discord.RichEmbed()
-						.setTitle("Custom Command Help")
-						.setColor("#40e0d0")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					commandsHelp(message, prefix, embed);
 					message.channel.send(embed);
 					return;

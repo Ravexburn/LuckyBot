@@ -16,19 +16,6 @@ module.exports = (bot = Discord.Client) => {
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 
-		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-
-
-		if (!message.member) {
-			dmOwner(`mod command line 21 is null: guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
-			console.log("modcmd line 21 is null", `guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
-			return;
-		}
-
-		let hasPerms = perms.some(i => message.member.hasPermission(i));
-
-		if (!hasPerms) return;
-
 		let serverSettings = bot.getServerSettings(message.guild.id);
 
 		let messageArray = message.content.split(" ");
@@ -37,6 +24,19 @@ module.exports = (bot = Discord.Client) => {
 		const prefix = serverSettings.prefix;
 
 		if (!command.startsWith(prefix)) return;
+		
+		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
+
+
+		if (!message.member) {
+			dmOwner(`mod command line 21 is null: guild: ${message.guild.name} author: ${message.author} content: ${message.content}`);
+			console.log("modcmd line 21 is null", `guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
+			return;
+		}
+
+		let hasPerms = perms.some(i => message.member.hasPermission(i));
+
+		if (!hasPerms) return;
 
 		//Prefix
 
@@ -48,10 +48,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}start`)) {
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setColor("#2ecc71")
-					.setTitle("Start Help")
-					.setFooter("If you have any other questions please contact Rave#0737");
+				let embed = new Discord.RichEmbed();
 				startHelp(message, prefix, embed);
 				sendEmbed(message, embed);
 				return;
@@ -80,10 +77,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embed = new Discord.RichEmbed()
-						.setColor("#2ecc71")
-						.setTitle("Start Help")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					startHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
@@ -94,10 +88,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}toggle`)) {
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setColor("#3498db")
-					.setTitle("Toggle Help")
-					.setFooter("If you have any other questions please contact Rave#0737");
+				let embed = new Discord.RichEmbed();
 				toggleHelp(message, prefix, embed);
 				sendEmbed(message, embed);
 				return;
@@ -132,10 +123,7 @@ module.exports = (bot = Discord.Client) => {
 					return;
 
 				default:
-					embed = new Discord.RichEmbed()
-						.setColor("#3498db")
-						.setTitle("Toggle Help")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					toggleHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					return;
@@ -146,10 +134,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}greeter`)) {
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setColor("#ff8533")
-					.setTitle("Greeter Help")
-					.setFooter("If you have any other questions please contact Rave#0737");
+				let embed = new Discord.RichEmbed();
 				welcomeHelp(message, prefix, embed);
 				sendEmbed(message, embed);
 				return;
@@ -174,10 +159,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embed = new Discord.RichEmbed()
-						.setColor("#ff8533")
-						.setTitle("Greeter Help")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					welcomeHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
@@ -188,10 +170,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}starboard`)) {
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setColor("#ff8533")
-					.setTitle("Starboard Help")
-					.setFooter("If you have any other questions please contact Rave#0737");
+				let embed = new Discord.RichEmbed();
 				starboardHelp(message, prefix, embed);
 				sendEmbed(message, embed);
 				return;
@@ -214,10 +193,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embed = new Discord.RichEmbed()
-						.setColor("#ff8533")
-						.setTitle("Starboard Help")
-						.setFooter("If you have any other questions please contact Rave#0737");
+					embed = new Discord.RichEmbed();
 					starboardHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
@@ -294,9 +270,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}server`) || (command === `${prefix}getmeout`)) {
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setColor("#a893f9")
-					.setTitle("Server Help");
+				let embed = new Discord.RichEmbed();
 				ownerServerHelp(message, prefix, embed);
 				sendEmbed(message, embed);
 				return;
@@ -318,9 +292,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embed = new Discord.RichEmbed()
-						.setColor("#a893f9")
-						.setTitle("Server Help");
+					embed = new Discord.RichEmbed();
 					ownerServerHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
@@ -330,9 +302,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}relay`)) {
 			if (args.length === 0) {
-				let embed = new Discord.RichEmbed()
-					.setColor("#A021ED")
-					.setTitle("Relay Help");
+				let embed = new Discord.RichEmbed();
 				relayHelp(message, prefix, embed);
 				sendEmbed(message, embed);
 				return;
@@ -458,9 +428,7 @@ module.exports = (bot = Discord.Client) => {
 
 				default:
 					//Relay command help
-					embed = new Discord.RichEmbed()
-						.setColor("#A021ED")
-						.setTitle("Relay Help");
+					embed = new Discord.RichEmbed();
 					relayHelp(message, prefix, embed);
 					sendEmbed(message, embed);
 					break;
