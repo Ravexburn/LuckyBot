@@ -31,7 +31,7 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}command`) || (command === `${prefix}commands`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed();
-				commandsHelp(message, prefix, embed);
+				commandsHelp(prefix, embed);
 				message.channel.send(embed);
 				return;
 			}
@@ -206,7 +206,7 @@ ${list.sort().join(`\n`)}`;
 
 				default:
 					embed = new Discord.RichEmbed();
-					commandsHelp(message, prefix, embed);
+					commandsHelp(prefix, embed);
 					message.channel.send(embed);
 					return;
 			}
