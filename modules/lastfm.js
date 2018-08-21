@@ -81,9 +81,7 @@ module.exports = (bot = Discord.Client) => {
 			switch (args[0]) {
 				//Help
 				case "help":
-					embed = new Discord.RichEmbed();
-					lastFMHelp(message, prefix, embed);
-					sendEmbed(message, embed);
+					lastfmEmbed(message, prefix, embed);
 					break;
 
 				//Save username	
@@ -345,9 +343,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embedDef = new Discord.RichEmbed();
-					lastFMHelp(message, prefix, embedDef);
-					sendEmbed(message, embedDef);
+					lastfmEmbed(message, prefix, embed);
 					return;
 			}
 		}
@@ -531,4 +527,10 @@ errorCatch = function errorCatch(message, error) {
 		return;
 	}
 
+};
+
+lastfmEmbed = function lastfmEmbed(message, prefix, embed) {
+	embed = new Discord.RichEmbed();
+	lastFMHelp(prefix, embed);
+	sendEmbed(embed);
 };
