@@ -44,15 +44,14 @@ module.exports = (bot = Discord.Client) => {
 			let allowed;
 
 			if (args.length === 0) {
-				embed = new Discord.RichEmbed();
-				notifyHelp(message, prefix, embed);
-				sendEmbed(message, embed);
+				notificationEmbed(message, prefix, embed);
 				return;
 			}
 
 			switch (args[0]) {
 
 				//Lists the notification on server
+				
 				case "list":
 					notify.tableExists(guild.id)
 						.then(exists => {
@@ -85,6 +84,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				//Clears notification on server
+
 				case "clear":
 					notify.tableExists(guild.id)
 						.then(exists => {
@@ -112,11 +112,10 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				//Adds per server notification
+
 				case "add":
 					if (args.length === 1) {
-						embed = new Discord.RichEmbed();
-						notifyHelp(message, prefix, embed);
-						sendEmbed(message, embed);
+						notificationEmbed(message, prefix, embed);
 						return;
 					}
 					keyword = args.slice(1).join(" ").toLowerCase();
@@ -147,11 +146,10 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				//Removes per server notification
+
 				case "remove":
 					if (args.length === 1) {
-						embed = new Discord.RichEmbed();
-						notifyHelp(message, prefix, embed);
-						sendEmbed(message, embed);
+						notificationEmbed(message, prefix, embed);
 						return;
 					}
 					keyword = args.slice(1).join(" ").toLowerCase();
@@ -183,15 +181,14 @@ module.exports = (bot = Discord.Client) => {
 
 				case "global":
 					if (args.length === 1) {
-						embed = new Discord.RichEmbed();
-						notifyHelp(message, prefix, embed);
-						sendEmbed(message, embed);
+						notificationEmbed(message, prefix, embed);
 						return;
 					}
 					keyword = "";
 					switch (args[1]) {
 
 						//Lists all global notificatons 
+
 						case "list":
 							notify.tableExists()
 								.then(exists => {
@@ -220,6 +217,7 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						//Clears all global notifications
+
 						case "clear":
 							notify.tableExists(guild.id)
 								.then(exists => {
@@ -246,11 +244,10 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						//Adds a global notificaton
+
 						case "add":
 							if (args.length === 2) {
-								embed = new Discord.RichEmbed();
-								notifyHelp(message, prefix, embed);
-								sendEmbed(message, embed);
+								notificationEmbed(message, prefix, embed);
 								return;
 							}
 							keyword = args.slice(2).join(" ").toLowerCase();
@@ -280,11 +277,10 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						//Removes global notification
+
 						case "remove":
 							if (args.length === 2) {
-								embed = new Discord.RichEmbed();
-								notifyHelp(message, prefix, embed);
-								sendEmbed(message, embed);
+								notificationEmbed(message, prefix, embed);
 								return;
 							}
 							keyword = args.slice(2).join(" ").toLowerCase();
@@ -314,14 +310,13 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						default:
-							embed = new Discord.RichEmbed();
-							notifyHelp(message, prefix, embed);
-							sendEmbed(message, embed);
+							notificationEmbed(message, prefix, embed);
 							break;
 					}
 					break;
 
 				//Toggles ignore between channel and server
+
 				case "ignore":
 					switch (args[1]) {
 						case "channel":
@@ -343,9 +338,7 @@ module.exports = (bot = Discord.Client) => {
 											break;
 
 										default:
-											embed = new Discord.RichEmbed();
-											notifyHelp(message, prefix, embed);
-											sendEmbed(message, embed);
+											notificationEmbed(message, prefix, embed);
 											break;
 									}
 								}).catch((reason) => {
@@ -367,9 +360,7 @@ module.exports = (bot = Discord.Client) => {
 											break;
 
 										default:
-											embed = new Discord.RichEmbed();
-											notifyHelp(message, prefix, embed);
-											sendEmbed(message, embed);
+											notificationEmbed(message, prefix, embed);
 											break;
 									}
 								}).catch((reason) => {
@@ -378,9 +369,7 @@ module.exports = (bot = Discord.Client) => {
 							break;
 
 						default:
-							embed = new Discord.RichEmbed();
-							notifyHelp(message, prefix, embed);
-							sendEmbed(message, embed);
+							notificationEmbed(message, prefix, embed);
 							break;
 
 					}
@@ -414,9 +403,7 @@ module.exports = (bot = Discord.Client) => {
 									break;
 
 								default:
-									embed = new Discord.RichEmbed();
-									notifyHelp(message, prefix, embed);
-									sendEmbed(message, embed);
+									notificationEmbed(message, prefix, embed);
 									break;
 							}
 						}).catch((reason) => {
@@ -425,9 +412,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					embed = new Discord.RichEmbed();
-					notifyHelp(message, prefix, embed);
-					sendEmbed(message, embed);
+					notificationEmbed(message, prefix, embed);
 					break;
 			}
 		}
@@ -553,4 +538,10 @@ module.exports = (bot = Discord.Client) => {
 				}
 			});
 	};
+};
+
+notificationEmbed = function notificationEmbed(message, prefix, embed) {
+	embed = new Discord.RichEmbed();
+	notifyHelp(prefix, embed);
+	sendEmbed(message, embed);
 };
