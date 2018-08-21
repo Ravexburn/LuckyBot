@@ -49,7 +49,7 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}start`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed();
-				startHelp(message, prefix, embed);
+				startHelp(prefix, embed);
 				sendEmbed(message, embed);
 				return;
 			}
@@ -78,7 +78,7 @@ module.exports = (bot = Discord.Client) => {
 
 				default:
 					embed = new Discord.RichEmbed();
-					startHelp(message, prefix, embed);
+					startHelp(prefix, embed);
 					sendEmbed(message, embed);
 					break;
 			}
@@ -89,7 +89,7 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}toggle`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed();
-				toggleHelp(message, prefix, embed);
+				toggleHelp(prefix, embed);
 				sendEmbed(message, embed);
 				return;
 			}
@@ -124,7 +124,7 @@ module.exports = (bot = Discord.Client) => {
 
 				default:
 					embed = new Discord.RichEmbed();
-					toggleHelp(message, prefix, embed);
+					toggleHelp(prefix, embed);
 					sendEmbed(message, embed);
 					return;
 			}
@@ -135,7 +135,7 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}greeter`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed();
-				welcomeHelp(message, prefix, embed);
+				welcomeHelp(prefix, embed);
 				sendEmbed(message, embed);
 				return;
 			}
@@ -160,7 +160,7 @@ module.exports = (bot = Discord.Client) => {
 
 				default:
 					embed = new Discord.RichEmbed();
-					welcomeHelp(message, prefix, embed);
+					welcomeHelp(prefix, embed);
 					sendEmbed(message, embed);
 					break;
 			}
@@ -171,7 +171,7 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}starboard`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed();
-				starboardHelp(message, prefix, embed);
+				starboardHelp(prefix, embed);
 				sendEmbed(message, embed);
 				return;
 			}
@@ -194,7 +194,7 @@ module.exports = (bot = Discord.Client) => {
 
 				default:
 					embed = new Discord.RichEmbed();
-					starboardHelp(message, prefix, embed);
+					starboardHelp(prefix, embed);
 					sendEmbed(message, embed);
 					break;
 			}
@@ -271,7 +271,7 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}server`) || (command === `${prefix}getmeout`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed();
-				ownerServerHelp(message, prefix, embed);
+				ownerServerHelp(prefix, embed);
 				sendEmbed(message, embed);
 				return;
 			}
@@ -293,7 +293,7 @@ module.exports = (bot = Discord.Client) => {
 
 				default:
 					embed = new Discord.RichEmbed();
-					ownerServerHelp(message, prefix, embed);
+					ownerServerHelp(prefix, embed);
 					sendEmbed(message, embed);
 					break;
 			}
@@ -303,7 +303,7 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}relay`)) {
 			if (args.length === 0) {
 				let embed = new Discord.RichEmbed();
-				relayHelp(message, prefix, embed);
+				relayHelp(prefix, embed);
 				sendEmbed(message, embed);
 				return;
 			}
@@ -429,7 +429,7 @@ module.exports = (bot = Discord.Client) => {
 				default:
 					//Relay command help
 					embed = new Discord.RichEmbed();
-					relayHelp(message, prefix, embed);
+					relayHelp(prefix, embed);
 					sendEmbed(message, embed);
 					break;
 			}
