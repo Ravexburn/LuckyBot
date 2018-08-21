@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	//Help command for Notifications
-	notifyHelp = function notifyHelp(message, prefix, embed) {
+	notifyHelp = function notifyHelp(prefix, embed) {
 		embed.setTitle("Notification Help");
 		embed.setColor("#b19cd9");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
@@ -21,7 +21,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help command for Custom Commands
-	commandsHelp = function commandsHelp(message, prefix, embed) {
+	commandsHelp = function commandsHelp(prefix, embed) {
 		embed.setTitle("Custom Command Help");
 		embed.setColor("#40e0d0");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
@@ -34,7 +34,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help command for Lastfm Commands
-	lastFMHelp = function lastFMHelp(message, prefix, embed) {
+	lastFMHelp = function lastFMHelp(prefix, embed) {
 		embed.setTitle("LastFM Commands");
 		embed.setColor("#ffff4d");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
@@ -49,7 +49,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help for Greeter Commands
-	welcomeHelp = function welcomeHelp(message, prefix, embed) {
+	welcomeHelp = function welcomeHelp(prefix, embed) {
 		embed.setColor("#ff8533");
 		embed.setTitle("Greeter Help");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
@@ -59,7 +59,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help for Starboard Commands
-	starboardHelp = function starboardHelp(message, prefix, embed) {
+	starboardHelp = function starboardHelp(prefix, embed) {
 		embed.setColor("#ff8533");
 		embed.setTitle("Starboard Help");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
@@ -71,7 +71,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help for Start Commands
-	startHelp = function startHelp(message, prefix, embed) {
+	startHelp = function startHelp(prefix, embed) {
 		embed.setColor("#2ecc71");
 		embed.setTitle("Start Help");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
@@ -83,7 +83,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help for Toggle Commands
-	toggleHelp = function toggleHelp(message, prefix, embed) {
+	toggleHelp = function toggleHelp(prefix, embed) {
 		embed.setColor("#3498db");
 		embed.setTitle("Toggle Help");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
@@ -96,7 +96,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help for Server Commands
-	ownerServerHelp = function ownerServerHelp(message, prefix, embed) {
+	ownerServerHelp = function ownerServerHelp(prefix, embed) {
 		embed.setColor("#a893f9");
 		embed.setTitle("Server Help");
 		embed.addField(":speech_left: Sever Commands", `\*\* ${prefix}server\*\* - Shows this list of commands for server.
@@ -106,7 +106,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Help for Relay Commands
-	relayHelp = function relayHelp(message, prefix, embed) {
+	relayHelp = function relayHelp(prefix, embed) {
 		embed = new Discord.RichEmbed();
 		embed.setColor("#A021ED");
 		embed.setTitle("Relay Help");
