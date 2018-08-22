@@ -23,8 +23,8 @@ module.exports = (bot = Discord.Client) => {
 					let embed = new Discord.RichEmbed()
 						.setAuthor(bot.user.tag, bot.user.displayAvatarURL)
 						.setColor("#1ccc8b")
-						.setDescription(`:exclamation: Lucky Bot has joined: **${guild.name}** \`(#${guild.id})\`. Owner: **${guild.owner.user.tag}**\n
-:white_check_mark: This server is on the whitelist.`);
+						.addField("Whitelisted", ":white_check_mark:");
+					whitelistEmbed(guild, embed);
 					chan.send(embed);
 					return;
 				}
@@ -41,8 +41,8 @@ module.exports = (bot = Discord.Client) => {
 					let embed = new Discord.RichEmbed()
 						.setAuthor(bot.user.tag, bot.user.displayAvatarURL)
 						.setColor("#ce1827")
-						.setDescription(`:exclamation: Lucky Bot has joined: **${guild.name}** \`(#${guild.id})\`. Owner: **${guild.owner.user.tag}**\n
-:x: This server is not on the whitelist.`);
+						.addField("Whitelisted", ":x:");
+					whitelistEmbed(guild, embed);
 					chan.send(embed);
 					return;
 				}
@@ -58,8 +58,8 @@ module.exports = (bot = Discord.Client) => {
 
 		let embed = new Discord.RichEmbed()
 			.setAuthor(bot.user.tag, bot.user.displayAvatarURL)
-			.setColor("#ce1827")
-			.setDescription(`:exclamation: Lucky Bot has left: **${guild.name}** \`(#${guild.id})\`. Owner: **${guild.owner.user.tag}**`);
+			.setColor("#ce1827");
+		whitelistEmbed(guild, embed);
 		chan.send(embed);
 		return;
 
@@ -159,3 +159,9 @@ function whitelistAdd(id, name) {
 		return false;
 	});
 }
+
+whitelistEmbed = function whitelistEmbed(guild, embed) {
+	embed.addField("Owner", `**${guild.owner.user.tag}**`, true);
+	embed.addField("Server", `**${guild.name}** - \`(#${guild.id})\``, true);
+	embed.setTimestamp(guild.joinedAt.toLocaleString());
+};
