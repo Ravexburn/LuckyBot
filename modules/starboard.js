@@ -25,7 +25,7 @@ module.exports = (bot = Discord.Client) => {
 		const boardChannel = guild.channels.get(starboardChannelID);
 
 		//Only pin if the right emoji is used and there are enough of them
-		if (reaction.emoji.name != starboardEmoji) return;
+		if (![].concat(starboardEmoji).includes(reaction.emoji.name)) return;
 		if (reaction.count < starboardNumber) return;
 
 		//Don't allow pinning of messages on the starboard itself
