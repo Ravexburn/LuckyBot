@@ -326,7 +326,7 @@ module.exports = (bot = Discord.Client) => {
 						.then(collected => {
 							let removedEmoji = collected.first().emoji;
 							if (alreadyExists(removedEmoji, serverSettings.starboardEmoji)) {
-								serverSettings.starboardEmoji.splice(serverSettings.starboardEmoji.indexOf(removedEmoji), 1);
+								serverSettings.starboardEmoji.splice(serverSettings.starboardEmoji.indexOf(removedEmoji.name), 1);
 								bot.setServerSettings(message.guild.id, serverSettings);
 								message.channel.send(`**"${removedEmoji}" has been removed from the starboard emoji.**`);
 							} else {

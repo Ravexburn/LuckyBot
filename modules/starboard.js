@@ -31,6 +31,8 @@ module.exports = (bot = Discord.Client) => {
 		//Don't allow pinning of messages on the starboard itself
 		if (channel == boardChannel) return;
 
+		if (author.bot) return;
+
 		const existingPinnedMessage = await getExistingPinnedMessage(boardChannel, message.id);
 
 		//If the message has already been pinned to starboard, simply update the number of stars
