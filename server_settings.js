@@ -37,7 +37,7 @@ const defaultSettings = {
 	//Starboard
 	starboardOn: false,
 	starboardChannelID: "",
-	starboardEmoji: "⭐",
+	starboardEmoji: ["⭐"],
 	starboardNumber: 1
 };
 

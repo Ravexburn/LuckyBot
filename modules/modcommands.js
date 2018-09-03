@@ -185,7 +185,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				case "emoji":
-					setStarboardEmoji(message, serverSettings);
+					setStarboardEmoji(message, serverSettings, args[1]);
 					break;
 
 				case "number":
