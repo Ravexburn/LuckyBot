@@ -109,7 +109,6 @@ module.exports = (bot = Discord.Client) => {
 
 	//Help for Relay Commands
 	relayHelp = function relayHelp(prefix, embed) {
-		embed = new Discord.RichEmbed();
 		embed.setColor("#A021ED");
 		embed.setTitle("Relay Help");
 		embed.addField(":arrows_counterclockwise: Relay", `\*\* ${prefix}relay\*\* - Shows this list of commands for relay.
