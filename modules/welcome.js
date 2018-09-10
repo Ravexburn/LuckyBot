@@ -23,21 +23,25 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		let msg = serverSettings.welcomeMessage;
-		let mention = member.user;
 		let serverName = guild.name;
-		let user = member.user.tag;
 		let image = serverSettings.welcomeImage;
 
-		msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
+		// Retrieve member directly from guild because new member won't be cached in bot yet
+		guild.fetchMember(member.user).then((guildMember) => { 
+			let mention = guildMember.user;
+			let user = mention.tag;
 
-		let embed = new Discord.RichEmbed()
-			.setColor("RANDOM")
-			.setThumbnail(member.user.displayAvatarURL)
-			.setURL(member.user.displayAvatarURL)
-			.setTitle("Member Join!")
-			.setDescription(msg)
-			.setImage(image);
-		chan.send(embed);
+			msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
+
+			let embed = new Discord.RichEmbed()
+				.setColor("RANDOM")
+				.setThumbnail(member.user.displayAvatarURL)
+				.setURL(member.user.displayAvatarURL)
+				.setTitle("Member Join!")
+				.setDescription(msg)
+				.setImage(image);
+			chan.send(embed);
+		});
 	};
 
 	//Join
