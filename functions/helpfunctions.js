@@ -64,9 +64,11 @@ module.exports = (bot = Discord.Client) => {
 		embed.setTitle("Starboard Help");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 		embed.addField(":star: Starboard Commands", `\*\* ${prefix}starboard\*\* - Shows this list of commands for starboard.
-\*\* ${prefix}starboard channel <channel name>\*\* - Sets the channel where the bot should place starred messages.
-\*\* ${prefix}starboard emoji\*\* - Prompts the user to react with the emoji the bot watches for to place messages on the board.
-\*\* ${prefix}starboard number <number>\*\* - Sets the number of reactions required to place messages on the board.
+\*\* ${prefix}starboard channel <channel name>\*\* - Sets the channel where the bot should pin starred messages.
+\*\* ${prefix}starboard emoji\*\* - View this server's list of valid emoji for pinning messages to the starboard.
+\*\* ${prefix}starboard emoji add\*\* - Add an emoji to the list of valid emoji for pinning messages to the starboard.
+\*\* ${prefix}starboard emoji remove\*\* - Remove an emoji from the list of valid emoji for pinning messages to the starboard.
+\*\* ${prefix}starboard number <number>\*\* - Sets the number of reactions required to pin messages on the board.
 \*\* ${prefix}toggle starboard\*\* - Toggles the starboard functionality.`);
 	};
 
@@ -107,7 +109,6 @@ module.exports = (bot = Discord.Client) => {
 
 	//Help for Relay Commands
 	relayHelp = function relayHelp(prefix, embed) {
-		embed = new Discord.RichEmbed();
 		embed.setColor("#A021ED");
 		embed.setTitle("Relay Help");
 		embed.addField(":arrows_counterclockwise: Relay", `\*\* ${prefix}relay\*\* - Shows this list of commands for relay.

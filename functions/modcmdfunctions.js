@@ -281,37 +281,72 @@ module.exports = (bot = Discord.Client) => {
 		if (image && msg) {
 			chan.send(msg, image);
 			return;
-		} else if(msg && !image) {
+		} else if (msg && !image) {
 			chan.send(msg);
 			return;
-		} else if(image && !msg){
+		} else if (image && !msg) {
 			chan.send(image);
 			return;
-		} else{
+		} else {
 			message.channel.send(`Please enter a channel followed by a message and or image. \`${command} <channel> message\``);
-			return;	
+			return;
 		}
 	};
 
 	/**
-     * Setting starboard emoji
+     * Set starboard emoji
      * @param {Message} message 
      */
-	setStarboardEmoji = function setStarboardEmoji(message, serverSettings) {
-		const prompt = message.author + " Please react to this message with the desired emoji.";
-		message.channel.send(prompt).then(function (msg) {
-			var filter = (reaction, user) => user.id == message.author.id;
-			msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-				.then(collected => {
-					const reaction = collected.first();
-					let newEmoji = reaction.emoji;
-					serverSettings.starboardEmoji = newEmoji.name;
-					bot.setServerSettings(message.guild.id, serverSettings);
-					message.channel.send("**Starboard emoji has been set to: **" + newEmoji);
+	setStarboardEmoji = function setStarboardEmoji(message, serverSettings, arg) {
+		switch (arg) {
+			case "add":
+				let addPrompt = message.author + " Please react to this message with the emoji you would like to add."
+					+ `\nCurrent emoji: "${[].concat(serverSettings.starboardEmoji).join('", "')}"`;
+				message.channel.send(addPrompt).then(function (msg) {
+					var filter = (reaction, user) => user.id == message.author.id;
+					msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+						.then(collected => {
+							let newEmoji = collected.first().emoji;
+							if (!alreadyExists(newEmoji, serverSettings.starboardEmoji)) {
+								serverSettings.starboardEmoji = [newEmoji.name].concat(serverSettings.starboardEmoji);
+								bot.setServerSettings(message.guild.id, serverSettings);
+								message.channel.send(`**"${newEmoji}" has been added to the starboard emoji.**`);
+							} else {
+								message.channel.send(`**"${newEmoji}" was already added to the starboard emoji.**`);
+							}
+						});
 				});
-		});
-		return;
+				return;
+			case "remove":
+				let removePrompt = message.author + " Please react to this message with the emoji you would like to remove."
+					+ `\nCurrent emoji: "${[].concat(serverSettings.starboardEmoji).join('", "')}"`;
+				message.channel.send(removePrompt).then(function (msg) {
+					var filter = (reaction, user) => user.id == message.author.id;
+					msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+						.then(collected => {
+							let removedEmoji = collected.first().emoji;
+							if (alreadyExists(removedEmoji, serverSettings.starboardEmoji)) {
+								serverSettings.starboardEmoji.splice(serverSettings.starboardEmoji.indexOf(removedEmoji.name), 1);
+								bot.setServerSettings(message.guild.id, serverSettings);
+								message.channel.send(`**"${removedEmoji}" has been removed from the starboard emoji.**`);
+							} else {
+								message.channel.send(`**"${removedEmoji}" could not be removed from the starboard emoji.**`);
+							}
+						});
+				});
+				return;
+			default:
+				message.channel.send(`Current emoji: "${[].concat(serverSettings.starboardEmoji).join('", "')}"`);
+				return;
+		}
 	};
+
+	/**
+     * Is emoji already added?
+     */
+	alreadyExists = function alreadyExists(emoji, starboardEmoji) {
+		return starboardEmoji.includes(emoji.name) || starboardEmoji.includes(emoji);
+	}
 
 	/**
      * Setting starboard reaction number
