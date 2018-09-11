@@ -42,26 +42,6 @@ module.exports = (bot = Discord.Client) => {
 			.catch((error) => {
 				bot.log(error);
 			});
-
-		if (bot.centlog === false) return;
-		if (serverSettings.centEnabled === "false") return;
-		const neoChanID = serverSettings.centChanID;
-		const neoGuildID = serverSettings.centGuildID;
-
-		if (!bot.guilds.has(neoGuildID)) {
-			return;
-		}
-		const neoGuild = bot.guilds.get(neoGuildID);
-
-		if (!neoGuild.channels.has(neoChanID)) {
-			return;
-		}
-		const neoChan = neoGuild.channels.get(neoChanID);
-
-		embed.setFooter(`${message.guild.name} | ${message.chanel.name}`);
-
-		neoChan.send(embed);
-
 	};
 
 	//Message Edits
@@ -104,25 +84,6 @@ module.exports = (bot = Discord.Client) => {
 			.catch((error) => {
 				bot.log(error);
 			});
-
-		if (bot.centlog === false) return;
-		if (serverSettings.centEnabled === "false") return;
-		const neoChanID = serverSettings.centChanID;
-		const neoGuildID = serverSettings.centGuildID;
-
-		if (!bot.guilds.has(neoGuildID)) {
-			return;
-		}
-		const neoGuild = bot.guilds.get(neoGuildID);
-
-		if (!neoGuild.channels.has(neoChanID)) {
-			return;
-		}
-		const neoChan = neoGuild.channels.get(neoChanID);
-
-		embed.setFooter(`${message.guild.name} | ${message.chanel.name}`);
-
-		neoChan.send(embed);
 	};
 
 	//Deleted Message
@@ -162,25 +123,6 @@ module.exports = (bot = Discord.Client) => {
 			.catch((error) => {
 				bot.log(error);
 			});
-
-		if (bot.centlog === false) return;
-		if (serverSettings.centEnabled === "false") return;
-		const neoChanID = serverSettings.centChanID;
-		const neoGuildID = serverSettings.centGuildID;
-
-		if (!bot.guilds.has(neoGuildID)) {
-			return;
-		}
-		const neoGuild = bot.guilds.get(neoGuildID);
-
-		if (!neoGuild.channels.has(neoChanID)) {
-			return;
-		}
-		const neoChan = neoGuild.channels.get(neoChanID);
-
-		embed.setFooter(`${message.guild.name} | ${message.chanel.name}`);
-
-		neoChan.send(":warning: Message has been removed:", embed);
 	};
 
 	//Images
@@ -231,35 +173,5 @@ module.exports = (bot = Discord.Client) => {
 					bot.log(error);
 				});
 		}
-
-		if (bot.centlog === false) return;
-		if (serverSettings.centEnabled === "false") return;
-		const neoChanID = serverSettings.centChanID;
-		const neoGuildID = serverSettings.centGuildID;
-
-		if (!bot.guilds.has(neoGuildID)) {
-			return;
-		}
-		const neoGuild = bot.guilds.get(neoGuildID);
-
-		if (!neoGuild.channels.has(neoChanID)) {
-			return;
-		}
-		const neoChan = neoGuild.channels.get(neoChanID);
-
-		let embed = new Discord.RichEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-			.setFooter(`${message.guild.name} | ${message.chanel.name}`)
-			.setTimestamp(message.createdAt)
-			.setImage(message.attachments.first().url);
-
-		let color = "#a8e8eb";
-		let member = message.member;
-		if (member.colorRole) { color = member.colorRole.color; }
-		embed.setColor(color);
-
-		neoChan.send(embed);
-
 	};
-
 };
