@@ -236,8 +236,8 @@ function attemptToRetrieveRecentTracks(target, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				url2 = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${apiKey}&limit=10&format=json`;
-				axios.get(url2).then(response => {
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${apiKey}&limit=10&format=json`;
+				axios.get(url).then(response => {
 					if (response.data.error) {
 						return Promise.reject(response);
 					}
@@ -270,8 +270,8 @@ function attemptToRetrieveTopAlbums(target, time, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				url5 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
-				axios.get(url5).then(response => {
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
+				axios.get(url).then(response => {
 					if (response.data.error) {
 						return Promise.reject(response);
 					}
@@ -296,8 +296,8 @@ function attemptToRetrieveTopArtists(target, time, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				url4 = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
-				axios.get(url4).then(response => {
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
+				axios.get(url).then(response => {
 					if (response.data.error) {
 						return Promise.reject(response);
 					}
@@ -322,8 +322,8 @@ function attemptToRetrieveTopTracks(target, time, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				url3 = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
-				axios.get(url3).then(response => {
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
+				axios.get(url).then(response => {
 					if (response.data.error) {
 						return Promise.reject(response);
 					}

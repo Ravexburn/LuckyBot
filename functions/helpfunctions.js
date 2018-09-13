@@ -161,6 +161,11 @@ module.exports = (bot = Discord.Client) => {
 							embed.setDescription(pages[currentPage])
 								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
 							msg.edit(embed);
+							Array.from(react.users.values()).forEach(user => {
+								if (!user.bot) {
+									react.remove(user);
+								}
+							});;
 						}
 					});
 
@@ -176,6 +181,11 @@ module.exports = (bot = Discord.Client) => {
 							embed.setDescription(pages[currentPage])
 								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
 							msg.edit(embed);
+							Array.from(react.users.values()).forEach(user => {
+								if (!user.bot) {
+									react.remove(user);
+								}
+							});;
 						}
 					});
 
