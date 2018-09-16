@@ -3,9 +3,9 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	/**
-        * Setting prefix
-        * @param {Message} message 
-        */
+	* Setting prefix
+	* @param {Message} message 
+	*/
 	setPrefix = function setPrefix(message, command, args, serverSettings) {
 		if (args.length === 0) {
 			message.channel.send(message.author + "To set prefix please use " + command + " <prefix>")
@@ -47,8 +47,8 @@ module.exports = (bot = Discord.Client) => {
 			member = message.guild.member(member_id);
 		}
 
-		if (member === message.member) {
-			message.channel.send("You can't ban yourself");
+		if (!message.member.hasPermission("BAN_MEMBERS")) {
+			message.channel.send("You do not have the `BAN_MEMBERS` permission");
 			return;
 		}
 
@@ -57,16 +57,16 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send("You do not have the `BAN_MEMBERS` permission");
-			return;
-		}
-
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
 				message.channel.send("You can't ban that person");
 				return;
 			}
+		}
+
+		if (member === message.member) {
+			message.channel.send("You can't ban yourself");
+			return;
 		}
 
 		let reason = args.slice(1).join(" ");
@@ -115,18 +115,13 @@ module.exports = (bot = Discord.Client) => {
 			member = message.guild.member(member_id);
 		}
 
-		if (member === message.member) {
-			message.channel.send("You can't kick yourself");
+		if (!message.member.hasPermission("KICK_MEMBERS")) {
+			message.channel.send("You do not have the `KICK_MEMBERS` permission");
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("KICK_MEMBERS")) {
 			message.channel.send("Please enable the `KICK_MEMBERS` permisson to be able to kick");
-			return;
-		}
-
-		if (!message.member.hasPermission("KICK_MEMBERS")) {
-			message.channel.send("You do not have the `KICK_MEMBERS` permission");
 			return;
 		}
 
@@ -136,6 +131,11 @@ module.exports = (bot = Discord.Client) => {
 				return;
 			}
 
+		}
+
+		if (member === message.member) {
+			message.channel.send("You can't kick yourself");
+			return;
 		}
 
 		let reason = args.slice(1).join(" ");
@@ -151,10 +151,10 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	/** 
-      * Command: Mute by Average Black Guy#2409
-     * Description: Mutes a tagged user. Unmutes if user is already muted.
-      * Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
-      */
+	* Command: Mute by Average Black Guy#2409
+	* Description: Mutes a tagged user. Unmutes if user is already muted.
+	* Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
+	*/
 	muteUser = function muteUser(message, command, args) {
 		if (args.length === 0) { // Checks if no args given 
 			message.channel.send(`No one to mute, please do ${command} [userid] **or** @user`);
@@ -225,6 +225,12 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send("Please provide a number of messages to delete `MAX: 99`");
 			return;
 		}
+
+		if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+			message.channel.send("You do not have the `MANAGE_MESSAGES` permission");
+			return;
+		}
+
 		if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
 			message.channel.send("Please enable the `MANAGE_MESSAGES` permisson to be able to prune");
 			return;
@@ -233,11 +239,11 @@ module.exports = (bot = Discord.Client) => {
 		let msg = args[0];
 		let num = parseInt(msg) + 1;
 		if (isNaN(num)) {
-			message.channel.send("Please provide a number of messages to delete");
+			message.channel.send("Please provide a number of messages to delete `MAX: 99`");
 			return;
 		}
 		if (num > 100) {
-			message.channel.send("Please enter a number less than or equal to 99");
+			message.channel.send("Please provide a number of messages to delete `MAX: 99`");
 			return;
 		}
 		message.channel.fetchMessages({ limit: num })
@@ -262,6 +268,7 @@ module.exports = (bot = Discord.Client) => {
 		bot.setServerSettings(message.guild.id, serverSettings);
 	};
 
+	//Makes the bot say something in a channel
 	sayFunction = function sayFunction(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
@@ -277,6 +284,16 @@ module.exports = (bot = Discord.Client) => {
 			image = { file: message.attachments.first().url };
 		}
 		let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
+
+		if (!chan.permissionsFor(bot.user).has("VIEW_CHANNEL")) {
+			message.channel.send("I am not able to `READ_MESSAGES` for that channel");
+			return;
+		}
+		
+		if (!chan.permissionsFor(bot.user).has("SEND_MESSAGES")) {
+			message.channel.send("I am not able to `SEND_MESSAGES` in that channel");
+			return;
+		}
 
 		if (image && msg) {
 			chan.send(msg, image);
