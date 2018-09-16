@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const website = "http://www.luckybot.io/";
+const website = "https://luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 

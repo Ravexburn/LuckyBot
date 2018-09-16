@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const link = "https://trello.com/b/0uytHSPL";
 const link2 = "https://github.com/Ravexburn/LuckyBot";
 const invite = "https://discord.gg/z4thPtW";
-const website = "http://www.luckybot.io/";
+const website = "https://luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 
