@@ -24,7 +24,7 @@ module.exports = (bot = Discord.Client) => {
 		const prefix = serverSettings.prefix;
 
 		if (!command.startsWith(prefix)) return;
-		
+
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 
 
@@ -200,18 +200,6 @@ module.exports = (bot = Discord.Client) => {
 			}
 		}
 
-		//Ban Command
-
-		if ((command === `${prefix}ban`)) {
-			banUser(message, command, args);
-		}
-
-		//Kick command
-
-		if ((command === `${prefix}kick`)) {
-			kickUser(message, command, args);
-		}
-
 		//Mute Command
 
 		if ((command === `${prefix}mute`)) {
@@ -230,8 +218,28 @@ module.exports = (bot = Discord.Client) => {
 			message.reply(`Help can be found here: ${website}`);
 		}
 
+		//Say Command
+
 		if (command === `${prefix}say`) {
 			sayFunction(message, command, args);
+		}
+
+	};
+
+	banCmd = async function banCmd(message) {
+		//Ban Command
+
+		if ((command === `${prefix}ban`)) {
+			banUser(message, command, args);
+		}
+
+	};
+
+	kickCmd = async function kickCmd(message) {
+		//Kick command
+
+		if ((command === `${prefix}kick`)) {
+			kickUser(message, command, args);
 		}
 
 	};
