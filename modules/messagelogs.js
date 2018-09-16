@@ -31,7 +31,7 @@ module.exports = (bot = Discord.Client) => {
 		let embed = new Discord.RichEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 			.setDescription(message.content.substring(0, MAX_CHAR))
-			.setFooter(message.channel.name)
+			.setFooter(`#${message.channel.name} | ID: ${message.id}`)
 			.setTimestamp(message.createdAt);
 		if (message.attachments != null && message.attachments.size !== 0) {
 			return;
@@ -73,7 +73,7 @@ module.exports = (bot = Discord.Client) => {
 			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 			.addField(":pencil: Old Message", (oldMessage.content + "­").substring(0, MAX_CHAR))
 			.addField(":pencil: Edited Message", (message.content + "­").substring(0, MAX_CHAR))
-			.setFooter(message.channel.name)
+			.setFooter(`#${message.channel.name} | ID: ${message.id}`)
 			.setTimestamp(message.createdAt);
 		if (message.attachments != null && message.attachments.size !== 0) {
 			embed.setImage(message.attachments.first().url);
@@ -112,7 +112,7 @@ module.exports = (bot = Discord.Client) => {
 		let embed = new Discord.RichEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 			.setDescription(message.content.substring(0, MAX_CHAR))
-			.setFooter(message.channel.name)
+			.setFooter(`#${message.channel.name} | ID: ${message.id}`)
 			.setTimestamp(message.createdAt);
 		if (message.attachments != null && message.attachments.size !== 0) {
 			embed.setImage(message.attachments.first().url);
@@ -154,15 +154,14 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (imageEmbed === false) {
-
 			let image = { file: message.attachments.first().url };
-			chan.send(`**${message.author.tag}** posted **${message.channel.name}** at **${message.createdAt}**`, image);
+			chan.send(`**${message.author.tag}** posted in **#${message.channel.name}** at **${message.createdAt}** ID: **${message.id}**`, image);
 		}
 
 		else {
 			let embed = new Discord.RichEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-				.setFooter(message.channel.name)
+				.setFooter(`#${message.channel.name} | ID: ${message.id}`)
 				.setTimestamp(message.createdAt)
 				.setImage(message.attachments.first().url);
 
