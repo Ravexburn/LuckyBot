@@ -346,7 +346,7 @@ module.exports = (bot = Discord.Client) => {
      */
 	alreadyExists = function alreadyExists(emoji, starboardEmoji) {
 		return starboardEmoji.includes(emoji.name) || starboardEmoji.includes(emoji);
-	}
+	};
 
 	/**
      * Setting starboard reaction number
