@@ -19,7 +19,7 @@ const commands = {
 	"threeMonth": ["3-month", "3month"],
 	"sixMonth": ["half-year", "6-month", "6month", "halfyear"],
 	"yearly": ["year", "12-month", "12month", "yearly"]
-}
+};
 let notRegisteredAlert;
 let apiKey;
 
@@ -172,6 +172,7 @@ function attemptToRetrieveNowPlaying(target, message) {
 					}
 					if (!response.data.recenttracks.track[0]) {
 						console.log(`No Track`);
+						message.channel.send("Could not find any tracks.");
 						return;
 					}
 					let albumcover = "";
@@ -247,6 +248,7 @@ function attemptToRetrieveRecentTracks(target, message) {
 					}
 					if (!response.data.recenttracks.track[0]) {
 						console.log(`No Track`);
+						message.channel.send("Could not find any tracks.");
 						return;
 					}
 					let recentEmbed = new Discord.RichEmbed()
@@ -390,7 +392,7 @@ function displayRecentTracks(message, embed, response) {
 		msg += `by [${responseA[i].artist["#text"]}](https://www.last.fm/music/${responseA[i].artist["#text"].replace(/ /g, "+").replace(/\(/g, "%28").replace(/\)/g, "%29")}) \n`;
 	}
 	embedCss(message, embed, msg);
-};
+}
 
 function displayTopAlbums(message, embed, response) {
 	let responseA = response.data.topalbums.album;
@@ -407,7 +409,7 @@ function displayTopAlbums(message, embed, response) {
 		msg += `(${responseA[i].playcount} plays) \n`;
 	}
 	embedCss(message, embed, msg);
-};
+}
 
 function displayTopArtists(message, embed, response) {
 	let responseA = response.data.topartists.artist;
@@ -422,7 +424,7 @@ function displayTopArtists(message, embed, response) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
 	embedCss(message, embed, msg);
-};
+}
 
 function displayTopTracks(message, embed, response) {
 	let responseA = response.data.toptracks.track;
@@ -437,7 +439,7 @@ function displayTopTracks(message, embed, response) {
 		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${responseA[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
 	}
 	embedCss(message, embed, msg);
-};
+}
 
 //Embed colors, message, and footer function
 function embedCss(message, embed, msg) {
@@ -445,7 +447,7 @@ function embedCss(message, embed, msg) {
 	embed.setDescription(msg.substring(0, MAX_CHAR));
 	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
-};
+}
 
 async function getTarget(message, args) {
 	let userID = message.author.id;
@@ -470,7 +472,7 @@ async function getTarget(message, args) {
 		target = await bot.fetchUser(userID);
 	}
 	return target;
-};
+}
 
 //Function for parsing user input into time period
 function getTimePeriod(arg) {
@@ -488,7 +490,7 @@ function getTimePeriod(arg) {
 		default:
 			return { "period": "overall", "name": "All Time" };
 	}
-};
+}
 
 function handleError(message, error) {
 	if (error.response) {
@@ -502,10 +504,10 @@ function handleError(message, error) {
 		return;
 	}
 
-};
+}
 
 function sendLastfmHelpEmbed(message, prefix) {
 	let embed = new Discord.RichEmbed();
 	lastFMHelp(prefix, embed);
 	sendEmbed(message, embed);
-};
+}
