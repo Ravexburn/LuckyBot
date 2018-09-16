@@ -206,12 +206,6 @@ module.exports = (bot = Discord.Client) => {
 			muteUser(message, command, args, perms);
 		}
 
-		//Prune Command
-
-		if ((command === `${prefix}prune`)) {
-			pruneMessage(message, args);
-		}
-
 		//Mod help
 
 		if (command === `${prefix}mod`) {
@@ -226,23 +220,39 @@ module.exports = (bot = Discord.Client) => {
 
 	};
 
-	banCmd = async function banCmd(message) {
+	bkpCmd = async function bkpCmd(message) {	
+		if (message.author.bot) return;
+		if (message.channel.type === "dm") return;
+
+		let serverSettings = bot.getServerSettings(message.guild.id);
+
+		let messageArray = message.content.split(" ");
+		let command = messageArray[0];
+		let args = messageArray.slice(1);
+		const prefix = serverSettings.prefix;
+
+		if (!command.startsWith(prefix)) return;
+
 		//Ban Command
 
 		if ((command === `${prefix}ban`)) {
 			banUser(message, command, args);
 		}
 
-	};
-
-	kickCmd = async function kickCmd(message) {
 		//Kick command
 
 		if ((command === `${prefix}kick`)) {
 			kickUser(message, command, args);
 		}
 
+		//Prune Command
+
+		if ((command === `${prefix}prune`)) {
+			pruneMessage(message, args);
+		}
+
 	};
+
 
 	//Intial Settings (Owner Only)
 
