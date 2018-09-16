@@ -163,23 +163,28 @@ module.exports = (bot = Discord.Client) => {
 
 		let muteRoleExists = false;
 		let memberToMute = (message.mentions.users.first() === undefined) ? message.guild.member(args[0]) : message.guild.member(message.mentions.users.first().id); // if theres no mention it grabs whatever is in args
-		if (memberToMute === null) { //make sure its actually a member
+		// Make sure its actually a member being muted.
+		if (memberToMute === null) { 
 			message.channel.send("That is not a user");
 			return;
 		}
-
-		if (memberToMute.id === message.author.id) { //Don't mute yourself 
+		
+		// Don't mute yourself.
+		if (memberToMute.id === message.author.id) { 
 			message.channel.send("You can't mute yourself");
 			return;
 		}
-
-		if (memberToMute.hasPermission("ADMINISTRATOR") || memberToMute.hasPermission("MANAGE_GUILD")) { //Don't mute person with clout
+		
+		// Don't mute person with clout.
+		if (memberToMute.hasPermission("ADMINISTRATOR") || memberToMute.hasPermission("MANAGE_GUILD")) { 
 			message.channel.send("You can't mute that person");
 			return;
 		}
-
-		for (let role of message.guild.roles.array()) { //loop through roles
-			if (role.name.toLowerCase() === "mute" && memberToMute.roles.has(role.id)) { //find mute role and check if member has it, if they do it unmutes
+		
+		// Loop through the guild's roles.
+		for (let role of message.guild.roles.array()) { 
+			// Find the guild's mute role and check if the member has it. If they do, unmute.
+			if (role.name.toLowerCase() === "mute" && memberToMute.roles.has(role.id)) { 
 				muteRoleExists = true;
 				memberToMute.removeRole(role).then(member => {
 					message.channel.send(`Unmuted ${member.displayName}`);
@@ -188,7 +193,8 @@ module.exports = (bot = Discord.Client) => {
 					console.error(err);
 				});
 				return;
-			} else if (role.name.toLowerCase() === "mute") { //if member doesnt have it and mute role is found, it mutes them
+			// If a member isn't muted and a mute role is found, mute.
+			} else if (role.name.toLowerCase() === "mute") { 
 				muteRoleExists = true;
 				memberToMute.addRole(role).then(member => {
 					message.channel.send(`Muted ${member.displayName}`);
@@ -199,17 +205,21 @@ module.exports = (bot = Discord.Client) => {
 				return;
 			}
 		}
-
-		if (!muteRoleExists && !message.guild.member(bot.user.id).hasPermission("MANAGE_ROLES")) { // if no mute role and no admin perms
+		
+		// If there's no mute role and Lucky doesn't have role perms.
+		if (!muteRoleExists && !message.guild.member(bot.user.id).hasPermission("MANAGE_ROLES")) { 
 			message.channel.send(`There was no mute role found and I do not have permission to create a new role.\nPlease create a new role called "mute" and try again.`);
-		} else if (!muteRoleExists) { // If there is no role named "mute" it creates a new one
+		// If there's no role named "mute", create a new one.
+		} else if (!muteRoleExists) { 
 			message.guild.createRole({
 				name: "mute"
 			}).then(muteRole => {
-				for (let channel of message.guild.channels.array()) { // loop through channels and make mute role not allow member to send messages
-					channel.overwritePermissions(muteRole, { SEND_MESSAGES: false });
+				// Loop through channels and make the new mute role not allow members to send messages or speak in voice.
+				for (let channel of message.guild.channels.array()) { 
+					channel.overwritePermissions(muteRole, { SEND_MESSAGES: false, SPEAK: false });
 				}
-				memberToMute.addRole(muteRole).then(member => { //add mute role to member once creation is done
+				// Add mute role to targetted member once creation is done.
+				memberToMute.addRole(muteRole).then(member => { 
 					message.channel.send(`There was no mute role found, a new one has been created with the name ${muteRole.name} and added to ${member.displayName}`);
 				}).catch(err => {
 					message.channel.send("Failed to mute member");
