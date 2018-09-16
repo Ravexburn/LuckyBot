@@ -214,9 +214,9 @@ module.exports = (bot = Discord.Client) => {
 			message.guild.createRole({
 				name: "mute"
 			}).then(muteRole => {
-				// Loop through channels and make the new mute role not allow members to send messages or speak in voice.
+				// Loop through channels and make the new mute role not allow members to send messages, speak, or react.
 				for (let channel of message.guild.channels.array()) { 
-					channel.overwritePermissions(muteRole, { SEND_MESSAGES: false, SPEAK: false });
+					channel.overwritePermissions(muteRole, { SEND_MESSAGES: false, SPEAK: false, ADD_REACTIONS: false });
 				}
 				// Add mute role to targetted member once creation is done.
 				memberToMute.addRole(muteRole).then(member => { 
