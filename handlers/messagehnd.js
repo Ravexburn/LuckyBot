@@ -8,25 +8,27 @@ module.exports = (bot = Discord.Client) => {
 	require("./../modules/commands.js")(bot);
 	require("./../modules/information.js")(bot);
 	require("./../modules/lastfm.js")(bot);
+	require("./../modules/levels.js")(bot);
 	require("./../modules/messagelogs.js")(bot);
+	require("./../modules/misccommands.js")(bot);
 	require("./../modules/modcommands.js")(bot);
 	require("./../modules/notifications.js")(bot);
 	require("./../modules/roles.js")(bot);
 	require("./../modules/starboard.js")(bot);
-	require("./../modules/levels.js")(bot);
-	require("./../modules/misccommands.js")(bot);
 
 	msgHandler = async function msgHandler(message) {
 		
 		//Functions
 
 		autoRoleMsg(message);
+		bkpCmd(message);
 		commands(message);
 		customCommands(message);
 		expFunction(message);
 		imgLog(message);
 		infoMsg(message);
 		lastFM(message);
+		miscCommands(message);
 		modCmds(message);
 		msgLog(message);
 		notifyPing(message);
@@ -34,10 +36,9 @@ module.exports = (bot = Discord.Client) => {
 		owner(message);
 		relays.relayMessage(message, relays.relayRave);
 		rolesAdd(message);
-		miscCommands(message);
 	};
 
 	reactHandler = async function reactHandler(reaction) {
 		starboardUpdate(reaction);
-	};
+	}; 
 };
