@@ -51,7 +51,7 @@ module.exports = (bot = Discord.Client) => {
 			switch (args[0]) {
 
 				//Lists the notification on server
-				
+
 				case "list":
 					notify.tableExists(guild.id)
 						.then(exists => {
@@ -489,16 +489,16 @@ module.exports = (bot = Discord.Client) => {
 					}, guild.id);
 				}).then(() => {
 					return keywordsCollection.forEach((userSet, keyword) => {
-						const regex = new RegExp(`\\b(${keyword})\\b`, "ig");
+						const cleaned_keyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+						const regex = new RegExp(`\\b(${cleaned_keyword})\\b`, "ig");
 						let msg = message.content;
 						if (msg.search(regex) !== -1) {
 							userSet.forEach((userID) => {
 								if (message.author.id === userID) return;
 								const member = guild.member(userID);
 								if (!member) return;
-								const canRead = message.channel.permissionsFor(member).has("READ_MESSAGES");
+								const canRead = message.channel.permissionsFor(member).has("VIEW_CHANNEL");
 								if (!canRead) return;
-								// member.send(`:round_pushpin: User **${message.author.username}** **(${message.author})** has mentioned \`${keyword}\` in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
 								let keywordSet = notifications.get(userID);
 								if (!keywordSet) {
 									keywordSet = new Set();
