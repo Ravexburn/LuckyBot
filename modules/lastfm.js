@@ -27,7 +27,7 @@ module.exports = (bot = Discord.Client) => {
 
 	require("./../functions/helpfunctions.js")(bot);
 
-	lastFM = async function lastFM(message) {
+	lastFM = function lastFM(message) {
 		if (message.system || message.author.bot || message.channel.type === 'dm') return;
 
 		const serverSettings = bot.getServerSettings(message.guild.id);
@@ -43,12 +43,14 @@ module.exports = (bot = Discord.Client) => {
 
 		notRegisteredAlert = `Please register your last.fm by using ${prefix}lf set <username>`;
 
+		//Get the user to request last.fm data for, if needed,
+		//then removes any mentions from the args list
+		let target = getTarget(message, args);
+
 		if (args.length === 0) {
-			attemptToRetrieveUserInfo(message);
+			attemptToRetrieveUserInfo(message, target);
 			return;
 		}
-
-		let target; //The user to request last.fm data for, if needed
 
 		switch (true) {
 
@@ -72,31 +74,26 @@ module.exports = (bot = Discord.Client) => {
 
 			//Now Playing	
 			case (commands.nowPlaying.includes(args[0])):
-				target = await getTarget(message, args);
 				attemptToRetrieveNowPlaying(target, message);
 				break;
 
 			//Recent
 			case (commands.recentTracks.includes(args[0])):
-				target = await getTarget(message, args);
 				attemptToRetrieveRecentTracks(target, message);
 				break;
 
 			//Top Tracks
 			case (commands.topTracks.includes(args[0])):
-				target = await getTarget(message, args);
 				attemptToRetrieveTopTracks(target, getTimePeriod(args[1]), message);
 				break;
 
 			//Top Artist	
 			case (commands.topArtists.includes(args[0])):
-				target = await getTarget(message, args);
 				attemptToRetrieveTopArtists(target, getTimePeriod(args[1]), message);
 				break;
 
 			//Top Album
 			case (commands.topAlbums.includes(args[0])):
-				target = await getTarget(message, args);
 				attemptToRetrieveTopAlbums(target, getTimePeriod(args[1]), message);
 				break;
 
@@ -108,52 +105,20 @@ module.exports = (bot = Discord.Client) => {
 	};
 };
 
-function attemptToRetrieveUserInfo(message) {
-	lastfm.getLastfmData(message.author.id)
-		.then((data) => {
-			if (data.username !== null) {
-				let username = data.username;
-				let url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${apiKey}&format=json`;
-				axios.get(url).then(response => {
-					if (response.data.error) {
-						return Promise.reject(response);
-					}
-					if (!response.data.user) {
-						console.log(`Blank Account`);
-						return;
-					}
-					let thumbnailURL = "";
-					if (!response.data.user.image) {
-						console.log(`No image found`);
-					}
-					else {
-						response.data.user.image.forEach(image => {
-							if (image["size"] === "extralarge") {
-								thumbnailURL = image["#text"];
-							}
-						});
-					}
-					let date = new Date(response.data.user.registered.unixtime * 1000);
-					let embed = new Discord.RichEmbed()
-						.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-						.setURL(response.data.user.url)
-						.setThumbnail(thumbnailURL)
-						.setColor("#33cc33")
-						.addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
-						.addField("Scrobbles", response.data.user.playcount, true)
-						.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-					sendEmbed(message, embed);
-					return;
-				}).catch((error) => {
-					handleError(message, error);
-				});
-			}
-			else {
-				message.channel.send(notRegisteredAlert);
-			}
-		}).catch((error) => {
-			console.log(error);
-		});
+//Gets the first memtion from the command, if any, and removes all mentions from the list of args
+function attemptToGetMentionId(args) {
+	let mentions = [];
+
+	for (let i = args.length - 1; i >= 0; i--) {
+		const element = args[i];
+		if (isMention(element)) {
+			//Return 18-digit user id and remove it from the list of arguments
+			mentions.push(element.replace("<@", "").replace(">", ""));
+			args.splice(i, 1);
+		}
+	}
+
+	return mentions[0];
 }
 
 function attemptToRetrieveNowPlaying(target, message) {
@@ -349,6 +314,54 @@ function attemptToRetrieveTopTracks(target, time, message) {
 		});
 }
 
+function attemptToRetrieveUserInfo(message, target) {
+	lastfm.getLastfmData(target.id)
+		.then((data) => {
+			if (data.username !== null) {
+				let username = data.username;
+				let url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${apiKey}&format=json`;
+				axios.get(url).then(response => {
+					if (response.data.error) {
+						return Promise.reject(response);
+					}
+					if (!response.data.user) {
+						console.log(`Blank Account`);
+						return;
+					}
+					let thumbnailURL = "";
+					if (!response.data.user.image) {
+						console.log(`No image found`);
+					}
+					else {
+						response.data.user.image.forEach(image => {
+							if (image["size"] === "extralarge") {
+								thumbnailURL = image["#text"];
+							}
+						});
+					}
+					let date = new Date(response.data.user.registered.unixtime * 1000);
+					let embed = new Discord.RichEmbed()
+						.setAuthor(target.user.tag, target.user.displayAvatarURL.split("?")[0])
+						.setURL(response.data.user.url)
+						.setThumbnail(thumbnailURL)
+						.setColor("#33cc33")
+						.addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
+						.addField("Scrobbles", response.data.user.playcount, true)
+						.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
+					sendEmbed(message, embed);
+					return;
+				}).catch((error) => {
+					handleError(message, error);
+				});
+			}
+			else {
+				message.channel.send(notRegisteredAlert);
+			}
+		}).catch((error) => {
+			console.log(error);
+		});
+}
+
 function attemptToSaveLastfmUsername(message, username) {
 	lastfm.getLastfmData(message.author.id)
 		.then(() => {
@@ -449,29 +462,15 @@ function embedCss(message, embed, msg) {
 	sendEmbed(message, embed);
 }
 
-async function getTarget(message, args) {
-	let userID = message.author.id;
-	if (args.length == 3) { //lf tt week <mention/id>
-		if (message.mentions.users.first() != undefined) {
-			userID = message.mentions.users.first().id;
-		} else if (message.mentions.users.first() == undefined) {
-			userID = args[args.length - 1];
-		}
-	} else if (args.length == 2) { //!lf tt <mention/id>
-		if (message.mentions.users.first() != undefined) {
-			userID = message.mentions.users.first().id;
-		} else if (message.mentions.users.first() == undefined) {
-			userID = args[args.length - 1];
-		}
+//Function which determines which user to get last.fm data for
+function getTarget(message, args) {
+	let mentionId = attemptToGetMentionId(args);
+
+	if (mentionId && message.guild.members.has(mentionId)) {
+		return message.guild.member(mentionId);
 	}
-	let target = message.member;
-	if (message.guild.members.has(userID)) {
-		target = message.guild.member(userID);
-	}
-	if (!target) {
-		target = await bot.fetchUser(userID);
-	}
-	return target;
+
+	return message.member;
 }
 
 //Function for parsing user input into time period
@@ -503,7 +502,11 @@ function handleError(message, error) {
 		console.log(error.status, error.data.message);
 		return;
 	}
+}
 
+//returns whether an argument contains @user or a 18-char numberic user ID
+function isMention(argument) {
+	return argument.includes("<@") || (!isNaN(argument) && argument.length == 18);
 }
 
 function sendLastfmHelpEmbed(message, prefix) {
