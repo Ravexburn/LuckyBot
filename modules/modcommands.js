@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const website = "http://www.luckybot.io/";
+const website = "https://luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 
@@ -24,7 +24,7 @@ module.exports = (bot = Discord.Client) => {
 		const prefix = serverSettings.prefix;
 
 		if (!command.startsWith(prefix)) return;
-		
+
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 
 
@@ -200,6 +200,39 @@ module.exports = (bot = Discord.Client) => {
 			}
 		}
 
+		//Mute Command
+
+		if ((command === `${prefix}mute`)) {
+			muteUser(message, command, args, perms);
+		}
+
+		//Mod help
+
+		if (command === `${prefix}mod`) {
+			message.reply(`Help can be found here: ${website}`);
+		}
+
+		//Say Command
+
+		if (command === `${prefix}say`) {
+			sayFunction(message, command, args);
+		}
+
+	};
+
+	bkpCmd = async function bkpCmd(message) {	
+		if (message.author.bot) return;
+		if (message.channel.type === "dm") return;
+
+		let serverSettings = bot.getServerSettings(message.guild.id);
+
+		let messageArray = message.content.split(" ");
+		let command = messageArray[0];
+		let args = messageArray.slice(1);
+		const prefix = serverSettings.prefix;
+
+		if (!command.startsWith(prefix)) return;
+
 		//Ban Command
 
 		if ((command === `${prefix}ban`)) {
@@ -212,29 +245,14 @@ module.exports = (bot = Discord.Client) => {
 			kickUser(message, command, args);
 		}
 
-		//Mute Command
-
-		if ((command === `${prefix}mute`)) {
-			muteUser(message, command, args, perms);
-		}
-
 		//Prune Command
 
 		if ((command === `${prefix}prune`)) {
 			pruneMessage(message, args);
 		}
 
-		//Mod help
-
-		if (command === `${prefix}mod`) {
-			message.reply(`Help can be found here: ${website}`);
-		}
-
-		if (command === `${prefix}say`) {
-			sayFunction(message, command, args);
-		}
-
 	};
+
 
 	//Intial Settings (Owner Only)
 

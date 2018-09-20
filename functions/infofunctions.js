@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const discordlink = "https://discord.gg/z4thPtW";
 let trello = "https://trello.com/b/0uytHSPL";
 let git = "https://github.com/Ravexburn/LuckyBot";
-const website = "http://www.luckybot.io/";
+const website = "https://luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 	/**
@@ -61,8 +61,9 @@ module.exports = (bot = Discord.Client) => {
 			embed.addField(fieldString, gameString, true);
 		}
 
+		
 		if (member.roles) {
-			let roleString = member.roles.array().sort().slice(0, member.roles.array().length - 1).join(", ");
+			let roleString = member.roles.array().sort((a,b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ");
 			embed.addField("Roles", roleString);
 		}
 

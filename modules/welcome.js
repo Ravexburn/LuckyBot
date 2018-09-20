@@ -38,8 +38,8 @@ module.exports = (bot = Discord.Client) => {
 				.setThumbnail(member.user.displayAvatarURL)
 				.setURL(member.user.displayAvatarURL)
 				.setTitle("Member Join!")
-				.setDescription(msg)
-				.setImage(image);
+				.setDescription(msg);
+			//	.setImage(image);
 			chan.send(embed);
 		});
 	};

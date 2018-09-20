@@ -68,9 +68,6 @@ module.exports = (bot = Discord.Client) => {
 					break;
 			}
 		}
-
-
-
-
+		
 	};
 };

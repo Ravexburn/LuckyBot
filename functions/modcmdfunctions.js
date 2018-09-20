@@ -3,9 +3,9 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	/**
-        * Setting prefix
-        * @param {Message} message 
-        */
+	* Setting prefix
+	* @param {Message} message 
+	*/
 	setPrefix = function setPrefix(message, command, args, serverSettings) {
 		if (args.length === 0) {
 			message.channel.send(message.author + "To set prefix please use " + command + " <prefix>")
@@ -47,8 +47,8 @@ module.exports = (bot = Discord.Client) => {
 			member = message.guild.member(member_id);
 		}
 
-		if (member === message.member) {
-			message.channel.send("You can't ban yourself");
+		if (!message.member.hasPermission("BAN_MEMBERS")) {
+			message.channel.send("You do not have the `BAN_MEMBERS` permission");
 			return;
 		}
 
@@ -57,16 +57,16 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send("You do not have the `BAN_MEMBERS` permission");
-			return;
-		}
-
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
 				message.channel.send("You can't ban that person");
 				return;
 			}
+		}
+
+		if (member === message.member) {
+			message.channel.send("You can't ban yourself");
+			return;
 		}
 
 		let reason = args.slice(1).join(" ");
@@ -115,18 +115,13 @@ module.exports = (bot = Discord.Client) => {
 			member = message.guild.member(member_id);
 		}
 
-		if (member === message.member) {
-			message.channel.send("You can't kick yourself");
+		if (!message.member.hasPermission("KICK_MEMBERS")) {
+			message.channel.send("You do not have the `KICK_MEMBERS` permission");
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("KICK_MEMBERS")) {
 			message.channel.send("Please enable the `KICK_MEMBERS` permisson to be able to kick");
-			return;
-		}
-
-		if (!message.member.hasPermission("KICK_MEMBERS")) {
-			message.channel.send("You do not have the `KICK_MEMBERS` permission");
 			return;
 		}
 
@@ -136,6 +131,11 @@ module.exports = (bot = Discord.Client) => {
 				return;
 			}
 
+		}
+
+		if (member === message.member) {
+			message.channel.send("You can't kick yourself");
+			return;
 		}
 
 		let reason = args.slice(1).join(" ");
@@ -151,10 +151,10 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	/** 
-      * Command: Mute by Average Black Guy#2409
-     * Description: Mutes a tagged user. Unmutes if user is already muted.
-      * Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
-      */
+	* Command: Mute by Average Black Guy#2409
+	* Description: Mutes a tagged user. Unmutes if user is already muted.
+	* Notes: If no mute role exists, one is made and is given to the user. Requires a mention and only 1 person can be muted at a time.
+	*/
 	muteUser = function muteUser(message, command, args) {
 		if (args.length === 0) { // Checks if no args given 
 			message.channel.send(`No one to mute, please do ${command} [userid] **or** @user`);
@@ -163,23 +163,28 @@ module.exports = (bot = Discord.Client) => {
 
 		let muteRoleExists = false;
 		let memberToMute = (message.mentions.users.first() === undefined) ? message.guild.member(args[0]) : message.guild.member(message.mentions.users.first().id); // if theres no mention it grabs whatever is in args
-		if (memberToMute === null) { //make sure its actually a member
+		// Make sure its actually a member being muted.
+		if (memberToMute === null) { 
 			message.channel.send("That is not a user");
 			return;
 		}
-
-		if (memberToMute.id === message.author.id) { //Don't mute yourself 
+		
+		// Don't mute yourself.
+		if (memberToMute.id === message.author.id) { 
 			message.channel.send("You can't mute yourself");
 			return;
 		}
-
-		if (memberToMute.hasPermission("ADMINISTRATOR") || memberToMute.hasPermission("MANAGE_GUILD")) { //Don't mute person with clout
+		
+		// Don't mute person with clout.
+		if (memberToMute.hasPermission("ADMINISTRATOR") || memberToMute.hasPermission("MANAGE_GUILD")) { 
 			message.channel.send("You can't mute that person");
 			return;
 		}
-
-		for (let role of message.guild.roles.array()) { //loop through roles
-			if (role.name.toLowerCase() === "mute" && memberToMute.roles.has(role.id)) { //find mute role and check if member has it, if they do it unmutes
+		
+		// Loop through the guild's roles.
+		for (let role of message.guild.roles.array()) { 
+			// Find the guild's mute role and check if the member has it. If they do, unmute.
+			if (role.name.toLowerCase() === "mute" && memberToMute.roles.has(role.id)) { 
 				muteRoleExists = true;
 				memberToMute.removeRole(role).then(member => {
 					message.channel.send(`Unmuted ${member.displayName}`);
@@ -188,7 +193,8 @@ module.exports = (bot = Discord.Client) => {
 					console.error(err);
 				});
 				return;
-			} else if (role.name.toLowerCase() === "mute") { //if member doesnt have it and mute role is found, it mutes them
+			// If a member isn't muted and a mute role is found, mute.
+			} else if (role.name.toLowerCase() === "mute") { 
 				muteRoleExists = true;
 				memberToMute.addRole(role).then(member => {
 					message.channel.send(`Muted ${member.displayName}`);
@@ -199,17 +205,21 @@ module.exports = (bot = Discord.Client) => {
 				return;
 			}
 		}
-
-		if (!muteRoleExists && !message.guild.member(bot.user.id).hasPermission("MANAGE_ROLES")) { // if no mute role and no admin perms
+		
+		// If there's no mute role and Lucky doesn't have role perms.
+		if (!muteRoleExists && !message.guild.member(bot.user.id).hasPermission("MANAGE_ROLES")) { 
 			message.channel.send(`There was no mute role found and I do not have permission to create a new role.\nPlease create a new role called "mute" and try again.`);
-		} else if (!muteRoleExists) { // If there is no role named "mute" it creates a new one
+		// If there's no role named "mute", create a new one.
+		} else if (!muteRoleExists) { 
 			message.guild.createRole({
 				name: "mute"
 			}).then(muteRole => {
-				for (let channel of message.guild.channels.array()) { // loop through channels and make mute role not allow member to send messages
-					channel.overwritePermissions(muteRole, { SEND_MESSAGES: false });
+				// Loop through channels and make the new mute role not allow members to send messages, speak, or react.
+				for (let channel of message.guild.channels.array()) { 
+					channel.overwritePermissions(muteRole, { SEND_MESSAGES: false, SPEAK: false, ADD_REACTIONS: false });
 				}
-				memberToMute.addRole(muteRole).then(member => { //add mute role to member once creation is done
+				// Add mute role to targetted member once creation is done.
+				memberToMute.addRole(muteRole).then(member => { 
 					message.channel.send(`There was no mute role found, a new one has been created with the name ${muteRole.name} and added to ${member.displayName}`);
 				}).catch(err => {
 					message.channel.send("Failed to mute member");
@@ -225,6 +235,12 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send("Please provide a number of messages to delete `MAX: 99`");
 			return;
 		}
+
+		if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+			message.channel.send("You do not have the `MANAGE_MESSAGES` permission");
+			return;
+		}
+
 		if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
 			message.channel.send("Please enable the `MANAGE_MESSAGES` permisson to be able to prune");
 			return;
@@ -233,11 +249,11 @@ module.exports = (bot = Discord.Client) => {
 		let msg = args[0];
 		let num = parseInt(msg) + 1;
 		if (isNaN(num)) {
-			message.channel.send("Please provide a number of messages to delete");
+			message.channel.send("Please provide a number of messages to delete `MAX: 99`");
 			return;
 		}
 		if (num > 100) {
-			message.channel.send("Please enter a number less than or equal to 99");
+			message.channel.send("Please provide a number of messages to delete `MAX: 99`");
 			return;
 		}
 		message.channel.fetchMessages({ limit: num })
@@ -262,6 +278,7 @@ module.exports = (bot = Discord.Client) => {
 		bot.setServerSettings(message.guild.id, serverSettings);
 	};
 
+	//Makes the bot say something in a channel
 	sayFunction = function sayFunction(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
@@ -277,6 +294,16 @@ module.exports = (bot = Discord.Client) => {
 			image = { file: message.attachments.first().url };
 		}
 		let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
+
+		if (!chan.permissionsFor(bot.user).has("VIEW_CHANNEL")) {
+			message.channel.send("I am not able to `READ_MESSAGES` for that channel");
+			return;
+		}
+		
+		if (!chan.permissionsFor(bot.user).has("SEND_MESSAGES")) {
+			message.channel.send("I am not able to `SEND_MESSAGES` in that channel");
+			return;
+		}
 
 		if (image && msg) {
 			chan.send(msg, image);
@@ -346,7 +373,7 @@ module.exports = (bot = Discord.Client) => {
      */
 	alreadyExists = function alreadyExists(emoji, starboardEmoji) {
 		return starboardEmoji.includes(emoji.name) || starboardEmoji.includes(emoji);
-	}
+	};
 
 	/**
      * Setting starboard reaction number

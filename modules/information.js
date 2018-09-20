@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const link = "https://trello.com/b/0uytHSPL";
 const link2 = "https://github.com/Ravexburn/LuckyBot";
 const invite = "https://discord.gg/z4thPtW";
-const website = "http://www.luckybot.io/";
+const website = "https://luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 
@@ -64,7 +64,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}invite`) || (command === `${prefix}inv`)) {
 			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`);
-			message.author.send(`Want Lucky Bot for your server? Have any questions on how to use Lucky Bot? Join here ${invite}`);
+			message.author.send(`Want Lucky Bot for your server? Have any questions on how to use Lucky Bot? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`);
 			return;
 		}
 
