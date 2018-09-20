@@ -29,9 +29,10 @@ module.exports = (bot = Discord.Client) => {
 		// Retrieve member directly from guild because new member won't be cached in bot yet
 		guild.fetchMember(member.user).then((guildMember) => { 
 			let mention = guildMember.user;
+			let username = guildMember.user.username;
 			let user = mention.tag;
 
-			msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
+			msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user).replace("{username}", username);
 
 			let embed = new Discord.RichEmbed()
 				.setColor("RANDOM")
@@ -80,18 +81,21 @@ module.exports = (bot = Discord.Client) => {
 			.setColor("RANDOM")
 			.setThumbnail(member.user.displayAvatarURL)
 			.setURL(member.user.displayAvatarURL)
-			.setTitle("Member Join!")
-			.addField("Account Age", `Account was created on: ${user.createdAt.toUTCString()}\nAccount joined server on: ${member.joinedAt.toUTCString()}`)
-			.addField("Shared Servers", `This account shares: ${sharedguilds} other server(s) with Lucky Bot.`)
-			.setDescription(`${user} joined the server`);
-		if (numOfBans) {
-			embed.addField("Bans", `:warning: This user is banned on ${numOfBans} server(s).`);
-		} else {
-			embed.addField("Bans", `This user is not banned on any servers.`);
-		}
+			.setTitle("Member Join!");
+		
 		bot.invCache.usedInvite(guild).then(invite => {
 			if (invite) {
-				embed.setDescription(`${user} joined from ${invite.url} created by ${invite.inviter}. Uses: ${invite.uses}`);
+				embed.addField("Invite Used", `${invite.url} created by ${invite.inviter}. Uses: ${invite.uses}`)
+			}
+			embed.addField("Account Info", `Username: ${user.tag}\nCreated on: ${user.createdAt.toUTCString()}\nJoined on: ${member.joinedAt.toUTCString()}`);
+			embed.addField("Shared Servers", `This account shares: ${sharedguilds} other server(s) with Lucky Bot.`);
+			embed.setDescription(`${user} joined the server.`);
+			embed.setFooter(`ID: ${user.id}`)
+
+			if (numOfBans) {
+				embed.addField("Bans", `:warning: This user is banned on ${numOfBans} server(s).`);
+			} else {
+				embed.addField("Bans", `This user is not banned on any servers.`);
 			}
 			chan.send(embed);
 		}).catch((error) => {
@@ -121,7 +125,9 @@ module.exports = (bot = Discord.Client) => {
 			.setThumbnail(member.user.displayAvatarURL)
 			.setURL(member.user.displayAvatarURL)
 			.setTitle("Member Left!")
-			.setDescription(`${user} left the server`);
+			.setDescription(`${user} left the server.`)
+			.addField("Account Info", `Username: ${user.tag}\nCreated on: ${user.createdAt.toUTCString()}\nJoined on: ${member.joinedAt.toUTCString()}`)
+			.setFooter(`ID: ${user.id}`);
 		chan.send(embed);
 	};
 };
