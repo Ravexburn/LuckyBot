@@ -60,7 +60,6 @@ module.exports = (bot = Discord.Client) => {
 			}
 			embed.addField(fieldString, gameString, true);
 		}
-
 		
 		if (member.roles) {
 			let roleString = member.roles.array().sort((a,b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ");
@@ -81,7 +80,6 @@ module.exports = (bot = Discord.Client) => {
 		});
 
 		embed.setFooter(`Member #${pos + 1}`);
-
 		message.channel.send(embed);
 
 		return;
