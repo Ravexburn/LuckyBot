@@ -4,7 +4,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Greeter message
 
-	welcomeMsg = function welcomeMsg(member) {
+	welcomeMsg = async function welcomeMsg(member) {
 		if (member.user.bot) return;
 		const guild = member.guild;
 		const serverSettings = bot.getServerSettings(guild.id);
@@ -23,25 +23,35 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		let msg = serverSettings.welcomeMessage;
+		let mention = member.user;
 		let serverName = guild.name;
+		let user = member.user.tag;
 		let image = serverSettings.welcomeImage;
 
-		// Retrieve member directly from guild because new member won't be cached in bot yet
-		guild.fetchMember(member.user).then((guildMember) => { 
-			let mention = guildMember.user;
-			let user = mention.tag;
+		let pos = 0;
+		let guildMembers = await guild.fetchMembers().then((guild) => {
+			let cachedMembers = guild.members.array().sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
 
-			msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
-
-			let embed = new Discord.RichEmbed()
-				.setColor("RANDOM")
-				.setThumbnail(member.user.displayAvatarURL)
-				.setURL(member.user.displayAvatarURL)
-				.setTitle("Member Join!")
-				.setDescription(msg);
-			//	.setImage(image);
-			chan.send(embed);
+			for (i = 0; i < cachedMembers.length; i++) {
+				if (cachedMembers[i].id == member.id) {
+					pos = i;
+				}
+			}
+		}).catch((error) => {
+			console.log(error);
 		});
+
+		msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
+
+		let embed = new Discord.RichEmbed()
+			.setColor("RANDOM")
+			.setThumbnail(member.user.displayAvatarURL)
+			.setURL(member.user.displayAvatarURL)
+			.setTitle("Member Join!")
+			.setDescription(msg)
+			.setTimestamp(member.joinedAt)
+			.setFooter(`Member #${pos + 1} 🎉`);
+		chan.send(embed);
 	};
 
 	//Join
@@ -101,7 +111,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Leave
 
-	leaveMsg = function leaveMsg(member) {
+	leaveMsg = async function leaveMsg(member) {
 		const guild = member.guild;
 		const serverSettings = bot.getServerSettings(guild.id);
 		if (!serverSettings) return;
