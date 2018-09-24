@@ -152,6 +152,22 @@ function attemptToRetrieveNowPlaying(target, message) {
 		});
 }
 
+function attemptToRetrievePlayCount(username, trackInfo, message, callback) {
+	let artist = encodeURIComponent(trackInfo.artist.name).replace(/ /g, "+");
+	let track = encodeURIComponent(trackInfo.name).replace(/ /g, "+");
+	let url = `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&user=${username}&api_key=${apiKey}&artist=${artist}&track=${track}&format=json`;
+	axios.get(url).then(response => {
+		if (response.data.track.userplaycount) {
+			callback(response.data.track.userplaycount);
+			return;
+		}
+		callback("Unknown");
+		return;
+	}).catch((error) => {
+		handleError(message, error);
+	});
+}
+
 function attemptToRetrieveRecentTracks(target, message) {
 	lastfm.getLastfmData(target.id)
 		.then((data) => {
@@ -359,22 +375,26 @@ function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
 			.setTimestamp(message.createdAt)
 			.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 
-			setThumbnail(embed, track1);
+		setThumbnail(embed, track1);
 
-		if (isNowPlaying(track1)) {
-			embed.setAuthor(`${username} - Now Playing${track1.loved === '1' ? " ❤️" : ""}`, displayAvatarURL.split("?")[0])
-				.addField("Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
-				.addField("Artist", track1.artist.name, true)
-				.addField("Album", album)
-				.addField("Previous Song", `[${track2.name}](${formatUrl(track2.url)})`, true)
-				.addField("Previous Artist", track2.artist.name, true);
-		} else {
-			embed.setAuthor(`${username} - No Current Song`, displayAvatarURL.split("?")[0])
-				.addField("Previous Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
-				.addField("Previous Artist", track1.artist.name, true)
-				.addField("Previous Album", album);
-		}
-		sendEmbed(message, embed);
+		attemptToRetrievePlayCount(username, track1, message, (playCount) => {
+			if (isNowPlaying(track1)) {
+				embed.setAuthor(`${username} - Now Playing${track1.loved === '1' ? " ❤️" : ""}`, displayAvatarURL.split("?")[0])
+					.addField("Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
+					.addField("Artist", track1.artist.name, true)
+					.addField("Album", album, true)
+					.addField("Plays", playCount, true)
+					.addField("Previous Song", `[${track2.name}](${formatUrl(track2.url)})`, true)
+					.addField("Previous Artist", track2.artist.name, true);
+			} else {
+				embed.setAuthor(`${username} - No Current Song`, displayAvatarURL.split("?")[0])
+					.addField("Previous Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
+					.addField("Previous Artist", track1.artist.name, true)
+					.addField("Previous Album", album, true)
+					.addField("Plays", playCount, true);
+			}
+			sendEmbed(message, embed);
+		});		
 	} catch (e) {
 		console.log(e);
 	}
@@ -391,6 +411,7 @@ function displayRecentTracks(message, embed, tracks) {
 	let msg = "";
 	if (isNowPlaying(tracks[0])) {
 		let nowPlaying = tracks.splice(0, 1)[0];
+		setThumbnail(embed, nowPlaying);
 		msg += `Now Playing: [${nowPlaying.artist["#text"]}](https://www.last.fm/music/${formatUrl(nowPlaying.artist["#text"].replace(/ /g, "+"))}) `;
 		msg += `- [${nowPlaying.name}](${formatUrl(nowPlaying.url)})\n\n`;
 	}
