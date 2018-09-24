@@ -16,7 +16,7 @@ const commands = {
 	//Time periods
 	"weekly": ["week", "7-day", "7day", "weekly"],
 	"monthly": ["month", "1-month", "1month", "monthly"],
-	"threeMonth": ["3-month", "3month"],
+	"threeMonth": ["three-month", "3-month", "3month"],
 	"sixMonth": ["half-year", "6-month", "6month", "halfyear"],
 	"yearly": ["year", "12-month", "12month", "yearly"]
 };
@@ -39,7 +39,7 @@ module.exports = (bot = Discord.Client) => {
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
 
-		if (![`${prefix}lastfm`, `${prefix}lf`].includes(command)) return;
+		if (![`${prefix}lastfm`, `${prefix}lf`, `${prefix}fm`].includes(command)) return;
 
 		notRegisteredAlert = `Please register your last.fm by using ${prefix}lf set <username>`;
 
