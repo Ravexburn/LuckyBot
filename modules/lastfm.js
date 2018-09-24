@@ -8,7 +8,7 @@ const commands = {
 	"nowPlaying": ["np", "nowplaying", "now-playing"],
 	"topTracks": ["tt", "toptrack", "toptracks", "top-track", "top-tracks"],
 	"topArtists": ["ta", "topartist", "topartists", "top-artist", "top-artists"],
-	"topAlbums": ["talb", "topalbum", "topalbums", "top-album", "top-albums"],
+	"topAlbums": ["talb", "tal", "topalbum", "topalbums", "top-album", "top-albums"],
 	"recentTracks": ["recent", "recenttracks", "recent-tracks"],
 	//Settings
 	"setLayout": ["layout", "lo"],
@@ -27,7 +27,7 @@ module.exports = (bot = Discord.Client) => {
 
 	require("./../functions/helpfunctions.js")(bot);
 
-	lastFM = async function lastFM(message) {
+	lastFM = function lastFM(message) {
 		if (message.system || message.author.bot || message.channel.type === 'dm') return;
 
 		const serverSettings = bot.getServerSettings(message.guild.id);
@@ -43,12 +43,14 @@ module.exports = (bot = Discord.Client) => {
 
 		notRegisteredAlert = `Please register your last.fm by using ${prefix}lf set <username>`;
 
+		//Get the user to request last.fm data for, if needed,
+		//then removes any mentions from the args list
+		let target = getTarget(message, args);
+
 		if (args.length === 0) {
-			attemptToRetrieveUserInfo(message);
+			attemptToRetrieveUserInfo(message, target);
 			return;
 		}
-
-		let target; //The user to request last.fm data for, if needed
 
 		switch (true) {
 
@@ -72,32 +74,27 @@ module.exports = (bot = Discord.Client) => {
 
 			//Now Playing	
 			case (commands.nowPlaying.includes(args[0])):
-				target = await getTarget(message, args);
 				attemptToRetrieveNowPlaying(target, message);
 				break;
 
 			//Recent
 			case (commands.recentTracks.includes(args[0])):
-				target = await getTarget(message, args);
 				attemptToRetrieveRecentTracks(target, message);
 				break;
 
 			//Top Tracks
 			case (commands.topTracks.includes(args[0])):
-				target = await getTarget(message, args);
-				attemptToRetrieveTopTracks(target, getTimePeriod(args[1]), message);
+				attemptToRetrieveTopTracks(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
 
 			//Top Artist	
 			case (commands.topArtists.includes(args[0])):
-				target = await getTarget(message, args);
-				attemptToRetrieveTopArtists(target, getTimePeriod(args[1]), message);
+				attemptToRetrieveTopArtists(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
 
 			//Top Album
 			case (commands.topAlbums.includes(args[0])):
-				target = await getTarget(message, args);
-				attemptToRetrieveTopAlbums(target, getTimePeriod(args[1]), message);
+				attemptToRetrieveTopAlbums(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
 
 			//Help
@@ -108,52 +105,20 @@ module.exports = (bot = Discord.Client) => {
 	};
 };
 
-function attemptToRetrieveUserInfo(message) {
-	lastfm.getLastfmData(message.author.id)
-		.then((data) => {
-			if (data.username !== null) {
-				let username = data.username;
-				let url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${apiKey}&format=json`;
-				axios.get(url).then(response => {
-					if (response.data.error) {
-						return Promise.reject(response);
-					}
-					if (!response.data.user) {
-						console.log(`Blank Account`);
-						return;
-					}
-					let thumbnailURL = "";
-					if (!response.data.user.image) {
-						console.log(`No image found`);
-					}
-					else {
-						response.data.user.image.forEach(image => {
-							if (image["size"] === "extralarge") {
-								thumbnailURL = image["#text"];
-							}
-						});
-					}
-					let date = new Date(response.data.user.registered.unixtime * 1000);
-					let embed = new Discord.RichEmbed()
-						.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-						.setURL(response.data.user.url)
-						.setThumbnail(thumbnailURL)
-						.setColor("#33cc33")
-						.addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
-						.addField("Scrobbles", response.data.user.playcount, true)
-						.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-					sendEmbed(message, embed);
-					return;
-				}).catch((error) => {
-					handleError(message, error);
-				});
-			}
-			else {
-				message.channel.send(notRegisteredAlert);
-			}
-		}).catch((error) => {
-			console.log(error);
-		});
+//Gets the first memtion from the command, if any, and removes all mentions from the list of args
+function attemptToGetMentionId(args) {
+	let mentions = [];
+
+	for (let i = args.length - 1; i >= 0; i--) {
+		const element = args[i];
+		if (isMention(element)) {
+			//Return 18-digit user id and remove it from the list of arguments
+			mentions.push(element.replace("<@", "").replace(">", ""));
+			args.splice(i, 1);
+		}
+	}
+
+	return mentions[0];
 }
 
 function attemptToRetrieveNowPlaying(target, message) {
@@ -161,11 +126,9 @@ function attemptToRetrieveNowPlaying(target, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				let url = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${apiKey}&format=json`;
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&limit=2&api_key=${apiKey}&extended=1&format=json`;
 				axios.get(url).then(response => {
-					if (response.data.error) {
-						return Promise.reject(response);
-					}
+					if (response.data.error) return Promise.reject(response);
 					if (!response.data.recenttracks) {
 						console.log(`No Recent`);
 						return;
@@ -175,61 +138,34 @@ function attemptToRetrieveNowPlaying(target, message) {
 						message.channel.send("Could not find any tracks.");
 						return;
 					}
-					let albumcover = "";
-					if (!response.data.recenttracks.track[0].image) {
-						console.log(`No Image`);
-					}
-					else {
-						response.data.recenttracks.track[0].image.forEach(image => {
-							if (image["size"] === "extralarge") {
-								albumcover = image["#text"];
-							}
-						});
-					}
-					let album = "";
-					if (response.data.recenttracks.track[0].album["#text"]) {
-						album = response.data.recenttracks.track[0].album["#text"];
-					}
-					else {
-						album = "N/A";
-					}
-					if (!response.data.recenttracks.track[0]["@attr"]) {
-						let embed2 = new Discord.RichEmbed()
-							.setAuthor(`${username} - No Current Song`, target.user.displayAvatarURL.split("?")[0])
-							.setColor("#33cc33")
-							.setThumbnail(albumcover)
-							.addField("Previous Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
-							.addField("Previous Artist", response.data.recenttracks.track[0].artist["#text"], true)
-							.addField("Previous Album", album)
-							.setTimestamp(message.createdAt)
-							.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-						sendEmbed(message, embed2);
-						return;
-					}
-					let embed2 = new Discord.RichEmbed()
-						.setAuthor(`${username} - Now Playing`, target.user.displayAvatarURL.split("?")[0])
-						.setColor("#33cc33")
-						.setThumbnail(albumcover)
-						.addField("Song", `[${response.data.recenttracks.track[0].name}](${response.data.recenttracks.track[0].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
-						.addField("Artist", response.data.recenttracks.track[0].artist["#text"], true)
-						.addField("Album", album)
-						.addField("Previous Song", `[${response.data.recenttracks.track[1].name}](${response.data.recenttracks.track[1].url.replace(/\(/g, "%28").replace(/\)/g, "%29")})`, true)
-						.addField("Previous Artist", response.data.recenttracks.track[1].artist["#text"], true)
-						.setTimestamp(message.createdAt)
-						.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
-					sendEmbed(message, embed2);
+					displayNowPlaying(response.data.recenttracks, message, target.user.displayAvatarURL, username);
 					return;
 				}).catch((error) => {
 					handleError(message, error);
 				});
-			}
-			else {
+			} else {
 				message.channel.send(notRegisteredAlert);
 				return;
 			}
 		}).catch((error) => {
 			console.log(error);
 		});
+}
+
+function attemptToRetrievePlayCount(username, trackInfo, message, callback) {
+	let artist = encodeURIComponent(trackInfo.artist.name).replace(/ /g, "+");
+	let track = encodeURIComponent(trackInfo.name).replace(/ /g, "+");
+	let url = `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&user=${username}&api_key=${apiKey}&artist=${artist}&track=${track}&format=json`;
+	axios.get(url).then(response => {
+		if (response.data.track.userplaycount) {
+			callback(response.data.track.userplaycount);
+			return;
+		}
+		callback("Unknown");
+		return;
+	}).catch((error) => {
+		handleError(message, error);
+	});
 }
 
 function attemptToRetrieveRecentTracks(target, message) {
@@ -251,9 +187,9 @@ function attemptToRetrieveRecentTracks(target, message) {
 						message.channel.send("Could not find any tracks.");
 						return;
 					}
-					let recentEmbed = new Discord.RichEmbed()
+					let embed = new Discord.RichEmbed()
 						.setAuthor(`${username}'s Recent Tracks`, target.user.displayAvatarURL.split("?")[0]);
-					displayRecentTracks(message, recentEmbed, response);
+					displayRecentTracks(message, embed, response.data.recenttracks.track);
 				}).catch((error) => {
 					handleError(message, error);
 				});
@@ -277,9 +213,9 @@ function attemptToRetrieveTopAlbums(target, time, message) {
 					if (response.data.error) {
 						return Promise.reject(response);
 					}
-					embedAlltime = new Discord.RichEmbed()
+					let embed = new Discord.RichEmbed()
 						.setAuthor(`${username}'s ${time.name} Top Albums`, target.user.displayAvatarURL.split("?")[0]);
-					displayTopAlbums(message, embedAlltime, response);
+					displayTopAlbums(message, embed, response.data.topalbums.album);
 				}).catch((error) => {
 					handleError(message, error);
 				});
@@ -303,9 +239,9 @@ function attemptToRetrieveTopArtists(target, time, message) {
 					if (response.data.error) {
 						return Promise.reject(response);
 					}
-					embedAlltime = new Discord.RichEmbed()
+					let embed = new Discord.RichEmbed()
 						.setAuthor(`${username}'s ${time.name} Top Artists`, target.user.displayAvatarURL.split("?")[0]);
-					displayTopArtists(message, embedAlltime, response);
+					displayTopArtists(message, embed, response.data.topartists.artist);
 				}).catch((error) => {
 					handleError(message, error);
 				});
@@ -333,9 +269,9 @@ function attemptToRetrieveTopTracks(target, time, message) {
 						console.log(`No Toptrack`);
 						return;
 					}
-					embedAlltime = new Discord.RichEmbed()
+					let embed = new Discord.RichEmbed()
 						.setAuthor(`${username}'s ${time.name} Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
-					displayTopTracks(message, embedAlltime, response);
+					displayTopTracks(message, embed, response.data.toptracks.track);
 				}).catch((error) => {
 					handleError(message, error);
 				});
@@ -343,6 +279,56 @@ function attemptToRetrieveTopTracks(target, time, message) {
 			else {
 				message.channel.send(notRegisteredAlert);
 				return;
+			}
+		}).catch((error) => {
+			console.log(error);
+		});
+}
+
+function attemptToRetrieveUserInfo(message, target) {
+	lastfm.getLastfmData(target.id)
+		.then((data) => {
+			if (data.username !== null) {
+				let username = data.username;
+				let url = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${username}&api_key=${apiKey}&format=json`;
+				axios.get(url).then(response => {
+					if (response.data.error) {
+						return Promise.reject(response);
+					}
+					if (!response.data.user) {
+						console.log(`Blank Account`);
+						return;
+					}
+					let thumbnailURL = "";
+					if (!response.data.user.image) {
+						console.log(`No image found`);
+					}
+					else {
+						response.data.user.image.forEach(image => {
+							if (image["size"] === "extralarge") {
+								thumbnailURL = image["#text"];
+							}
+						});
+					}
+					let date = new Date(response.data.user.registered.unixtime * 1000);
+					let embed = new Discord.RichEmbed()
+						.setAuthor(target.user.tag, target.user.displayAvatarURL.split("?")[0])
+						.setURL(response.data.user.url)
+						.setThumbnail(thumbnailURL)
+						.setColor("#33cc33")
+						.addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
+						.addField("Scrobbles", response.data.user.playcount, true)
+						.addField("Profile", `Click [here](${response.data.user.url}) to see their profile`, true)
+						.addField("Country", response.data.user.country, true)
+						.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
+					sendEmbed(message, embed);
+					return;
+				}).catch((error) => {
+					handleError(message, error);
+				});
+			}
+			else {
+				message.channel.send(notRegisteredAlert);
 			}
 		}).catch((error) => {
 			console.log(error);
@@ -378,66 +364,107 @@ function attemptToSetLayout(layout, message) {
 		});
 }
 
-function displayRecentTracks(message, embed, response) {
-	let responseA = response.data.recenttracks.track;
-	for (i = 0; i < responseA.length; i++) {
-		if (!responseA[i]) {
-			console.log(`No Recent Tracks`);
-			return;
-		}
+function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
+	let track1 = recentTracks.track[0];
+	let track2 = recentTracks.track[1];
+	let album = track1.album["#text"] ? track1.album["#text"] : "N/A";
+
+	try {
+		let embed = new Discord.RichEmbed()
+			.setColor("#33cc33")
+			.setTimestamp(message.createdAt)
+			.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
+
+		setThumbnail(embed, track1);
+
+		attemptToRetrievePlayCount(username, track1, message, (playCount) => {
+			if (isNowPlaying(track1)) {
+				embed.setAuthor(`${username} - Now Playing${track1.loved === '1' ? " ❤️" : ""}`, displayAvatarURL.split("?")[0])
+					.addField("Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
+					.addField("Artist", track1.artist.name, true)
+					.addField("Album", album, true)
+					.addField("Plays", playCount, true)
+					.addField("Previous Song", `[${track2.name}](${formatUrl(track2.url)})`, true)
+					.addField("Previous Artist", track2.artist.name, true);
+			} else {
+				embed.setAuthor(`${username} - No Current Song`, displayAvatarURL.split("?")[0])
+					.addField("Previous Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
+					.addField("Previous Artist", track1.artist.name, true)
+					.addField("Previous Album", album, true)
+					.addField("Plays", playCount, true);
+			}
+			sendEmbed(message, embed);
+		});		
+	} catch (e) {
+		console.log(e);
 	}
-	let msg = "";
-	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) `;
-		msg += `by [${responseA[i].artist["#text"]}](https://www.last.fm/music/${responseA[i].artist["#text"].replace(/ /g, "+").replace(/\(/g, "%28").replace(/\)/g, "%29")}) \n`;
-	}
-	embedCss(message, embed, msg);
+
 }
 
-function displayTopAlbums(message, embed, response) {
-	let responseA = response.data.topalbums.album;
-	for (i = 0; i < responseA.length; i++) {
-		if (!responseA[i]) {
-			console.log(`No Album`);
-			return;
-		}
-	}
-	let msg = "";
-	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) `;
-		msg += `by [${responseA[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) `;
-		msg += `(${responseA[i].playcount} plays) \n`;
-	}
-	embedCss(message, embed, msg);
-}
-
-function displayTopArtists(message, embed, response) {
-	let responseA = response.data.topartists.artist;
-	for (i = 0; i < responseA.length; i++) {
-		if (!responseA[i]) {
-			console.log(`No Artist`);
-			return;
-		}
-	}
-	let msg = "";
-	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
-	}
-	embedCss(message, embed, msg);
-}
-
-function displayTopTracks(message, embed, response) {
-	let responseA = response.data.toptracks.track;
-	for (i = 0; i < responseA.length; i++) {
-		if (!responseA[i]) {
+function displayRecentTracks(message, embed, tracks) {
+	for (i = 0; i < tracks.length; i++) {
+		if (!tracks[i]) {
 			console.log(`No Track`);
 			return;
 		}
 	}
 	let msg = "";
-	for (i = 0; i < responseA.length; i++) {
-		msg += `${i + 1}. [${responseA[i].name}](${responseA[i].url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) by [${responseA[i].artist.name}](${responseA[i].artist.url.replace(/\(/g, "%28").replace(/\)/g, "%29")}) (${responseA[i].playcount} plays) \n`;
+	if (isNowPlaying(tracks[0])) {
+		let nowPlaying = tracks.splice(0, 1)[0];
+		setThumbnail(embed, nowPlaying);
+		msg += `Now Playing: [${nowPlaying.artist["#text"]}](https://www.last.fm/music/${formatUrl(nowPlaying.artist["#text"].replace(/ /g, "+"))}) `;
+		msg += `- [${nowPlaying.name}](${formatUrl(nowPlaying.url)})\n\n`;
 	}
+	for (i = 0; i < tracks.length; i++) {
+		msg += `${i + 1}. [${tracks[i].artist["#text"]}](https://www.last.fm/music/${formatUrl(tracks[i].artist["#text"].replace(/ /g, "+"))}) `;
+		msg += `- [${tracks[i].name}](${formatUrl(tracks[i].url)})\n`;
+	}
+	embedCss(message, embed, msg);
+}
+
+function displayTopAlbums(message, embed, albums) {
+	for (i = 0; i < albums.length; i++) {
+		if (!albums[i]) {
+			console.log(`No Album`);
+			return;
+		}
+	}
+	let msg = "";
+	for (i = 0; i < albums.length; i++) {
+		msg += `${i + 1}. [${albums[i].artist.name}](${formatUrl(albums[i].artist.url)}) `;
+		msg += `- [${albums[i].name}](${formatUrl(albums[i].url)}) (${albums[i].playcount} plays)\n`;
+	}
+	setThumbnail(embed, albums[0]);
+	embedCss(message, embed, msg);
+}
+
+function displayTopArtists(message, embed, artists) {
+	for (i = 0; i < artists.length; i++) {
+		if (!artists[i]) {
+			console.log(`No Artist`);
+			return;
+		}
+	}
+	let msg = "";
+	for (i = 0; i < artists.length; i++) {
+		msg += `${i + 1}. [${artists[i].name}](${formatUrl(artists[i].url)}) (${artists[i].playcount} plays)\n`;
+	}
+	setThumbnail(embed, artists[0]);
+	embedCss(message, embed, msg);
+}
+
+function displayTopTracks(message, embed, tracks) {
+	for (i = 0; i < tracks.length; i++) {
+		if (!tracks[i]) {
+			console.log(`No Track`);
+			return;
+		}
+	}
+	let msg = "";
+	for (i = 0; i < tracks.length; i++) {
+		msg += `${i + 1}. [${tracks[i].artist.name}](${formatUrl(tracks[i].artist.url)}) - [${tracks[i].name}](${formatUrl(tracks[i].url)}) (${tracks[i].playcount} plays)\n`;
+	}
+	setThumbnail(embed, tracks[0]);
 	embedCss(message, embed, msg);
 }
 
@@ -445,33 +472,34 @@ function displayTopTracks(message, embed, response) {
 function embedCss(message, embed, msg) {
 	embed.setColor("#33cc33");
 	embed.setDescription(msg.substring(0, MAX_CHAR));
-	embed.setFooter("Powered by last.fm", "https://images-ext-1.discordapp.net/external/EX26VtAQmWawZ6oyRUVaf76Px2JCu0m3iNU6uNv0XE0/https/i.imgur.com/C7u8gqg.jpg");
+	embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
 }
 
-async function getTarget(message, args) {
-	let userID = message.author.id;
-	if (args.length == 3) { //lf tt week <mention/id>
-		if (message.mentions.users.first() != undefined) {
-			userID = message.mentions.users.first().id;
-		} else if (message.mentions.users.first() == undefined) {
-			userID = args[args.length - 1];
+function formatUrl(url) {
+	return url.replace(/\(/g, "%28").replace(/\)/g, "%29");
+}
+
+function setThumbnail(embed, object) {
+	if (!object.image) {
+		console.log(`No Image`);
+	}
+	object.image.forEach(image => {
+		if (image["size"] === "extralarge") {
+			embed.setThumbnail(image["#text"]);
 		}
-	} else if (args.length == 2) { //!lf tt <mention/id>
-		if (message.mentions.users.first() != undefined) {
-			userID = message.mentions.users.first().id;
-		} else if (message.mentions.users.first() == undefined) {
-			userID = args[args.length - 1];
-		}
+	});
+}
+
+//Function which determines which user to get last.fm data for
+function getTarget(message, args) {
+	let mentionId = attemptToGetMentionId(args);
+
+	if (mentionId && message.guild.members.has(mentionId)) {
+		return message.guild.member(mentionId);
 	}
-	let target = message.member;
-	if (message.guild.members.has(userID)) {
-		target = message.guild.member(userID);
-	}
-	if (!target) {
-		target = await bot.fetchUser(userID);
-	}
-	return target;
+
+	return message.member;
 }
 
 //Function for parsing user input into time period
@@ -503,7 +531,15 @@ function handleError(message, error) {
 		console.log(error.status, error.data.message);
 		return;
 	}
+}
 
+//returns whether an argument contains @user or a 18-char numberic user ID
+function isMention(argument) {
+	return argument.includes("<@") || (!isNaN(argument) && argument.length == 18);
+}
+
+function isNowPlaying(track) {
+	return track["@attr"];
 }
 
 function sendLastfmHelpEmbed(message, prefix) {
