@@ -381,15 +381,15 @@ function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
 			if (isNowPlaying(track1)) {
 				embed.setAuthor(`${username} - Now Playing${track1.loved === '1' ? " ❤️" : ""}`, displayAvatarURL.split("?")[0])
 					.addField("Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
-					.addField("Artist", track1.artist.name, true)
+					.addField("Artist", `[${track1.artist.name}](${formatUrl(track1.artist.url)})`, true)
 					.addField("Album", album, true)
 					.addField("Plays", playCount, true)
 					.addField("Previous Song", `[${track2.name}](${formatUrl(track2.url)})`, true)
-					.addField("Previous Artist", track2.artist.name, true);
+					.addField("Previous Artist", `[${track2.artist.name}](${formatUrl(track2.artist.url)})`, true);
 			} else {
 				embed.setAuthor(`${username} - No Current Song`, displayAvatarURL.split("?")[0])
 					.addField("Previous Song", `[${track1.name}](${formatUrl(track1.url)})`, true)
-					.addField("Previous Artist", track1.artist.name, true)
+					.addField("Previous Artist", `[${track1.artist.name}](${formatUrl(track1.artist.url)})`, true)
 					.addField("Previous Album", album, true)
 					.addField("Plays", playCount, true);
 			}
