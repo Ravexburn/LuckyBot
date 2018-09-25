@@ -61,9 +61,11 @@ module.exports = (bot = Discord.Client) => {
 			embed.addField(fieldString, gameString, true);
 		}
 		
-		if (member.roles) {
-			let roleString = member.roles.array().sort((a,b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ");
-			embed.addField("Roles", roleString);
+		let userRoles = member.roles.size > 0 ? member.roles.array().sort((a,b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ") : "N/A";
+		if (userRoles) {
+			embed.addField("Roles", userRoles);
+		}else{
+			embed.addField("Roles", "N/A");
 		}
 
 		let pos = 0;
