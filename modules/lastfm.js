@@ -193,8 +193,7 @@ function attemptToRetrieveRecentTracks(target, message) {
 				}).catch((error) => {
 					handleError(message, error);
 				});
-			}
-			else {
+			} else {
 				message.channel.send(notRegisteredAlert);
 				return;
 			}
@@ -208,9 +207,10 @@ function attemptToRetrieveTopAlbums(target, time, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${username}&api_key=${apiKey}&period=${time.period}&limit=50&format=json`;
 				axios.get(url).then(response => {
-					if (response.data.error) {
+					if (response.data.error || !response.data.topalbums || response.data.topalbums.album.length == 0) {
+						console.log("No top albums for " + username);
 						return Promise.reject(response);
 					}
 					let embed = new Discord.RichEmbed()
@@ -219,8 +219,7 @@ function attemptToRetrieveTopAlbums(target, time, message) {
 				}).catch((error) => {
 					handleError(message, error);
 				});
-			}
-			else {
+			} else {
 				message.channel.send(notRegisteredAlert);
 				return;
 			}
@@ -234,9 +233,10 @@ function attemptToRetrieveTopArtists(target, time, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${username}&api_key=${apiKey}&period=${time.period}&limit=50&format=json`;
 				axios.get(url).then(response => {
-					if (response.data.error) {
+					if (response.data.error || !response.data.topartists || response.data.topartists.artist.length == 0) {
+						console.log("No top artists for " + username);
 						return Promise.reject(response);
 					}
 					let embed = new Discord.RichEmbed()
@@ -245,8 +245,7 @@ function attemptToRetrieveTopArtists(target, time, message) {
 				}).catch((error) => {
 					handleError(message, error);
 				});
-			}
-			else {
+			} else {
 				message.channel.send(notRegisteredAlert);
 				return;
 			}
@@ -260,14 +259,11 @@ function attemptToRetrieveTopTracks(target, time, message) {
 		.then((data) => {
 			if (data.username !== null) {
 				let username = data.username;
-				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${apiKey}&period=${time.period}&limit=10&format=json`;
+				let url = `http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${apiKey}&period=${time.period}&limit=50&format=json`;
 				axios.get(url).then(response => {
-					if (response.data.error) {
+					if (response.data.error || !response.data.toptracks || response.data.toptracks.track.length == 0) {
+						console.log("No top tracks for " + username);
 						return Promise.reject(response);
-					}
-					if (!response.data.toptracks) {
-						console.log(`No Toptrack`);
-						return;
 					}
 					let embed = new Discord.RichEmbed()
 						.setAuthor(`${username}'s ${time.name} Top Tracks`, target.user.displayAvatarURL.split("?")[0]);
@@ -275,8 +271,7 @@ function attemptToRetrieveTopTracks(target, time, message) {
 				}).catch((error) => {
 					handleError(message, error);
 				});
-			}
-			else {
+			} else {
 				message.channel.send(notRegisteredAlert);
 				return;
 			}
@@ -302,8 +297,7 @@ function attemptToRetrieveUserInfo(message, target) {
 					let thumbnailURL = "";
 					if (!response.data.user.image) {
 						console.log(`No image found`);
-					}
-					else {
+					} else {
 						response.data.user.image.forEach(image => {
 							if (image["size"] === "extralarge") {
 								thumbnailURL = image["#text"];
@@ -326,8 +320,7 @@ function attemptToRetrieveUserInfo(message, target) {
 				}).catch((error) => {
 					handleError(message, error);
 				});
-			}
-			else {
+			} else {
 				message.channel.send(notRegisteredAlert);
 			}
 		}).catch((error) => {
@@ -394,7 +387,7 @@ function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
 					.addField("Plays", playCount, true);
 			}
 			sendEmbed(message, embed);
-		});		
+		});
 	} catch (e) {
 		console.log(e);
 	}
@@ -423,49 +416,27 @@ function displayRecentTracks(message, embed, tracks) {
 }
 
 function displayTopAlbums(message, embed, albums) {
+	let albumListItems = [];
 	for (i = 0; i < albums.length; i++) {
-		if (!albums[i]) {
-			console.log(`No Album`);
-			return;
-		}
+		albumListItems.push(`${i + 1}. [${albums[i].artist.name}](${formatUrl(albums[i].artist.url)}) - [${albums[i].name}](${formatUrl(albums[i].url)}) (${albums[i].playcount} plays)`);
 	}
-	let msg = "";
-	for (i = 0; i < albums.length; i++) {
-		msg += `${i + 1}. [${albums[i].artist.name}](${formatUrl(albums[i].artist.url)}) `;
-		msg += `- [${albums[i].name}](${formatUrl(albums[i].url)}) (${albums[i].playcount} plays)\n`;
-	}
-	setThumbnail(embed, albums[0]);
-	embedCss(message, embed, msg);
+	sendListWithPages(message, embed, albumListItems, albums[0]);
 }
 
 function displayTopArtists(message, embed, artists) {
+	let artistListItems = [];
 	for (i = 0; i < artists.length; i++) {
-		if (!artists[i]) {
-			console.log(`No Artist`);
-			return;
-		}
+		artistListItems.push(`${i + 1}. [${artists[i].name}](${formatUrl(artists[i].url)}) (${artists[i].playcount} plays)`);
 	}
-	let msg = "";
-	for (i = 0; i < artists.length; i++) {
-		msg += `${i + 1}. [${artists[i].name}](${formatUrl(artists[i].url)}) (${artists[i].playcount} plays)\n`;
-	}
-	setThumbnail(embed, artists[0]);
-	embedCss(message, embed, msg);
+	sendListWithPages(message, embed, artistListItems, artists[0]);
 }
 
 function displayTopTracks(message, embed, tracks) {
+	let trackListItems = [];
 	for (i = 0; i < tracks.length; i++) {
-		if (!tracks[i]) {
-			console.log(`No Track`);
-			return;
-		}
+		trackListItems.push(`${i + 1}. [${tracks[i].artist.name}](${formatUrl(tracks[i].artist.url)}) - [${tracks[i].name}](${formatUrl(tracks[i].url)}) (${tracks[i].playcount} plays)`);
 	}
-	let msg = "";
-	for (i = 0; i < tracks.length; i++) {
-		msg += `${i + 1}. [${tracks[i].artist.name}](${formatUrl(tracks[i].artist.url)}) - [${tracks[i].name}](${formatUrl(tracks[i].url)}) (${tracks[i].playcount} plays)\n`;
-	}
-	setThumbnail(embed, tracks[0]);
-	embedCss(message, embed, msg);
+	sendListWithPages(message, embed, trackListItems, tracks[0]);
 }
 
 //Embed colors, message, and footer function
@@ -506,17 +477,35 @@ function getTarget(message, args) {
 function getTimePeriod(arg) {
 	switch (true) {
 		case (commands.weekly.includes(arg)):
-			return { "period": "7day", "name": "Weekly" };
+			return {
+				"period": "7day",
+				"name": "Weekly"
+			};
 		case (commands.monthly.includes(arg)):
-			return { "period": "1month", "name": "Monthly" };
+			return {
+				"period": "1month",
+				"name": "Monthly"
+			};
 		case (commands.threeMonth.includes(arg)):
-			return { "period": "3month", "name": "3 Month" };
+			return {
+				"period": "3month",
+				"name": "3 Month"
+			};
 		case (commands.sixMonth.includes(arg)):
-			return { "period": "6month", "name": "6 Month" };
+			return {
+				"period": "6month",
+				"name": "6 Month"
+			};
 		case (commands.yearly.includes(arg)):
-			return { "period": "12month", "name": "Yearly" };
+			return {
+				"period": "12month",
+				"name": "Yearly"
+			};
 		default:
-			return { "period": "overall", "name": "All Time" };
+			return {
+				"period": "overall",
+				"name": "All Time"
+			};
 	}
 }
 
@@ -525,8 +514,7 @@ function handleError(message, error) {
 		message.reply(`Error ${error.response.status}: ${error.response.data.message}`);
 		console.log(error.response.status, error.response.data.message);
 		return;
-	}
-	else if (error.status) {
+	} else if (error.status) {
 		message.reply(`Error ${error.status}: ${error.data.message}`);
 		console.log(error.status, error.data.message);
 		return;
@@ -546,4 +534,11 @@ function sendLastfmHelpEmbed(message, prefix) {
 	let embed = new Discord.RichEmbed();
 	lastFMHelp(prefix, embed);
 	sendEmbed(message, embed);
+}
+
+function sendListWithPages(message, embed, list, coverItem) {
+	setThumbnail(embed, coverItem);
+	embed.setColor("#33cc33");
+	embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
+	embedPages(message, embed, toEmbedPages(list, null, 10));
 }
