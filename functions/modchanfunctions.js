@@ -207,6 +207,8 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	welImage = function welImage(message, serverSettings, args) {
+		message.channel.send("This feature is currently disabled sorry for the inconvenience");
+		return;
 		if (args.length === 1){
 			message.channel.send("Please provide a link for your image. For `gifv` links remove the `v`.");
 			return;

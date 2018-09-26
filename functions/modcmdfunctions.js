@@ -325,9 +325,11 @@ module.exports = (bot = Discord.Client) => {
      * @param {Message} message 
      */
 	setStarboardEmoji = function setStarboardEmoji(message, serverSettings, arg) {
+		let addPrompt;
+		let removePrompt;
 		switch (arg) {
 			case "add":
-				let addPrompt = message.author + " Please react to this message with the emoji you would like to add."
+				addPrompt = message.author + " Please react to this message with the emoji you would like to add."
 					+ `\nCurrent emoji: "${[].concat(serverSettings.starboardEmoji).join('", "')}"`;
 				message.channel.send(addPrompt).then(function (msg) {
 					var filter = (reaction, user) => user.id == message.author.id;
@@ -345,7 +347,7 @@ module.exports = (bot = Discord.Client) => {
 				});
 				return;
 			case "remove":
-				let removePrompt = message.author + " Please react to this message with the emoji you would like to remove."
+				removePrompt = message.author + " Please react to this message with the emoji you would like to remove."
 					+ `\nCurrent emoji: "${[].concat(serverSettings.starboardEmoji).join('", "')}"`;
 				message.channel.send(removePrompt).then(function (msg) {
 					var filter = (reaction, user) => user.id == message.author.id;
