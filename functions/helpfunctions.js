@@ -40,7 +40,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 		embed.addField(":musical_note: Lastfm Commands", `** ${prefix}lastfm help** - Shows this list of commands for lastfm commands.
 			** ${prefix}lastfm** - Shows basic account info.
-			** ${prefix}lastfm set** - Saves lastfm username.
+			** ${prefix}lastfm set** - Saves lastfm username (requires a [last.fm](https://www.last.fm) account).
 			** ${prefix}lastfm nowplaying** - Shows the song currently playing.
 			** ${prefix}lastfm recent** - Shows the songs recently listened to.
 			** ${prefix}lastfm toptracks <week|month|3-month|half-year|year>** - Shows the top tracks of <period>.
@@ -151,10 +151,10 @@ module.exports = (bot = Discord.Client) => {
 				msg.react("⬅").then(() => msg.react("➡")).then(function () {
 					//User has 60 seconds to turn pages before the listener expires, this could be tweaked if needed
 					const pageBack = msg.createReactionCollector((reaction) => reaction.emoji.name === "⬅", {
-						time: 1000000
+						time: 600000
 					});
 					const pageForward = msg.createReactionCollector((reaction) => reaction.emoji.name === "➡", {
-						time: 1000000
+						time: 600000
 					});
 
 					pageBack.on('collect', react => {
