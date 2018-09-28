@@ -20,8 +20,8 @@ const commands = {
 	"sixMonth": ["half-year", "6-month", "6month", "halfyear"],
 	"yearly": ["year", "12-month", "12month", "yearly"]
 };
-let notRegisteredAlert;
 let apiKey;
+let notRegisteredAlert;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -63,7 +63,7 @@ module.exports = (bot = Discord.Client) => {
 				attemptToSaveLastfmUsername(message, args[1]);
 				break;
 
-			//Set layout
+				//Set layout
 			case (commands.setLayout.includes(args[0])):
 				if (args.length === 1) {
 					message.reply(`Please select a layout between 0 and 5.`);
@@ -72,32 +72,32 @@ module.exports = (bot = Discord.Client) => {
 				attemptToSetLayout(args[1], message);
 				break;
 
-			//Now Playing	
+				//Now Playing	
 			case (commands.nowPlaying.includes(args[0])):
 				attemptToRetrieveNowPlaying(target, message);
 				break;
 
-			//Recent
+				//Recent
 			case (commands.recentTracks.includes(args[0])):
 				attemptToRetrieveRecentTracks(target, message);
 				break;
 
-			//Top Tracks
+				//Top Tracks
 			case (commands.topTracks.includes(args[0])):
 				attemptToRetrieveTopTracks(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
 
-			//Top Artist	
+				//Top Artist	
 			case (commands.topArtists.includes(args[0])):
 				attemptToRetrieveTopArtists(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
 
-			//Top Album
+				//Top Album
 			case (commands.topAlbums.includes(args[0])):
 				attemptToRetrieveTopAlbums(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
 
-			//Help
+				//Help
 			default:
 				sendLastfmHelpEmbed(message, prefix);
 				return;
@@ -118,7 +118,7 @@ function attemptToGetMentionId(args) {
 		}
 	}
 
-	return mentions[0];
+	return mentions[0] ? mentions[0] : null;
 }
 
 function attemptToRetrieveNowPlaying(target, message) {
@@ -148,7 +148,7 @@ function attemptToRetrieveNowPlaying(target, message) {
 				return;
 			}
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
@@ -162,8 +162,8 @@ function attemptToRetrievePlayCount(username, trackInfo, message, callback) {
 			return;
 		}
 		callback("Unknown");
-		return;
 	}).catch((error) => {
+		callback("Unknown");
 		handleError(message, error);
 	});
 }
@@ -198,7 +198,7 @@ function attemptToRetrieveRecentTracks(target, message) {
 				return;
 			}
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
@@ -224,7 +224,7 @@ function attemptToRetrieveTopAlbums(target, time, message) {
 				return;
 			}
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
@@ -250,7 +250,7 @@ function attemptToRetrieveTopArtists(target, time, message) {
 				return;
 			}
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
@@ -276,7 +276,7 @@ function attemptToRetrieveTopTracks(target, time, message) {
 				return;
 			}
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
@@ -324,7 +324,7 @@ function attemptToRetrieveUserInfo(message, target) {
 				message.channel.send(notRegisteredAlert);
 			}
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
@@ -343,7 +343,7 @@ function attemptToSaveLastfmUsername(message, username) {
 				handleError(message, error);
 			});
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
@@ -353,16 +353,16 @@ function attemptToSetLayout(layout, message) {
 			lastfm.setLayout(message.author.id, layout);
 			message.reply(`Layout format set as: ${layout}`);
 		}).catch((error) => {
-			console.log(error);
+			handleError(message, error);
 		});
 }
 
 function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
-	let track1 = recentTracks.track[0];
-	let track2 = recentTracks.track[1];
-	let album = track1.album["#text"] ? track1.album["#text"] : "N/A";
-
 	try {
+		let track1 = recentTracks.track[0];
+		let track2 = recentTracks.track[1];
+		let album = track1.album["#text"] ? track1.album["#text"] : "N/A";
+
 		let embed = new Discord.RichEmbed()
 			.setColor("#33cc33")
 			.setTimestamp(message.createdAt)
@@ -451,26 +451,23 @@ function formatUrl(url) {
 	return url.replace(/\(/g, "%28").replace(/\)/g, "%29");
 }
 
-function setThumbnail(embed, object) {
-	if (!object.image) {
-		console.log(`No Image`);
-	}
-	object.image.forEach(image => {
-		if (image["size"] === "extralarge") {
-			embed.setThumbnail(image["#text"]);
-		}
-	});
-}
-
 //Function which determines which user to get last.fm data for
 function getTarget(message, args) {
-	let mentionId = attemptToGetMentionId(args);
+	try {
+		let mentionId = attemptToGetMentionId(args);
 
-	if (mentionId && message.guild.members.has(mentionId)) {
-		return message.guild.member(mentionId);
-	}
-
-	return message.member;
+		if (mentionId && message.guild.members.has(mentionId)) {
+			let member = message.guild.member(mentionId);
+			if (member.id) {
+				return member;
+			}
+		}
+	
+		return message.member;
+	} catch (error) {
+		console.log(error);
+		return message.member;
+	}	
 }
 
 //Function for parsing user input into time period
@@ -541,4 +538,16 @@ function sendListWithPages(message, embed, list, coverItem) {
 	embed.setColor("#33cc33");
 	embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 	embedPages(message, embed, toEmbedPages(list, null, 10));
+}
+
+function setThumbnail(embed, object) {
+	if (!object.image) {
+		console.log(`No Image`);
+		return;
+	}
+	object.image.forEach(image => {
+		if (image["size"] === "extralarge") {
+			embed.setThumbnail(image["#text"]);
+		}
+	});
 }
