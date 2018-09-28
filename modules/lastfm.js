@@ -53,8 +53,6 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		switch (true) {
-
-			//Save username	
 			case (commands.saveUsername.includes(args[0])):
 				if (args.length === 1) {
 					message.reply(`No username supplied.`);
@@ -62,8 +60,6 @@ module.exports = (bot = Discord.Client) => {
 				}
 				attemptToSaveLastfmUsername(message, args[1]);
 				break;
-
-				//Set layout
 			case (commands.setLayout.includes(args[0])):
 				if (args.length === 1) {
 					message.reply(`Please select a layout between 0 and 5.`);
@@ -71,33 +67,21 @@ module.exports = (bot = Discord.Client) => {
 				}
 				attemptToSetLayout(args[1], message);
 				break;
-
-				//Now Playing	
 			case (commands.nowPlaying.includes(args[0])):
 				attemptToRetrieveNowPlaying(target, message);
 				break;
-
-				//Recent
 			case (commands.recentTracks.includes(args[0])):
 				attemptToRetrieveRecentTracks(target, message);
 				break;
-
-				//Top Tracks
 			case (commands.topTracks.includes(args[0])):
 				attemptToRetrieveTopTracks(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
-
-				//Top Artist	
 			case (commands.topArtists.includes(args[0])):
 				attemptToRetrieveTopArtists(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
-
-				//Top Album
 			case (commands.topAlbums.includes(args[0])):
 				attemptToRetrieveTopAlbums(target, getTimePeriod(args.slice(-1)[0]), message);
 				break;
-
-				//Help
 			default:
 				sendLastfmHelpEmbed(message, prefix);
 				return;
