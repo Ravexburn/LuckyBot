@@ -101,6 +101,13 @@ module.exports = (bot = Discord.Client) => {
 		} else {
 			embed.addField("Bans", "This user is **not banned** on any servers with Lucky Bot.");
 		}
+		try {
+			if (!guild.me.hasPermission("MANAGE_GUILD")) {
+				embed.addField("Invites", ":warning: Please enable `MANAGE_SERVER` to be able to see what invite was used.");
+			}
+		} catch(error){
+			bot.log(error);
+		}
 		bot.invCache.usedInvite(guild).then(invite => {
 			if (invite) {
 				embed.addField("Invite", `${user} joined from ${invite.url} created by ${invite.inviter}. Uses: ${invite.uses}`);
