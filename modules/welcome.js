@@ -88,21 +88,26 @@ module.exports = (bot = Discord.Client) => {
 
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
+			.setAuthor(user.tag, user.displayAvatarURL.split("?")[0])
 			.setThumbnail(member.user.displayAvatarURL)
 			.setURL(member.user.displayAvatarURL)
+			.setFooter(`Member ID #${user.id}`)
+			.setTimestamp(user.joinedAt)
 			.setTitle("Member Join!")
-			.addField("Account Age", `Account was created on: ${user.createdAt.toUTCString()}\nAccount joined server on: ${member.joinedAt.toUTCString()}`)
-			.addField("Shared Servers", `This account shares: ${sharedguilds} other server(s) with Lucky Bot.`)
-			.setDescription(`${user} joined the server`);
+			.addField("Account Age", `Account was created on: **${user.createdAt.toUTCString()}**\nAccount joined server on: **${member.joinedAt.toUTCString()}**`)
+			.addField("Shared Servers", `This account shares: **${sharedguilds} other server(s)** with Lucky Bot.`);
 		if (numOfBans) {
-			embed.addField("Bans", `:warning: This user is banned on ${numOfBans} server(s).`);
+			embed.addField("Bans", `:warning: This user is banned on **${numOfBans} server(s).**`);
 		} else {
-			embed.addField("Bans", `This user is not banned on any servers.`);
+			embed.addField("Bans", "This user is **not banned** on any servers with Lucky Bot.");
 		}
 		bot.invCache.usedInvite(guild).then(invite => {
 			if (invite) {
-				embed.setDescription(`${user} joined from ${invite.url} created by ${invite.inviter}. Uses: ${invite.uses}`);
+				embed.addField("Invite", `${user} joined from ${invite.url} created by ${invite.inviter}. Uses: ${invite.uses}`);
 			}
+		}).catch((error) => {
+			console.log(error);
+		}).then(() => {
 			chan.send(embed);
 		}).catch((error) => {
 			console.log(error);
