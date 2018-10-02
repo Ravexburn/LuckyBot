@@ -92,7 +92,7 @@ module.exports = class InvitesCache {
                             const cacheUses = inv.uses;
                             const currentUses = invite.uses;
                             if (currentUses !== cacheUses) {
-                                inv.uses = currentUses;
+                                inv.uses = cacheUses + 1;
                                 guildInvitesCache.set(invite.code, inv);
                                 guildUsedInvites.set(invite.code, invite);
                             }
