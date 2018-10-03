@@ -95,11 +95,11 @@ module.exports = (bot = Discord.Client) => {
 			.setTimestamp(user.joinedAt)
 			.setTitle("Member Join!")
 			.addField("Account Age", `Account was created on: **${user.createdAt.toUTCString()}**\nAccount joined server on: **${member.joinedAt.toUTCString()}**`)
-			.addField("Shared Servers", `This account shares: **${sharedguilds} other server(s)** with Lucky Bot.`);
+			.addField("Shared Servers", `This account shares: **${sharedguilds} other server(s)** with ${bot.user.username}.`);
 		if (numOfBans) {
 			embed.addField("Bans", `:warning: This user is banned on **${numOfBans} server(s).**`);
 		} else {
-			embed.addField("Bans", "This user is **not banned** on any servers with Lucky Bot.");
+			embed.addField("Bans", `This user is **not banned** on any servers with ${bot.user.username}.`);
 		}
 		try {
 			if (!guild.me.hasPermission("MANAGE_GUILD")) {

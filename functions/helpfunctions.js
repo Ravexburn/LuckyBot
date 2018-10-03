@@ -1,122 +1,124 @@
 const Discord = require("discord.js");
+const lastfmSite = "https://www.last.fm";
 
 module.exports = (bot = Discord.Client) => {
 
 	//Help command for Notifications
 	notifyHelp = function notifyHelp(prefix, embed) {
-		embed.setTitle("Notification Help");
+		embed.setTitle(":round_pushpin: Notifications");
 		embed.setColor("#b19cd9");
+		embed.addField(`${prefix}notify`, "Shows this list of commands for notifications.");
+		embed.addField(`${prefix}notify list`, "Direct messages a list of keywords for the server.");
+		embed.addField(`${prefix}notify clear`, "Removes all keywords for the server.");
+		embed.addField(`${prefix}notify add <keyword>`, "Adds a <keyword> to notify you about on the server.");
+		embed.addField(`${prefix}notify remove <keyword>`, "Removes a <keyword> you were notified about on the server.");
+		embed.addField(`${prefix}notify global list`, "Direct messages a list of global keywords.");
+		embed.addField(`${prefix}notify global clear`, "Removes all global keywords you have.");
+		embed.addField(`${prefix}notify global add <keyword>`, "Adds a <keyword> to notify you about on all servers.");
+		embed.addField(`${prefix}notify global remove <keyword>`, "Removes a <keyword> you were notified about on all servers.");
+		embed.addField(`${prefix}notify ignore channel <#channel>`, "Ignores all keyword triggers in <#channel>.");
+		embed.addField(`${prefix}notify ignore server`, "Ignores all global keyword triggers in the server.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
-		embed.addField(":round_pushpin: Notifications", `** ${prefix}notify** - Shows this list of commands for notifications.
-			** ${prefix}notify list** - Direct messages a list of keywords for the server.
-			** ${prefix}notify clear** - Removes all keywords for the server.
-			** ${prefix}notify add <keyword>** - Adds a <keyword> to notify you about on the server.
-			** ${prefix}notify remove <keyword>** - Removes a <keyword> you were notified about on the server.
-			** ${prefix}notify global list** - Direct messages a list of global keywords.
-			** ${prefix}notify global clear** - Removes all global keywords you have.
-			** ${prefix}notify global add <keyword>** - Adds a <keyword> to notify you about on all servers.
-			** ${prefix}notify global remove <keyword>** - Removes a <keyword> you were notified about on all servers.
-			** ${prefix}notify ignore channel <#channel>** - Ignores all keyword triggers in <#channel>.
-			** ${prefix}notify ignore server** - Ignores all global keyword triggers in the server.`);
 	};
 
 	//Help command for Custom Commands
 	commandsHelp = function commandsHelp(prefix, embed) {
-		embed.setTitle("Custom Command Help");
+		embed.setTitle(":speech_left: Custom Commands");
 		embed.setColor("#40e0d0");
+		embed.addField(`${prefix}command`, "Shows this list of commands for custom commands.");
+		embed.addField(`${prefix}command list`, "Direct messages a list of custom commands on the server.");
+		embed.addField(`${prefix}command add <name> <command>`, "Adds a custom command to the server.");
+		embed.addField(`${prefix}command remove <name> <command>`, "Removes a custom command on the server.");
+		embed.addField(`${prefix}command edit <name> <command>`, "Edits a custom command on the server.");
+		embed.addField(`${prefix}command search <name>`, "Search for custom commands on the server containing a given word.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
-		embed.addField(":speech_left: Custom Commands", `** ${prefix}command** - Shows this list of commands for custom commands.
-			** ${prefix}command list** - Direct messages a list of custom commands on the server.
-			** ${prefix}command add <name> <command>** - Adds a custom command to the server.
-			** ${prefix}command remove <name> <command>** - Removes a custom command on the server.
-			** ${prefix}command edit <name> <command>** - Edits a custom command on the server.
-			** ${prefix}command search <name>** - Search for custom commands on the server containing a given word.`);
 	};
 
 	//Help command for Lastfm Commands
 	lastFMHelp = function lastFMHelp(prefix, embed) {
-		embed.setTitle("LastFM Commands");
-		embed.setColor("#ffff4d");
-		embed.setFooter("If you have any other questions please contact Rave#0737");
-		embed.addField(":musical_note: Lastfm Commands", `** ${prefix}lastfm help** - Shows this list of commands for lastfm commands.
-			** ${prefix}lastfm** - Shows basic account info.
-			** ${prefix}lastfm set** - Saves lastfm username (requires a [last.fm](https://www.last.fm) account).
-			** ${prefix}lastfm nowplaying** - Shows the song currently playing.
-			** ${prefix}lastfm recent** - Shows the songs recently listened to.
-			** ${prefix}lastfm toptracks <week|month|3-month|half-year|year>** - Shows the top tracks of <period>.
-			** ${prefix}lastfm topartist <week|month|3-month|half-year|year>** - Shows the top artists of <period>.
-			** ${prefix}lastfm topalbums <week|month|3-month|half-year|year>** - Shows the top albums of <period>.`);
+		embed.setTitle(":musical_note: LastFM Commands");
+		embed.setColor("#33cc33");
+		embed.addField(`${prefix}lastfm`, "Shows last.fm account info.");
+		embed.addField(`${prefix}lastfm help`, "Shows this list of commands for last.fm commands.");
+		embed.addField(`${prefix}lastfm set`, `Saves last.fm username (requires a [last.fm](${lastfmSite}) account).`);
+		embed.addField(`${prefix}lastfm nowplaying`, "Shows the song currently playing.");
+		embed.addField(`${prefix}lastfm recent`, "Shows the songs recently listened to.");
+		embed.addField(`${prefix}lastfm toptracks <week|month|3-month|half-year|year>`, "Shows the top tracks of <period>.");
+		embed.addField(`${prefix}lastfm topartist <week|month|3-month|half-year|year>`, "Shows the top artists of <period>.");
+		embed.addField(`${prefix}lastfm topalbums <week|month|3-month|half-year|year>`, "Shows the top albums of <period>.");
+		embed.setFooter("If you have any other questions please contact Rave#0737", "https://i.imgur.com/C7u8gqg.jpg");
 	};
 
 	//Help for Greeter Commands
 	welcomeHelp = function welcomeHelp(prefix, embed) {
+		embed.setTitle(":wave: Greeter Commands");
 		embed.setColor("#ff8533");
-		embed.setTitle("Greeter Help");
+		embed.addField(`${prefix}greeter`, "Shows this list of commands for greeter.");
+		embed.addField(`${prefix}greeter channel <channel name>`, "Sets the channel the bot should greet new members in.");
+		embed.addField(`${prefix}greeter message <message>`, "Sets the message the bot says when a new member joins.\n Use {server} for the server name. Use {user} for the username. Use {mention} for a mention.");
+		embed.addField(`${prefix}toggle greeter`, "Toggles the greeter functionality.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
-		embed.addField(":wave: Greeter Commands", `** ${prefix}greeter** - Shows this list of commands for greeter.
-			** ${prefix}greeter channel <channel name>** - Sets the channel the bot should greet new members in.
-			** ${prefix}greeter message <message>** - Sets the message the bot says when a new member joins. Use {server} for server name and {user} for the new user. Using {mention} makes the username a mention.`);
 	};
 
 	//Help for Starboard Commands
 	starboardHelp = function starboardHelp(prefix, embed) {
+		embed.setTitle(":star: Starboard Commands");
 		embed.setColor("#ff8533");
-		embed.setTitle("Starboard Help");
+		embed.addField(`${prefix}starboard`, "Shows this list of commands for starboard.");
+		embed.addField(`${prefix}starboard channel <channel name>`, "Sets the channel where the bot should pin starred messages.");
+		embed.addField(`${prefix}starboard emoji`, "View this server's list of valid emoji for pinning messages to the starboard.");
+		embed.addField(`${prefix}starboard emoji add`, "Add an emoji to the list of valid emoji for pinning messages to the starboard.");
+		embed.addField(`${prefix}starboard emoji remove`, "Remove an emoji from the list of valid emoji for pinning messages to the starboard.");
+		embed.addField(`${prefix}starboard number <number>`, "Sets the number of reactions required to pin messages on the board.");
+		embed.addField(`${prefix}toggle starboard`, "Toggles the starboard functionality.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
-		embed.addField(":star: Starboard Commands", `** ${prefix}starboard** - Shows this list of commands for starboard.
-			** ${prefix}starboard channel <channel name>** - Sets the channel where the bot should pin starred messages.
-			** ${prefix}starboard emoji** - View this server's list of valid emoji for pinning messages to the starboard.
-			** ${prefix}starboard emoji add** - Add an emoji to the list of valid emoji for pinning messages to the starboard.
-			** ${prefix}starboard emoji remove** - Remove an emoji from the list of valid emoji for pinning messages to the starboard.
-			** ${prefix}starboard number <number>** - Sets the number of reactions required to pin messages on the board.
-			** ${prefix}toggle starboard** - Toggles the starboard functionality.`);
 	};
 
 	//Help for Start Commands
 	startHelp = function startHelp(prefix, embed) {
+		embed.setTitle(":checkered_flag: Start Commands");
 		embed.setColor("#2ecc71");
-		embed.setTitle("Start Help");
+		embed.addField(`${prefix}start`, "Shows this list of commands for start.");
+		embed.addField(`${prefix}start help`, "Shows a detailed list of commands for start.");
+		embed.addField(`${prefix}start roles <channel name>`, "Sets the channel for the role system.");
+		embed.addField(`${prefix}start logs <channel name>`, "Sets the channel for message logs.");
+		embed.addField(`${prefix}start join <channel name>`, "Sets the channel for users joining and leaving. (Message cannot be changed on this)");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
-		embed.addField(":checkered_flag: Start Commands", `** ${prefix}start** - Shows this list of commands for start.
-			** ${prefix}start help** - Shows a detailed list of commands for start.
-			** ${prefix}start roles <channel name>** - Sets the channel for the role system.
-			** ${prefix}start logs <channel name>** - Sets the channel for message logs.  
-			** ${prefix}start join <channel name>** - Sets the channel for users joining and leaving. (Message cannot be changed on this)`);
 	};
 
 	//Help for Toggle Commands
 	toggleHelp = function toggleHelp(prefix, embed) {
+		embed.setTitle(":arrows_counterclockwise: Toggle Commands");
 		embed.setColor("#3498db");
-		embed.setTitle("Toggle Help");
+		embed.addField(`${prefix}toggle`, "Shows this list of commands for toggles.");
+		embed.addField(`${prefix}toggle logs`, "Toggles the logs functionality.");
+		embed.addField(`${prefix}toggle image`, "Changes between embed disabled for images in message logs.");
+		embed.addField(`${prefix}toggle greeter`, "Toggles the greeter functionality.");
+		embed.addField(`${prefix}toggle roles`, "Toggles the roles functionality.");
+		embed.addField(`${prefix}toggle starboard`, "Toggles the starboard functionality.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
-		embed.addField(":arrows_counterclockwise: Toggle Commands", `** ${prefix}toggle** - Shows this list of commands for toggles.
-			** ${prefix}toggle image** - Changes between embed disabled for images in message logs.
-			** ${prefix}toggle logs** - Turns message logs on and off.
-			** ${prefix}toggle greeter** - Turns greeter message on and off.
-			** ${prefix}toggle roles** - Turns roles channel on and off.
-			** ${prefix}toggle starboard** - Turns starboard channel on and off.`);
 	};
 
 	//Help for Server Commands
 	ownerServerHelp = function ownerServerHelp(prefix, embed) {
+		embed.setTitle(":robot: Server Commands");
 		embed.setColor("#a893f9");
-		embed.setTitle("Server Help");
-		embed.addField(":speech_left: Sever Commands", `** ${prefix}server** - Shows this list of commands for server.
-** ${prefix}server list** - Shows the servers Lucky Bot is in.
-** ${prefix}server leave** - Allows Lucky Bot to leave a server it is in.
-** ${prefix}server settings <serverid>** - Shows enabled settings on <server>. Defaults to current server if no id is provided.`);
+		embed.addField(`${prefix}server`, "Shows this list of commands for server.");
+		embed.addField(`${prefix}server list`, `Shows the servers ${bot.user.username} is in.`);
+		embed.addField(`${prefix}server leave`, `${bot.user.username} leaves a server it is in.`);
+		embed.addField(`${prefix}server settings <serverid>`, "Shows enabled settings on <server>. Defaults to current server if no id is provided.");
 	};
 
 	//Help for Relay Commands
 	relayHelp = function relayHelp(prefix, embed) {
+		embed.setTitle(":arrows_counterclockwise: Relay Commands");
 		embed.setColor("#A021ED");
-		embed.setTitle("Relay Help");
-		embed.addField(":arrows_counterclockwise: Relay", `** ${prefix}relay** - Shows this list of commands for relay.
-** ${prefix}relay list** - Shows existing relays.
-** ${prefix}relay start <name> <type> <chanID1> <chanID2>** - Starts a relay of <type> between at least two channels.
-** ${prefix}relay add <name> <chanID>** - Adds a channel to an existing relay.
-** ${prefix}relay remove <name> <chanID>** - Removes a channel from an existing relay.
-** ${prefix}relay delete <name>** - Deletes an existing relay.`);
+		embed.addField(`${prefix}relay`, "Shows this list of commands for relay.");
+		embed.addField(`${prefix}relay list`, "Shows existing relays.");
+		embed.addField(`${prefix}relay start <name> <type> <chanID1> <chanID2>`, "Starts a relay of <type> between at least two channels.");
+		embed.addField(`${prefix}relay add <name> <chanID>`, "Adds a channel to an existing relay.");
+		embed.addField(`${prefix}relay remove <name> <chanID>`, "Removes a channel from an existing relay.");
+		embed.addField(`${prefix}relay delete <name>`, "Deletes an existing relay.");
 	};
 
 	//Sends embed in channel if bot has permission otherwise dms

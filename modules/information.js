@@ -64,7 +64,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}invite`) || (command === `${prefix}inv`)) {
 			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`);
-			message.author.send(`Want Lucky Bot for your server? Have any questions on how to use Lucky Bot? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`);
+			message.author.send(`Want ${bot.user.username} for your server? Have any questions on how to use ${bot.user.username}? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`);
 			return;
 		}
 
