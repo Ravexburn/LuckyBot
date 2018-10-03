@@ -104,8 +104,8 @@ module.exports = (bot = Discord.Client) => {
 		embed.setTitle(":robot: Server Commands");
 		embed.setColor("#a893f9");
 		embed.addField(`${prefix}server`, "Shows this list of commands for server.");
-		embed.addField(`${prefix}server list`, "Shows the servers Lucky Bot is in.");
-		embed.addField(`${prefix}server leave`, "Lucky Bot leaves a server it is in.");
+		embed.addField(`${prefix}server list`, `Shows the servers ${bot.user.username} is in.`);
+		embed.addField(`${prefix}server leave`, `${bot.user.username} leaves a server it is in.`);
 		embed.addField(`${prefix}server settings <serverid>`, "Shows enabled settings on <server>. Defaults to current server if no id is provided.");
 	};
 
