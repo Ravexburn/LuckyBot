@@ -13,6 +13,7 @@ module.exports = (bot = Discord.Client) => {
 	userInfo = async function userInfo(message, args) {
 
 		let target_id = null;
+		let target;
 		if (args.length !== 0) {
 			const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 			if (matches) {
@@ -21,13 +22,17 @@ module.exports = (bot = Discord.Client) => {
 			if (!target_id) {
 				target_id = args[0];
 			}
-		}
-		let target = message.member;
 
-		if (message.guild.members.has(target_id)) {
-			target = message.guild.member(target_id);
-		}
+			if (message.guild.members.has(target_id)) {
+				target = message.guild.member(target_id);
+			} else {
+				message.channel.send("Unable to find user.");
+			}
 
+		} else {
+			target = message.member;
+		}
+		
 		if (!target) return;
 		let member = target;
 		let color = "#a8e8eb";
@@ -61,11 +66,11 @@ module.exports = (bot = Discord.Client) => {
 			}
 			embed.addField(fieldString, gameString, true);
 		}
-		
-		let userRoles = member.roles.size > 0 ? member.roles.array().sort((a,b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ") : "N/A";
+
+		let userRoles = member.roles.size > 0 ? member.roles.array().sort((a, b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ") : "N/A";
 		if (userRoles) {
 			embed.addField("Roles", userRoles);
-		}else{
+		} else {
 			embed.addField("Roles", "N/A");
 		}
 
