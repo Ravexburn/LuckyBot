@@ -4,7 +4,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Requires
 
-	require("./../modules/messagelogs.js")(bot);
+	require("../modules/modding/messagelogs.js")(bot);
 
 	delHandler = async function delHandler(message) {
 
