@@ -514,7 +514,7 @@ module.exports = (bot = Discord.Client) => {
 					notifications.forEach((keywordSet, userID) => {
 						const member = guild.members.get(userID);
 						if (!member) return;
-						let msg = message.content.replace(/`/g, "\u200B`");
+						let msg = message.content.replace(/`/g, "'");
 						const keywords = Array.from(keywordSet).map(key => `\`${key}\``).join(", ");
 						/* let embed = new Discord.RichEmbed()
 							.setAuthor(message.author.username, message.author.displayAvatarURL.split("?")[0])
