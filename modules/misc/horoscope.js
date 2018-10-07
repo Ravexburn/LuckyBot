@@ -7,6 +7,7 @@ const horoscope = new Horoscope();
 module.exports = (bot = Discord.Client) => {
 
 	require("../../functions/helpfunctions.js")(bot);
+	require("../../functions/functions.js")(bot);
 
 	const signColor = {
 		Aries: "#B70000",

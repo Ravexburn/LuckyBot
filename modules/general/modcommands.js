@@ -11,6 +11,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../modding/kick.js")(bot);
 	require("../modding/mute.js")(bot);
 	require("../modding/prune.js")(bot);
+	require("../modding/starboard.js")(bot);
 	require("../owner/relays.js")(bot);
 	require("../modding/say.js")(bot);
 	require("../modding/setprefix.js")(bot);
@@ -63,20 +64,14 @@ module.exports = (bot = Discord.Client) => {
 			let embed;
 			switch (args[0].toLowerCase()) {
 
-				//Message logging
-
 				case "logs":
 				case "messagelogs":
 					logChan(message);
 					break;
 
-				//Roles
-
 				case "roles":
 					rolesChan(message, serverSettings, command);
 					break;
-
-				//Join
 
 				case "join":
 					joinChan(message, serverSettings, command);
@@ -103,27 +98,22 @@ module.exports = (bot = Discord.Client) => {
 			let embed;
 			switch (args[0].toLowerCase()) {
 
-				//Toggle Image Embed
 				case "image":
 					imgTog(message, serverSettings);
 					return;
 
-				//Toggle Logs
 				case "logs":
 					logsTog(message, serverSettings);
 					return;
-
-				//Toggle Greeter     
+    
 				case "greeter":
 					welTog(message, serverSettings);
 					return;
 
-				//Toggle Roles  
 				case "roles":
 					rolesTog(message, serverSettings);
 					return;
-
-				//Toggle Starboard  
+ 
 				case "starboard":
 					starboardTog(message, serverSettings);
 					return;
