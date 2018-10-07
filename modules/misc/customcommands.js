@@ -60,6 +60,11 @@ module.exports = (bot = Discord.Client) => {
 
 					cmdName = args[1].toLowerCase();
 
+					if (!/^[\x00-\x7F]+$/.test(cmdName)) {
+						message.channel.send("**Command name has invalid characters try another name.**");
+						return;
+					}
+
 					if (commandnames.includes(cmdName)) {
 						message.channel.send("**That is a standard command try another name.**");
 						return;
