@@ -20,12 +20,13 @@ const commands = {
 	"sixMonth": ["half-year", "6-month", "6month", "halfyear"],
 	"yearly": ["year", "12-month", "12month", "yearly"]
 };
-let apiKey;
-let notRegisteredAlert;
+var apiKey;
+var notRegisteredAlert;
 
 module.exports = (bot = Discord.Client) => {
 
 	require("../../functions/helpfunctions.js")(bot);
+	require("../../functions/functions.js")(bot);
 
 	lastFM = function lastFM(message) {
 		if (message.system || message.author.bot || message.channel.type === 'dm') return;
@@ -89,7 +90,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 };
 
-//Gets the first memtion from the command, if any, and removes all mentions from the list of args
+//Gets the first mention from the command, if any, and removes all mentions from the list of args
 function attemptToGetMentionId(args) {
 	let mentions = [];
 

@@ -7,6 +7,7 @@ const ignorenoti = new Ignorenoti();
 module.exports = (bot = Discord.Client) => {
 
 	require("../../functions/helpfunctions.js")(bot);
+	require("../../functions/functions.js")(bot);
 
 	notifySet = async function notifySet(message) {
 		if (message.system) return;
