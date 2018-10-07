@@ -2,9 +2,9 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
-	require("./../functions/helpfunctions.js")(bot);
-	require("./color.js")(bot);
-	require("./horoscope.js")(bot);
+	require("../../functions/helpfunctions.js")(bot);
+	require("../misc/color.js")(bot);
+	require("../misc/horoscope.js")(bot);
 
 	miscCommands = async function miscCommands(message) {
 

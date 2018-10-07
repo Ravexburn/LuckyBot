@@ -35,7 +35,7 @@ const defaultSettings = {
 	//Mod logs
 	modLogOn: false,
 	//Starboard
-	starboardOn: false,
+	starboardOn: true,
 	starboardChannelID: "",
 	starboardEmoji: ["⭐"],
 	starboardNumber: 1

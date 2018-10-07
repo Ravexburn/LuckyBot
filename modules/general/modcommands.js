@@ -3,12 +3,18 @@ const website = "https://luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 
-	require("./../functions/modchanfunctions.js")(bot);
-	require("./../functions/modcmdfunctions.js")(bot);
-	require("./../functions/modtogfunctions.js")(bot);
-	require("./../functions/ownercmdfunctions.js")(bot);
-	require("./relays.js")(bot);
-	require("./whitelist.js")(bot);
+	require("../../functions/modchanfunctions.js")(bot);
+	require("../../functions/modcmdfunctions.js")(bot);
+	require("../../functions/modtogfunctions.js")(bot);
+	require("../../functions/ownercmdfunctions.js")(bot);
+	require("../modding/ban.js")(bot);
+	require("../modding/kick.js")(bot);
+	require("../modding/mute.js")(bot);
+	require("../modding/prune.js")(bot);
+	require("../owner/relays.js")(bot);
+	require("../modding/say.js")(bot);
+	require("../modding/setprefix.js")(bot);
+	require("../owner/whitelist.js")(bot);
 
 	//Admin and Mod Settings
 

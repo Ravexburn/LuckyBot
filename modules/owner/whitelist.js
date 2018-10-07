@@ -1,4 +1,4 @@
-const serverid = require("./serverlist.json");
+const serverid = require("../serverlist.json");
 const Discord = require("discord.js");
 let servers = serverid.servers;
 const fs = require("fs");
@@ -30,7 +30,7 @@ module.exports = (bot = Discord.Client) => {
 				}
 
 				else {
-					guild.owner.send(`Your server \`${guild.name}\` is not currently whitelisted. Please join here and post in #add-your-server to have Lucky Bot be whitelisted. **If Lucky Bot is on your server, you may ignore this message as it is already whitelisted!** https://discord.gg/z4thPtW`);
+					guild.owner.send(`Your server \`${guild.name}\` is not currently whitelisted. Please join here and post in #add-your-server to have ${bot.user.username} be whitelisted. **If ${bot.user.username} is on your server, you may ignore this message as it is already whitelisted!** https://discord.gg/z4thPtW`);
 					guild.leave();
 
 					const chan = serverLogging();
@@ -163,5 +163,8 @@ function whitelistAdd(id, name) {
 whitelistEmbed = function whitelistEmbed(guild, embed) {
 	embed.addField("Owner", `**${guild.owner.user.tag}**`, true);
 	embed.addField("Server", `**${guild.name}** - \`(#${guild.id})\``, true);
-	embed.setTimestamp(guild.joinedAt.toLocaleString());
+	embed.addField("Members", guild.memberCount, true);
+	embed.setThumbnail(guild.iconURL);
+	embed.setURL(guild.iconURL);
+	embed.setTimestamp(guild.joinAt);
 };

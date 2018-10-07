@@ -6,12 +6,14 @@ const website = "https://luckybot.io/";
 
 module.exports = (bot = Discord.Client) => {
 
-	require("./../functions/helpfunctions.js")(bot);
-	require("./../functions/infofunctions.js")(bot);
-	require("./currency.js")(bot);
-	require("./levels.js")(bot);
-	require("./rep.js")(bot);
-	require("./rolelist.js")(bot);
+	require("../../functions/helpfunctions.js")(bot);
+	require("../misc/botinfo.js")(bot);
+	require("../misc/currency.js")(bot);
+	require("../misc/levels.js")(bot);
+	require("../misc/rep.js")(bot);
+	require("../misc/rolelist.js")(bot);
+	require("../misc/serverinfo.js")(bot);
+	require("../misc/userinfo.js")(bot);
 
 	infoMsg = async function infoMsg(message) {
 
@@ -198,4 +200,5 @@ module.exports = (bot = Discord.Client) => {
 
 		return chan;
 	}
+	
 };

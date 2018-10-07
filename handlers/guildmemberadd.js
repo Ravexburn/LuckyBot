@@ -4,8 +4,8 @@ module.exports = (bot = Discord.Client) => {
 
 	//Requires
 
-	require("./../modules/autorole.js")(bot);
-	require("./../modules/welcome.js")(bot);
+	require("../modules/modding/autorole.js")(bot);
+	require("../modules/modding/welcome.js")(bot);
 
 	memberJoinHandler = function memberJoinHandler(member) {
 

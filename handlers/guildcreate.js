@@ -4,7 +4,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Requires
 
-	require("./../modules/whitelist.js")(bot);
+	require("../modules/owner/whitelist.js")(bot);
 
 	guildCreateHandler = function guildCreateHandler(guild) {
 

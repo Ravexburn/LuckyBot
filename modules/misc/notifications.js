@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
 const Notifications = require("./notifications_sql");
 const notify = new Notifications();
-const Ignorenoti = require("./notifications_ignore.js");
+const Ignorenoti = require("./notifications_ignore");
 const ignorenoti = new Ignorenoti();
 
 module.exports = (bot = Discord.Client) => {
 
-	require("./../functions/helpfunctions.js")(bot);
+	require("../../functions/helpfunctions.js")(bot);
 
 	notifySet = async function notifySet(message) {
 		if (message.system) return;
@@ -514,7 +514,7 @@ module.exports = (bot = Discord.Client) => {
 					notifications.forEach((keywordSet, userID) => {
 						const member = guild.members.get(userID);
 						if (!member) return;
-						let msg = message.content;
+						let msg = message.content.replace(/`/g, "'");
 						const keywords = Array.from(keywordSet).map(key => `\`${key}\``).join(", ");
 						/* let embed = new Discord.RichEmbed()
 							.setAuthor(message.author.username, message.author.displayAvatarURL.split("?")[0])

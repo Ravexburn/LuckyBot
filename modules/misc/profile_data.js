@@ -15,6 +15,9 @@ const SQL_BIRTHDAY_MONTH = "bday_month";
 const SQL_BIRTHDAY_DAY = "bday_day";
 const SQL_AGE = "age";
 const SQL_TICKETS = "tickets";
+const SQL_P1 = "p_tier1";
+const SQL_P2 = "p_tier2";
+const SQL_P3 = "p_tier3";
 
 const SQL_TABLE_LOCAL = "levels_local";
 const SQL_GUILD = "guild_id";
@@ -58,6 +61,9 @@ module.exports = class Profiles {
 						data[SQL_REP] = 0;
 						data[SQL_TITLE] = null;
 						data[SQL_TICKETS] = 0;
+						data[SQL_P1] = null;
+						data[SQL_P2] = null;
+						data[SQL_P3] = null;
 						data[SQL_USER_ID] = userID;
 						return Promise.resolve(data);
 					}

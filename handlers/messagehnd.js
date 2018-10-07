@@ -4,17 +4,17 @@ module.exports = (bot = Discord.Client) => {
 
 	//Requires
 
-	require("./../modules/autorole.js")(bot);
-	require("./../modules/commands.js")(bot);
-	require("./../modules/information.js")(bot);
-	require("./../modules/lastfm.js")(bot);
-	require("./../modules/levels.js")(bot);
-	require("./../modules/messagelogs.js")(bot);
-	require("./../modules/misccommands.js")(bot);
-	require("./../modules/modcommands.js")(bot);
-	require("./../modules/notifications.js")(bot);
-	require("./../modules/roles.js")(bot);
-	require("./../modules/starboard.js")(bot);
+	require("../modules/modding/autorole.js")(bot);
+	require("./../modules/misc/commands.js")(bot);
+	require("../modules/general/information.js")(bot);
+	require("../modules/misc/lastfm.js")(bot);
+	require("../modules/misc/levels.js")(bot);
+	require("../modules/modding/messagelogs.js")(bot);
+	require("../modules/general/misccommands.js")(bot);
+	require("../modules/general/modcommands.js")(bot);
+	require("../modules/misc/notifications.js")(bot);
+	require("../modules/modding/roles.js")(bot);
+	require("../modules/modding/starboard.js")(bot);
 
 	msgHandler = async function msgHandler(message) {
 		

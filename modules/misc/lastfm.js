@@ -25,7 +25,7 @@ let notRegisteredAlert;
 
 module.exports = (bot = Discord.Client) => {
 
-	require("./../functions/helpfunctions.js")(bot);
+	require("../../functions/helpfunctions.js")(bot);
 
 	lastFM = function lastFM(message) {
 		if (message.system || message.author.bot || message.channel.type === 'dm') return;
