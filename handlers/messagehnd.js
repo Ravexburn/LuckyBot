@@ -9,6 +9,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../modules/general/information.js")(bot);
 	require("../modules/misc/lastfm.js")(bot);
 	require("../modules/misc/levels.js")(bot);
+	require("../modules/modding/adblock.js")(bot);
 	require("../modules/modding/messagelogs.js")(bot);
 	require("../modules/general/misccommands.js")(bot);
 	require("../modules/general/modcommands.js")(bot);
@@ -20,6 +21,7 @@ module.exports = (bot = Discord.Client) => {
 		
 		//Functions
 
+		adblocker(message);
 		autoRoleMsg(message);
 		bkpCmd(message);
 		commands(message);
