@@ -2,11 +2,11 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
-	//Bans a user in a server by ID or mention
+	//Unbans a user in a server by ID or mention
 
 	unbanUser = function unbanUser(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please do ${command} <user> [days] [reason]`);
+			message.channel.send(`Please do ${command} <user> [reason]`);
 			return;
 		}
 
@@ -36,7 +36,7 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send("Please enable the `BAN_MEMBERS` permisson to be able to unban");
 			return;
 		}
-		
+
 		if (member === message.member) {
 			message.channel.send("You can't unban yourself");
 			return;
@@ -44,7 +44,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let reason = args.slice(1).join(" ");
 
-		message.guild.unban(member_id, reason ).then((user) => {
+		message.guild.unban(member_id, reason).then((user) => {
 			if (!reason) {
 				reason = "no reason provided";
 			}
