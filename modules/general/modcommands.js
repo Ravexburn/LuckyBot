@@ -12,6 +12,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../modding/mute.js")(bot);
 	require("../modding/prune.js")(bot);
 	require("../modding/starboard.js")(bot);
+	require("../modding/unban.js")(bot);
 	require("../owner/relays.js")(bot);
 	require("../modding/say.js")(bot);
 	require("../modding/setprefix.js")(bot);
@@ -233,6 +234,12 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}ban`)) {
 			banUser(message, command, args);
+		}
+
+		//Unban Command
+
+		if ((command === `${prefix}unban`)) {
+			unbanUser(message, command, args);
 		}
 
 		//Kick command
