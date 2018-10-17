@@ -50,13 +50,24 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
+		if(!member){
+			message.channel.send("Invalid user");
+			return;
+		}
+
 		let reason = args.slice(1).join(" ");
 
 		member.kick(reason).then((member) => {
 			if (!reason) {
 				reason = "no reason provided";
 			}
-			message.channel.send(`**${member.displayName}** has been kicked for \`${reason}\``);
+			let embed = new Discord.RichEmbed()
+				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+				.setColor("#FFFF33")
+				.addField("User", `${member} ${member.user.username} - (#${member.id})`)
+				.addField("Kick Reason", `Has been kicked for ${reason}`)
+				.setTimestamp(message.createdAt);
+			message.channel.send(embed);
 		}).catch((error) => {
 			message.channel.send(error.message);
 		});
