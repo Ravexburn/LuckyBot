@@ -58,6 +58,14 @@ module.exports = (bot = Discord.Client) => {
 			reason = args.slice(2).join(" ");
 		}
 
+		if (days <= 0) {
+			days = 0;
+		}else if (days == 1){
+			days = 1;
+		}else if(days > 1){
+			days = 7;
+		}
+
 		message.guild.ban(member_id, { days, reason }).then((user) => {
 			if (!reason) {
 				reason = "no reason provided";
@@ -66,8 +74,8 @@ module.exports = (bot = Discord.Client) => {
 				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 				.setColor("#800000")
 				.addField("User", `${user} ${user.username} - (#${user.id})`)
-				.addField("Ban Reason", `Has been banned for ${reason}`)
-				.addField("Days of messages removed", `${days} day(s)`)
+				.addField("Ban Reason", `${reason}`)
+				.addField("Deleted message days", `${days} day(s)`)
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed);
 		}).catch((error) => {

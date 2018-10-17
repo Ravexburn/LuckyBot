@@ -65,7 +65,7 @@ module.exports = (bot = Discord.Client) => {
 				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 				.setColor("#FFFF33")
 				.addField("User", `${member} ${member.user.username} - (#${member.id})`)
-				.addField("Kick Reason", `Has been kicked for ${reason}`)
+				.addField("Kick Reason", `${reason}`)
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed);
 		}).catch((error) => {
