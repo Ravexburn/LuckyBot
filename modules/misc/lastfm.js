@@ -294,7 +294,7 @@ function attemptToRetrieveUserInfo(message, target) {
 						.setAuthor(target.user.tag, target.user.displayAvatarURL.split("?")[0])
 						.setURL(response.data.user.url)
 						.setThumbnail(thumbnailURL)
-						.setColor("#33cc33")
+						.setColor("#D21E26")
 						.addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
 						.addField("Scrobbles", response.data.user.playcount, true)
 						.addField("Profile", `Click [here](${response.data.user.url}) to see their profile`, true)
@@ -349,7 +349,7 @@ function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
 		let album = track1.album["#text"] ? track1.album["#text"] : "N/A";
 
 		let embed = new Discord.RichEmbed()
-			.setColor("#33cc33")
+			.setColor("#D21E26")
 			.setTimestamp(message.createdAt)
 			.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 
@@ -426,7 +426,7 @@ function displayTopTracks(message, embed, tracks) {
 
 //Embed colors, message, and footer function
 function embedCss(message, embed, msg) {
-	embed.setColor("#33cc33");
+	embed.setColor("#D21E26");
 	embed.setDescription(msg.substring(0, MAX_CHAR));
 	embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
@@ -520,7 +520,7 @@ function sendLastfmHelpEmbed(message, prefix) {
 
 function sendListWithPages(message, embed, list, coverItem) {
 	setThumbnail(embed, coverItem);
-	embed.setColor("#33cc33");
+	embed.setColor("#D21E26");
 	embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 	embedPages(message, embed, toEmbedPages(list, null, 10));
 }
