@@ -62,7 +62,14 @@ module.exports = (bot = Discord.Client) => {
 			if (!reason) {
 				reason = "no reason provided";
 			}
-			message.channel.send(`**${user}** has been banned for \`${reason}\``);
+			let embed = new Discord.RichEmbed()
+				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+				.setColor("#800000")
+				.addField("User", `${user} ${user.username} - (#${user.id})`)
+				.addField("Ban Reason", `Has been banned for ${reason}`)
+				.addField("Days of messages removed", `${days} day(s)`)
+				.setTimestamp(message.createdAt);
+			message.channel.send(embed);
 		}).catch((error) => {
 			message.channel.send(error.message);
 		});
