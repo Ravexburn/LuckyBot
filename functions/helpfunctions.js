@@ -37,7 +37,7 @@ module.exports = (bot = Discord.Client) => {
 	//Help command for Lastfm Commands
 	lastFMHelp = function lastFMHelp(prefix, embed) {
 		embed.setTitle(":musical_note: LastFM Commands");
-		embed.setColor("#33cc33");
+		embed.setColor("#D21E26");
 		embed.addField(`${prefix}lastfm`, "Shows last.fm account info.");
 		embed.addField(`${prefix}lastfm help`, "Shows this list of commands for last.fm commands.");
 		embed.addField(`${prefix}lastfm set`, `Saves last.fm username (requires a [last.fm](${lastfmSite}) account).`);

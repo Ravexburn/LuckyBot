@@ -38,7 +38,9 @@ const defaultSettings = {
 	starboardOn: true,
 	starboardChannelID: "",
 	starboardEmoji: ["⭐"],
-	starboardNumber: 1
+	starboardNumber: 1,
+	//Ad Blocker Channel
+	adBlocktoggle: false
 };
 
 module.exports = (bot = Discord.Client) => {

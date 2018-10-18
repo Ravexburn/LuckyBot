@@ -7,11 +7,13 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/modcmdfunctions.js")(bot);
 	require("../../functions/modtogfunctions.js")(bot);
 	require("../../functions/ownercmdfunctions.js")(bot);
+	require("../modding/adblock.js")(bot);
 	require("../modding/ban.js")(bot);
 	require("../modding/kick.js")(bot);
 	require("../modding/mute.js")(bot);
 	require("../modding/prune.js")(bot);
 	require("../modding/starboard.js")(bot);
+	require("../modding/unban.js")(bot);
 	require("../owner/relays.js")(bot);
 	require("../modding/say.js")(bot);
 	require("../modding/setprefix.js")(bot);
@@ -113,7 +115,11 @@ module.exports = (bot = Discord.Client) => {
 				case "roles":
 					rolesTog(message, serverSettings);
 					return;
- 
+
+					case "adblock":
+					adBlockTog(message, serverSettings);
+					return;
+					
 				case "starboard":
 					starboardTog(message, serverSettings);
 					return;
@@ -233,6 +239,12 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}ban`)) {
 			banUser(message, command, args);
+		}
+
+		//Unban Command
+
+		if ((command === `${prefix}unban`)) {
+			unbanUser(message, command, args);
 		}
 
 		//Kick command
