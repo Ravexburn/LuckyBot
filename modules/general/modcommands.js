@@ -107,7 +107,7 @@ module.exports = (bot = Discord.Client) => {
 				case "logs":
 					logsTog(message, serverSettings);
 					return;
-    
+
 				case "greeter":
 					welTog(message, serverSettings);
 					return;
@@ -116,10 +116,10 @@ module.exports = (bot = Discord.Client) => {
 					rolesTog(message, serverSettings);
 					return;
 
-					case "adblock":
+				case "adblock":
 					adBlockTog(message, serverSettings);
 					return;
-					
+
 				case "starboard":
 					starboardTog(message, serverSettings);
 					return;
@@ -222,7 +222,7 @@ module.exports = (bot = Discord.Client) => {
 
 	};
 
-	bkpCmd = async function bkpCmd(message) {	
+	bkpCmd = async function bkpCmd(message) {
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 
