@@ -117,6 +117,9 @@ module.exports = (bot = Discord.Client) => {
 					return;
 
 				case "adblock":
+				case "adb":
+				case "adblocker":
+				case "links":
 					adBlockTog(message, serverSettings);
 					return;
 
