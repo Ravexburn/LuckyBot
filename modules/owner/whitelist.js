@@ -166,5 +166,4 @@ whitelistEmbed = function whitelistEmbed(guild, embed) {
 	embed.addField("Members", guild.memberCount, true);
 	embed.setThumbnail(guild.iconURL);
 	embed.setURL(guild.iconURL);
-	embed.setTimestamp(message.createdAt);
 };
