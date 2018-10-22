@@ -91,7 +91,8 @@ function addRole(member, rolename, message) {
 	if (!member) return false;
 	if (!rolename) return false;
 
-	if (member.guild.roles.find(role => role.name === rolename)) {
+	if (member.guild.roles.filter(x => x.name === rolename)) {
+		let role = member.guild.roles.find(y => y.name === rolename);
 		if (!role) return;
 		if (member.roles.has(role.id)) {
 			//Member has role
@@ -127,7 +128,8 @@ function removeRole(member, rolename, message) {
 	if (!member) return false;
 	if (!rolename) return false;
 
-	if (member.guild.roles.find(role => role.name === rolename)) {
+	if (member.guild.roles.filter(x => x.name === rolename)) {
+		let role = member.guild.roles.find(y => y.name === rolename);
 		if (!role) return;
 		if (member.roles.has(role.id)) {
 			//Member has role
