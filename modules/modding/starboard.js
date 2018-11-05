@@ -73,11 +73,9 @@ module.exports = (bot = Discord.Client) => {
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
 			.setAuthor(`${author.username} in #${channel.name}`, author.displayAvatarURL)
-			.setTitle(`__View Message__`)
-			.setUrl(`https://discordapp.com/channels/${guild}/${channel}/${id}`)
 			.setFooter(`⭐${reaction.count} • ${message.id}`)
 			.setTimestamp(new Date())
-			.setDescription(messageContent)
+			.setDescription(`[__View Message__](https://discordapp.com/channels/${guild.id}/${channel.id}/${id})\n\n${messageContent}`)
 			.setImage(embedImage);
 
 		guild.fetchMember(author).then(guildMember => {
