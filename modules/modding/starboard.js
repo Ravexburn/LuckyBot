@@ -15,7 +15,8 @@ module.exports = (bot = Discord.Client) => {
 			guild,
 			author,
 			attachments,
-			channel
+			channel,
+			id
 		} = message;
 
 		const serverSettings = bot.getServerSettings(guild.id);
@@ -72,6 +73,8 @@ module.exports = (bot = Discord.Client) => {
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
 			.setAuthor(`${author.username} in #${channel.name}`, author.displayAvatarURL)
+			.setTitle(`__View Message__`)
+			.setUrl(`https://discordapp.com/channels/${guild}/${channel}/${id}`)
 			.setFooter(`⭐${reaction.count} • ${message.id}`)
 			.setTimestamp(new Date())
 			.setDescription(messageContent)
