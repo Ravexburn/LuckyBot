@@ -75,7 +75,7 @@ module.exports = (bot = Discord.Client) => {
 			.setAuthor(`${author.username} in #${channel.name}`, author.displayAvatarURL)
 			.setFooter(`⭐${reaction.count} • ${message.id}`)
 			.setTimestamp(new Date())
-			.setDescription(`[__View Message__](https://discordapp.com/channels/${guild.id}/${channel.id}/${id})\n\n${messageContent}`)
+			.setDescription(`[View Message](https://discordapp.com/channels/${guild.id}/${channel.id}/${id})\n\n${messageContent}`)
 			.setImage(embedImage);
 
 		guild.fetchMember(author).then(guildMember => {
