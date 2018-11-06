@@ -11,7 +11,6 @@ const commands = {
 	"topAlbums": ["talb", "tal", "topalbum", "topalbums", "top-album", "top-albums"],
 	"recentTracks": ["recent", "recenttracks", "recent-tracks"],
 	//Settings
-	"setLayout": ["layout", "lo"],
 	"saveUsername": ["set", "save"],
 	//Time periods
 	"weekly": ["week", "7-day", "7day", "weekly"],
@@ -60,13 +59,6 @@ module.exports = (bot = Discord.Client) => {
 					return;
 				}
 				attemptToSaveLastfmUsername(message, args[1]);
-				break;
-			case (commands.setLayout.includes(args[0])):
-				if (args.length === 1) {
-					message.reply(`Please select a layout between 0 and 5.`);
-					return;
-				}
-				attemptToSetLayout(args[1], message);
 				break;
 			case (commands.nowPlaying.includes(args[0])):
 				attemptToRetrieveNowPlaying(target, message);
@@ -327,16 +319,6 @@ function attemptToSaveLastfmUsername(message, username) {
 			}).catch((error) => {
 				handleError(message, error);
 			});
-		}).catch((error) => {
-			handleError(message, error);
-		});
-}
-
-function attemptToSetLayout(layout, message) {
-	lastfm.getLastfmData(message.author.id)
-		.then(() => {
-			lastfm.setLayout(message.author.id, layout);
-			message.reply(`Layout format set as: ${layout}`);
 		}).catch((error) => {
 			handleError(message, error);
 		});

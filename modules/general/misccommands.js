@@ -36,8 +36,8 @@ module.exports = (bot = Discord.Client) => {
 			}
 		}
 
-		if ((command === `${prefix}horoscope`)|| (command === `${prefix}hs`)) {
-			
+		if ((command === `${prefix}horoscope`) || (command === `${prefix}hs`)) {
+
 			switch (args[0]) {
 
 				default:
@@ -52,22 +52,21 @@ module.exports = (bot = Discord.Client) => {
 					horoscopeSet(message, args);
 					break;
 
-				case "week":
-					time = "week";
+				case "tomorrow":
+					time = "tomorrow";
 					horoInfo(message, time, prefix);
 					break;
 
-				case "month":
-					time = "month";
+				case "yesterday":
+					time = "yesterday";
 					horoInfo(message, time, prefix);
 					break;
 
-				case "year":
-					time = "year";
-					horoInfo(message, time, prefix);
+				case "list":
+					horoList(message);
 					break;
 			}
 		}
-		
+
 	};
 };
