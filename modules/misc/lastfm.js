@@ -429,12 +429,12 @@ function getTarget(message, args) {
 				return member;
 			}
 		}
-	
+
 		return message.member;
 	} catch (error) {
 		console.log(error);
 		return message.member;
-	}	
+	}
 }
 
 //Function for parsing user input into time period
