@@ -7,7 +7,7 @@ module.exports = (bot = Discord.Client) => {
 		require("../../functions/helpfunctions.js")(bot);
 
 		let i = 1;
-		let roles = message.guild.roles.array().sort((a,b) => b.position - a.position).map(x => `${i++}. ${x.name} (\`#${x.id}\`, \`${x.hexColor}\`) \`# of members: ${x.members.size}\``);
+		let roles = message.guild.roles.array().sort((a,b) => b.position - a.position).map(x => `${i++}. ${x.name.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`')} (\`#${x.id}\`, \`${x.hexColor}\`) \`# of members: ${x.members.size}\``);
 
 		var pages = toEmbedPages(roles);
 
