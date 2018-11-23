@@ -6,13 +6,12 @@ module.exports = (bot = Discord.Client) => {
 
 	serverList = function serverList(message) {
 		let i = 1;
-		const limit = 25;
-		let arr = bot.guilds.array().sort();
-		while (arr.length > 0) {
-			let list = arr.slice(0, limit).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
-			message.channel.send(list);
-			arr = arr.slice(limit);
-		}
+		let list = bot.guilds.array().sort().map(guild => `**${i++}.** \`${guild.name} - <${guild.id}>\n\``);
+		let pages = toEmbedPages(list);
+		embed = new Discord.RichEmbed()
+			.setTitle("Lucky Bot Servers")
+			.setColor("#57A80D");
+		embedPages(message, embed, pages);
 	};
 
 	//Tells LB to leave a server.
@@ -20,13 +19,12 @@ module.exports = (bot = Discord.Client) => {
 	serverLeave = function serverLeave(message, args) {
 		if (args.length < 2) {
 			let i = 1;
-			const limit = 25;
-			let arr = bot.guilds.array().sort();
-			while (arr.length > 0) {
-				let list = arr.slice(0, limit).map(guild => `\`${i++}. ${guild.name} - <${guild.id}>\n\``);
-				message.channel.send(list);
-				arr = arr.slice(limit);
-			}
+			let list = bot.guilds.array().sort().map(guild => `**${i++}.** \`${guild.name} - <${guild.id}>\n\``);
+			let pages = toEmbedPages(list);
+			embed = new Discord.RichEmbed()
+				.setTitle("Lucky Bot Servers")
+				.setColor("#57A80D");
+			embedPages(message, embed, pages);
 			let author = message.author;
 			message.channel.send("You have 60 seconds to choose a server to leave")
 				.then(() => {
