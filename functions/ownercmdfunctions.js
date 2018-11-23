@@ -6,7 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
 	serverList = function serverList(message) {
 		let i = 1;
-		let list = bot.guilds.array().sort().map(guild => `${i++}. \`${guild.name.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`')} - <${guild.id}>\n\``);
+		let list = bot.guilds.array().sort().map(guild => `${i++}. ${guild.name.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`')} - ${guild.id}`);
 		let pages = toEmbedPages(list);
 		embed = new Discord.RichEmbed()
 			.setTitle("Lucky Bot Servers")
@@ -19,7 +19,7 @@ module.exports = (bot = Discord.Client) => {
 	serverLeave = function serverLeave(message, args) {
 		if (args.length < 2) {
 			let i = 1;
-			let list = bot.guilds.array().sort().map(guild => `${i++}. \`${guild.name.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`')} - <${guild.id}>\n\``);
+			let list = bot.guilds.array().sort().map(guild => `${i++}. ${guild.name.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`')} - ${guild.id}`);
 			let pages = toEmbedPages(list);
 			embed = new Discord.RichEmbed()
 				.setTitle("Lucky Bot Servers")
