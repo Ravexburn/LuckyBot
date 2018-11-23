@@ -27,7 +27,7 @@ bot.on("ready", async () => {
 	} catch (error) {
 		bot.log(error.stack);
 	}
-	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix} for list of commands`);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
 	bot.guilds.forEach(guild => {
 		bot.invCache.guildInvites(guild).catch(console.error);
 		guild.fetchMembers().catch(console.error);
@@ -38,14 +38,14 @@ bot.on("ready", async () => {
 
 bot.on("guildCreate", guild => {
 	bot.invCache.guildInvites(guild).catch(console.error);
-	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix} for list of commands`);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
 	guildCreateHandler(guild);
 });
 
 //When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
-	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix} for list of commands`);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
 	guildDeleteHandler(guild);
 });
 
