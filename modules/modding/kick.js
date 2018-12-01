@@ -50,7 +50,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		if(!member){
+		if (!member) {
 			message.channel.send("Invalid user.");
 			return;
 		}
@@ -72,5 +72,5 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send(error.message);
 		});
 	};
-	
+
 };
