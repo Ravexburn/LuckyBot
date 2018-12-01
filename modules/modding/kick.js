@@ -28,30 +28,30 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.member.hasPermission("KICK_MEMBERS")) {
-			message.channel.send("You do not have the `KICK_MEMBERS` permission");
+			message.channel.send("You do not have the `KICK_MEMBERS` permission.");
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("KICK_MEMBERS")) {
-			message.channel.send("Please enable the `KICK_MEMBERS` permisson to be able to kick");
+			message.channel.send("Lucky Bot does not have the `KICK_MEMBERS` permission.");
 			return;
 		}
 
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
-				message.channel.send("You can't kick that person");
+				message.channel.send("You can't kick that person.");
 				return;
 			}
 
 		}
 
 		if (member === message.member) {
-			message.channel.send("You can't kick yourself");
+			message.channel.send("You can't kick yourself.");
 			return;
 		}
 
 		if(!member){
-			message.channel.send("Invalid user");
+			message.channel.send("Invalid user.");
 			return;
 		}
 
