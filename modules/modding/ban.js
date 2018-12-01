@@ -4,7 +4,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Bans a user in a server by ID or mention
 
-	banUser = function banUser(message, command, args) {
+	banUser = async function banUser(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please do ${command} <user> [days] [reason]`);
 			return;
@@ -28,24 +28,31 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send("You do not have the `BAN_MEMBERS` permission");
+			message.channel.send("You do not have the `BAN_MEMBERS` permission.");
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("BAN_MEMBERS")) {
-			message.channel.send("Please enable the `BAN_MEMBERS` permisson to be able to ban");
+			message.channel.send("Lucky Bot does not have the `BAN_MEMBERS` permisson.");
 			return;
 		}
 
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
-				message.channel.send("You can't ban that person");
+				message.channel.send("You can't ban that person.");
 				return;
 			}
 		}
 
 		if (member === message.member) {
-			message.channel.send("You can't ban yourself");
+			message.channel.send("You can't ban yourself.");
+			return;
+		}
+
+		let bans = await message.guild.fetchBans().catch(console.error);
+
+		if (bans.has(member_id)) {
+			message.channel.send("User is already banned in this server.");
 			return;
 		}
 
@@ -60,9 +67,9 @@ module.exports = (bot = Discord.Client) => {
 
 		if (days <= 0) {
 			days = 0;
-		}else if (days == 1){
+		} else if (days == 1) {
 			days = 1;
-		}else if(days > 1){
+		} else if (days > 1) {
 			days = 7;
 		}
 
@@ -74,7 +81,7 @@ module.exports = (bot = Discord.Client) => {
 				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 				.setColor("#800000")
 				.addField("User", `${user} ${user.username} - (#${user.id})`)
-				.addField("Ban Reason", `${reason}`)
+				.addField("Ban Reason", `${reason} <:rooban:518460420181327872>`)
 				.addField("Deleted message days", `${days} day(s)`)
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed);

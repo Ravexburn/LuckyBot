@@ -31,7 +31,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					color(message, args);
+					color(message, args, command);
 					return;
 			}
 		}
