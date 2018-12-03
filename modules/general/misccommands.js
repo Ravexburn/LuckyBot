@@ -22,6 +22,12 @@ module.exports = (bot = Discord.Client) => {
 		if (!command.startsWith(prefix)) return;
 
 		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
+			
+			if (args.length === 0) {
+				message.channel.send(`Please provide a hex color or ask for a random color with \`${command} random\``).catch(console.error);
+				return;
+			}
+
 			switch (args[0]) {
 				case "rand":
 				case "random":
@@ -31,7 +37,7 @@ module.exports = (bot = Discord.Client) => {
 					break;
 
 				default:
-					color(message, args, command);
+					color(message, args);
 					return;
 			}
 		}
@@ -39,7 +45,6 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}horoscope`) || (command === `${prefix}hs`)) {
 
 			switch (args[0]) {
-
 				default:
 				case "today":
 				case "day":
@@ -67,6 +72,6 @@ module.exports = (bot = Discord.Client) => {
 					break;
 			}
 		}
-
 	};
+
 };
