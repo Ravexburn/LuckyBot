@@ -33,7 +33,7 @@ module.exports = (bot = Discord.Client) => {
 			case "-":
 				break;
 			default:
-				message.delete();
+				message.delete().catch(console.error);
 				return;
 		}
 
@@ -94,29 +94,29 @@ function addRole(member, rolename, message) {
 	let role = member.guild.roles.find(role => role.name === rolename);
 	if (!role) {
 		message.reply(`Role does not exist.`)
-			.then(message => message.delete(10 * 1000));
-		message.delete(10 * 1000);
+			.then(message => message.delete(10 * 1000)).catch(console.error);
+		message.delete(10 * 1000).catch(console.error);
 		return false;
 	}
 	if (member.roles.has(role.id)) {
 		//Member has role
 		message.reply("You already have this role.")
-			.then(message => message.delete(10 * 1000));
-		message.delete(10 * 1000);
+			.then(message => message.delete(10 * 1000)).catch(console.error);
+		message.delete(10 * 1000).catch(console.error);
 		return false;
 	}
 
 	if (canAddRole(member, role)) {
 		member.addRole(role).catch(console.error);
 		message.reply("Role has been added.")
-			.then(message => message.delete(10 * 1000));
-		message.delete(10 * 1000);
+			.then(message => message.delete(10 * 1000)).catch(console.error);
+		message.delete(10 * 1000).catch(console.error);
 		return true;
 	}
 	else {
 		message.reply("You do not have the required permissions to add that role.")
-			.then(message => message.delete(10 * 1000));
-		message.delete(10 * 1000);
+			.then(message => message.delete(10 * 1000)).catch(console.error);
+		message.delete(10 * 1000).catch(console.error);
 		return false;
 	}
 
@@ -130,27 +130,27 @@ function removeRole(member, rolename, message) {
 	let role = member.guild.roles.find(role => role.name === rolename);
 	if (!role) {
 		message.reply(`Role does not exist.`)
-			.then(message => message.delete(10 * 1000));
-		message.delete(10 * 1000);
+			.then(message => message.delete(10 * 1000)).catch(console.error);
+		message.delete(10 * 1000).catch(console.error);
 		return false;
 	}
 	if (member.roles.has(role.id)) {
 		//Member has role
 		return member.removeRole(role).then(() => {
 			message.reply("Role has been removed.")
-				.then(message => message.delete(10 * 1000));
-			message.delete(10 * 1000);
+				.then(message => message.delete(10 * 1000)).catch(console.error);
+			message.delete(10 * 1000).catch(console.error);
 			return true;
 		}).catch(() => {
-			message.reply("Failed to remove role.").then(message => message.delete(10 * 1000));
-			message.delete(10 * 1000);
+			message.reply("Failed to remove role.").then(message => message.delete(10 * 1000)).catch(console.error);
+			message.delete(10 * 1000).catch(console.error);
 		});
 
 	}
 	else {
 		message.reply("You do not have that role.")
-			.then(message => message.delete(10 * 1000));
-		message.delete(10 * 1000);
+			.then(message => message.delete(10 * 1000)).catch(console.error);
+		message.delete(10 * 1000).catch(console.error);
 		return false;
 	}
 
