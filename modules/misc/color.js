@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports = (bot = Discord.Client) => {
+module.exports = () => {
 
 	//Finds the specific color requested
 
