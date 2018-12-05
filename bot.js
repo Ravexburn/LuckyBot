@@ -49,7 +49,7 @@ bot.on("guildDelete", guild => {
 	guildDeleteHandler(guild);
 });
 
-//All the commands the bot runs.
+//When a message is created.
 
 bot.on("message", async message => {
 	msgHandler(message);
@@ -91,8 +91,22 @@ bot.on("guildMemberRemove", member => {
 	leaveHandler(member);
 });
 
+//Whenever a connection error occurs.
+
 bot.on("error", error => {
-	console.log(error);
+	bot.log(error);
+});
+
+//General Debug info.
+
+bot.on("debug", debug => {
+	bot.log(debug);
+});
+
+//General Warnings
+
+bot.on("warn", warning => {
+	bot.log(warning);
 });
 
 bot.login(botSettings.token);
