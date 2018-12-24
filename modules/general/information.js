@@ -112,6 +112,12 @@ module.exports = (bot = Discord.Client) => {
 			rolelist(message);
 		}
 
+		//Bias info
+
+		if ((command === `${prefix}biaslist`) || (command === `${prefix}biasstats`)) {
+			memberCount(message);
+		}
+
 		//Help
 
 		if (command === `${prefix}help`) {

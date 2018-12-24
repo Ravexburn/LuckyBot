@@ -27,7 +27,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let embed = new Discord.RichEmbed()
 			.setColor("#FFAEB9")
-			.setAuthor(`Roles for ${message.guild.name}`);
+			.setAuthor(`Bias stats for ${message.guild.name}`);
 		embedPages(message, embed, pages);
 		return;
 	};
