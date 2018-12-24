@@ -147,7 +147,7 @@ module.exports = (bot = Discord.Client) => {
 					if (!user) {
 						name = userID;
 					} else {
-						name = user.username.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`');
+						name = user.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 					}
 					let rank = (i + 1 < 10) ? ` ${i + 1}` : `${i + 1}`;
 					let str = `${rank}.  ${name} (${level})`;
@@ -185,7 +185,7 @@ module.exports = (bot = Discord.Client) => {
 					if (!user) {
 						name = userID;
 					} else {
-						name = user.username.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`');
+						name = user.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 					}
 					let rank = (i + 1 < 10) ? ` ${i + 1}` : `${i + 1}`;
 					let str = `${rank}.  ${name} (${level})`;
