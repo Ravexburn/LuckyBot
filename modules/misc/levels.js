@@ -195,7 +195,7 @@ module.exports = (bot = Discord.Client) => {
 			}).then((arr) => {
 				var pages = toEmbedPages(arr);
 				let embed = new Discord.RichEmbed()
-					.setAuthor(`Leaderboard for ${guild.name}`)
+					.setAuthor(`Leaderboard for ${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
 					.setColor("#fa4384")
 					.setTitle("Rank - User - Level", true)
 					.setDescription("```css\n" + arr.join("\n") + "```");
