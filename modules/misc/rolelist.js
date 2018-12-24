@@ -13,7 +13,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let embed = new Discord.RichEmbed()
 			.setColor("#FFAEB9")
-			.setAuthor(`Roles for ${message.guild.name}`);
+			.setAuthor(`Roles for ${message.guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
 		embedPages(message, embed, pages);
 		return;
 	};
@@ -27,7 +27,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let embed = new Discord.RichEmbed()
 			.setColor("#FFAEB9")
-			.setAuthor(`Bias stats for ${message.guild.name}`);
+			.setAuthor(`Bias stats for ${message.guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
 		embedPages(message, embed, pages);
 		return;
 	};
