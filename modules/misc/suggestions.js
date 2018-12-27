@@ -12,7 +12,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		let guild = message.guild.name.replace(/\*/g, '\\*').replace(/\_/g, '\\_').replace(/\~/g, '\\~').replace(/\`/g, '\\`');
+		let guild = message.guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 		let embed = new Discord.RichEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])

@@ -162,7 +162,7 @@ module.exports = (bot = Discord.Client) => {
 
 					message.channel.send("**List of commands sent to direct messages.**");
 
-					sendCmd = `List of custom commands for ${message.guild.name}:
+					sendCmd = `List of custom commands for ${message.guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}:
 ${list.sort().join(`\n`)}`;
 
 					while (sendCmd.length > MAX_CHAR - 6) {
@@ -200,7 +200,7 @@ ${list.sort().join(`\n`)}`;
 
 					// Convert list of commands to embed pages and send to requested channel
 					var singularPlural = list.length > 1 ? `commands` : `command`;
-					var pageHeader = `**Found ${list.length} ${singularPlural} matching "${searchTerm}" in ${message.guild.name}:**`;
+					var pageHeader = `**Found ${list.length} ${singularPlural} matching "${searchTerm}" in ${message.guild.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}:**`;
 					var pages = toEmbedPages(list.sort(), pageHeader);
 
 					embed = new Discord.RichEmbed()
