@@ -200,7 +200,7 @@ ${list.sort().join(`\n`)}`;
 
 					// Convert list of commands to embed pages and send to requested channel
 					var singularPlural = list.length > 1 ? `commands` : `command`;
-					var pageHeader = `**Found ${list.length} ${singularPlural} matching "${searchTerm}" in ${message.guild.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}:**`;
+					var pageHeader = `**Found ${list.length} ${singularPlural} matching "${searchTerm}" in ${message.guild}:**`;
 					var pages = toEmbedPages(list.sort(), pageHeader);
 
 					embed = new Discord.RichEmbed()
