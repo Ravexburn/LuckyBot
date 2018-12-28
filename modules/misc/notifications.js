@@ -528,7 +528,7 @@ module.exports = (bot = Discord.Client) => {
 							.addField("Guild", guild.name, true)
 							.addField("Context", `You can see the context of the message [here](http://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`);
 						member.send(embed); */
-						member.send(`:round_pushpin: User **${message.author.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}** **(${message.author})** has mentioned ${keywords} in ${message.channel} on \`${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}:\` \`\`\`${msg}\`\`\``);
+						member.send(`:round_pushpin: User **${message.author.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}** **(${message.author})** has mentioned ${keywords} in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``);
 					});
 				}).catch(() => {
 					console.error;
