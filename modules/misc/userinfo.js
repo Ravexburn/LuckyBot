@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+let maxField = 1024;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -60,6 +61,9 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		let userRoles = member.roles.size > 0 ? member.roles.array().sort((a, b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ") : "N/A";
+		if (userRoles.length > maxField){
+			userRoles = userRoles.substring(0, maxField);
+		}
 		if (userRoles) {
 			embed.addField("Roles", userRoles);
 		} else {
