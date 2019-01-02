@@ -30,7 +30,7 @@ module.exports = (bot = Discord.Client) => {
 			args = args.filter(arg => arg.trim().length > 0);
 
 			if (args.length === 0){
-				message.channel.send("Please give me someone to rep! <:rooGun:433064572761538561>");
+				message.channel.send("Please give me someone to rep! <:rooGun:433064572761538561>").catch(console.error);
 				return;
 			}
 	
@@ -57,12 +57,12 @@ module.exports = (bot = Discord.Client) => {
 			let member = target;
 
 			if (member === message.member){
-				message.channel.send("You can't rep yourself! <:rooCop:433057685953445900>");
+				message.channel.send("You can't rep yourself! <:rooCop:433057685953445900>").catch(console.error);
 				return;
 			}
 
 			if (member.user.bot === true){
-				message.channel.send("Sorry, you can't rep bots! <:rooBot:433057158301614100>");
+				message.channel.send("Sorry, you can't rep bots! <:rooBot:433057158301614100>").catch(console.error);
 				return;
 			}
 
@@ -71,7 +71,7 @@ module.exports = (bot = Discord.Client) => {
 				.then((data) => {
 					let rep = data.rep;
 					rep = rep + 1;
-					message.channel.send(`I have given a reputation point to ${member.user.username}! <a:rooClap:432961197323714580>`);
+					message.channel.send(`I have given a reputation point to ${member.user.username}! <a:rooClap:432961197323714580>`).catch(console.error);
 					profile.setRep(member.id, rep);
 				}).catch((error) => {
 					console.log(error);
@@ -84,7 +84,7 @@ module.exports = (bot = Discord.Client) => {
 			let minutes = time % 60;
 			time = Math.floor(time / 60);
 			let hours = time % 24;
-			message.channel.send(`Please wait ${hours}h ${minutes}m and ${seconds}s to be able to give another rep! <:rooScared:433018721326596117>`);
+			message.channel.send(`Please wait ${hours}h ${minutes}m and ${seconds}s to be able to give another rep! <:rooScared:433018721326596117>`).catch(console.error);
 		}
 	};
 };

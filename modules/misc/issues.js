@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let msg = args.join(" ").trim();
 		if (msg === "") {
-			message.channel.send(`I've got an issue, try adding an issue. \`${command} <message>\``);
+			message.channel.send(`I've got an issue, try adding an issue. \`${command} <message>\``).catch(console.error);
 			return;
 		}
 
@@ -26,8 +26,8 @@ module.exports = (bot = Discord.Client) => {
 		let member = message.member;
 		if (member.colorRole) { color = member.colorRole.color; }
 		embed.setColor(color);
-		chan.send(embed);
-		message.channel.send(`Issue sent!`);
+		chan.send(embed).catch(console.error);
+		message.channel.send(`Issue sent!`).catch(console.error);
 		return;
 	};
 
