@@ -53,22 +53,22 @@ module.exports = (bot = Discord.Client) => {
 		//Trello
 
 		if (command === `${prefix}trello`) {
-			message.channel.send(`View upcoming features here: ${link}`);
+			message.channel.send(`View upcoming features here: ${link}`).catch(console.error);
 			return;
 		}
 
 		//Github
 
 		if ((command === `${prefix}github`) || (command === `${prefix}git`)) {
-			message.channel.send(`View upcoming features here: ${link2}`);
+			message.channel.send(`View upcoming features here: ${link2}`).catch(console.error);
 			return;
 		}
 
 		//Invite
 
 		if ((command === `${prefix}invite`) || (command === `${prefix}inv`)) {
-			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`);
-			message.author.send(`Want ${bot.user.username} for your server? Have any questions on how to use ${bot.user.username}? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`);
+			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`).catch(console.error);
+			message.author.send(`Want ${bot.user.username} for your server? Have any questions on how to use ${bot.user.username}? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`).catch(console.error);
 			return;
 		}
 
@@ -121,7 +121,7 @@ module.exports = (bot = Discord.Client) => {
 		//Help
 
 		if (command === `${prefix}help`) {
-			message.reply(`Help can be found here: ${website}`);
+			message.reply(`Help can be found here: ${website}`).catch(console.error);
 		}
 
 		//Suggestions

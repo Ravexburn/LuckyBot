@@ -17,7 +17,7 @@ module.exports = (bot = Discord.Client) => {
 			.addField("Text Channels", message.guild.channels.array().filter(channel => channel.type === "text").length, true)
 			.addField("Voice Channels", message.guild.channels.array().filter(channel => channel.type === "voice").length, true)
 			.setFooter(`Server ID: ${message.guild.id}`);
-		message.channel.send(embed);
+		message.channel.send(embed).catch(console.error);
 		return;
 	};
 

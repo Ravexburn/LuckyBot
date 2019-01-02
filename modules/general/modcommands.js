@@ -283,8 +283,8 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}intset`)) {
 			bot.initServerSettings(message.guild.id);
 			message.channel.send("**Server settings have been reset**")
-				.then(message => message.delete(10 * 1000));
-			message.delete(10 * 1000);
+				.then(message => message.delete(10 * 1000)).catch(console.error);
+			message.delete(10 * 1000).catch(console.error);
 			return;
 		}
 
