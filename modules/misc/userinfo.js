@@ -19,7 +19,7 @@ module.exports = (bot = Discord.Client) => {
 			if (message.guild.members.has(target_id)) {
 				target = message.guild.member(target_id);
 			} else {
-				message.channel.send("Unable to find user.");
+				message.channel.send("Unable to find user.").catch(console.error);
 			}
 
 		} else {
@@ -84,7 +84,7 @@ module.exports = (bot = Discord.Client) => {
 		});
 
 		embed.setFooter(`Member #${pos + 1}`);
-		message.channel.send(embed);
+		message.channel.send(embed).catch(console.error);
 
 		return;
 	};
