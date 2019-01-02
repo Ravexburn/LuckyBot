@@ -209,8 +209,8 @@ module.exports = (bot = Discord.Client) => {
 	setStarboardNumber = function setStarboardNumber(message, args, serverSettings) {
 		if (args.length <= 1 || isNaN(args[1])) {
 			message.channel.send(message.author + " Please enter a valid number.")
-				.then(message => message.delete(10 * 1000));
-			message.delete(10 * 1000);
+				.then(message => message.delete(10 * 1000)).catch(console.error);
+			message.delete(10 * 1000).catch(console.error);
 			return;
 		}
 		const newNumber = args[1];
