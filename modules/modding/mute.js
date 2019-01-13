@@ -9,7 +9,7 @@ module.exports = (bot = Discord.Client) => {
 		*/
 	muteUser = function muteUser(message, command, args) {
 		if (args.length === 0) { // Checks if no args given 
-			message.channel.send(`No one to mute, please do ${command} [userid] **or** @user`);
+			message.channel.send(`No one to mute, please do ${command} [userid] **or** @user`).catch(console.error);
 			return;
 		}
 
@@ -17,19 +17,19 @@ module.exports = (bot = Discord.Client) => {
 		let memberToMute = (message.mentions.users.first() === undefined) ? message.guild.member(args[0]) : message.guild.member(message.mentions.users.first().id); // if theres no mention it grabs whatever is in args
 		// Make sure its actually a member being muted.
 		if (memberToMute === null) {
-			message.channel.send("That is not a user");
+			message.channel.send("That is not a user").catch(console.error);
 			return;
 		}
 
 		// Don't mute yourself.
 		if (memberToMute.id === message.author.id) {
-			message.channel.send("You can't mute yourself");
+			message.channel.send("You can't mute yourself").catch(console.error);
 			return;
 		}
 
 		// Don't mute person with clout.
 		if (memberToMute.hasPermission("ADMINISTRATOR") || memberToMute.hasPermission("MANAGE_GUILD")) {
-			message.channel.send("You can't mute that person");
+			message.channel.send("You can't mute that person").catch(console.error);
 			return;
 		}
 

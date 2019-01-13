@@ -6,7 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
 	kickUser = function kickUser(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please do ${command} <user> [reason]`);
+			message.channel.send(`Please do ${command} <user> [reason]`).catch(console.error);
 			return;
 		}
 
@@ -28,30 +28,30 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.member.hasPermission("KICK_MEMBERS")) {
-			message.channel.send("You do not have the `KICK_MEMBERS` permission.");
+			message.channel.send("You do not have the `KICK_MEMBERS` permission.").catch(console.error);
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("KICK_MEMBERS")) {
-			message.channel.send("Lucky Bot does not have the `KICK_MEMBERS` permission.");
+			message.channel.send("Lucky Bot does not have the `KICK_MEMBERS` permission.").catch(console.error);
 			return;
 		}
 
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
-				message.channel.send("You can't kick that person.");
+				message.channel.send("You can't kick that person.").catch(console.error);
 				return;
 			}
 
 		}
 
 		if (member === message.member) {
-			message.channel.send("You can't kick yourself.");
+			message.channel.send("You can't kick yourself.").catch(console.error);
 			return;
 		}
 
 		if (!member) {
-			message.channel.send("Invalid user.");
+			message.channel.send("Invalid user.").catch(console.error);
 			return;
 		}
 
@@ -67,9 +67,9 @@ module.exports = (bot = Discord.Client) => {
 				.addField("User", `${member} ${member.user.username} - (#${member.id})`)
 				.addField("Kick Reason", `${reason}`)
 				.setTimestamp(message.createdAt);
-			message.channel.send(embed);
+			message.channel.send(embed).catch(console.error);
 		}).catch((error) => {
-			message.channel.send(error.message);
+			message.channel.send(error.message).catch(console.error);
 		});
 	};
 
