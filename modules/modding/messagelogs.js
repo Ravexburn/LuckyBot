@@ -161,6 +161,8 @@ module.exports = (bot = Discord.Client) => {
 		else {
 			let embed = new Discord.RichEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+				.setTitle("Attachment")
+				.setURL(message.attachments.first().url)
 				.setFooter(`#${message.channel.name} | ID: ${message.id}`)
 				.setTimestamp(message.createdAt)
 				.setImage(message.attachments.first().url);
