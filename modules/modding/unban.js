@@ -6,7 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
 	unbanUser = function unbanUser(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please do ${command} <user> [reason]`);
+			message.channel.send(`Please do ${command} <user> [reason]`).catch(console.error);
 			return;
 		}
 
@@ -28,17 +28,17 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send("You do not have the `BAN_MEMBERS` permission");
+			message.channel.send("You do not have the `BAN_MEMBERS` permission").catch(console.error);
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("BAN_MEMBERS")) {
-			message.channel.send("Please enable the `BAN_MEMBERS` permisson to be able to unban");
+			message.channel.send("Please enable the `BAN_MEMBERS` permisson to be able to unban").catch(console.error);
 			return;
 		}
 
 		if (member === message.member) {
-			message.channel.send("You can't unban yourself");
+			message.channel.send("You can't unban yourself").catch(console.error);
 			return;
 		}
 
@@ -54,9 +54,9 @@ module.exports = (bot = Discord.Client) => {
 				.addField("User", `${user} ${user.username} - (#${user.id})`)
 				.addField("Unban Reason", `${reason}`)
 				.setTimestamp(message.createdAt);
-			message.channel.send(embed);
+			message.channel.send(embed).catch(console.error);
 		}).catch((error) => {
-			message.channel.send(error.message);
+			message.channel.send(error.message).catch(console.error);
 		});
 	};
 

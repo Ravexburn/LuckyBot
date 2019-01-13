@@ -36,13 +36,6 @@ module.exports = (bot = Discord.Client) => {
 
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 
-
-		if (!message.member) {
-			dmOwner(`mod command line 21 is null: guild: ${message.guild.name} author: ${message.author} content: ${message.content}`);
-			console.log("modcmd line 21 is null", `guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
-			return;
-		}
-
 		let hasPerms = perms.some(i => message.member.hasPermission(i));
 
 		if (!hasPerms) return;
@@ -368,7 +361,7 @@ module.exports = (bot = Discord.Client) => {
 					//Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
 					// *relay start <relay> <type> <channel> <channel> [channel...]
 					if (args.length < 5) {
-						message.channel.send(`Please provide relay name, type of relay, and two or more channels.`);
+						message.channel.send(`Please provide relay name, type of relay, and two or more channels.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -383,7 +376,7 @@ module.exports = (bot = Discord.Client) => {
 					//Adds a channel to an existing relay. Requires relay name, channel and server id.
 					// *relay add <relay> <channel> [channel...]
 					if (args.length < 3) {
-						message.channel.send(`Please provide the relay name and the channel id which you would like to add.`);
+						message.channel.send(`Please provide the relay name and the channel id which you would like to add.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -397,7 +390,7 @@ module.exports = (bot = Discord.Client) => {
 					//Removes a channel to an existing relay. Requires relay name, channel and server id.
 					// *relay remove <relay> <channel>
 					if (args.length < 3) {
-						message.channel.send(`Please provide the relay name and the channel id which you would like to remove.`);
+						message.channel.send(`Please provide the relay name and the channel id which you would like to remove.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -410,7 +403,7 @@ module.exports = (bot = Discord.Client) => {
 					//Deletes an existing relay. Requires relay name.
 					// *relay delete <relay>
 					if (args.length < 2) {
-						message.channel.send(`Please provide the relay name you would like to delete.`);
+						message.channel.send(`Please provide the relay name you would like to delete.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -422,7 +415,7 @@ module.exports = (bot = Discord.Client) => {
 				case "type":
 					// *relay type <relay> <type>
 					if (args.length < 2) {
-						message.channel.send(`Please provide the relay name and type of relay.`);
+						message.channel.send(`Please provide the relay name and type of relay.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -440,7 +433,7 @@ module.exports = (bot = Discord.Client) => {
 				case "format":
 					// *relay format <relay> <format>
 					if (args.length < 2) {
-						message.channel.send(`Please provide the relay name and format of relay.`);
+						message.channel.send(`Please provide the relay name and format of relay.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();

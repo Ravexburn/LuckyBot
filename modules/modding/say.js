@@ -6,12 +6,12 @@ module.exports = (bot = Discord.Client) => {
 
 	sayFunction = function sayFunction(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
+			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``).catch(console.error);
 			return;
 		}
 		let chan = message.mentions.channels.first();
 		if (!chan) {
-			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``);
+			message.channel.send(`Please enter a channel followed by a message. \`${command} <channel> message\``).catch(console.error);
 			return;
 		}
 		let image;
@@ -21,12 +21,12 @@ module.exports = (bot = Discord.Client) => {
 		let msg = message.content.slice(command.length + 1).slice(args[0].length + 1);
 
 		if (!chan.permissionsFor(bot.user).has("VIEW_CHANNEL")) {
-			message.channel.send("I am not able to `READ_MESSAGES` for that channel");
+			message.channel.send("I am not able to `READ_MESSAGES` for that channel").catch(console.error);
 			return;
 		}
 
 		if (!chan.permissionsFor(bot.user).has("SEND_MESSAGES")) {
-			message.channel.send("I am not able to `SEND_MESSAGES` in that channel");
+			message.channel.send("I am not able to `SEND_MESSAGES` in that channel").catch(console.error);
 			return;
 		}
 
@@ -40,7 +40,7 @@ module.exports = (bot = Discord.Client) => {
 			chan.send(image);
 			return;
 		} else {
-			message.channel.send(`Please enter a channel followed by a message and or image. \`${command} <channel> message\``);
+			message.channel.send(`Please enter a channel followed by a message and or image. \`${command} <channel> message\``).catch(console.error);
 			return;
 		}
 	};

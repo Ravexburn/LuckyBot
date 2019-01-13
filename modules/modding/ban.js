@@ -6,8 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
 	banUser = async function banUser(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please do ${command} <user> [days] [reason]`);
-			return;
+			message.channel.send(`Please do ${command} <user> [days] [reason]`).catch(console.error);
 		}
 
 		let member_id = null;
@@ -28,31 +27,31 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send("You do not have the `BAN_MEMBERS` permission.");
+			message.channel.send("You do not have the `BAN_MEMBERS` permission.").catch(console.error);
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("BAN_MEMBERS")) {
-			message.channel.send("Lucky Bot does not have the `BAN_MEMBERS` permisson.");
+			message.channel.send("Lucky Bot does not have the `BAN_MEMBERS` permisson.").catch(console.error);
 			return;
 		}
 
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
-				message.channel.send("You can't ban that person.");
+				message.channel.send("You can't ban that person.").catch(console.error);
 				return;
 			}
 		}
 
 		if (member === message.member) {
-			message.channel.send("You can't ban yourself.");
+			message.channel.send("You can't ban yourself.").catch(console.error);
 			return;
 		}
 
 		let bans = await message.guild.fetchBans().catch(console.error);
 
 		if (bans.has(member_id)) {
-			message.channel.send("User is already banned in this server.");
+			message.channel.send("User is already banned in this server.").catch(console.error);
 			return;
 		}
 
@@ -84,7 +83,7 @@ module.exports = (bot = Discord.Client) => {
 				.addField("Ban Reason", `${reason} <:rooban:518460420181327872>`)
 				.addField("Deleted message days", `${days} day(s)`)
 				.setTimestamp(message.createdAt);
-			message.channel.send(embed);
+			message.channel.send(embed).catch(console.error);
 		}).catch((error) => {
 			message.channel.send(error.message);
 		});
