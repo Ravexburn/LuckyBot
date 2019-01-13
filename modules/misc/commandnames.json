@@ -49,7 +49,9 @@
 		"*forceskip",
 		"*skip",
 		"biaslist",
-		"biasstats"
+		"biasstats",
+		"donate",
+		"donators"
     ]
 
 }
