@@ -51,7 +51,9 @@
 		"biaslist",
 		"biasstats",
 		"donate",
-		"donators"
+		"donators",
+		"ava",
+		"avatar"
     ]
 
 }
