@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	require("../../functions/helpfunctions.js")(bot);
+	require("../misc/avatar.js")(bot);
 	require("../misc/color.js")(bot);
 	require("../misc/horoscope.js")(bot);
 
@@ -22,7 +23,7 @@ module.exports = (bot = Discord.Client) => {
 		if (!command.startsWith(prefix)) return;
 
 		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
-			
+
 			if (args.length === 0) {
 				message.channel.send(`Please provide a hex color or ask for a random color with \`${command} random\``).catch(console.error);
 				return;
@@ -72,6 +73,11 @@ module.exports = (bot = Discord.Client) => {
 					break;
 			}
 		}
+
+		if ((command === `${prefix}avatar`) || (command === `${prefix}ava`)) {
+			avatar(message, args);
+		}
+
 	};
 
 };
