@@ -29,7 +29,7 @@ module.exports = (bot = Discord.Client) => {
 		if (!target) return;
 		let member = target;
 		let color = "#a8e8eb";
-		let avatarURL = member.user.displayAvatarURL.split("?")[0];
+		let avatarURL = member.user.displayAvatarURL.split("?")[0] + "?size=1024";
 		if (member.colorRole) { color = member.colorRole.color; }
 		let embed = new Discord.RichEmbed()
 			.setAuthor(member.user.tag, avatarURL)
