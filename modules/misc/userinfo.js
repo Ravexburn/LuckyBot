@@ -75,7 +75,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let members = guild.members.array();
 		members = members.sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
-
+		console.log(`First member for userinfo ${members[0].user.tag}`);
 		let pos = members.findIndex(number => number.id == member.id) + 1;
 
 		embed.setFooter(`Member #${pos}`);

@@ -90,7 +90,7 @@ function attemptToGetMentionId(args) {
 		const element = args[i];
 		if (isMention(element)) {
 			//Return 18-digit user id and remove it from the list of arguments
-			mentions.push(element.replace("<@", "").replace(">", ""));
+			mentions.push(element.replace(/<@!?/, "").replace(">", ""));
 			args.splice(i, 1);
 		}
 	}
