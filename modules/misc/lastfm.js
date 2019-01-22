@@ -289,9 +289,11 @@ function attemptToRetrieveUserInfo(message, target) {
 						.setColor("#D21E26")
 						.addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
 						.addField("Scrobbles", response.data.user.playcount, true)
-						.addField("Profile", `Click [here](${response.data.user.url}) to see their profile`, true)
-						.addField("Country", response.data.user.country, true)
-						.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
+						.addField("Profile", `Click [here](${response.data.user.url}) to see their profile`, true);
+					if (response.data.user.country) {
+						embed.addField("Country", response.data.user.country, true);
+					}
+					embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 					sendEmbed(message, embed);
 					return;
 				}).catch((error) => {
