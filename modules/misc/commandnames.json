@@ -53,7 +53,9 @@
 		"donate",
 		"donators",
 		"ava",
-		"avatar"
+		"avatar",
+		"guildicon",
+		"servericon"
     ]
 
 }
