@@ -263,7 +263,7 @@ module.exports = (bot = Discord.Client) => {
 	owner = async function owner(message) {
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
-		if (![bot.botSettings.Owner_id, bot.botSettings.Owner_id2].includes(message.author.id)) return;
+		if (![bot.botSettings.Owner_id, bot.botSettings.Owner_id2, bot.botSettings.Owner_id3].includes(message.author.id)) return;
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
