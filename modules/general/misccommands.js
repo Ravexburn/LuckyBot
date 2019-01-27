@@ -5,6 +5,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/helpfunctions.js")(bot);
 	require("../misc/avatar.js")(bot);
 	require("../misc/color.js")(bot);
+	require("../misc/guild_icon.js")(bot);
 	require("../misc/horoscope.js")(bot);
 
 	miscCommands = async function miscCommands(message) {
@@ -76,6 +77,10 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}avatar`) || (command === `${prefix}ava`)) {
 			avatar(message, args);
+		}
+
+		if ((command === `${prefix}servericon`) || (command === `${prefix}guildicon`)) {
+			guildIcon(message, args);
 		}
 
 	};
