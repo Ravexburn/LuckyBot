@@ -22,6 +22,8 @@ module.exports = (bot = Discord.Client) => {
 	//Admin and Mod Settings
 
 	modCmds = async function modCmds(message) {
+		
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 
@@ -219,6 +221,8 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	bkpCmd = async function bkpCmd(message) {
+		
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 
@@ -261,8 +265,11 @@ module.exports = (bot = Discord.Client) => {
 	//Intial Settings (Owner Only)
 
 	owner = async function owner(message) {
+		
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
+
 		if (![bot.botSettings.Owner_id, bot.botSettings.Owner_id2, bot.botSettings.Owner_id3].includes(message.author.id)) return;
 
 		let messageArray = message.content.split(" ");

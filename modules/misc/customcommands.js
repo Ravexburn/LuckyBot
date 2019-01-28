@@ -13,6 +13,7 @@ module.exports = (bot = Discord.Client) => {
 	cmds = new Enmap({ provider: commandProvider });
 
 	customCommands = async function customCommands(message) {
+		
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === 'dm') return;

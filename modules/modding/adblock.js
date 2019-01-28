@@ -3,6 +3,8 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	adblocker = function adblocker(message) {
+		
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 

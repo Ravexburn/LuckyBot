@@ -8,6 +8,7 @@ module.exports = (bot = Discord.Client) => {
 	//Message Log
 
 	msgLog = async function msgLog(message) {
+	
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === 'dm') return;
@@ -47,6 +48,7 @@ module.exports = (bot = Discord.Client) => {
 	//Message Edits
 
 	editLogs = async function editLogs(oldMessage, message) {
+	
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === 'dm') return;
@@ -89,6 +91,7 @@ module.exports = (bot = Discord.Client) => {
 	//Deleted Message
 
 	delLog = async function delLog(message) {
+	
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === 'dm') return;
@@ -128,6 +131,7 @@ module.exports = (bot = Discord.Client) => {
 	//Images
 
 	imgLog = async function imgLog(message) {
+	
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === 'dm') return;
