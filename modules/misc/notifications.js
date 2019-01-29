@@ -462,10 +462,8 @@ module.exports = (bot = Discord.Client) => {
 							userSet.add(userID);
 							keywordsCollection.set(keyword, userSet);
 						}).catch((reason) => {
-							if (reason !== "User Ignored the Guild") {
-								if (reason !== "User Ignored the Channel"){
-									console.log(reason);
-								}
+							if (!((reason === "User Ignored the Guild") || (reason === "User Ignored the Channel"))){
+								console.log(reason);
 							}
 						});
 				}).then(() => {
