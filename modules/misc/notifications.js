@@ -10,12 +10,10 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/functions.js")(bot);
 
 	notifySet = async function notifySet(message) {
+		
 		if (message.system) return;
 		if (message.author.bot) return;
-
-		if (message.channel.type === "dm") {
-			return;
-		}
+		if (message.channel.type === "dm") return;
 
 		const guild = message.guild;
 
@@ -465,7 +463,9 @@ module.exports = (bot = Discord.Client) => {
 							keywordsCollection.set(keyword, userSet);
 						}).catch((reason) => {
 							if (reason !== "User Ignored the Guild") {
-								console.log(reason);
+								if (reason !== "User Ignored the Channel"){
+									console.log(reason);
+								}
 							}
 						});
 				}).then(() => {
