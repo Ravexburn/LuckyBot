@@ -88,7 +88,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 	};
 
-	//Checks what's enabled on a server
+	//Checks what's enabled on a server and other info
 
 	serverModSettings = function serverModSettings(message, args) {
 		if (args.length === 1) {
@@ -98,20 +98,7 @@ module.exports = (bot = Discord.Client) => {
 				message.channel.send(`Could not get settings for this server.`).catch(console.error);
 				return;
 			}
-			emote(serverSettings, guild);
-			let embed = new Discord.RichEmbed()
-				.setTitle(`Settings for ${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
-				.setThumbnail(guild.iconURL)
-				.addField("Owner", guild.owner.user.tag, true)
-				.addField("Server ID", guild.id, true)
-				.addField("Server Prefix", serverSettings.prefix, true)
-				.addField("Member Count", guild.memberCount, true)
-				.addField("Server Creation", guild.createdAt.toLocaleString(), true)
-				.addField("Adblock Enabled", adblockemote, true)
-				.addField("Server Available", guildemote, true)
-				.setTimestamp();
-			message.channel.send(embed).catch(console.error);
-			return;
+			guildembed(message, serverSettings, guild);
 		} else if (args.length === 2) {
 			let id = args[1];
 			if (!bot.guilds.has(id)) return;
@@ -121,22 +108,30 @@ module.exports = (bot = Discord.Client) => {
 				message.channel.send(`Could not get settings for this server.`).catch(console.error);
 				return;
 			}
-			emote(serverSettings, guild);
-			let embed = new Discord.RichEmbed()
-				.setTitle(`Settings for ${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
-				.setThumbnail(guild.iconURL)
-				.addField("Owner", guild.owner.user.tag, true)
-				.addField("Server ID", guild.id, true)
-				.addField("Server Prefix", serverSettings.prefix, true)
-				.addField("Member Count", guild.memberCount, true)
-				.addField("Server Creation", guild.createdAt.toLocaleString(), true)
-				.addField("Adblock Enabled", adblockemote, true)
-				.addField("Server Available", guildemote, true)
-				.setTimestamp();
-			message.channel.send(embed).catch(console.error);
-			return;
+			guildembed(message, serverSettings, guild);
 		}
 	};
+
+	//Embed for info
+
+	guildembed = function guildembed(message, serverSettings, guild) {
+		emote(serverSettings, guild);
+		let embed = new Discord.RichEmbed()
+			.setTitle(`Settings for ${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
+			.setThumbnail(guild.iconURL)
+			.addField("Owner", guild.owner.user.tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), true)
+			.addField("Server ID", guild.id, true)
+			.addField("Server Prefix", serverSettings.prefix, true)
+			.addField("Member Count", guild.memberCount, true)
+			.addField("Server Creation", guild.createdAt.toLocaleString(), true)
+			.addField("Adblock Enabled", adblockemote, true)
+			.addField("Server Available", guildemote, true)
+			.setTimestamp();
+		message.channel.send(embed).catch(console.error);
+		return;
+	};
+
+	//Condition for t/f
 
 	emote = function emote(serverSettings, guild) {
 		if (serverSettings.adBlocktoggle === true) {
