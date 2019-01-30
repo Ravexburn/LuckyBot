@@ -98,15 +98,18 @@ module.exports = (bot = Discord.Client) => {
 				message.channel.send(`Could not get settings for this server.`).catch(console.error);
 				return;
 			}
+			emote(serverSettings, guild);
 			let embed = new Discord.RichEmbed()
 				.setTitle(`Settings for ${guild.name}`)
 				.setThumbnail(guild.iconURL)
 				.addField("Owner", guild.owner.user.tag, true)
-				.addField("Owner ID", guild.owner.user.id, true)
 				.addField("Server ID", guild.id, true)
 				.addField("Server Prefix", serverSettings.prefix, true)
 				.addField("Member Count", guild.memberCount, true)
-				.addField("Server Creation", guild.createdAt.toLocaleString(), true);
+				.addField("Server Creation", guild.createdAt.toLocaleString(), true)
+				.addField("Adblock Enabled", adblockemote, true)
+				.addField("Server Available", guildemote, true)
+				.setTimestamp();
 			message.channel.send(embed).catch(console.error);
 			return;
 		} else if (args.length === 2) {
@@ -118,6 +121,7 @@ module.exports = (bot = Discord.Client) => {
 				message.channel.send(`Could not get settings for this server.`).catch(console.error);
 				return;
 			}
+			emote(serverSettings, guild);
 			let embed = new Discord.RichEmbed()
 				.setTitle(`Settings for ${guild.name}`)
 				.setThumbnail(guild.iconURL)
@@ -125,9 +129,25 @@ module.exports = (bot = Discord.Client) => {
 				.addField("Server ID", guild.id, true)
 				.addField("Server Prefix", serverSettings.prefix, true)
 				.addField("Member Count", guild.memberCount, true)
-				.addField("Server Creation", guild.createdAt.toLocaleString(), true);
+				.addField("Server Creation", guild.createdAt.toLocaleString(), true)
+				.addField("Adblock Enabled", adblockemote, true)
+				.addField("Server Available", guildemote, true)
+				.setTimestamp();
 			message.channel.send(embed).catch(console.error);
 			return;
+		}
+	};
+
+	emote = function emote(serverSettings, guild) {
+		if (serverSettings.adBlocktoggle === true) {
+			adblockemote = ":white_check_mark:";
+		} else {
+			adblockemote = ":x:";
+		}
+		if (guild.available === true) {
+			guildemote = ":white_check_mark:";
+		} else {
+			guildemote = ":x:";
 		}
 	};
 };
