@@ -11,7 +11,6 @@ const commands = {
 	"topAlbums": ["talb", "tal", "topalbum", "topalbums", "top-album", "top-albums"],
 	"recentTracks": ["recent", "recenttracks", "recent-tracks"],
 	//Settings
-	"setLayout": ["layout", "lo"],
 	"saveUsername": ["set", "save"],
 	//Time periods
 	"weekly": ["week", "7-day", "7day", "weekly"],
@@ -61,13 +60,6 @@ module.exports = (bot = Discord.Client) => {
 				}
 				attemptToSaveLastfmUsername(message, args[1]);
 				break;
-			case (commands.setLayout.includes(args[0])):
-				if (args.length === 1) {
-					message.reply(`Please select a layout between 0 and 5.`);
-					return;
-				}
-				attemptToSetLayout(args[1], message);
-				break;
 			case (commands.nowPlaying.includes(args[0])):
 				attemptToRetrieveNowPlaying(target, message);
 				break;
@@ -98,7 +90,7 @@ function attemptToGetMentionId(args) {
 		const element = args[i];
 		if (isMention(element)) {
 			//Return 18-digit user id and remove it from the list of arguments
-			mentions.push(element.replace("<@", "").replace(">", ""));
+			mentions.push(element.replace(/<@!?/, "").replace(">", ""));
 			args.splice(i, 1);
 		}
 	}
@@ -294,12 +286,14 @@ function attemptToRetrieveUserInfo(message, target) {
 						.setAuthor(target.user.tag, target.user.displayAvatarURL.split("?")[0])
 						.setURL(response.data.user.url)
 						.setThumbnail(thumbnailURL)
-						.setColor("#33cc33")
+						.setColor("#D21E26")
 						.addField("Registered", `${date.getFullYear(date)}/${date.getMonth(date) + 1}/${date.getDate(date)}`, true)
 						.addField("Scrobbles", response.data.user.playcount, true)
-						.addField("Profile", `Click [here](${response.data.user.url}) to see their profile`, true)
-						.addField("Country", response.data.user.country, true)
-						.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
+						.addField("Profile", `Click [here](${response.data.user.url}) to see their profile`, true);
+					if (response.data.user.country) {
+						embed.addField("Country", response.data.user.country, true);
+					}
+					embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 					sendEmbed(message, embed);
 					return;
 				}).catch((error) => {
@@ -332,16 +326,6 @@ function attemptToSaveLastfmUsername(message, username) {
 		});
 }
 
-function attemptToSetLayout(layout, message) {
-	lastfm.getLastfmData(message.author.id)
-		.then(() => {
-			lastfm.setLayout(message.author.id, layout);
-			message.reply(`Layout format set as: ${layout}`);
-		}).catch((error) => {
-			handleError(message, error);
-		});
-}
-
 function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
 	try {
 		let track1 = recentTracks.track[0];
@@ -349,7 +333,7 @@ function displayNowPlaying(recentTracks, message, displayAvatarURL, username) {
 		let album = track1.album["#text"] ? track1.album["#text"] : "N/A";
 
 		let embed = new Discord.RichEmbed()
-			.setColor("#33cc33")
+			.setColor("#D21E26")
 			.setTimestamp(message.createdAt)
 			.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 
@@ -426,7 +410,7 @@ function displayTopTracks(message, embed, tracks) {
 
 //Embed colors, message, and footer function
 function embedCss(message, embed, msg) {
-	embed.setColor("#33cc33");
+	embed.setColor("#D21E26");
 	embed.setDescription(msg.substring(0, MAX_CHAR));
 	embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 	sendEmbed(message, embed);
@@ -447,12 +431,12 @@ function getTarget(message, args) {
 				return member;
 			}
 		}
-	
+
 		return message.member;
 	} catch (error) {
 		console.log(error);
 		return message.member;
-	}	
+	}
 }
 
 //Function for parsing user input into time period
@@ -520,7 +504,7 @@ function sendLastfmHelpEmbed(message, prefix) {
 
 function sendListWithPages(message, embed, list, coverItem) {
 	setThumbnail(embed, coverItem);
-	embed.setColor("#33cc33");
+	embed.setColor("#D21E26");
 	embed.setFooter("Powered by last.fm", "https://i.imgur.com/C7u8gqg.jpg");
 	embedPages(message, embed, toEmbedPages(list, null, 10));
 }

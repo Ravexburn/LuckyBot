@@ -15,7 +15,8 @@ module.exports = (bot = Discord.Client) => {
 			guild,
 			author,
 			attachments,
-			channel
+			channel,
+			id
 		} = message;
 
 		const serverSettings = bot.getServerSettings(guild.id);
@@ -74,7 +75,7 @@ module.exports = (bot = Discord.Client) => {
 			.setAuthor(`${author.username} in #${channel.name}`, author.displayAvatarURL)
 			.setFooter(`⭐${reaction.count} • ${message.id}`)
 			.setTimestamp(new Date())
-			.setDescription(messageContent)
+			.setDescription(`[View Message](https://discordapp.com/channels/${guild.id}/${channel.id}/${id})\n\n${messageContent}`)
 			.setImage(embedImage);
 
 		guild.fetchMember(author).then(guildMember => {
@@ -208,8 +209,8 @@ module.exports = (bot = Discord.Client) => {
 	setStarboardNumber = function setStarboardNumber(message, args, serverSettings) {
 		if (args.length <= 1 || isNaN(args[1])) {
 			message.channel.send(message.author + " Please enter a valid number.")
-				.then(message => message.delete(10 * 1000));
-			message.delete(10 * 1000);
+				.then(message => message.delete(10 * 1000)).catch(console.error);
+			message.delete(10 * 1000).catch(console.error);
 			return;
 		}
 		const newNumber = args[1];

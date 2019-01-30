@@ -6,7 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
 	kickUser = function kickUser(message, command, args) {
 		if (args.length === 0) {
-			message.channel.send(`Please do ${command} <user> [reason]`);
+			message.channel.send(`Please do ${command} <user> [reason]`).catch(console.error);
 			return;
 		}
 
@@ -28,25 +28,30 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.member.hasPermission("KICK_MEMBERS")) {
-			message.channel.send("You do not have the `KICK_MEMBERS` permission");
+			message.channel.send("You do not have the `KICK_MEMBERS` permission.").catch(console.error);
 			return;
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("KICK_MEMBERS")) {
-			message.channel.send("Please enable the `KICK_MEMBERS` permisson to be able to kick");
+			message.channel.send("Lucky Bot does not have the `KICK_MEMBERS` permission.").catch(console.error);
 			return;
 		}
 
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
-				message.channel.send("You can't kick that person");
+				message.channel.send("You can't kick that person.").catch(console.error);
 				return;
 			}
 
 		}
 
 		if (member === message.member) {
-			message.channel.send("You can't kick yourself");
+			message.channel.send("You can't kick yourself.").catch(console.error);
+			return;
+		}
+
+		if (!member) {
+			message.channel.send("Invalid user.").catch(console.error);
 			return;
 		}
 
@@ -56,10 +61,16 @@ module.exports = (bot = Discord.Client) => {
 			if (!reason) {
 				reason = "no reason provided";
 			}
-			message.channel.send(`**${member.displayName}** has been kicked for \`${reason}\``);
+			let embed = new Discord.RichEmbed()
+				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
+				.setColor("#FFFF33")
+				.addField("User", `${member} ${member.user.username} - (#${member.id})`)
+				.addField("Kick Reason", `${reason}`)
+				.setTimestamp(message.createdAt);
+			message.channel.send(embed).catch(console.error);
 		}).catch((error) => {
-			message.channel.send(error.message);
+			message.channel.send(error.message).catch(console.error);
 		});
 	};
-	
+
 };

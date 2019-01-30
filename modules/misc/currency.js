@@ -30,7 +30,7 @@ module.exports = (bot = Discord.Client) => {
 					let tickets = data.tickets;
 					let guildSize = Math.floor(bot.guilds.size / 100) + 1;
 					tickets = tickets + guildSize;
-					message.channel.send(`You have been granted ${guildSize} ticket(s)! <:rooDuck:432962760570044417>`);
+					message.channel.send(`You have been granted ${guildSize} ticket(s)! <:rooDuck:432962760570044417>`).catch(console.error);
 					profile.setCur(userID, tickets);
 				}).catch((error) => {
 					console.log(error);
@@ -43,7 +43,7 @@ module.exports = (bot = Discord.Client) => {
 			let minutes = time % 60;
 			time = Math.floor(time / 60);
 			let hours = time % 24;
-			message.channel.send(`Please wait ${hours}h ${minutes}m and ${seconds}s for a new ticket! <:rooScared:433018721326596117>`);
+			message.channel.send(`Please wait ${hours}h ${minutes}m and ${seconds}s for a new ticket! <:rooScared:433018721326596117>`).catch(console.error);
 		}
 	};
 };

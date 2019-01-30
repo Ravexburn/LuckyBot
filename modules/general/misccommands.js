@@ -3,7 +3,9 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	require("../../functions/helpfunctions.js")(bot);
+	require("../misc/avatar.js")(bot);
 	require("../misc/color.js")(bot);
+	require("../misc/guild_icon.js")(bot);
 	require("../misc/horoscope.js")(bot);
 
 	miscCommands = async function miscCommands(message) {
@@ -22,6 +24,12 @@ module.exports = (bot = Discord.Client) => {
 		if (!command.startsWith(prefix)) return;
 
 		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
+
+			if (args.length === 0) {
+				message.channel.send(`Please provide a hex color or ask for a random color with \`${command} random\``).catch(console.error);
+				return;
+			}
+
 			switch (args[0]) {
 				case "rand":
 				case "random":
@@ -36,10 +44,9 @@ module.exports = (bot = Discord.Client) => {
 			}
 		}
 
-		if ((command === `${prefix}horoscope`)|| (command === `${prefix}hs`)) {
-			
-			switch (args[0]) {
+		if ((command === `${prefix}horoscope`) || (command === `${prefix}hs`)) {
 
+			switch (args[0]) {
 				default:
 				case "today":
 				case "day":
@@ -52,22 +59,30 @@ module.exports = (bot = Discord.Client) => {
 					horoscopeSet(message, args);
 					break;
 
-				case "week":
-					time = "week";
+				case "tomorrow":
+					time = "tomorrow";
 					horoInfo(message, time, prefix);
 					break;
 
-				case "month":
-					time = "month";
+				case "yesterday":
+					time = "yesterday";
 					horoInfo(message, time, prefix);
 					break;
 
-				case "year":
-					time = "year";
-					horoInfo(message, time, prefix);
+				case "list":
+					horoList(message);
 					break;
 			}
 		}
-		
+
+		if ((command === `${prefix}avatar`) || (command === `${prefix}ava`)) {
+			avatar(message, args);
+		}
+
+		if ((command === `${prefix}servericon`) || (command === `${prefix}guildicon`)) {
+			guildIcon(message, args);
+		}
+
 	};
+
 };

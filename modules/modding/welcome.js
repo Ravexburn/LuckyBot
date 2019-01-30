@@ -51,7 +51,7 @@ module.exports = (bot = Discord.Client) => {
 			.setDescription(msg)
 			.setTimestamp(member.joinedAt)
 			.setFooter(`Member #${pos + 1} 🎉`);
-		chan.send(embed);
+		chan.send(embed).catch(console.error);
 	};
 
 	//Join
@@ -144,6 +144,6 @@ module.exports = (bot = Discord.Client) => {
 			.setURL(member.user.displayAvatarURL)
 			.setTitle("Member Left!")
 			.setDescription(`${user} left the server`);
-		chan.send(embed);
+		chan.send(embed).catch(console.error);
 	};
 };

@@ -27,9 +27,10 @@ bot.on("ready", async () => {
 	} catch (error) {
 		bot.log(error.stack);
 	}
-	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
 	bot.guilds.forEach(guild => {
 		bot.invCache.guildInvites(guild).catch(console.error);
+		guild.fetchMembers().catch(console.error);
 	});
 });
 
@@ -37,18 +38,18 @@ bot.on("ready", async () => {
 
 bot.on("guildCreate", guild => {
 	bot.invCache.guildInvites(guild).catch(console.error);
-	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
 	guildCreateHandler(guild);
 });
 
 //When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
-	bot.user.setActivity(`on ${bot.guilds.size} servers | *help for list of commands`);
+	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
 	guildDeleteHandler(guild);
 });
 
-//All the commands the bot runs.
+//When a message is created.
 
 bot.on("message", async message => {
 	msgHandler(message);
@@ -90,8 +91,22 @@ bot.on("guildMemberRemove", member => {
 	leaveHandler(member);
 });
 
+//Whenever a connection error occurs.
+
 bot.on("error", error => {
-	console.log(error);
+	bot.log(error);
+});
+
+//General Debug info.
+
+bot.on("debug", debug => {
+	bot.log(debug);
+});
+
+//General Warnings
+
+bot.on("warn", warning => {
+	bot.log(warning);
 });
 
 bot.login(botSettings.token);

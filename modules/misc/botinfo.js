@@ -31,7 +31,7 @@ module.exports = (bot = Discord.Client) => {
 			.addField("Suggestions", `Have a suggestion? Use ${prefix}suggestion <your suggestion>`)
 			.addField("Issues", `Having an issue with the bot? Use ${prefix}issue <your issue> to report it!`)
 			.setFooter(`Bot ID ${bot.user.id}`);
-		message.channel.send(embed);
+		message.channel.send(embed).catch(console.error);
 		return;
 	};
 

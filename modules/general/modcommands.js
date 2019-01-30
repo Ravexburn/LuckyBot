@@ -7,11 +7,13 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/modcmdfunctions.js")(bot);
 	require("../../functions/modtogfunctions.js")(bot);
 	require("../../functions/ownercmdfunctions.js")(bot);
+	require("../modding/adblock.js")(bot);
 	require("../modding/ban.js")(bot);
 	require("../modding/kick.js")(bot);
 	require("../modding/mute.js")(bot);
 	require("../modding/prune.js")(bot);
 	require("../modding/starboard.js")(bot);
+	require("../modding/unban.js")(bot);
 	require("../owner/relays.js")(bot);
 	require("../modding/say.js")(bot);
 	require("../modding/setprefix.js")(bot);
@@ -33,13 +35,6 @@ module.exports = (bot = Discord.Client) => {
 		if (!command.startsWith(prefix)) return;
 
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-
-
-		if (!message.member) {
-			dmOwner(`mod command line 21 is null: guild: ${message.guild.name} author: ${message.author} content: ${message.content}`);
-			console.log("modcmd line 21 is null", `guild: ${message.guild.name}`, `author: ${message.author}`, `content: ${message.content}`);
-			return;
-		}
 
 		let hasPerms = perms.some(i => message.member.hasPermission(i));
 
@@ -105,7 +100,7 @@ module.exports = (bot = Discord.Client) => {
 				case "logs":
 					logsTog(message, serverSettings);
 					return;
-    
+
 				case "greeter":
 					welTog(message, serverSettings);
 					return;
@@ -113,7 +108,14 @@ module.exports = (bot = Discord.Client) => {
 				case "roles":
 					rolesTog(message, serverSettings);
 					return;
- 
+
+				case "adblock":
+				case "adb":
+				case "adblocker":
+				case "links":
+					adBlockTog(message, serverSettings);
+					return;
+
 				case "starboard":
 					starboardTog(message, serverSettings);
 					return;
@@ -216,7 +218,7 @@ module.exports = (bot = Discord.Client) => {
 
 	};
 
-	bkpCmd = async function bkpCmd(message) {	
+	bkpCmd = async function bkpCmd(message) {
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
 
@@ -233,6 +235,12 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}ban`)) {
 			banUser(message, command, args);
+		}
+
+		//Unban Command
+
+		if ((command === `${prefix}unban`)) {
+			unbanUser(message, command, args);
 		}
 
 		//Kick command
@@ -255,7 +263,7 @@ module.exports = (bot = Discord.Client) => {
 	owner = async function owner(message) {
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
-		if (![bot.botSettings.Owner_id, bot.botSettings.Owner_id2].includes(message.author.id)) return;
+		if (![bot.botSettings.Owner_id, bot.botSettings.Owner_id2, bot.botSettings.Owner_id3].includes(message.author.id)) return;
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
@@ -268,8 +276,8 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}intset`)) {
 			bot.initServerSettings(message.guild.id);
 			message.channel.send("**Server settings have been reset**")
-				.then(message => message.delete(10 * 1000));
-			message.delete(10 * 1000);
+				.then(message => message.delete(10 * 1000)).catch(console.error);
+			message.delete(10 * 1000).catch(console.error);
 			return;
 		}
 
@@ -353,7 +361,7 @@ module.exports = (bot = Discord.Client) => {
 					//Where a new relay starts. Requires relay name, type, and at least two channel and server ids.
 					// *relay start <relay> <type> <channel> <channel> [channel...]
 					if (args.length < 5) {
-						message.channel.send(`Please provide relay name, type of relay, and two or more channels.`);
+						message.channel.send(`Please provide relay name, type of relay, and two or more channels.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -368,7 +376,7 @@ module.exports = (bot = Discord.Client) => {
 					//Adds a channel to an existing relay. Requires relay name, channel and server id.
 					// *relay add <relay> <channel> [channel...]
 					if (args.length < 3) {
-						message.channel.send(`Please provide the relay name and the channel id which you would like to add.`);
+						message.channel.send(`Please provide the relay name and the channel id which you would like to add.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -382,7 +390,7 @@ module.exports = (bot = Discord.Client) => {
 					//Removes a channel to an existing relay. Requires relay name, channel and server id.
 					// *relay remove <relay> <channel>
 					if (args.length < 3) {
-						message.channel.send(`Please provide the relay name and the channel id which you would like to remove.`);
+						message.channel.send(`Please provide the relay name and the channel id which you would like to remove.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -395,7 +403,7 @@ module.exports = (bot = Discord.Client) => {
 					//Deletes an existing relay. Requires relay name.
 					// *relay delete <relay>
 					if (args.length < 2) {
-						message.channel.send(`Please provide the relay name you would like to delete.`);
+						message.channel.send(`Please provide the relay name you would like to delete.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -407,7 +415,7 @@ module.exports = (bot = Discord.Client) => {
 				case "type":
 					// *relay type <relay> <type>
 					if (args.length < 2) {
-						message.channel.send(`Please provide the relay name and type of relay.`);
+						message.channel.send(`Please provide the relay name and type of relay.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();
@@ -425,7 +433,7 @@ module.exports = (bot = Discord.Client) => {
 				case "format":
 					// *relay format <relay> <format>
 					if (args.length < 2) {
-						message.channel.send(`Please provide the relay name and format of relay.`);
+						message.channel.send(`Please provide the relay name and format of relay.`).catch(console.error);
 						return;
 					}
 					relay = args[1].toLowerCase();

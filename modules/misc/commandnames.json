@@ -40,7 +40,22 @@
 		"rolelist",
 		"color",
 		"colour",
-		"fm"
+		"fm",
+		"adblock",
+		"adblocker",
+		"adb",
+		"*play",
+		"*stop",
+		"*forceskip",
+		"*skip",
+		"biaslist",
+		"biasstats",
+		"donate",
+		"donators",
+		"ava",
+		"avatar",
+		"guildicon",
+		"servericon"
     ]
 
 }

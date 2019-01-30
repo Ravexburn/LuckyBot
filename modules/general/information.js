@@ -3,16 +3,20 @@ const link = "https://trello.com/b/0uytHSPL";
 const link2 = "https://github.com/Ravexburn/LuckyBot";
 const invite = "https://discord.gg/z4thPtW";
 const website = "https://luckybot.io/";
+const donate = "https://www.patreon.com/ravexburn";
 
 module.exports = (bot = Discord.Client) => {
 
 	require("../../functions/helpfunctions.js")(bot);
 	require("../misc/botinfo.js")(bot);
 	require("../misc/currency.js")(bot);
+	require("../misc/donators.js")(bot);
+	require("../misc/issues.js")(bot);
 	require("../misc/levels.js")(bot);
 	require("../misc/rep.js")(bot);
 	require("../misc/rolelist.js")(bot);
 	require("../misc/serverinfo.js")(bot);
+	require("../misc/suggestions.js")(bot);
 	require("../misc/userinfo.js")(bot);
 
 	infoMsg = async function infoMsg(message) {
@@ -51,22 +55,22 @@ module.exports = (bot = Discord.Client) => {
 		//Trello
 
 		if (command === `${prefix}trello`) {
-			message.channel.send(`View upcoming features here: ${link}`);
+			message.channel.send(`View upcoming features here: ${link}`).catch(console.error);
 			return;
 		}
 
 		//Github
 
 		if ((command === `${prefix}github`) || (command === `${prefix}git`)) {
-			message.channel.send(`View upcoming features here: ${link2}`);
+			message.channel.send(`View upcoming features here: ${link2}`).catch(console.error);
 			return;
 		}
 
 		//Invite
 
 		if ((command === `${prefix}invite`) || (command === `${prefix}inv`)) {
-			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`);
-			message.author.send(`Want ${bot.user.username} for your server? Have any questions on how to use ${bot.user.username}? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`);
+			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`).catch(console.error);
+			message.author.send(`Want ${bot.user.username} for your server? Have any questions on how to use ${bot.user.username}? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`).catch(console.error);
 			return;
 		}
 
@@ -106,99 +110,44 @@ module.exports = (bot = Discord.Client) => {
 
 		//Roles info
 
-		if ((command === `${prefix}roleslist`) || (command === `${prefix}rolelist`)){
+		if ((command === `${prefix}roleslist`) || (command === `${prefix}rolelist`)) {
 			rolelist(message);
+		}
+
+		//Bias info
+
+		if ((command === `${prefix}biaslist`) || (command === `${prefix}biasstats`)) {
+			memberCount(message);
 		}
 
 		//Help
 
 		if (command === `${prefix}help`) {
-			message.reply(`Help can be found here: ${website}`);
+			message.reply(`Help can be found here: ${website}`).catch(console.error);
 		}
 
 		//Suggestions
 
 		if (command === `${prefix}suggestion` || command === `${prefix}suggest` || command === `${prefix}sgt`) {
-			const chan = getSuggestionChannel();
-			if (!chan) {
-				//Stuffs
-				return;
-			}
-
-			let msg = args.join(" ").trim();
-			if (msg === "") {
-				message.channel.send(`I've got a suggestion, try adding a suggestion. \`${command} <message>\``);
-				return;
-			}
-			let embed = new Discord.RichEmbed()
-				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-				.setTitle("Server: " + message.guild.name + "")
-				.setDescription("```css\n" + msg + "\n```")
-				.setFooter(message.createdAt);
-			if (message.attachments != null && message.attachments.size !== 0) {
-				embed.setImage(message.attachments.first().url);
-			}
-			let color = "#a8e8eb";
-			let member = message.member;
-			if (member.colorRole) { color = member.colorRole.color; }
-			embed.setColor(color);
-			chan.send(embed);
-			message.channel.send(`Suggestion sent!`);
-			return;
+			suggestions(message, args, command);
 		}
 
 		//Issues
-		if (command === `${prefix}issue` || command === `${prefix}issues` || command === `${prefix}isu`) {
-			const chan = getIssueChannel();
-			if (!chan) {
-				//Stuffs
-				return;
-			}
 
-			let msg = args.join(" ").trim();
-			if (msg === "") {
-				message.channel.send(`I've got an issue, try adding an issue. \`${command} <message>\``);
-				return;
-			}
-			let embed = new Discord.RichEmbed()
-				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-				.setTitle("Server: " + message.guild.name + "")
-				.setDescription("```css\n" + msg + "\n```")
-				.setFooter(message.createdAt);
-			if (message.attachments != null && message.attachments.size !== 0) {
-				embed.setImage(message.attachments.first().url);
-			}
-			let color = "#a8e8eb";
-			let member = message.member;
-			if (member.colorRole) { color = member.colorRole.color; }
-			embed.setColor(color);
-			chan.send(embed);
-			message.channel.send(`Issue sent!`);
-			return;
+		if (command === `${prefix}issue` || command === `${prefix}issues` || command === `${prefix}isu`) {
+			issues(message, args, command);
 		}
 
+		//Donate link
+
+		if ((command === `${prefix}donate`)) {
+			message.channel.send(`If you would like to help out with keeping Lucky Bot running, you can donate here: <${donate}>. Anything is appreciated!`).catch(console.error);
+		}
+
+		//Donators
+
+		if ((command === `${prefix}donators`)) {
+			donators(message);
+		}
 	};
-
-	function getSuggestionChannel() {
-		let suggestGuild = "418479049724395520";
-		let suggestChan = "418541520304603137";
-		const guild = bot.guilds.get(suggestGuild);
-		if (!guild) return null;
-		const chan = guild.channels.get(suggestChan);
-		if (!chan) return null;
-
-		return chan;
-	}
-
-	function getIssueChannel() {
-		let issueGuild = "418479049724395520";
-		let issueChan = "418541543301971988";
-		const guild = bot.guilds.get(issueGuild);
-		if (!guild) return null;
-		const chan = guild.channels.get(issueChan);
-		if (!chan) return null;
-
-		return chan;
-	}
-	
 };

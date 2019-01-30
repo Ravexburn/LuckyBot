@@ -37,7 +37,7 @@ module.exports = (bot = Discord.Client) => {
 	//Help command for Lastfm Commands
 	lastFMHelp = function lastFMHelp(prefix, embed) {
 		embed.setTitle(":musical_note: LastFM Commands");
-		embed.setColor("#33cc33");
+		embed.setColor("#D21E26");
 		embed.addField(`${prefix}lastfm`, "Shows last.fm account info.");
 		embed.addField(`${prefix}lastfm help`, "Shows this list of commands for last.fm commands.");
 		embed.addField(`${prefix}lastfm set`, `Saves last.fm username (requires a [last.fm](${lastfmSite}) account).`);
@@ -95,6 +95,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(`${prefix}toggle image`, "Changes between embed disabled for images in message logs.");
 		embed.addField(`${prefix}toggle greeter`, "Toggles the greeter functionality.");
 		embed.addField(`${prefix}toggle roles`, "Toggles the roles functionality.");
+		embed.addField(`${prefix}toggle adblock`, "Toggles the ability to post discord links.");
 		embed.addField(`${prefix}toggle starboard`, "Toggles the starboard functionality.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 	};

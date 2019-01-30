@@ -1,0 +1,7 @@
+{
+	"token": "bot token here",
+	"lastfm": "lastfm api key here",
+	"lfsecret": "lastfm seceret key here",
+	"prefix": "prefix here",
+	"Owner_id": "owner id"
+}

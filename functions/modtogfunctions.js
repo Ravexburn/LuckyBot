@@ -62,19 +62,15 @@ module.exports = (bot = Discord.Client) => {
 		message.channel.send(`**Roles status:** ${emote}`);
 	};
 
-	/**
-		 * Turns mod logs on and off
-		 * @param {Message} message 
-		 */
-	modLogTog = function modLogTog(message, serverSettings) {
-		serverSettings.modLogOn = !serverSettings.modLogOn;
+	adBlockTog = function adBlockTog(message, serverSettings) {
+		serverSettings.adBlocktoggle = !serverSettings.adBlocktoggle;
 		bot.setServerSettings(message.guild.id, serverSettings);
-		if (serverSettings.modLogOn === true) {
+		if (serverSettings.adBlocktoggle === true) {
 			emote = ":white_check_mark: **Enabled**";
 		} else {
 			emote = ":x: **Disabled**";
 		}
-		message.channel.send(`**Mod Log status:** ${emote}`);
+		message.channel.send(`**Blocking discord link status:** ${emote}`);
 	};
 
 	/**

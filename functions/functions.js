@@ -22,7 +22,7 @@ module.exports = (bot = Discord.Client) => {
 			});
 			return;
 		} else {
-			message.channel.send(embed);
+			message.channel.send(embed).catch(console.error);
 			return;
 		}
 	};

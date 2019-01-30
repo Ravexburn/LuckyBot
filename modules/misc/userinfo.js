@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+let maxField = 1024;
 
 module.exports = (bot = Discord.Client) => {
 
@@ -18,7 +19,7 @@ module.exports = (bot = Discord.Client) => {
 			if (message.guild.members.has(target_id)) {
 				target = message.guild.member(target_id);
 			} else {
-				message.channel.send("Unable to find user.");
+				message.channel.send("Unable to find user.").catch(console.error);
 			}
 
 		} else {
@@ -28,7 +29,7 @@ module.exports = (bot = Discord.Client) => {
 		if (!target) return;
 		let member = target;
 		let color = "#a8e8eb";
-		let avatarURL = member.user.displayAvatarURL.split("?")[0];
+		let avatarURL = member.user.displayAvatarURL.split("?")[0] + "?size=1024";
 		if (member.colorRole) { color = member.colorRole.color; }
 		let embed = new Discord.RichEmbed()
 			.setAuthor(member.user.tag, avatarURL)
@@ -59,28 +60,26 @@ module.exports = (bot = Discord.Client) => {
 			embed.addField(fieldString, gameString, true);
 		}
 
-		let userRoles = member.roles.size > 0 ? member.roles.array().sort((a, b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ") : "N/A";
+		let userRoles = member.roles.size > 1 ? member.roles.array().sort((a, b) => b.position - a.position).slice(0, member.roles.array().length - 1).join(", ") : "N/A";
 		if (userRoles) {
-			embed.addField("Roles", userRoles);
-		} else {
-			embed.addField("Roles", "N/A");
-		}
-
-		let pos = 0;
-		let guildMembers = await message.guild.fetchMembers().then((guild) => {
-			let cachedMembers = guild.members.array().sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
-
-			for (i = 0; i < cachedMembers.length; i++) {
-				if (cachedMembers[i].id == member.id) {
-					pos = i;
-				}
+			if (userRoles.length > maxField) {
+				let trimmed = userRoles.substr(0, maxField);
+				trimmed = trimmed.substr(0, trimmed.lastIndexOf(","));
+				embed.addField("Roles", trimmed);
+			}else {
+				embed.addField("Roles", userRoles);
 			}
-		}).catch((error) => {
-			console.log(error);
-		});
+		} 
 
-		embed.setFooter(`Member #${pos + 1}`);
-		message.channel.send(embed);
+		let guild = await member.guild.fetchMembers().catch(console.error);
+
+		let members = guild.members.array();
+		members = members.sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
+		console.log(`First member for userinfo ${members[0].user.tag}`);
+		let pos = members.findIndex(number => number.id == member.id) + 1;
+
+		embed.setFooter(`Member #${pos}`);
+		message.channel.send(embed).catch(console.error);
 
 		return;
 	};

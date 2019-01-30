@@ -25,13 +25,13 @@ module.exports = (bot = Discord.Client) => {
 						.setColor("#1ccc8b")
 						.addField("Whitelisted", ":white_check_mark:");
 					whitelistEmbed(guild, embed);
-					chan.send(embed);
+					chan.send(embed).catch(console.error);
 					return;
 				}
 
 				else {
-					guild.owner.send(`Your server \`${guild.name}\` is not currently whitelisted. Please join here and post in #add-your-server to have ${bot.user.username} be whitelisted. **If ${bot.user.username} is on your server, you may ignore this message as it is already whitelisted!** https://discord.gg/z4thPtW`);
-					guild.leave();
+					guild.owner.send(`Your server \`${guild.name}\` is not currently whitelisted. Please join here and post in #add-your-server to have ${bot.user.username} be whitelisted. **If ${bot.user.username} is on your server, you may ignore this message as it is already whitelisted!** https://discord.gg/z4thPtW`).catch(console.error);
+					guild.leave().catch(console.error);
 
 					const chan = serverLogging();
 					if (!chan) {
@@ -43,7 +43,7 @@ module.exports = (bot = Discord.Client) => {
 						.setColor("#ce1827")
 						.addField("Whitelisted", ":x:");
 					whitelistEmbed(guild, embed);
-					chan.send(embed);
+					chan.send(embed).catch(console.error);
 					return;
 				}
 			}
@@ -60,7 +60,7 @@ module.exports = (bot = Discord.Client) => {
 			.setAuthor(bot.user.tag, bot.user.displayAvatarURL)
 			.setColor("#ce1827");
 		whitelistEmbed(guild, embed);
-		chan.send(embed);
+		chan.send(embed).catch(console.error);
 		return;
 
 	};
@@ -77,7 +77,7 @@ module.exports = (bot = Discord.Client) => {
 
 	writingWL = function writingWL(message, args) {
 		if (args.length === 0) {
-			message.channel.send("Missing arguments.");
+			message.channel.send("Missing arguments.").catch(console.error);
 			return;
 		}
 
@@ -111,13 +111,13 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (args.length < 2) {
-			message.channel.send("Add id and server name");
+			message.channel.send("Add id and server name").catch(console.error);
 			return;
 		}
 		let id = args[0];
 		let name = args.slice(1).join(" ");
 		if (whitelistAdd(id, name)) {
-			message.channel.send(`Added server to whitelist. \`${id} ${name}\``);
+			message.channel.send(`Added server to whitelist. \`${id} ${name}\``).catch(console.error);
 			console.log(`Added server to whitelist. \`${id} ${name}\``);
 		}
 	};
@@ -166,5 +166,4 @@ whitelistEmbed = function whitelistEmbed(guild, embed) {
 	embed.addField("Members", guild.memberCount, true);
 	embed.setThumbnail(guild.iconURL);
 	embed.setURL(guild.iconURL);
-	embed.setTimestamp(guild.joinAt);
 };
