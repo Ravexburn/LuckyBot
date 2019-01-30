@@ -417,7 +417,7 @@ function embedCss(message, embed, msg) {
 }
 
 function formatUrl(url) {
-	return url.replace(/\(/g, "%28").replace(/\)/g, "%29");
+	return decodeURIComponent(url).replace(/\(/g, "%28").replace(/\)/g, "%29");
 }
 
 //Function which determines which user to get last.fm data for
@@ -510,13 +510,11 @@ function sendListWithPages(message, embed, list, coverItem) {
 }
 
 function setThumbnail(embed, object) {
-	if (!object.image) {
-		console.log(`No Image`);
-		return;
+	if (object.image) {
+		object.image.forEach(image => {
+			if (image["size"] === "extralarge") {
+				embed.setThumbnail(image["#text"]);
+			}
+		});
 	}
-	object.image.forEach(image => {
-		if (image["size"] === "extralarge") {
-			embed.setThumbnail(image["#text"]);
-		}
-	});
 }
