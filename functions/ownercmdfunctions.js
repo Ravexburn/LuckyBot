@@ -100,7 +100,7 @@ module.exports = (bot = Discord.Client) => {
 			}
 			emote(serverSettings, guild);
 			let embed = new Discord.RichEmbed()
-				.setTitle(`Settings for ${guild.name}`)
+				.setTitle(`Settings for ${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
 				.setThumbnail(guild.iconURL)
 				.addField("Owner", guild.owner.user.tag, true)
 				.addField("Server ID", guild.id, true)
@@ -123,7 +123,7 @@ module.exports = (bot = Discord.Client) => {
 			}
 			emote(serverSettings, guild);
 			let embed = new Discord.RichEmbed()
-				.setTitle(`Settings for ${guild.name}`)
+				.setTitle(`Settings for ${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
 				.setThumbnail(guild.iconURL)
 				.addField("Owner", guild.owner.user.tag, true)
 				.addField("Server ID", guild.id, true)
