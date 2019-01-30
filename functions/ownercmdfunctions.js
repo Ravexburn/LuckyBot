@@ -92,31 +92,41 @@ module.exports = (bot = Discord.Client) => {
 
 	serverModSettings = function serverModSettings(message, args) {
 		if (args.length === 1) {
-			let serverSettings = bot.getServerSettings(message.guild.id);
-			if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
-			let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "roleChannelID"];
-			let embed = new Discord.RichEmbed()
-				.setTitle(`Settings for ${message.guild.name}`)
-				.setColor("#228B22");
-			for (const key of list) {
-				embed.addField(key, serverSettings[key]);
+			let guild = message.guild;
+			let serverSettings = bot.getServerSettings(guild.id);
+			if (!serverSettings) {
+				message.channel.send(`Could not get settings for this server.`).catch(console.error);
+				return;
 			}
-			message.channel.send(embed);
+			let embed = new Discord.RichEmbed()
+				.setTitle(`Settings for ${guild.name}`)
+				.setThumbnail(guild.iconURL)
+				.addField("Owner", guild.owner.user.tag, true)
+				.addField("Owner ID", guild.owner.user.id, true)
+				.addField("Server ID", guild.id, true)
+				.addField("Server Prefix", serverSettings.prefix, true)
+				.addField("Member Count", guild.memberCount, true)
+				.addField("Server Creation", guild.createdAt.toLocaleString(), true);
+			message.channel.send(embed).catch(console.error);
 			return;
 		} else if (args.length === 2) {
 			let id = args[1];
 			if (!bot.guilds.has(id)) return;
 			let guild = bot.guilds.get(id);
 			let serverSettings = bot.getServerSettings(id);
-			if (!serverSettings) { message.channel.send(`Could not get settings for this server.`); return; }
-			let list = ["prefix", "logsOn", "autoRoleOn", "welcomeOn", "rolesOn"];
+			if (!serverSettings) {
+				message.channel.send(`Could not get settings for this server.`).catch(console.error);
+				return;
+			}
 			let embed = new Discord.RichEmbed()
 				.setTitle(`Settings for ${guild.name}`)
-				.setColor("#228B22");
-			for (const key of list) {
-				embed.addField(key, serverSettings[key] + "­");
-			}
-			message.channel.send(embed);
+				.setThumbnail(guild.iconURL)
+				.addField("Owner", guild.owner.user.tag, true)
+				.addField("Server ID", guild.id, true)
+				.addField("Server Prefix", serverSettings.prefix, true)
+				.addField("Member Count", guild.memberCount, true)
+				.addField("Server Creation", guild.createdAt.toLocaleString(), true);
+			message.channel.send(embed).catch(console.error);
 			return;
 		}
 	};
