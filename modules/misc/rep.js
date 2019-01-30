@@ -10,8 +10,11 @@ const MSG_TIME = 12 * 60 * 60 * 1000;
 module.exports = (bot = Discord.Client) => {
 
 	repFunction = function repFunction(message, args) {
+		
 		if (message.system) return;
 		if (message.author.bot) return;
+		if (message.channel.type === "dm") return;
+
 		let repped = null;
 
 		let userID = message.author.id;

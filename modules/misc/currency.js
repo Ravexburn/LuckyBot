@@ -10,8 +10,10 @@ const MSG_TIME = 6 * 60 * 60 * 1000;
 module.exports = (bot = Discord.Client) => {
 
 	curFunction = function curFunction(message) {
+		
 		if (message.system) return;
 		if (message.author.bot) return;
+		if (message.channel.type === "dm") return;
 
 		let userID = message.author.id;
 		if (!currency.has(userID)) {

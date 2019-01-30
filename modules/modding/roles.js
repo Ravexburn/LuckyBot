@@ -5,8 +5,11 @@ const Role = Discord.Role;
 module.exports = (bot = Discord.Client) => {
 
 	rolesAdd = async function rolesAdd(message) {
+		
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
+		
 		const serverSettings = bot.getServerSettings(message.guild.id);
 		if (serverSettings.rolesOn === false) return;
 		if (!serverSettings) return;

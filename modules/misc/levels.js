@@ -14,10 +14,11 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/helpfunctions.js")(bot);
 
 	expFunction = function expFunction(message) {
+		
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
-		if (message.channel.id === "421542468300046336") return;
+
 		let guild = message.guild;
 		let userID = message.author.id;
 		if (!timer.has(guild.id)) {
@@ -72,9 +73,11 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	tempLevelProfile = async function tempLevelProfile(message, args) {
+		
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
+		
 		let xp;
 		let level;
 		let nextExp;

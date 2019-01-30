@@ -5,8 +5,10 @@ module.exports = (bot = Discord.Client) => {
 
 	autoRoleMsg = async function autoRoleMsg(message) {
 
+		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
+		
 		let serverSettings = bot.getServerSettings(message.guild.id);
 
 		let messageArray = message.content.split(" ");
