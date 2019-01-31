@@ -37,17 +37,17 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
+		if (member === message.member) {
+			message.channel.send("You can't kick yourself.").catch(console.error);
+			return;
+		}
+
 		if (member) {
 			if (member.hasPermission("ADMINISTRATOR") || member.hasPermission("MANAGE_GUILD") || member.hasPermission("VIEW_AUDIT_LOG")) {
 				message.channel.send("You can't kick that person.").catch(console.error);
 				return;
 			}
 
-		}
-
-		if (member === message.member) {
-			message.channel.send("You can't kick yourself.").catch(console.error);
-			return;
 		}
 
 		if (!member) {
