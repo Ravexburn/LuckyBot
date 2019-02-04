@@ -71,6 +71,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(`${prefix}starboard emoji remove`, "Remove an emoji from the list of valid emoji for pinning messages to the starboard.");
 		embed.addField(`${prefix}starboard number <number>`, "Sets the number of reactions required to pin messages on the board.");
 		embed.addField(`${prefix}toggle starboard`, "Toggles the starboard functionality.");
+		embed.addField(`${prefix}toggle greeterembed`, "Toggles welcome between embed and non-embed.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 	};
 
