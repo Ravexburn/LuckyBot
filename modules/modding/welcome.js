@@ -43,15 +43,19 @@ module.exports = (bot = Discord.Client) => {
 
 		msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
 
-		let embed = new Discord.RichEmbed()
-			.setColor("RANDOM")
-			.setThumbnail(member.user.displayAvatarURL)
-			.setURL(member.user.displayAvatarURL)
-			.setTitle("Member Join!")
-			.setDescription(msg)
-			.setTimestamp(member.joinedAt)
-			.setFooter(`Member #${pos + 1} 🎉`);
-		chan.send(embed).catch(console.error);
+		if (serverSettings.welcomeEmbed === true) {
+			let embed = new Discord.RichEmbed()
+				.setColor("RANDOM")
+				.setThumbnail(member.user.displayAvatarURL)
+				.setURL(member.user.displayAvatarURL)
+				.setTitle("Member Join!")
+				.setDescription(msg)
+				.setTimestamp(member.joinedAt)
+				.setFooter(`Member #${pos + 1} 🎉`);
+			chan.send(embed).catch(console.error);
+		} else{
+			chan.send(msg).catch(console.error);
+		}
 	};
 
 	//Join
@@ -105,7 +109,7 @@ module.exports = (bot = Discord.Client) => {
 			if (!guild.me.hasPermission("MANAGE_GUILD")) {
 				embed.addField("Invites", ":warning: Please enable `MANAGE_SERVER` to be able to see what invite was used.");
 			}
-		} catch(error){
+		} catch (error) {
 			bot.log(error);
 		}
 		bot.invCache.usedInvite(guild).then(invite => {

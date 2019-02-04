@@ -22,7 +22,7 @@ module.exports = (bot = Discord.Client) => {
 	//Admin and Mod Settings
 
 	modCmds = async function modCmds(message) {
-		
+
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
@@ -120,6 +120,12 @@ module.exports = (bot = Discord.Client) => {
 
 				case "starboard":
 					starboardTog(message, serverSettings);
+					return;
+
+				case "welembed":
+				case "greeterembed":
+				case "joinembed":
+					greeterEmbed(message, serverSettings);
 					return;
 
 				default:
@@ -221,7 +227,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	bkpCmd = async function bkpCmd(message) {
-		
+
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
@@ -265,7 +271,7 @@ module.exports = (bot = Discord.Client) => {
 	//Intial Settings (Owner Only)
 
 	owner = async function owner(message) {
-		
+
 		if (message.system) return;
 		if (message.author.bot) return;
 		if (message.channel.type === "dm") return;
