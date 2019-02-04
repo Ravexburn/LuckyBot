@@ -88,4 +88,14 @@ module.exports = (bot = Discord.Client) => {
 		message.channel.send(`**Starboard status:** ${emote}`);
 	};
 
+	greeterEmbed = function greeterEmbed(message, serverSettings){
+		serverSettings.welcomeEmbed = !serverSettings.welcomeEmbed;
+		bot.setServerSettings(message.guild.id, serverSettings);
+		if (serverSettings.welcomeEmbed === true) {
+			emote = ":white_check_mark: **Enabled**";
+		} else {
+			emote = ":x: **Disabled**";
+		}
+		message.channel.send(`**Welcome Embed:** ${emote}`);
+	};
 };
