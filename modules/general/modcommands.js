@@ -9,15 +9,16 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/ownercmdfunctions.js")(bot);
 	require("../modding/adblock.js")(bot);
 	require("../modding/ban.js")(bot);
+	require("../modding/editmessage.js")(bot);
 	require("../modding/kick.js")(bot);
 	require("../modding/mute.js")(bot);
 	require("../modding/prune.js")(bot);
+	require("../modding/say.js")(bot);
+	require("../modding/setprefix.js")(bot);
 	require("../modding/starboard.js")(bot);
 	require("../modding/unban.js")(bot);
 	require("../owner/relays.js")(bot);
-	require("../modding/say.js")(bot);
-	require("../modding/setprefix.js")(bot);
-	require("../owner/whitelist.js")(bot);
+	require("../owner/newwhitelist.js")(bot);
 
 	//Admin and Mod Settings
 
@@ -212,16 +213,16 @@ module.exports = (bot = Discord.Client) => {
 			muteUser(message, command, args, perms);
 		}
 
-		//Mod help
-
-		if (command === `${prefix}mod`) {
-			message.reply(`Help can be found here: ${website}`);
-		}
-
 		//Say Command
 
 		if (command === `${prefix}say`) {
 			sayFunction(message, command, args);
+		}
+
+		//Edit Message Command
+
+		if (command === `${prefix}edit`) {
+			editMessageFunction(message, command, args);
 		}
 
 	};
@@ -297,7 +298,7 @@ module.exports = (bot = Discord.Client) => {
 		//Whitelist add
 
 		if ((command === `${prefix}whitelist`)) {
-			writingWL(message, args);
+			writingWLN(message, args);
 		}
 
 		//Servers' info
