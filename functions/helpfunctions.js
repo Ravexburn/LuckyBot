@@ -71,7 +71,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(`${prefix}starboard emoji remove`, "Remove an emoji from the list of valid emoji for pinning messages to the starboard.");
 		embed.addField(`${prefix}starboard number <number>`, "Sets the number of reactions required to pin messages on the board.");
 		embed.addField(`${prefix}toggle starboard`, "Toggles the starboard functionality.");
-		embed.addField(`${prefix}toggle greeterembed`, "Toggles welcome between embed and non-embed.");
+		embed.addField(`${prefix}toggle greeterembed`, "Toggles between an embed and text for the greeter message.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 	};
 
@@ -98,6 +98,18 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(`${prefix}toggle roles`, "Toggles the roles functionality.");
 		embed.addField(`${prefix}toggle adblock`, "Toggles the ability to post discord links.");
 		embed.addField(`${prefix}toggle starboard`, "Toggles the starboard functionality.");
+		embed.addField(`${prefix}toggle greeterembed`, "Toggles between an embed and text for the greeter message.");
+		embed.setFooter("If you have any other questions please contact Rave#0737");
+	};
+
+	//Help for Horoscope 
+	horoHelp = function horoHelp(prefix, embed) {
+		embed.setTitle(":aries: Horoscope Commands");
+		embed.setColor("#EF095E");
+		embed.addField(`${prefix}horoscope help`, "Shows this list of commands for horoscope.");
+		embed.addField(`${prefix}horoscope set`, "Sets your horoscope sign.");
+		embed.addField(`${prefix}horoscope list`, "Lists all horoscope signs.");
+		embed.addField(`${prefix}horoscope <yesterday|today|tomorrow>`, "Shows horoscope info for given time period. Defaults to today.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 	};
 
