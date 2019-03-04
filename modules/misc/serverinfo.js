@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
 		"eu-central": ":flag_eu: EU Central",
 		"eu-west": ":flag_eu: EU West",
 		"frankfurt": ":flag_de: Frankfurt",
-		"hongkong" : ":flag_hk: Hong Kong",
+		"hongkong": ":flag_hk: Hong Kong",
 		"japan": ":flag_jp: Japan",
 		"london": ":flag_gb: London",
 		"russia": ":flag_ru: Russia",
