@@ -57,6 +57,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(`${prefix}greeter channel <channel name>`, "Sets the channel the bot should greet new members in.");
 		embed.addField(`${prefix}greeter message <message>`, "Sets the message the bot says when a new member joins.\n Use {server} for the server name. Use {user} for the username. Use {mention} for a mention.");
 		embed.addField(`${prefix}toggle greeter`, "Toggles the greeter functionality.");
+		embed.addField(`${prefix}toggle greeterembed`, "Toggles between an embed and text for the greeter message.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 	};
 
@@ -71,7 +72,6 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(`${prefix}starboard emoji remove`, "Remove an emoji from the list of valid emoji for pinning messages to the starboard.");
 		embed.addField(`${prefix}starboard number <number>`, "Sets the number of reactions required to pin messages on the board.");
 		embed.addField(`${prefix}toggle starboard`, "Toggles the starboard functionality.");
-		embed.addField(`${prefix}toggle greeterembed`, "Toggles between an embed and text for the greeter message.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
 	};
 
