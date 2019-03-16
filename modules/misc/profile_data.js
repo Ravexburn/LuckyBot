@@ -203,6 +203,25 @@ module.exports = class Profiles {
 				});
 		};
 
+		this.getProfileTopServers = function getProfileTopServers(userID) {
+			return _dbExist()
+				.then((db) => {
+					return db.all(`SELECT ${SQL_GUILD},${SQL_LEVEL},${SQL_EXP} FROM ${SQL_TABLE_LOCAL} WHERE ${SQL_USER_ID} = ? ORDER BY ${SQL_LEVEL} DESC, ${SQL_EXP} DESC LIMIT 10`, [userID]);
+				}).then((rows) => {
+					let arr = [];
+					rows.forEach(row => {
+						let data = {};
+						data[SQL_USER_ID] = row[SQL_USER_ID];
+						data[SQL_GUILD] = row[SQL_GUILD];
+						data[SQL_LEVEL] = row[SQL_LEVEL];
+						arr.push(data);
+					});
+					return Promise.resolve(arr);	
+				}).catch((reason) => {
+					return Promise.reject(reason);
+				});
+		};
+
 		this.setLvlXpLocal = function setLvlXpLocal(userID, guildID, level, exp) {
 			return _dbExist()
 				.then((db) => {

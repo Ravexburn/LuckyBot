@@ -38,18 +38,21 @@ module.exports = (bot = Discord.Client) => {
 
 		if (command === `${prefix}userinfo`) {
 			userInfo(message, args);
+			return;
 		}
 
 		//Server Info Settings
 
 		if (command === `${prefix}serverinfo`) {
 			serverInfo(message);
+			return;
 		}
 
 		//Bot Info
 
 		if (command === `${prefix}botinfo` || command === `${prefix}about` || command === `${prefix}info`) {
 			botInfo(message, prefix);
+			return;
 		}
 
 		//Trello
@@ -78,33 +81,41 @@ module.exports = (bot = Discord.Client) => {
 
 		if (command === `${prefix}profile`) {
 			tempLevelProfile(message, args);
+			return;
 		}
 
 		//Tickets
 
 		if (command === `${prefix}ticket`) {
 			curFunction(message);
+			return;
 		}
 
 		//Rep
 
 		if (command === `${prefix}rep`) {
 			repFunction(message, args);
+			return;
 		}
 
-		//Leaderboard
+		//Leaderboard & User top servers
 
 		if (command == `${prefix}leaderboard`) {
 			switch (args[0]) {
-				default:
-				case "local":
-					leaderboardLocal(message, args);
-					break;
 
 				case "global":
 					leaderboardGlobal(message, args);
 					break;
+
+				default:
+					leaderboardLocal(message, args);
+					break;
 			}
+			return;
+		}
+
+		if (command == `${prefix}topservers`) {
+			topServers(message);
 			return;
 		}
 
@@ -112,42 +123,49 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}roleslist`) || (command === `${prefix}rolelist`)) {
 			rolelist(message);
+			return;
 		}
 
 		//Bias info
 
 		if ((command === `${prefix}biaslist`) || (command === `${prefix}biasstats`)) {
 			memberCount(message);
+			return;
 		}
 
 		//Help
 
 		if (command === `${prefix}help`) {
 			message.reply(`Help can be found here: ${website}`).catch(console.error);
+			return;
 		}
 
 		//Suggestions
 
 		if (command === `${prefix}suggestion` || command === `${prefix}suggest` || command === `${prefix}sgt`) {
 			suggestions(message, args, command);
+			return;
 		}
 
 		//Issues
 
 		if (command === `${prefix}issue` || command === `${prefix}issues` || command === `${prefix}isu`) {
 			issues(message, args, command);
+			return;
 		}
 
 		//Donate link
 
 		if ((command === `${prefix}donate`)) {
 			message.channel.send(`If you would like to help out with keeping Lucky Bot running, you can donate here: <${donate}>. Anything is appreciated!`).catch(console.error);
+			return;
 		}
 
 		//Donators
 
 		if ((command === `${prefix}donators`)) {
 			donators(message);
+			return;
 		}
 	};
 };
