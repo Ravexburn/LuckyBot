@@ -40,15 +40,17 @@ module.exports = (bot = Discord.Client) => {
 		if (![].concat(starboardEmoji).includes(reaction.emoji.name)) return;
 		if (reaction.count < starboardNumber) return;
 
-		//Don't allow pinning of messages on the starboard itself
+		//Don't allow pinning of messages from the starboard itself
 		if (channel == boardChannel) return;
 
+		//Don't pin bot's messages
 		if (author.bot) return;
-
-		const existingPinnedMessage = await getExistingPinnedMessage(boardChannel, message.id);
+		
+		const existingPinnedMessageId = await getExistingPinnedMessageId(boardChannel, message.id);
 
 		//If the message has already been pinned to starboard, simply update the number of stars
-		if (existingPinnedMessage) {
+		if (existingPinnedMessageId) {
+			const existingPinnedMessage = await boardChannel.fetchMessage(existingPinnedMessageId);
 			await updateExistingPin(existingPinnedMessage, reaction, author, boardChannel);
 			return;
 		}
@@ -102,7 +104,7 @@ module.exports = (bot = Discord.Client) => {
 	 * @param {TextChannel} boardChannel The channel assigned to the starboard 
 	 * @param {Number} id Posted message id
 	 */
-	getExistingPinnedMessage = async function getExistingPinnedMessage(boardChannel, id) {
+	async function getExistingPinnedMessageId(boardChannel, id) {
 		let existing = null;
 
 		await boardChannel.fetchMessages({
@@ -110,18 +112,18 @@ module.exports = (bot = Discord.Client) => {
 		}).then((msgs) => {
 			msgs.forEach(msg => {
 				if (msg.embeds.length > 0 && msg.embeds[0].footer && msg.embeds[0].footer.text.endsWith(id)) {
-					existing = msg;
+					existing = msg.id;
 				}
 			});
 		});
 
 		return existing;
-	};
+	}
 
 	/**
 	 * Update the embed for a message already posted to starboard
 	 */
-	updateExistingPin = async function updateExistingPin(existingPinnedMessage, reaction, author, boardChannel) {
+	async function updateExistingPin(existingPinnedMessage, reaction, author, boardChannel) {
 		let message = reaction.message;
 		const pinnedEmbed = existingPinnedMessage.embeds[0];
 		const priorImage = reaction.message.attachments.size > 0 ? reaction.message.attachments.array()[0].url : '';
@@ -137,7 +139,7 @@ module.exports = (bot = Discord.Client) => {
 		const pinnedMessage = await boardChannel.fetchMessage(existingPinnedMessage.id);
 
 		await pinnedMessage.edit(editedEmbed);
-	};
+	}
 
 	/**
 	 * Set starboard emoji
@@ -198,9 +200,9 @@ module.exports = (bot = Discord.Client) => {
 	/**
 	 * Is emoji already added?
 	 */
-	alreadyExists = function alreadyExists(emoji, starboardEmoji) {
+	function alreadyExists(emoji, starboardEmoji) {
 		return starboardEmoji.includes(emoji.name) || starboardEmoji.includes(emoji);
-	};
+	}
 
 	/**
 	 * Setting starboard reaction number

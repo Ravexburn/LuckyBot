@@ -150,7 +150,7 @@ module.exports = (bot = Discord.Client) => {
 					if (!user) {
 						name = userID;
 					} else {
-						name = user.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+						name = getCleanName(user.username);
 					}
 					let rank = (i + 1 < 10) ? ` ${i + 1}` : `${i + 1}`;
 					let str = `${rank}.  ${name} (${level})`;
@@ -188,7 +188,7 @@ module.exports = (bot = Discord.Client) => {
 					if (!user) {
 						name = userID;
 					} else {
-						name = user.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+						name = getCleanName(user.username);
 					}
 					let rank = (i + 1 < 10) ? ` ${i + 1}` : `${i + 1}`;
 					let str = `${rank}.  ${name} (${level})`;
@@ -198,7 +198,7 @@ module.exports = (bot = Discord.Client) => {
 			}).then((arr) => {
 				var pages = toEmbedPages(arr);
 				let embed = new Discord.RichEmbed()
-					.setAuthor(`Leaderboard for ${guild.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
+					.setAuthor(`Leaderboard for ${getCleanName(guild.name)}`)
 					.setColor("#fa4384")
 					.setTitle("Rank - User - Level", true)
 					.setDescription("```css\n" + arr.join("\n") + "```");
@@ -207,6 +207,10 @@ module.exports = (bot = Discord.Client) => {
 				console.log(error);
 			});
 	};
+
+	function getCleanName(name) {
+		return name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
 
 	function getLevelChannel() {
 		let levelGuild = "261337708406898688";
@@ -218,6 +222,43 @@ module.exports = (bot = Discord.Client) => {
 
 		return chan;
 	}
+
+	topServers = async function topServers(message) {
+		let user = message.author;
+		profile.getProfileTopServers(user.id)
+			.then(async (data) => {
+				let arr = [];
+				for (i = 0; i < data.length; i++) {
+					let userID = data[i].user_id;
+					let level = data[i].level;
+					let guildID = data[i].guild_id;
+					let server = bot.guilds.get(guildID);
+					let name = "";
+					if (!user) {
+						user = await bot.fetchUser(userID);
+					}
+					if (!server) {
+						name = guildID;
+					} else {
+						name = getCleanName(server.name);
+					}
+					let rank = (i + 1 < 10) ? ` ${i + 1}` : `${i + 1}`;
+					let str = `${rank}.  ${name} (${level})`;
+					arr.push(str);
+				}
+				return Promise.resolve(arr);
+			}).then((arr) => {
+				var pages = toEmbedPages(arr);
+				let embed = new Discord.RichEmbed()
+					.setAuthor(`Top Servers for ${getCleanName(user.username)}`)
+					.setColor("#fa4384")
+					.setTitle("Rank - Server - Level", true)
+					.setDescription("```css\n" + arr.join("\n") + "```");
+				embedPages(message, embed, pages);
+			}).catch((error) => {
+				console.log(error);
+			});
+	};
 };
 
 nextLevelLocal = function nextLevelLocal(level) {
