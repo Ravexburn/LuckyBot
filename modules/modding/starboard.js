@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = (bot = Discord.Client) => {
 
 	//Regex for detecting URLs in message
-	let urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig;
+	const IMAGE_URL_REGEX = /((http(s?):)?([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)(:(orig|large))?)/g;
 
 	/**
 	 * Post message to starboard or update it if it gets more reactions
@@ -56,16 +56,19 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		let messageContent = message.cleanContent;
-		let embedImage = attachments.size > 0 ? attachments.array()[0].url : '';
+		let messageAttachments = Array.from(attachments.array());
+		let embedImage = messageAttachments.size > 0 ? messageAttachments.shift(0).url : '';
 
 		//Extract Excess Image URLs out of post and send directly in Starboard outside the embed so that previews appear
 		let extraImages = [];
-		messageContent = messageContent.replace(urlRegex, function (url) {
-			if (url.includes(".jpg") || url.includes(".png") || url.includes(".gif")) {
-				extraImages.push(url);
-			}
+		messageAttachments.forEach(attachment => extraImages.push(attachment.url));
+		messageContent = messageContent.replace(IMAGE_URL_REGEX, function (url) {
+			extraImages.push(url);
 			return url;
 		});
+
+		bot.log(extraImages);
+		bot.log(embedImage);
 
 		//If image URL present, but no attachment, set the first image as the RichEmbed's image
 		if (embedImage == '' && extraImages.length > 0) {
@@ -90,11 +93,7 @@ module.exports = (bot = Discord.Client) => {
 
 			//If any other images were attached to the image (max 1 in DiscordJS embed), send them to the starboard
 			if (extraImages.length > 0) {
-				let extraMessage = extraImages.shift(0);
-				for (let i = 0; i < extraImages.length; i++) {
-					extraMessage += "\n" + extraImages[i];
-				}
-				boardChannel.send(extraMessage);
+				extraImages.forEach(image => boardChannel.send(image));
 			}
 		});
 	};
