@@ -45,7 +45,6 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if ((command === `${prefix}horoscope`) || (command === `${prefix}hs`)) {
-
 			switch (args[0]) {
 				default:
 				case "today":
@@ -71,6 +70,12 @@ module.exports = (bot = Discord.Client) => {
 
 				case "list":
 					horoList(message);
+					break;
+
+				case "help":
+					embed = new Discord.RichEmbed();
+					horoHelp(prefix, embed);
+					sendEmbed(message, embed);
 					break;
 			}
 		}
