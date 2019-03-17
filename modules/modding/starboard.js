@@ -45,36 +45,46 @@ module.exports = (bot = Discord.Client) => {
 
 		//Don't pin bot's messages
 		if (author.bot) return;
-		
-		const existingPinnedMessageId = await getExistingPinnedMessageId(boardChannel, message.id);
-
-		//If the message has already been pinned to starboard, simply update the number of stars
-		if (existingPinnedMessageId) {
-			const existingPinnedMessage = await boardChannel.fetchMessage(existingPinnedMessageId);
-			await updateExistingPin(existingPinnedMessage, reaction, author, boardChannel);
-			return;
-		}
 
 		let messageContent = message.cleanContent;
 		let messageAttachments = Array.from(attachments.array());
 		let embedImage = messageAttachments.size > 0 ? messageAttachments.shift(0).url : '';
 
 		//Extract Excess Image URLs out of post and send directly in Starboard outside the embed so that previews appear
-		let extraImages = [];
-		messageAttachments.forEach(attachment => extraImages.push(attachment.url));
-		messageContent = messageContent.replace(IMAGE_URL_REGEX, function (url) {
-			extraImages.push(url);
-			return url;
-		});
-
-		bot.log(extraImages);
-		bot.log(embedImage);
+		let extraImages = getExtraImages(messageAttachments, messageContent);
 
 		//If image URL present, but no attachment, set the first image as the RichEmbed's image
 		if (embedImage == '' && extraImages.length > 0) {
 			embedImage = extraImages.shift(0);
 		}
 
+		let embed = await createEmbed(author, channel, reaction, message, guild, id, messageContent, embedImage);
+		sendOrUpdateEmbed(boardChannel, message, embed, reaction, author, extraImages);
+	};
+
+	/**
+	 * Is emoji already added?
+	 */
+	function alreadyExists(emoji, starboardEmoji) {
+		return starboardEmoji.includes(emoji.name) || starboardEmoji.includes(emoji);
+	}
+
+	function considerApplyingUserRoleColorToEmbed(guild, author, embed) {
+		return guild.fetchMember(author).then(guildMember => {
+			//Set embed color to the member's main role color if applicable 
+			if (guildMember.colorRole != null) {
+				embed.setColor(guildMember.colorRole.color);
+			}
+		});
+	}
+
+	function considerSendingExcessImageAttachments(extraImages, boardChannel) {
+		if (extraImages.length > 0) {
+			extraImages.forEach(image => boardChannel.send(image));
+		}
+	}
+
+	async function createEmbed(author, channel, reaction, message, guild, id, messageContent, embedImage) {
 		let embed = new Discord.RichEmbed()
 			.setColor("RANDOM")
 			.setAuthor(`${author.username} in #${channel.name}`, author.displayAvatarURL)
@@ -82,21 +92,19 @@ module.exports = (bot = Discord.Client) => {
 			.setTimestamp(new Date())
 			.setDescription(`[View Message](https://discordapp.com/channels/${guild.id}/${channel.id}/${id})\n\n${messageContent}`)
 			.setImage(embedImage);
+		await considerApplyingUserRoleColorToEmbed(guild, author, embed);
+		return embed;
+	}
 
-		guild.fetchMember(author).then(guildMember => {
-			//Set embed color to the member's main role color if applicable 
-			if (guildMember.colorRole != null) {
-				embed.setColor(guildMember.colorRole.color);
-			}
-		}).then(() => {
-			boardChannel.send(embed);
-
-			//If any other images were attached to the image (max 1 in DiscordJS embed), send them to the starboard
-			if (extraImages.length > 0) {
-				extraImages.forEach(image => boardChannel.send(image));
-			}
+	function getExtraImages(messageAttachments, messageContent) {
+		let extraImages = [];
+		messageAttachments.forEach(attachment => extraImages.push(attachment.url));
+		messageContent.replace(IMAGE_URL_REGEX, function (url) {
+			extraImages.push(url);
+			return url;
 		});
-	};
+		return extraImages;
+	}
 
 	/**
 	 * Retrieve the embed for a message already posted to starboard
@@ -119,25 +127,18 @@ module.exports = (bot = Discord.Client) => {
 		return existing;
 	}
 
-	/**
-	 * Update the embed for a message already posted to starboard
-	 */
-	async function updateExistingPin(existingPinnedMessage, reaction, author, boardChannel) {
-		let message = reaction.message;
-		const pinnedEmbed = existingPinnedMessage.embeds[0];
-		const priorImage = reaction.message.attachments.size > 0 ? reaction.message.attachments.array()[0].url : '';
+	async function sendOrUpdateEmbed(boardChannel, message, embed, reaction, author, extraImages) {
+		const existingPinnedMessageId = await getExistingPinnedMessageId(boardChannel, message.id);
 
-		const editedEmbed = new Discord.RichEmbed()
-			.setColor(pinnedEmbed.color)
-			.setDescription(pinnedEmbed.description ? pinnedEmbed.description : '')
-			.setAuthor(`${author.username} in #${message.channel.name}`, author.displayAvatarURL)
-			.setFooter(`⭐${reaction.count} • ${message.id}`)
-			.setTimestamp()
-			.setImage(priorImage);
+		//If the message has already been pinned to starboard, simply update the number of stars
+		if (!existingPinnedMessageId) {
+			boardChannel.send(embed);
+			considerSendingExcessImageAttachments(extraImages, boardChannel);
+			return;
+		}
 
-		const pinnedMessage = await boardChannel.fetchMessage(existingPinnedMessage.id);
-
-		await pinnedMessage.edit(editedEmbed);
+		const existingPinnedMessage = await boardChannel.fetchMessage(existingPinnedMessageId);
+		await updateExistingPin(existingPinnedMessage, reaction, author, boardChannel);
 	}
 
 	/**
@@ -197,13 +198,6 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	/**
-	 * Is emoji already added?
-	 */
-	function alreadyExists(emoji, starboardEmoji) {
-		return starboardEmoji.includes(emoji.name) || starboardEmoji.includes(emoji);
-	}
-
-	/**
 	 * Setting starboard reaction number
 	 * @param {Message} message 
 	 */
@@ -220,4 +214,25 @@ module.exports = (bot = Discord.Client) => {
 		message.channel.send("**Starboard number has been set to: **" + newNumber);
 		return;
 	};
+
+	/**
+	 * Update the embed for a message already posted to starboard
+	 */
+	async function updateExistingPin(existingPinnedMessage, reaction, author, boardChannel) {
+		let message = reaction.message;
+		const pinnedEmbed = existingPinnedMessage.embeds[0];
+		const priorImage = reaction.message.attachments.size > 0 ? reaction.message.attachments.array()[0].url : '';
+
+		const editedEmbed = new Discord.RichEmbed()
+			.setColor(pinnedEmbed.color)
+			.setDescription(pinnedEmbed.description ? pinnedEmbed.description : '')
+			.setAuthor(`${author.username} in #${message.channel.name}`, author.displayAvatarURL)
+			.setFooter(`⭐${reaction.count} • ${message.id}`)
+			.setTimestamp()
+			.setImage(priorImage);
+
+		const pinnedMessage = await boardChannel.fetchMessage(existingPinnedMessage.id);
+
+		await pinnedMessage.edit(editedEmbed);
+	}
 };
