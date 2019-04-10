@@ -111,15 +111,15 @@ module.exports = (bot = Discord.Client) => {
 	 * @param {TextChannel} boardChannel The channel assigned to the starboard 
 	 * @param {Number} id Posted message id
 	 */
-	async function getExistingPinnedMessageId(boardChannel, id) {
-		let existing = null;
+	async function getExistingPinnedMessageIds(boardChannel, id) {
+		let existing = [];
 
 		await boardChannel.fetchMessages({
 			limit: 100
 		}).then((msgs) => {
 			msgs.forEach(msg => {
-				if (msg.embeds.length > 0 && msg.embeds[0].footer && msg.embeds[0].footer.text.endsWith(id)) {
-					existing = msg.id;
+				if (msg.embeds.length > 0 && msg.embeds[0].footer && msg.embeds[0].footer.text.includes(id)) {
+					existing.push(msg.id);
 				}
 			});
 		});
@@ -128,17 +128,27 @@ module.exports = (bot = Discord.Client) => {
 	}
 
 	async function sendOrUpdateEmbed(boardChannel, message, embed, reaction, author, extraImages) {
-		const existingPinnedMessageId = await getExistingPinnedMessageId(boardChannel, message.id);
-
 		//If the message has already been pinned to starboard, simply update the number of stars
-		if (!existingPinnedMessageId) {
+		let existingPinnedMessageIds = await getExistingPinnedMessageIds(boardChannel, message.id);
+		if (existingPinnedMessageIds.length == 0) {
 			boardChannel.send(embed);
 			considerSendingExcessImageAttachments(extraImages, boardChannel);
 			return;
 		}
 
-		const existingPinnedMessage = await boardChannel.fetchMessage(existingPinnedMessageId);
-		await updateExistingPin(existingPinnedMessage, reaction, author, boardChannel);
+		let existingPinnedMessageId = existingPinnedMessageIds.shift();
+		deleteDuplicates(boardChannel, existingPinnedMessageIds);
+
+		boardChannel.fetchMessage(existingPinnedMessageId)
+			.then(existingMessage => updateExistingPin(existingMessage, reaction, author, boardChannel))
+			.then(() => deleteDuplicates(boardChannel, getExistingPinnedMessageIds(boardChannel, message.id)));
+	}
+
+	function deleteDuplicates(boardChannel, existingPinnedMessageIds) {
+		for (let i = 0; i < existingPinnedMessageIds.length; i++) {
+			boardChannel.fetchMessage(existingPinnedMessageIds[i])
+				.then(message => message.delete());
+		}
 	}
 
 	/**
