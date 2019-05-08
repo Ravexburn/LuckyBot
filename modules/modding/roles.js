@@ -13,8 +13,6 @@ module.exports = (bot = Discord.Client) => {
 		const serverSettings = bot.getServerSettings(message.guild.id);
 		if (serverSettings.rolesOn === false) return;
 		if (!serverSettings) return;
-		//TODO roles on and off
-		let prefix = serverSettings.prefix;
 		let valid_channel = false;
 		let activeChannel;
 
@@ -90,6 +88,7 @@ module.exports = (bot = Discord.Client) => {
 };
 
 function addRole(member, rolename, message) {
+	let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
 
 	if (!member) return false;
 	if (!rolename) return false;
@@ -117,7 +116,7 @@ function addRole(member, rolename, message) {
 		return true;
 	}
 	else {
-		message.reply("You do not have the required permissions to add that role.")
+		message.reply(`You do not have the required permissions to add that role. This role has \`${perms[i]}\``)
 			.then(message => message.delete(10 * 1000)).catch(console.error);
 		message.delete(10 * 1000).catch(console.error);
 		return false;
@@ -165,8 +164,8 @@ function removeRole(member, rolename, message) {
  * @param {Role} role 
  * @returns {boolean}
  */
-function canAddRole(member, role) {
-	let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
+function canAddRole(member, role, perms) {
+	perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
 	if (!role) return false;
 	for (i = 0; i < perms.length; i++) {
 		if (role.hasPermission(perms[i])) {
