@@ -8,7 +8,7 @@
 	"dependencies": {
 		"axios": "0.18.0",
 		"cassette": "^3.0.3",
-		"discord.js": "^11.3.2",
+		"discord.js": "^11.5.0",
 		"enmap": "^0.4.2",
 		"enmap-level": "^1.0.0",
 		"quick.db": "^3.0.3",
