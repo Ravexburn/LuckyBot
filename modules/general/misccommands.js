@@ -42,6 +42,7 @@ module.exports = (bot = Discord.Client) => {
 					color(message, args);
 					return;
 			}
+			return;
 		}
 
 		if ((command === `${prefix}horoscope`) || (command === `${prefix}hs`)) {
@@ -78,14 +79,17 @@ module.exports = (bot = Discord.Client) => {
 					sendEmbed(message, embed);
 					break;
 			}
+			return;
 		}
 
 		if ((command === `${prefix}avatar`) || (command === `${prefix}ava`)) {
 			avatar(message, args);
+			return;
 		}
 
 		if ((command === `${prefix}servericon`) || (command === `${prefix}guildicon`)) {
 			guildIcon(message, args);
+			return;
 		}
 
 	};

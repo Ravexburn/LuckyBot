@@ -41,17 +41,6 @@ module.exports = (bot = Discord.Client) => {
 					if (xp >= nextExp) {
 						xp = xp - nextExp;
 						level = level + 1;
-						if (guild.id == 261337708406898688) {
-							const chan = getLevelChannel();
-							if (!chan) return;
-							chan.send(`**${message.author} Congratulations you have reached level: ${level}**`)
-								.then((message) => {
-									message.react(bot.emojis.get("422194833575247872"))
-										.catch((error) => {
-											console.log(error);
-										});
-								});
-						}
 					}
 					profile.setLvlXpLocal(userID, guild.id, level, xp);
 				}).then(() => {

@@ -133,7 +133,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Condition for t/f
 
-	emote = function emote(serverSettings, guild) {
+	function emote(serverSettings, guild) {
 		if (serverSettings.adBlocktoggle === true) {
 			adblockemote = ":white_check_mark:";
 		} else {
@@ -144,5 +144,5 @@ module.exports = (bot = Discord.Client) => {
 		} else {
 			guildemote = ":x:";
 		}
-	};
+	}
 };
