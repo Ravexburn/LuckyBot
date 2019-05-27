@@ -3,7 +3,6 @@ const Discord = require("discord.js");
 module.exports = () => {
 
 	avatar = function avatar(message, args) {
-
 		let target_id = null;
 		let target;
 		if (args.length !== 0) {
@@ -35,7 +34,7 @@ module.exports = () => {
 			.setColor(color)
 			.setImage(avatarURL);
 		message.channel.send(embed).catch(console.error);
-
+		return;
 	};
 
 };
