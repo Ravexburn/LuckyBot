@@ -16,6 +16,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../modding/setprefix.js")(bot);
 	require("../modding/starboard.js")(bot);
 	require("../modding/unban.js")(bot);
+	require("../owner/intset.js")(bot);
 	require("../owner/relays.js")(bot);
 	require("../owner/whitelist.js")(bot);
 
@@ -46,6 +47,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}setprefix`)) {
 			setPrefix(message, command, args, serverSettings);
+			return;
 		}
 
 		//Starting logs, roles, join, and music
@@ -80,6 +82,7 @@ module.exports = (bot = Discord.Client) => {
 					sendEmbed(message, embed);
 					break;
 			}
+			return;
 		}
 
 		//Toggles
@@ -97,43 +100,44 @@ module.exports = (bot = Discord.Client) => {
 
 				case "image":
 					imgTog(message, serverSettings);
-					return;
+					break;
 
 				case "logs":
 					logsTog(message, serverSettings);
-					return;
+					break;
 
 				case "greeter":
 					welTog(message, serverSettings);
-					return;
+					break;
 
 				case "roles":
 					rolesTog(message, serverSettings);
-					return;
+					break;
 
 				case "adblock":
 				case "adb":
 				case "adblocker":
 				case "links":
 					adBlockTog(message, serverSettings);
-					return;
+					break;
 
 				case "starboard":
 					starboardTog(message, serverSettings);
-					return;
+					break;
 
 				case "welembed":
 				case "greeterembed":
 				case "joinembed":
 					greeterEmbed(message, serverSettings);
-					return;
+					break;
 
 				default:
 					embed = new Discord.RichEmbed();
 					toggleHelp(prefix, embed);
 					sendEmbed(message, embed);
-					return;
+					break;
 			}
+			return;
 		}
 
 		//Greeter setup
@@ -170,6 +174,7 @@ module.exports = (bot = Discord.Client) => {
 					sendEmbed(message, embed);
 					break;
 			}
+			return;
 		}
 
 		//Starboard setup
@@ -204,24 +209,28 @@ module.exports = (bot = Discord.Client) => {
 					sendEmbed(message, embed);
 					break;
 			}
+			return;
 		}
 
 		//Mute Command
 
 		if ((command === `${prefix}mute`)) {
 			muteUser(message, command, args, perms);
+			return;
 		}
 
 		//Say Command
 
 		if (command === `${prefix}say`) {
 			sayFunction(message, command, args);
+			return;
 		}
 
 		//Edit Message Command
 
 		if (command === `${prefix}edit`) {
 			editMessageFunction(message, command, args);
+			return;
 		}
 
 	};
@@ -245,24 +254,28 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}ban`)) {
 			banUser(message, command, args);
+			return;
 		}
 
 		//Unban Command
 
 		if ((command === `${prefix}unban`)) {
 			unbanUser(message, command, args);
+			return;
 		}
 
 		//Kick command
 
 		if ((command === `${prefix}kick`)) {
 			kickUser(message, command, args);
+			return;
 		}
 
 		//Prune Command
 
 		if ((command === `${prefix}prune`)) {
 			pruneMessage(message, args);
+			return;
 		}
 
 	};
@@ -287,10 +300,7 @@ module.exports = (bot = Discord.Client) => {
 		//Default Settings
 
 		if ((command === `${prefix}intset`)) {
-			bot.initServerSettings(message.guild.id);
-			message.channel.send("**Server settings have been reset**")
-				.then(message => message.delete(10 * 1000)).catch(console.error);
-			message.delete(10 * 1000).catch(console.error);
+			intSet(message);
 			return;
 		}
 
@@ -298,6 +308,7 @@ module.exports = (bot = Discord.Client) => {
 
 		if ((command === `${prefix}whitelist`)) {
 			writingWL(message, args);
+			return;
 		}
 
 		//Servers' info
@@ -468,6 +479,7 @@ module.exports = (bot = Discord.Client) => {
 					sendEmbed(message, embed);
 					break;
 			}
+			return;
 		}
 	};
 
@@ -483,7 +495,7 @@ module.exports = (bot = Discord.Client) => {
 			console.log("Couldn't find owner");
 			return;
 		}
-		owner.send(message);
+		owner.send(message).catch(console.error);
 	};
 
 };
