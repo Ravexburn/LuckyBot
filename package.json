@@ -6,6 +6,7 @@
 	"author": "Rave",
 	"license": "ISC",
 	"dependencies": {
+<<<<<<< HEAD
 		"axios": "0.18.0",
 		"cassette": "^3.0.3",
 		"discord.js": "^11.5.0",
@@ -14,4 +15,14 @@
 		"quick.db": "^3.0.3",
 		"sqlite": "^2.9.1"
 	}
+=======
+	  "axios": "0.18.0",
+	  "cassette": "^3.0.3",
+	  "discord.js": "^11.5.0",
+	  "enmap": "^0.4.2",
+	  "enmap-level": "^1.0.0",
+	  "quick.db": "^3.0.3",
+	  "sqlite": "^2.9.1"
+  }
+>>>>>>> d9a3bd063fbc630378be86db484884d15ffd930b
 }
