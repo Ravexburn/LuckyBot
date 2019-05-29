@@ -52,7 +52,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	bot.initServerSettings = function initServerSettings(guildID) {
-		bot.serverSet.set(guildID, defaultSettings);
+		bot.serverSet.set(guildID, bot.defaultSettings);
 		return;
 	};
 
