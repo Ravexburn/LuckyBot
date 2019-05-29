@@ -77,7 +77,7 @@ module.exports = (bot = Discord.Client) => {
 
 	bot.delServerSettings = function delServerSettings(guildID) {
 		bot.serverSet.delete(guildID);
-		return;
+
 	};
 
 	bot.getDefaultSettings = function getDefaultSettings() {
