@@ -9,21 +9,11 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/helpfunctions.js")(bot);
 	require("../../functions/functions.js")(bot);
 
-	notifySet = async function notifySet(message) {
-		
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
+	notifySet = async function notifySet(serverSettings, message) {
 
 		const guild = message.guild;
 
-		if (!bot.hasServerSettings(guild.id)) {
-			bot.initServerSettings(guild.id);
-		}
-		const serverSettings = bot.getServerSettings(guild.id);
 		const prefix = (serverSettings.prefix ? serverSettings.prefix : bot.botSettings.prefix);
-
-		if (!message.content.startsWith(prefix)) return;
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
@@ -60,7 +50,9 @@ module.exports = (bot = Discord.Client) => {
 								return Promise.reject("Table doesn't exist");
 							}
 						})
-						.then(() => { return notify.getUserKeywords(user.id, guild.id); })
+						.then(() => {
+							return notify.getUserKeywords(user.id, guild.id);
+						})
 						.then(keywords => {
 							if (keywords.size === 0) {
 								message.reply("A message has been sent to your direct messages.").catch(console.error);
@@ -82,8 +74,7 @@ module.exports = (bot = Discord.Client) => {
 
 					break;
 
-				//Clears notification on server
-
+					//Clears notification on server
 				case "clear":
 					notify.tableExists(guild.id)
 						.then(exists => {
@@ -91,14 +82,15 @@ module.exports = (bot = Discord.Client) => {
 								message.reply("Can't find the keyword.").catch(console.error);
 								return Promise.reject("Table doesn't exist");
 							}
-						}).then(() => { return notify.removeAllUserKeywords(user.id, guild.id); })
+						}).then(() => {
+							return notify.removeAllUserKeywords(user.id, guild.id);
+						})
 						.then(success => {
 							if (success) {
 								message.reply(`Removed all keywords on \`${guild.name}\``).catch(console.error);
 								message.delete(1 * 1000).catch(console.error);
 								return;
-							}
-							else {
+							} else {
 								message.reply("You do not have keywords on this server.").catch(console.error);
 								message.delete(1 * 1000).catch(console.error);
 								return;
@@ -110,8 +102,7 @@ module.exports = (bot = Discord.Client) => {
 						});
 					break;
 
-				//Adds per server notification
-
+					//Adds per server notification
 				case "add":
 					if (args.length === 1) {
 						notificationEmbed(message, prefix, embed);
@@ -124,15 +115,16 @@ module.exports = (bot = Discord.Client) => {
 								return notify.createTable(guild.id);
 							}
 						})
-						.then(() => { return notify.addUserKeyword(user.id, keyword, guild.id); })
+						.then(() => {
+							return notify.addUserKeyword(user.id, keyword, guild.id);
+						})
 						.then(success => {
 							if (success) {
 								message.reply("Added the keyword.").catch(console.error);
 								user.send(`\`${keyword}\` has been added to the server: \`${guild.name}\``).catch(console.error);
 								message.delete(1 * 1000).catch(console.error);
 								return;
-							}
-							else {
+							} else {
 								message.reply("You already have this keyword.").catch(console.error);
 								message.delete(1 * 1000).catch(console.error);
 								return;
@@ -144,8 +136,7 @@ module.exports = (bot = Discord.Client) => {
 						});
 					break;
 
-				//Removes per server notification
-
+					//Removes per server notification
 				case "remove":
 					if (args.length === 1) {
 						notificationEmbed(message, prefix, embed);
@@ -158,15 +149,16 @@ module.exports = (bot = Discord.Client) => {
 								message.reply("Can't find the keyword.").catch(console.error);
 								return Promise.reject("Table doesn't exist");
 							}
-						}).then(() => { return notify.removeUserKeyword(user.id, keyword, guild.id); })
+						}).then(() => {
+							return notify.removeUserKeyword(user.id, keyword, guild.id);
+						})
 						.then(success => {
 							if (success) {
 								message.reply("Removed the keyword.").catch(console.error);
 								user.send(`\`${keyword}\` has been removed from the server: \`${guild.name}\``).catch(console.error);
 								message.delete(1 * 1000).catch(console.error);
 								return;
-							}
-							else {
+							} else {
 								message.reply("The keyword does not exist.").catch(console.error);
 								message.delete(1 * 1000).catch(console.error);
 								return;
@@ -187,7 +179,6 @@ module.exports = (bot = Discord.Client) => {
 					switch (args[1]) {
 
 						//Lists all global notificatons 
-
 						case "list":
 							notify.tableExists()
 								.then(exists => {
@@ -197,7 +188,9 @@ module.exports = (bot = Discord.Client) => {
 										return Promise.reject("Table doesn't exist");
 									}
 								})
-								.then(() => { return notify.getUserKeywords(user.id); })
+								.then(() => {
+									return notify.getUserKeywords(user.id);
+								})
 								.then(keywords => {
 									if (keywords.size === 0) {
 										message.reply("A message has been sent to your direct messages.").catch(console.error);
@@ -215,8 +208,7 @@ module.exports = (bot = Discord.Client) => {
 								});
 							break;
 
-						//Clears all global notifications
-
+							//Clears all global notifications
 						case "clear":
 							notify.tableExists(guild.id)
 								.then(exists => {
@@ -224,14 +216,15 @@ module.exports = (bot = Discord.Client) => {
 										message.reply("Can't find the keyword.").catch(console.error);
 										return Promise.reject("Table doesn't exist");
 									}
-								}).then(() => { return notify.removeAllUserKeywords(user.id); })
+								}).then(() => {
+									return notify.removeAllUserKeywords(user.id);
+								})
 								.then(success => {
 									if (success) {
 										message.reply(`Removed all global keywords.`).catch(console.error);
 										message.delete(1 * 1000).catch(console.error);
 										return;
-									}
-									else {
+									} else {
 										message.reply("You do not have any global keywords.").catch(console.error);
 										message.delete(1 * 1000).catch(console.error);
 										return;
@@ -242,8 +235,7 @@ module.exports = (bot = Discord.Client) => {
 								});
 							break;
 
-						//Adds a global notificaton
-
+							//Adds a global notificaton
 						case "add":
 							if (args.length === 2) {
 								notificationEmbed(message, prefix, embed);
@@ -256,15 +248,16 @@ module.exports = (bot = Discord.Client) => {
 										return notify.createTable();
 									}
 								})
-								.then(() => { return notify.addUserKeyword(user.id, keyword); })
+								.then(() => {
+									return notify.addUserKeyword(user.id, keyword);
+								})
 								.then(success => {
 									if (success) {
 										message.reply("Added the keyword.").catch(console.error);
 										user.send(`\`${keyword}\` has been added to your \`Global Keywords\``).catch(console.error);
 										message.delete(1 * 1000).catch(console.error);
 										return;
-									}
-									else {
+									} else {
 										message.reply("You already have this keyword.").catch(console.error);
 										message.delete(1 * 1000).catch(console.error);
 										return;
@@ -275,8 +268,7 @@ module.exports = (bot = Discord.Client) => {
 								});
 							break;
 
-						//Removes global notification
-
+							//Removes global notification
 						case "remove":
 							if (args.length === 2) {
 								notificationEmbed(message, prefix, embed);
@@ -289,15 +281,16 @@ module.exports = (bot = Discord.Client) => {
 										message.reply("Can't find the keyword.").catch(console.error);
 										return Promise.reject("Table doesn't exist");
 									}
-								}).then(() => { return notify.removeUserKeyword(user.id, keyword); })
+								}).then(() => {
+									return notify.removeUserKeyword(user.id, keyword);
+								})
 								.then(success => {
 									if (success) {
 										message.reply("Removed the keyword.").catch(console.error);
 										user.send(`\`${keyword}\` has been removed from the server: \`Global Keywords\``).catch(console.error);
 										message.delete(1 * 1000).catch(console.error);
 										return;
-									}
-									else {
+									} else {
 										message.reply("The keyword does not exist.").catch(console.error);
 										message.delete(1 * 1000).catch(console.error);
 										return;
@@ -314,8 +307,7 @@ module.exports = (bot = Discord.Client) => {
 					}
 					break;
 
-				//Toggles ignore between channel and server
-
+					//Toggles ignore between channel and server
 				case "ignore":
 					switch (args[1]) {
 						case "channel":
@@ -374,8 +366,7 @@ module.exports = (bot = Discord.Client) => {
 					}
 					break;
 
-				//Allows a server to ignore a channel for notifications
-
+					//Allows a server to ignore a channel for notifications
 				case "serverignore":
 					perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 					allowed = false;
@@ -418,21 +409,9 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	//Notiifcations
-
 	notifyPing = async function notifyPing(message) {
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
 
 		const guild = message.guild;
-
-		if (!bot.hasServerSettings(guild.id)) {
-			bot.initServerSettings(guild.id);
-		}
-		const serverSettings = bot.getServerSettings(guild.id);
-		const prefix = (serverSettings.prefix ? serverSettings.prefix : bot.botSettings.prefix);
-
-		if (message.content.startsWith(prefix)) return;
 
 		ignorenoti.isGuildIgnoredChannel(guild.id, message.channel.id)
 			.then((ignored) => {
@@ -462,7 +441,7 @@ module.exports = (bot = Discord.Client) => {
 							userSet.add(userID);
 							keywordsCollection.set(keyword, userSet);
 						}).catch((reason) => {
-							if (!((reason === "User Ignored the Guild") || (reason === "User Ignored the Channel"))){
+							if (!((reason === "User Ignored the Guild") || (reason === "User Ignored the Channel"))) {
 								console.log(reason);
 							}
 						});

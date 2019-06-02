@@ -19,20 +19,12 @@ module.exports = (bot = Discord.Client) => {
 	require("../misc/suggestions.js")(bot);
 	require("../misc/userinfo.js")(bot);
 
-	infoMsg = async function infoMsg(message) {
-
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
-
-		const serverSettings = bot.getServerSettings(message.guild.id);
-		if (!serverSettings) return;
+	infoMsg = async function infoMsg(serverSettings, message) {
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
 		let prefix = serverSettings.prefix;
-		if (!command.startsWith(prefix)) return;
 
 		//User Info Settings
 

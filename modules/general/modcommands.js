@@ -22,26 +22,13 @@ module.exports = (bot = Discord.Client) => {
 
 	//Admin and Mod Settings
 
-	modCmds = async function modCmds(message) {
+	modCmds = async function modCmds(serverSettings, message, perms) {
 
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
-
-		let serverSettings = bot.getServerSettings(message.guild.id);
+		const prefix = serverSettings.prefix;
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
-		const prefix = serverSettings.prefix;
-
-		if (!command.startsWith(prefix)) return;
-
-		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
-
-		let hasPerms = perms.some(i => message.member.hasPermission(i));
-
-		if (!hasPerms) return;
 
 		//Prefix
 
@@ -235,20 +222,12 @@ module.exports = (bot = Discord.Client) => {
 
 	};
 
-	bkpCmd = async function bkpCmd(message) {
-
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
-
-		let serverSettings = bot.getServerSettings(message.guild.id);
+	bkpCmd = async function bkpCmd(serverSettings, message) {
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
 		const prefix = serverSettings.prefix;
-
-		if (!command.startsWith(prefix)) return;
 
 		//Ban Command
 
@@ -285,17 +264,12 @@ module.exports = (bot = Discord.Client) => {
 
 	owner = async function owner(message) {
 
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
-
 		if (![bot.botSettings.Owner_id, bot.botSettings.Owner_id2, bot.botSettings.Owner_id3].includes(message.author.id)) return;
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
 		let prefix = bot.botSettings.prefix;
-		if (!command.startsWith(prefix)) return;
 
 		//Default Settings
 
@@ -393,7 +367,9 @@ module.exports = (bot = Discord.Client) => {
 					channels = args.slice(3);
 					relays.addRelay(relay, channels, type)
 						.then(message.channel.send(`Relay created with name: \`${relay}\` with the type: \`${type}\``))
-						.catch((reason) => { console.log(reason); });
+						.catch((reason) => {
+							console.log(reason);
+						});
 					break;
 
 				case "add":
@@ -407,7 +383,9 @@ module.exports = (bot = Discord.Client) => {
 					channels = args.slice(2);
 					relays.addChannel(relay, channels)
 						.then(message.channel.send(`Channel added to: \`${relay}\`. Added channel(s): \`${channels}\``))
-						.catch((reason) => { console.log(reason); });
+						.catch((reason) => {
+							console.log(reason);
+						});
 					break;
 
 				case "remove":
@@ -420,7 +398,9 @@ module.exports = (bot = Discord.Client) => {
 					relay = args[1].toLowerCase();
 					relays.removeChannel(channel)
 						.then(message.channel.send(`Channel removed from: \`${relay}\`. Removed channel(s): \`${channels}\``))
-						.catch((reason) => { console.log(reason); });
+						.catch((reason) => {
+							console.log(reason);
+						});
 					break;
 
 				case "delete":
@@ -433,7 +413,9 @@ module.exports = (bot = Discord.Client) => {
 					relay = args[1].toLowerCase();
 					relays.removeRelay(relay)
 						.then(message.channel.send(`Deleted: \`${relay}\`.`))
-						.catch((reason) => { console.log(reason); });
+						.catch((reason) => {
+							console.log(reason);
+						});
 					break;
 
 				case "type":
@@ -447,11 +429,15 @@ module.exports = (bot = Discord.Client) => {
 						return relays.getRelayType(relay)
 							.then((type) => {
 								message.reply(`Relay type: \`${type}\``);
-							}).catch((reason) => { console.log(reason); });
+							}).catch((reason) => {
+								console.log(reason);
+							});
 					}
 					type = args[2].toLowerCase();
 					relays.setRelayType(relay, type)
-						.catch((reason) => { console.log(reason); });
+						.catch((reason) => {
+							console.log(reason);
+						});
 					break;
 
 				case "format":
@@ -465,11 +451,15 @@ module.exports = (bot = Discord.Client) => {
 						return relays.getRelayFormat(relay)
 							.then((format) => {
 								message.reply(`Relay format: \`${format}\``);
-							}).catch((reason) => { console.log(reason); });
+							}).catch((reason) => {
+								console.log(reason);
+							});
 					}
 					format = args[2].toLowerCase();
 					relays.setRelayFormat(relay, format)
-						.catch((reason) => { console.log(reason); });
+						.catch((reason) => {
+							console.log(reason);
+						});
 					break;
 
 				default:

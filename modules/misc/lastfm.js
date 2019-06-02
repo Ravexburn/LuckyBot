@@ -27,11 +27,8 @@ module.exports = (bot = Discord.Client) => {
 	require("../../functions/helpfunctions.js")(bot);
 	require("../../functions/functions.js")(bot);
 
-	lastFM = function lastFM(message) {
-		if (message.system || message.author.bot || message.channel.type === 'dm') return;
+	lastFM = function lastFM(serverSettings, message) {
 
-		const serverSettings = bot.getServerSettings(message.guild.id);
-		if (!serverSettings) return;
 		let prefix = serverSettings.prefix;
 		apiKey = bot.botSettings.lastfm;
 
