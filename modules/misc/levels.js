@@ -15,9 +15,7 @@ module.exports = (bot = Discord.Client) => {
 
 	expFunction = function expFunction(message) {
 		
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
+		if (message.system || message.author.bot || message.channel.type === "dm") return;
 
 		let guild = message.guild;
 		let userID = message.author.id;
@@ -63,9 +61,7 @@ module.exports = (bot = Discord.Client) => {
 
 	tempLevelProfile = async function tempLevelProfile(message, args) {
 		
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
+		if (message.system || message.author.bot || message.channel.type === "dm") return;
 		
 		let xp;
 		let level;

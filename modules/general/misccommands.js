@@ -8,20 +8,12 @@ module.exports = (bot = Discord.Client) => {
 	require("../misc/guild_icon.js")(bot);
 	require("../misc/horoscope.js")(bot);
 
-	miscCommands = async function miscCommands(message) {
-
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
-
-		const serverSettings = bot.getServerSettings(message.guild.id);
-		if (!serverSettings) return;
+	miscCommands = async function miscCommands(serverSettings, message) {
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
 		let prefix = serverSettings.prefix;
-		if (!command.startsWith(prefix)) return;
 
 		if ((command === `${prefix}color`) || (command === `${prefix}colour`)) {
 

@@ -7,20 +7,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Message Log
 
-	msgLog = async function msgLog(message) {
-	
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === 'dm') return;
-
-		const serverSettings = bot.getServerSettings(message.guild.id);
-		if (!serverSettings) return;
-
-		if (!serverSettings.logsOn) return;
-
-		if (!serverSettings.messageLog) return;
-
-		if (!serverSettings.channelID) return;
+	msgLog = async function msgLog(serverSettings, message) {
 
 		const channelID = serverSettings.channelID;
 
@@ -48,10 +35,8 @@ module.exports = (bot = Discord.Client) => {
 	//Message Edits
 
 	editLogs = async function editLogs(oldMessage, message) {
-	
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === 'dm') return;
+
+		if (message.system || message.author.bot || message.channel.type === "dm") return;
 
 		const serverSettings = bot.getServerSettings(message.guild.id);
 		if (!serverSettings) return;
@@ -91,10 +76,8 @@ module.exports = (bot = Discord.Client) => {
 	//Deleted Message
 
 	delLog = async function delLog(message) {
-	
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === 'dm') return;
+
+		if (message.system || message.author.bot || message.channel.type === "dm") return;
 
 		const serverSettings = bot.getServerSettings(message.guild.id);
 		if (!serverSettings) return;
@@ -130,20 +113,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Images
 
-	imgLog = async function imgLog(message) {
-	
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === 'dm') return;
-
-		const serverSettings = bot.getServerSettings(message.guild.id);
-		if (!serverSettings) return;
-
-		if (!serverSettings.logsOn) return;
-
-		if (!serverSettings.imageLog) return;
-
-		if (!serverSettings.imageChannelID) return;
+	imgLog = async function imgLog(serverSettings, message) {
 
 		const imageChannelID = serverSettings.imageChannelID;
 		const imageEmbed = serverSettings.imageEmbed;
@@ -158,11 +128,11 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (imageEmbed === false) {
-			let image = { file: message.attachments.first().url };
+			let image = {
+				file: message.attachments.first().url
+			};
 			chan.send(`**${message.author.tag}** posted in **#${message.channel.name}** at **${message.createdAt}** ID: **${message.id}**`, image);
-		}
-
-		else {
+		} else {
 			let embed = new Discord.RichEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 				.setFooter(`#${message.channel.name} | ID: ${message.id}`)

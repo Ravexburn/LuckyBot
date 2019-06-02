@@ -170,10 +170,6 @@ module.exports = (bot = new Discord.Client()) => {
          * @param {function} callback - signature: function(message, channel, relay)
          */
 		relayMessage: function relayMessage(message, callback = _relayMessageCallback) {
-			
-			if (message.system) return;
-			if (message.author.bot) return;
-			if (message.channel.type === 'dm') return;
 
 			const channelID = message.channel.id;
 			let relayName = "";
