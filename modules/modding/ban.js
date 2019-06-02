@@ -7,6 +7,7 @@ module.exports = (bot = Discord.Client) => {
 	banUser = async function banUser(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please do ${command} <user> [days] [reason]`).catch(console.error);
+			return;
 		}
 
 		let member_id = null;
