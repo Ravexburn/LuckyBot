@@ -3,17 +3,17 @@ const Profile = require("./profile_data.js");
 const profile = new Profile();
 const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
-const repProvider = new EnmapLevel({ name: 'rep' });
-const rep = new Enmap({ provider: repProvider });
+const repProvider = new EnmapLevel({
+	name: 'rep'
+});
+const rep = new Enmap({
+	provider: repProvider
+});
 const MSG_TIME = 12 * 60 * 60 * 1000;
 
 module.exports = (bot = Discord.Client) => {
 
 	repFunction = function repFunction(message, args) {
-		
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
 
 		let repped = null;
 
@@ -32,11 +32,11 @@ module.exports = (bot = Discord.Client) => {
 
 			args = args.filter(arg => arg.trim().length > 0);
 
-			if (args.length === 0){
+			if (args.length === 0) {
 				message.channel.send("Please give me someone to rep! <:rooGun:433064572761538561>").catch(console.error);
 				return;
 			}
-	
+
 			if (args.length !== 0) {
 				const matches = args[0].match(new RegExp(`<@!?(\\d+)>`));
 				if (matches) {
@@ -45,26 +45,26 @@ module.exports = (bot = Discord.Client) => {
 				if (!repped) {
 					repped = args[0];
 				}
-				
+
 			}
-	
+
 			let target = message.member;
-	
+
 			if (message.guild.members.has(repped)) {
 				target = message.guild.member(repped);
 			}
-	
+
 			if (!target) {
 				target = bot.fetchUser(repped);
 			}
 			let member = target;
 
-			if (member === message.member){
+			if (member === message.member) {
 				message.channel.send("You can't rep yourself! <:rooCop:433057685953445900>").catch(console.error);
 				return;
 			}
 
-			if (member.user.bot === true){
+			if (member.user.bot === true) {
 				message.channel.send("Sorry, you can't rep bots! <:rooBot:433057158301614100>").catch(console.error);
 				return;
 			}

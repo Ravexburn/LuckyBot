@@ -9,23 +9,19 @@ module.exports = (bot = Discord.Client) => {
 
 	const Enmap = require("enmap");
 	const EnmapLevel = require("enmap-level");
-	const commandProvider = new EnmapLevel({ name: 'Commands' });
-	cmds = new Enmap({ provider: commandProvider });
+	const commandProvider = new EnmapLevel({
+		name: 'Commands'
+	});
+	cmds = new Enmap({
+		provider: commandProvider
+	});
 
-	customCommands = async function customCommands(message) {
-		
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === 'dm') return;
-
-		let serverSettings = bot.getServerSettings(message.guild.id);
+	customCommands = async function customCommands(serverSettings, message) {
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
 		const prefix = serverSettings.prefix;
-
-		if (!command.startsWith(prefix)) return;
 
 		const guild = message.guild;
 

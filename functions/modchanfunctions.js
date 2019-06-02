@@ -2,9 +2,9 @@ const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 	/**
-     * Message logs channel and options
-     * @param {Message} message 
-     */
+	 * Message logs channel and options
+	 * @param {Message} message 
+	 */
 	logChan = function logChan(message) {
 
 		let author = message.author;
@@ -40,7 +40,11 @@ After you have made your decision react with the :floppy_disk: to save.`);
 				await message.react("💾");
 				return message;
 			}).then(function (message) {
-				message.awaitReactions((reaction, user) => reaction.emoji.name === "💾" && user.id === author.id, { max: 1, time: 600000, errors: ['time'] })
+				message.awaitReactions((reaction, user) => reaction.emoji.name === "💾" && user.id === author.id, {
+					max: 1,
+					time: 600000,
+					errors: ['time']
+				})
 					.then(() => {
 						let reactions = message.reactions;
 						let log = {
@@ -132,9 +136,9 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	/**
-     * Roles channel
-     * @param {Message} message 
-     */
+	 * Roles channel
+	 * @param {Message} message 
+	 */
 	rolesChan = function roleChan(message, serverSettings, command) {
 		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
 			let chan = message.mentions.channels.first();
@@ -147,9 +151,9 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	/**
-     * Join and leave channel
-     * @param {Message} message 
-     */
+	 * Join and leave channel
+	 * @param {Message} message 
+	 */
 	joinChan = function joinChan(message, serverSettings, command) {
 		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
 			let chan = message.mentions.channels.first();
@@ -162,9 +166,9 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	/**
-     * Edited messages channel
-     * @param {Message} message 
-     */
+	 * Edited messages channel
+	 * @param {Message} message 
+	 */
 	editChan = function editChan(message, serverSettings, command, args) {
 		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
 			let chan = message.mentions.channels.first();
@@ -177,9 +181,9 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	/**
-     * Deleted messages channel
-     * @param {Message} message 
-     */
+	 * Deleted messages channel
+	 * @param {Message} message 
+	 */
 	delChan = function delChan(message, serverSettings, command, args) {
 		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
 			let chan = message.mentions.channels.first();
@@ -192,9 +196,9 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	/**
-     * Greeter channel
-     * @param {Message} message 
-     */
+	 * Greeter channel
+	 * @param {Message} message 
+	 */
 	welChan = function welChan(message, serverSettings, command) {
 		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
 			let chan = message.mentions.channels.first();
@@ -207,9 +211,9 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	welImage = function welImage(message, serverSettings, args) {
-		message.channel.send("This feature is currently disabled sorry for the inconvenience");
+		message.channel.send("This feature is currently disabled. Sorry for the inconvenience");
 		return;
-		if (args.length === 1){
+		if (args.length === 1) {
 			message.channel.send("Please provide a link for your image. For `gifv` links remove the `v`.");
 			return;
 		}
@@ -220,9 +224,9 @@ After you have made your decision react with the :floppy_disk: to save.`);
 	};
 
 	/**
-     * Starboard channel
-     * @param {Message} message 
-     */
+	 * Starboard channel
+	 * @param {Message} message 
+	 */
 	starboardChan = function starboardChan(message, serverSettings, command) {
 		if (message.mentions.channels != null && message.mentions.channels.size !== 0) {
 			let chan = message.mentions.channels.first();

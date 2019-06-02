@@ -4,19 +4,12 @@ module.exports = (bot = Discord.Client) => {
 
 	require("./customcommands.js")(bot);
 
-	commands = async function commands(message) {
-
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === 'dm') return;
-
-		let serverSettings = bot.getServerSettings(message.guild.id);
+	commands = async function commands(serverSettings, message) {
 
 		let messageArray = message.content.split(" ");
 		let command = messageArray[0];
 		const prefix = serverSettings.prefix;
 
-		if (!command.startsWith(prefix)) return;
 		command = command.slice(prefix.length).toLowerCase();
 		//TODO command list
 		const guild = message.guild;

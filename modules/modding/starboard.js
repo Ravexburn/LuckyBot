@@ -9,7 +9,7 @@ module.exports = (bot = Discord.Client) => {
 	 * Post message to starboard or update it if it gets more reactions
 	 * @param {MessageReaction} reaction 
 	 */
-	starboardUpdate = async function starboardUpdate(reaction) {
+	starboardUpdate = async function starboardUpdate(serverSettings, reaction) {
 		let message = reaction.message;
 		const {
 			guild,
@@ -19,13 +19,9 @@ module.exports = (bot = Discord.Client) => {
 			id
 		} = message;
 
-		const serverSettings = bot.getServerSettings(guild.id);
-		if (!serverSettings) return;
-
 		const {
 			starboardOn,
 			starboardChannelID,
-			starboardEmoji,
 			starboardNumber
 		} = serverSettings;
 
@@ -37,14 +33,10 @@ module.exports = (bot = Discord.Client) => {
 		const boardChannel = guild.channels.get(starboardChannelID);
 
 		//Only pin if the right emoji is used and there are enough of them
-		if (![].concat(starboardEmoji).includes(reaction.emoji.name)) return;
 		if (reaction.count < starboardNumber) return;
 
 		//Don't allow pinning of messages from the starboard itself
 		if (channel == boardChannel) return;
-
-		//Don't pin bot's messages
-		if (author.bot) return;
 
 		let messageContent = message.cleanContent;
 		let messageAttachments = Array.from(attachments.array());

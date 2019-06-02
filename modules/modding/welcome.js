@@ -26,17 +26,11 @@ module.exports = (bot = Discord.Client) => {
 		let mention = member.user;
 		let serverName = guild.name;
 		let user = member.user.tag;
-		let image = serverSettings.welcomeImage;
+		//let image = serverSettings.welcomeImage; FEATURE DISABLED
 
-		let pos = 0;
-		let guildMembers = await guild.fetchMembers().then((guild) => {
-			let cachedMembers = guild.members.array().sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
-
-			for (i = 0; i < cachedMembers.length; i++) {
-				if (cachedMembers[i].id == member.id) {
-					pos = i;
-				}
-			}
+		let memberCount = 0;
+		await guild.fetchMembers().then((guild) => {
+			memberCount = guild.members.array().length;
 		}).catch((error) => {
 			console.log(error);
 		});
@@ -51,7 +45,7 @@ module.exports = (bot = Discord.Client) => {
 				.setTitle("Member Join!")
 				.setDescription(msg)
 				.setTimestamp(member.joinedAt)
-				.setFooter(`Member #${pos + 1} 🎉`);
+				.setFooter(`Member #${memberCount} 🎉`);
 			chan.send(embed).catch(console.error);
 		} else{
 			chan.send(msg).catch(console.error);

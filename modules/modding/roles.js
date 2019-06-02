@@ -4,15 +4,8 @@ const Role = Discord.Role;
 
 module.exports = (bot = Discord.Client) => {
 
-	rolesAdd = async function rolesAdd(message) {
-		
-		if (message.system) return;
-		if (message.author.bot) return;
-		if (message.channel.type === "dm") return;
-		
-		const serverSettings = bot.getServerSettings(message.guild.id);
-		if (serverSettings.rolesOn === false) return;
-		if (!serverSettings) return;
+	rolesAdd = async function rolesAdd(serverSettings, message) {
+
 		let valid_channel = false;
 		let activeChannel;
 
@@ -114,8 +107,7 @@ function addRole(member, rolename, message) {
 			.then(message => message.delete(10 * 1000)).catch(console.error);
 		message.delete(10 * 1000).catch(console.error);
 		return true;
-	}
-	else {
+	} else {
 		message.reply(`You do not have the required permissions to add that role. This role has \`${perms[i]}\``)
 			.then(message => message.delete(10 * 1000)).catch(console.error);
 		message.delete(10 * 1000).catch(console.error);
@@ -148,8 +140,7 @@ function removeRole(member, rolename, message) {
 			message.delete(10 * 1000).catch(console.error);
 		});
 
-	}
-	else {
+	} else {
 		message.reply("You do not have that role.")
 			.then(message => message.delete(10 * 1000)).catch(console.error);
 		message.delete(10 * 1000).catch(console.error);
