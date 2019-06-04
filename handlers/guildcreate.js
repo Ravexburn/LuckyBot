@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+/* const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
 
@@ -13,4 +13,4 @@ module.exports = (bot = Discord.Client) => {
 	//	whitelist(guild);
 
 	};
-};
+}; */
