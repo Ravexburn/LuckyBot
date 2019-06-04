@@ -1,4 +1,4 @@
-//const serverid = require("../serverlist.json");
+/*const serverid = require("../serverlist.json");
 const Discord = require("discord.js");
 let servers = serverid.servers;
 const fs = require("fs");
@@ -6,7 +6,7 @@ const path = "./modules/serverlist.json";
 
 module.exports = (bot = Discord.Client) => {
 
-/* 	whitelist = function whitelist(guild) {
+	whitelist = function whitelist(guild) {
 
 		fs.readFile(path, (err, data) => {
 			if (err) {
@@ -48,7 +48,7 @@ module.exports = (bot = Discord.Client) => {
 				}
 			}
 		});
-	}; */
+	}; 
 
 	guildLeave = function guildLeave(guild) {
 		const chan = serverLogging();
@@ -75,7 +75,7 @@ module.exports = (bot = Discord.Client) => {
 		return chan;
 	}
 
-	/* writingWL = function writingWL(message, args) {
+	 writingWL = function writingWL(message, args) {
 		if (args.length === 0) {
 			message.channel.send("Missing arguments.").catch(console.error);
 			return;
@@ -120,7 +120,7 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send(`Added server to whitelist. \`${id} ${name}\``).catch(console.error);
 			console.log(`Added server to whitelist. \`${id} ${name}\``);
 		}
-	}; */
+	}; 
 
 };
 
@@ -130,7 +130,7 @@ module.exports = (bot = Discord.Client) => {
  * @param {string} id - The id of the guild being whitelisted.
  * @param {string} name - The name of the guild being whitelisted.
  */
-function whitelistAdd(id, name) {
+/*function whitelistAdd(id, name) {
 	return new Promise(function (resolve, reject) {
 		fs.readFile(path, (err, data) => {
 			if (err) {
@@ -166,4 +166,4 @@ whitelistEmbed = function whitelistEmbed(guild, embed) {
 	embed.addField("Members", guild.memberCount, true);
 	embed.setThumbnail(guild.iconURL);
 	embed.setURL(guild.iconURL);
-};
+};*/
