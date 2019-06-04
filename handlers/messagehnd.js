@@ -42,6 +42,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 	reactHandler = async function reactHandler(reaction) {
+		if (!reaction) return;
 		let message = reaction.message;
 		if (message.author.bot) return;
 		if (!bot.hasServerSettings(message.guild.id)) {

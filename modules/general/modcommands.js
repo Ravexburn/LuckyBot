@@ -18,7 +18,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../modding/unban.js")(bot);
 	require("../owner/intset.js")(bot);
 	require("../owner/relays.js")(bot);
-	require("../owner/whitelist.js")(bot);
+	//require("../owner/whitelist.js")(bot);
 
 	//Admin and Mod Settings
 
@@ -280,10 +280,10 @@ module.exports = (bot = Discord.Client) => {
 
 		//Whitelist add
 
-		if ((command === `${prefix}whitelist`)) {
+		/* if ((command === `${prefix}whitelist`)) {
 			writingWL(message, args);
 			return;
-		}
+		} */
 
 		//Servers' info
 		//Server <help|list|leave>
