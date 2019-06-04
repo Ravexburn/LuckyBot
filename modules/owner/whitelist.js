@@ -1,4 +1,4 @@
-const serverid = require("../serverlist.json");
+//const serverid = require("../serverlist.json");
 const Discord = require("discord.js");
 let servers = serverid.servers;
 const fs = require("fs");
