@@ -39,14 +39,14 @@ bot.on("ready", async () => {
 bot.on("guildCreate", guild => {
 	bot.invCache.guildInvites(guild).catch(console.error);
 	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
-	guildCreateHandler(guild);
+	//guildCreateHandler(guild);
 });
 
 //When the bot leaves a server. 
 
 bot.on("guildDelete", guild => {
 	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
-	guildDeleteHandler(guild);
+	//guildDeleteHandler(guild);
 });
 
 //When a message is created.

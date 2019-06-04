@@ -70,17 +70,13 @@ module.exports = (bot = Discord.Client) => {
 				embed.addField("Roles", userRoles);
 			}
 		} 
-
+		
 		let guild = await member.guild.fetchMembers().catch(console.error);
-
 		let members = guild.members.array();
 		members = members.sort((a, b) => a.joinedTimestamp - b.joinedTimestamp);
-		console.log(`First member for userinfo ${members[0].user.tag}`);
 		let pos = members.findIndex(number => number.id == member.id) + 1;
-
 		embed.setFooter(`Member #${pos}`);
 		message.channel.send(embed).catch(console.error);
-
 		return;
 	};
 
