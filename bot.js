@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const botSettings = require("./botsettings.json");
 const InvCache = require("./modules/modding/invites");
-const bot = new Discord.Client({ disableEveryone: true });
+const bot = new Discord.Client({ disableEveryone: true, messageCacheMaxSize: 100 });
 bot.botSettings = botSettings;
 bot.invCache = new InvCache(bot);
 
