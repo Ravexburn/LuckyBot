@@ -408,7 +408,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 	};
 
-	//Notiifcations
+	//Notifications
 	notifyPing = async function notifyPing(message) {
 
 		const guild = message.guild;

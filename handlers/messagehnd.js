@@ -18,8 +18,6 @@ module.exports = (bot = Discord.Client) => {
 	require("../modules/modding/starboard.js")(bot);
 
 	msgHandler = async function msgHandler(message) {
-
-
 		if (message.system || message.author.bot || message.channel.type === "dm") return;
 
 		const serverSettings = getServerSettings(bot, message);
@@ -44,16 +42,27 @@ module.exports = (bot = Discord.Client) => {
 	reactHandler = async function reactHandler(reaction) {
 		if (!reaction) return;
 		let message = reaction.message;
-		if (message.author.bot) return;
+		
 		if (!bot.hasServerSettings(message.guild.id)) {
 			bot.initServerSettings(message.guild.id);
 		}
+		
 		const serverSettings = bot.getServerSettings(message.guild.id);
 		if (!serverSettings) return;
 
-		if ([].concat(serverSettings.starboardEmoji).includes(reaction.emoji.name)) {
-			starboardUpdate(serverSettings, reaction);
+		if (["⬅", "➡"].includes(reaction.emoji.name)) {
+			if (reaction.count > 1 &&
+				reaction.message.embeds[0] &&
+				reaction.message.embeds[0].footer &&
+				reaction.message.embeds[0].footer.text.includes("last.fm - Page")) {
+				lastfmUpdate(reaction);
+			}
 		}
+
+		if ([].concat(serverSettings.starboardEmoji).includes(reaction.emoji.name)) {
+			if (message.author.bot) return;
+			starboardUpdate(serverSettings, reaction);
+		}		
 	};
 
 	function getServerSettings(bot, message) {
