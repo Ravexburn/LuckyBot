@@ -28,7 +28,7 @@ module.exports = (bot = Discord.Client) => {
 		embed.addField(`${prefix}command`, "Shows this list of commands for custom commands.");
 		embed.addField(`${prefix}command list`, "Direct messages a list of custom commands on the server.");
 		embed.addField(`${prefix}command add <name> <command>`, "Adds a custom command to the server.");
-		embed.addField(`${prefix}command remove <name> <command>`, "Removes a custom command on the server.");
+		embed.addField(`${prefix}command remove <name>`, "Removes a custom command on the server.");
 		embed.addField(`${prefix}command edit <name> <command>`, "Edits a custom command on the server.");
 		embed.addField(`${prefix}command search <name>`, "Search for custom commands on the server containing a given word.");
 		embed.setFooter("If you have any other questions please contact Rave#0737");
