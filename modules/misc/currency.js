@@ -9,8 +9,8 @@ const MSG_TIME = 6 * 60 * 60 * 1000;
 
 module.exports = (bot = Discord.Client) => {
 
-	curFunction = function curFunction(message) {
-		
+	curFunction = async function curFunction(message) {
+
 		if (message.system || message.author.bot || message.channel.type === "dm") return;
 
 		let userID = message.author.id;
@@ -25,16 +25,17 @@ module.exports = (bot = Discord.Client) => {
 		if (curTimer <= message.createdTimestamp && timedif >= MSG_TIME) {
 			curTimer = message.createdTimestamp;
 			currency.set(userID, curTimer);
-			profile.getProfileData(userID)
-				.then((data) => {
-					let tickets = data.tickets;
-					let guildSize = Math.floor(bot.guilds.size / 100) + 1;
-					tickets = tickets + guildSize;
-					message.channel.send(`You have been granted ${guildSize} ticket(s)! <:rooDuck:432962760570044417>`).catch(console.error);
-					profile.setCur(userID, tickets);
-				}).catch((error) => {
-					console.log(error);
-				});
+			try {
+				const data = await profile.getProfileData(userID);
+				await data;
+				let tickets = data.tickets;
+				let guildSize = Math.floor(bot.guilds.size / 100) + 1;
+				tickets = tickets + guildSize;
+				message.channel.send(`You have been granted ${guildSize} ticket(s)! <:rooDuck:432962760570044417>`).catch(console.error);
+				await profile.setCur(userID, tickets);
+			} catch (error) {
+				console.log(error);
+			}
 		} else {
 			let time = MSG_TIME - timedif;
 			time = Math.floor(time / 1000);
