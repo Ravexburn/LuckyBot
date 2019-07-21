@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const axios = require("axios");
 const Horoscope = require("./horoscope_data.js");
-const MAX_CHAR = 2048;
 const horoscope = new Horoscope();
 
 module.exports = (bot = Discord.Client) => {
@@ -39,7 +38,7 @@ module.exports = (bot = Discord.Client) => {
 		Pisces: "https://imgur.com/4Mlu6fK.png"
 	};
 
-	horoscopeSet = function horoscopeSet(message, args) {
+	horoscopeSet = async function horoscopeSet(message, args) {
 		if (args.length === 1) {
 			message.reply(`No sunsign supplied.`);
 			return;
@@ -53,14 +52,15 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		horoscope.getHoroscopeData(userID)
-			.then(() => {
-				horoscope.setSign(userID, sunsign);
-				message.reply(`Sunsign saved as: \`${sunsign}\``);
-				return;
-			}).catch((error) => {
-				console.log(error);
-			});
+		try {
+			await horoscope.getHoroscopeData(userID);
+			horoscope.setSign(userID, sunsign);
+			message.reply(`Sunsign saved as: \`${sunsign}\``);
+			return;
+		} catch (error) {
+			console.log(error);
+		}
+
 	};
 
 	horoList = function horoList(message) {
@@ -83,25 +83,25 @@ module.exports = (bot = Discord.Client) => {
 		return;
 	};
 
-	horoInfo = function horoInfo(message, time, prefix) {
+	horoInfo = async function horoInfo(message, time, prefix) {
 		let regsign = `Please save your sunsign by using \`${prefix}horoscope set <sunsign>\`. Find out which one you are with \`${prefix}horoscope list\`.`;
 		let userID = message.author.id;
-		horoscope.getHoroscopeData(userID)
-			.then((data) => {
-				if (data.sunsign !== null) {
-					let sign1 = data.sunsign;
-					let sign = sign1.charAt(0).toUpperCase() + sign1.substr(1);
-					let url = `https://aztro.sameerkumar.website/?sign=${sign}&day=${time}`;
-					axios.post(url).then(response => {
-						makeEmbed(message, response, sign);
-					}).catch((error) => {
-						console.log(error);
-					});
-				} else {
-					message.channel.send(regsign);
-					return;
-				}
-			});
+		try {
+			let data = await horoscope.getHoroscopeData(userID);
+			if (data.sunsign !== null) {
+				let sign1 = data.sunsign;
+				let sign = sign1.charAt(0).toUpperCase() + sign1.substr(1);
+				let url = `https://aztro.sameerkumar.website/?sign=${sign}&day=${time}`;
+				let response = await axios.post(url);
+				await response;
+				makeEmbed(message, response, sign);
+			} else {
+				message.channel.send(regsign);
+				return;
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	makeEmbed = function makeEmbed(message, response, sign) {
