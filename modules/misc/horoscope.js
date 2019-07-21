@@ -54,7 +54,7 @@ module.exports = (bot = Discord.Client) => {
 
 		try {
 			await horoscope.getHoroscopeData(userID);
-			horoscope.setSign(userID, sunsign);
+			await horoscope.setSign(userID, sunsign);
 			message.reply(`Sunsign saved as: \`${sunsign}\``).catch(console.error);
 			return;
 		} catch (error) {
