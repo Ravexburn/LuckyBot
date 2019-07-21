@@ -13,7 +13,7 @@ const MSG_TIME = 12 * 60 * 60 * 1000;
 
 module.exports = (bot = Discord.Client) => {
 
-	repFunction = function repFunction(message, args) {
+	repFunction = async function repFunction(message, args) {
 
 		let repped = null;
 
@@ -48,37 +48,34 @@ module.exports = (bot = Discord.Client) => {
 
 			}
 
-			let target = message.member;
+			let target;
 
 			if (message.guild.members.has(repped)) {
 				target = message.guild.member(repped);
-			}
-
-			if (!target) {
+			} else {
 				target = bot.fetchUser(repped);
 			}
-			let member = target;
-
-			if (member === message.member) {
-				message.channel.send("You can't rep yourself! <:rooCop:433057685953445900>").catch(console.error);
+			if (!target || !target.user) {
+				message.channel.send("Sorry, user is not in the server! <:rooBlank:602525416565112862>").catch(console.error);
 				return;
-			}
-
-			if (member.user.bot === true) {
+			} else if (target === message.member) {
+				message.channel.send("Sorry, you can't rep yourself! <:rooCop:433057685953445900>").catch(console.error);
+				return;
+			} else if (target.user.bot === true) {
 				message.channel.send("Sorry, you can't rep bots! <:rooBot:433057158301614100>").catch(console.error);
 				return;
 			}
 
 			rep.set(userID, repTimer);
-			profile.getProfileData(member.id)
-				.then((data) => {
-					let rep = data.rep;
-					rep = rep + 1;
-					message.channel.send(`I have given a reputation point to ${member.user.username}! <a:rooClap:432961197323714580>`).catch(console.error);
-					profile.setRep(member.id, rep);
-				}).catch((error) => {
-					console.log(error);
-				});
+			try {
+				const data = await profile.getProfileData(target.id);
+				let userrep = data.rep;
+				userrep = userrep + 1;
+				message.channel.send(`I have given a reputation point to ${target.user.username}! <a:rooClap:432961197323714580>`).catch(console.error);
+				await profile.setRep(target.id, userrep);
+			} catch (error) {
+				console.log(error);
+			}
 		} else {
 			let time = MSG_TIME - timedif;
 			time = Math.floor(time / 1000);
