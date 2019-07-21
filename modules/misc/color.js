@@ -31,7 +31,7 @@ module.exports = () => {
 
 	//Finds a random color
 
-	colorRandom = function colorRandom(message) {
+	colorRandom = async function colorRandom(message) {
 		let color = getRandomColor();
 		let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
 		let embed = new Discord.RichEmbed()
@@ -39,43 +39,39 @@ module.exports = () => {
 			.setColor(color)
 			.setImage(url)
 			.setFooter("Powered by colourlovers.com");
-		message.reply({ embed: embed })
-			.then((message) => {
-				message.react("🎲")
-					.then(() => {
-						const randomDie = message.createReactionCollector((reaction) => reaction.emoji.name === "🎲", {
-							time: 300000
-						});
-
-						randomDie.on('collect', react => {
-							if (react.message.id == message.id && react.users.size > 1) {
-								let color = getRandomColor();
-								let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
-								let embed = new Discord.RichEmbed()
-									.setTitle(`Color \`#${color}\``)
-									.setColor(color)
-									.setImage(url)
-									.setFooter("Powered by colourlovers.com");
-								message.edit(embed).catch(console.error);
-								Array.from(react.users.values()).forEach(user => {
-									if (!user.bot) {
-										react.remove(user);
-									}
-								});
-							}
-						});
-
-						randomDie.on('end', () => {
-							message.clearReactions().catch(console.error);
-						});
-
-					}).catch((error) => {
-						console.log(error);
-					});
-			}).catch((error) => {
-				console.log(error);
+		try {
+			const msg = await message.reply({ embed: embed });
+			await msg.react("🎲");
+			const randomDie = await msg.createReactionCollector((reaction) => reaction.emoji.name === "🎲", {
+				time: 300000
 			});
-		return;
+
+			randomDie.on('collect', async react => {
+				if (react.message.id == msg.id && react.users.size > 1) {
+					let color = getRandomColor();
+					let url = `http://www.colourlovers.com/img/${color}/200/200/color.png`;
+					let embed = new Discord.RichEmbed()
+						.setTitle(`Color \`#${color}\``)
+						.setColor(color)
+						.setImage(url)
+						.setFooter("Powered by colourlovers.com");
+					await msg.edit(embed).catch(console.error);
+					Array.from(react.users.values()).forEach(user => {
+						if (!user.bot) {
+							react.remove(user);
+						}
+					});
+				}
+			});
+
+			randomDie.on('end', () => {
+				message.clearReactions().catch(console.error);
+			});
+
+			return;
+		} catch (error) {
+			console.log(error);
+		}
 	};
 };
 
