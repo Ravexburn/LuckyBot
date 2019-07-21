@@ -40,7 +40,7 @@ module.exports = (bot = Discord.Client) => {
 
 	horoscopeSet = async function horoscopeSet(message, args) {
 		if (args.length === 1) {
-			message.reply(`No sunsign supplied.`);
+			message.reply(`No sunsign supplied.`).catch(console.error);
 			return;
 		}
 		let userID = message.author.id;
@@ -48,14 +48,14 @@ module.exports = (bot = Discord.Client) => {
 		let sunsign = sign1.charAt(0).toUpperCase() + sign1.substr(1);
 
 		if (!(sunsign in signColor)) {
-			message.channel.send("Please provide a valid sunsign.");
+			message.channel.send("Please provide a valid sunsign.").catch(console.error);
 			return;
 		}
 
 		try {
 			await horoscope.getHoroscopeData(userID);
 			horoscope.setSign(userID, sunsign);
-			message.reply(`Sunsign saved as: \`${sunsign}\``);
+			message.reply(`Sunsign saved as: \`${sunsign}\``).catch(console.error);
 			return;
 		} catch (error) {
 			console.log(error);
@@ -79,7 +79,7 @@ module.exports = (bot = Discord.Client) => {
 			.addField("Capricorn", "December 22 - January 19", true)
 			.addField("Aquarius", "January 20 - February 18", true)
 			.addField("Pisces", "February 19 - March 20", true);
-		message.channel.send(embed);
+		message.channel.send(embed).catch(console.error);
 		return;
 	};
 
@@ -96,7 +96,7 @@ module.exports = (bot = Discord.Client) => {
 				await response;
 				makeEmbed(message, response, sign);
 			} else {
-				message.channel.send(regsign);
+				message.channel.send(regsign).catch(console.error);
 				return;
 			}
 		} catch (error) {
