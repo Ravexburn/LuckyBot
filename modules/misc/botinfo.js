@@ -7,16 +7,11 @@ const donate = "https://www.patreon.com/ravexburn";
 
 module.exports = (bot = Discord.Client) => {
 
+	require("../../functions/functions.js")(bot);
+
 	botInfo = function botInfo(message, prefix) {
 		let time = bot.uptime;
-		time = Math.floor(time / 1000);
-		let seconds = time % 60;
-		time = Math.floor(time / 60);
-		let minutes = time % 60;
-		time = Math.floor(time / 60);
-		let hours = time % 24;
-		time = Math.floor(time / 24);
-		let days = time;
+		const {seconds, minutes, hours, days} = timeFunction(time);
 		let date = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
 		let embed = new Discord.RichEmbed()
 			.setAuthor(`About ${bot.user.username}`, bot.user.displayAvatarURL)

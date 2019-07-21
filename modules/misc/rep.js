@@ -13,6 +13,8 @@ const MSG_TIME = 12 * 60 * 60 * 1000;
 
 module.exports = (bot = Discord.Client) => {
 
+	require("../../functions/functions.js")(bot);
+
 	repFunction = async function repFunction(message, args) {
 
 		let repped = null;
@@ -78,12 +80,7 @@ module.exports = (bot = Discord.Client) => {
 			}
 		} else {
 			let time = MSG_TIME - timedif;
-			time = Math.floor(time / 1000);
-			let seconds = time % 60;
-			time = Math.floor(time / 60);
-			let minutes = time % 60;
-			time = Math.floor(time / 60);
-			let hours = time % 24;
+			const {seconds, minutes, hours} = timeFunction(time);
 			message.channel.send(`Please wait ${hours}h ${minutes}m and ${seconds}s to be able to give another rep! <:rooScared:433018721326596117>`).catch(console.error);
 		}
 	};
