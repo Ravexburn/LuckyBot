@@ -197,17 +197,6 @@ module.exports = (bot = Discord.Client) => {
 		return name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	}
 
-	function getLevelChannel() {
-		let levelGuild = "261337708406898688";
-		let levelChan = "421533856831897600";
-		const guild = bot.guilds.get(levelGuild);
-		if (!guild) return null;
-		const chan = guild.channels.get(levelChan);
-		if (!chan) return null;
-
-		return chan;
-	}
-
 	topServers = async function topServers(message) {
 		let user = message.author;
 		profile.getProfileTopServers(user.id)
