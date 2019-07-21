@@ -4,7 +4,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Unbans a user in a server by ID or mention
 
-	unbanUser = function unbanUser(message, command, args) {
+	unbanUser = async function unbanUser(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please do ${command} <user> [reason]`).catch(console.error);
 			return;
@@ -42,9 +42,17 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		let reason = args.slice(1).join(" ");
+		let bans = await message.guild.fetchBans().catch(console.error);
 
-		message.guild.unban(member_id, reason).then((user) => {
+		if (!bans.has(member_id)) {
+			message.channel.send("User is not banned on this server.").catch(console.error);
+			return;
+		}
+
+		let reason = args.slice(1).join(" ");
+		try {
+			let user = await message.guild.unban(member_id, reason);
+			await user;
 			if (!reason) {
 				reason = "no reason provided";
 			}
@@ -55,9 +63,9 @@ module.exports = (bot = Discord.Client) => {
 				.addField("Unban Reason", `${reason}`)
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed).catch(console.error);
-		}).catch((error) => {
-			message.channel.send(error.message).catch(console.error);
-		});
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 };

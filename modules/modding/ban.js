@@ -73,7 +73,9 @@ module.exports = (bot = Discord.Client) => {
 			days = 7;
 		}
 
-		message.guild.ban(member_id, { days, reason }).then((user) => {
+		try {
+			let user = await message.guild.ban(member_id, { days, reason });
+			await user;
 			if (!reason) {
 				reason = "no reason provided";
 			}
@@ -85,9 +87,9 @@ module.exports = (bot = Discord.Client) => {
 				.addField("Deleted message days", `${days} day(s)`)
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed).catch(console.error);
-		}).catch((error) => {
-			message.channel.send(error.message);
-		});
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 };
