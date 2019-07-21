@@ -4,7 +4,7 @@ module.exports = (bot = Discord.Client) => {
 
 	//Kicks a user in a server by ID or mention
 
-	kickUser = function kickUser(message, command, args) {
+	kickUser = async function kickUser(message, command, args) {
 		if (args.length === 0) {
 			message.channel.send(`Please do ${command} <user> [reason]`).catch(console.error);
 			return;
@@ -56,8 +56,9 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		let reason = args.slice(1).join(" ");
-
-		member.kick(reason).then((member) => {
+		try {
+			let kickedmember = await member.kick(reason);
+			await kickedmember;
 			if (!reason) {
 				reason = "no reason provided";
 			}
@@ -68,9 +69,9 @@ module.exports = (bot = Discord.Client) => {
 				.addField("Kick Reason", `${reason}`)
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed).catch(console.error);
-		}).catch((error) => {
-			message.channel.send(error.message).catch(console.error);
-		});
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 };

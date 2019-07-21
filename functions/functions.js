@@ -125,4 +125,17 @@ module.exports = (bot = Discord.Client) => {
 		return pages;
 	};
 
+	timeFunction = function timeFunction(time) {
+		time = Math.floor(time / 1000);
+		let seconds = time % 60;
+		time = Math.floor(time / 60);
+		let minutes = time % 60;
+		time = Math.floor(time / 60);
+		let hours = time % 24;
+		time = Math.floor(time / 24);
+		let days = time;
+
+		return {seconds, minutes, hours, days};
+	};
+
 };

@@ -10,7 +10,13 @@ Cosmic Fox
 Refresh Yourself 🍑 stuck
 alu
 Lemon Suckins
-uwu`).catch(console.error);
+uwu
+Satan
+Ninos
+rosyfores
+Jer
+theangrycamel
+If you do not see your name on this list please contact me!`).catch(console.error);
 	};
 	
 };

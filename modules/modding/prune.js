@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 
 module.exports = (bot = Discord.Client) => {
-	
+
 	//Prunes messages from the current channel up to 99
-	
-	pruneMessage = function pruneMessage(message, args) {
+
+	pruneMessage = async function pruneMessage(message, args) {
 		if (args.length === 0) {
 			message.channel.send("Please provide a number of messages to delete `MAX: 99`").catch(console.error);
 			return;
@@ -30,11 +30,13 @@ module.exports = (bot = Discord.Client) => {
 			message.channel.send("Please provide a number of messages to delete `MAX: 99`").catch(console.error);
 			return;
 		}
-		message.channel.fetchMessages({ limit: num })
-			.then(messages => message.channel.bulkDelete(messages))
-			.catch((error) => {
-				message.channel.send(error.message).catch(console.error);
-			});
+		try {
+			let messages = await message.channel.fetchMessages({ limit: num });
+			await messages;
+			await message.channel.bulkDelete(messages);
+		} catch (error) {
+			message.channel.send(error.message).catch(console.error);
+		}
 	};
 
 };
