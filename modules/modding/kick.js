@@ -58,14 +58,13 @@ module.exports = (bot = Discord.Client) => {
 		let reason = args.slice(1).join(" ");
 		try {
 			let kickedmember = await member.kick(reason);
-			await kickedmember;
 			if (!reason) {
 				reason = "no reason provided";
 			}
 			let embed = new Discord.RichEmbed()
 				.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
 				.setColor("#FFFF33")
-				.addField("User", `${member} ${member.user.username} - (#${member.id})`)
+				.addField("User", `${kickedmember} ${kickedmember.user.username} - (#${kickedmember.id})`)
 				.addField("Kick Reason", `${reason}`)
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed).catch(console.error);

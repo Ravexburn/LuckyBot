@@ -75,7 +75,6 @@ module.exports = (bot = Discord.Client) => {
 
 		try {
 			let user = await message.guild.ban(member_id, { days, reason });
-			await user;
 			if (!reason) {
 				reason = "no reason provided";
 			}
