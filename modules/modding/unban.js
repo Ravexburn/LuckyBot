@@ -33,7 +33,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("BAN_MEMBERS")) {
-			message.channel.send("Please enable the `BAN_MEMBERS` permisson to be able to unban").catch(console.error);
+			message.channel.send(`${bot.user.username} does not have the \`BAN_MEMBERS\` permisson to be able to unban`).catch(console.error);
 			return;
 		}
 
