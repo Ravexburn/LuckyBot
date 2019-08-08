@@ -17,6 +17,7 @@ rosyfores
 Jer
 theangrycamel
 Crimson
+jujipse
 If you do not see your name on this list please contact me!`).catch(console.error);
 	};
 	
