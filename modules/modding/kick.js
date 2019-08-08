@@ -33,7 +33,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("KICK_MEMBERS")) {
-			message.channel.send("Lucky Bot does not have the `KICK_MEMBERS` permission.").catch(console.error);
+			message.channel.send(`${bot.user.username} does not have the \`KICK_MEMBERS\` permission.`).catch(console.error);
 			return;
 		}
 
