@@ -33,7 +33,7 @@ module.exports = (bot = Discord.Client) => {
 		}
 
 		if (!message.channel.permissionsFor(bot.user).has("BAN_MEMBERS")) {
-			message.channel.send("Lucky Bot does not have the `BAN_MEMBERS` permisson.").catch(console.error);
+			message.channel.send(`${bot.user.username} does not have the \`BAN_MEMBERS\` permisson.`).catch(console.error);
 			return;
 		}
 
@@ -75,7 +75,6 @@ module.exports = (bot = Discord.Client) => {
 
 		try {
 			let user = await message.guild.ban(member_id, { days, reason });
-			await user;
 			if (!reason) {
 				reason = "no reason provided";
 			}

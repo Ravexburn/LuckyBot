@@ -32,7 +32,6 @@ module.exports = (bot = Discord.Client) => {
 		}
 		try {
 			let messages = await message.channel.fetchMessages({ limit: num });
-			await messages;
 			await message.channel.bulkDelete(messages);
 		} catch (error) {
 			message.channel.send(error.message).catch(console.error);
