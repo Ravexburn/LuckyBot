@@ -24,7 +24,7 @@ module.exports = (bot = Discord.Client) => {
 		if (!serverSettings) return;
 
 		if (serverSettings.adBlocktoggle) adblocker(message);
-		if (serverSettings.rolesOn) rolesAdd(serverSettings, message);
+		if (serverSettings.rolesOn) rolesSystem(serverSettings, message);
 
 		if (message.content.startsWith(serverSettings.prefix)) {
 			userCommands(serverSettings, message);

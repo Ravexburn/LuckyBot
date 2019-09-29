@@ -4,7 +4,7 @@ const Role = Discord.Role;
 
 module.exports = (bot = Discord.Client) => {
 
-	rolesAdd = async function rolesAdd(serverSettings, message) {
+	rolesSystem = async function rolesSystem(serverSettings, message) {
 
 		let valid_channel = false;
 		let activeChannel;
@@ -31,18 +31,25 @@ module.exports = (bot = Discord.Client) => {
 				return;
 		}
 
+		let member = message.member;
 		let length = msgAry.length;
 		let command = "";
 		let rolename = "";
+		let rolesArrayAdd = [];
+		let rolesArrayRemove = [];
+
 		for (let i = 0; i < length; i++) {
 			let arg = msgAry[i];
 			switch (arg.charAt(0)) {
 				case "+":
 				case "-":
-
 					command = arg.charAt(0);
 					arg = arg.slice(1);
-
+					if (rolename !== "") {
+						rolename += " ";
+					}
+					rolename += arg;
+					break;
 
 				default:
 					if (rolename !== "") {
@@ -53,20 +60,18 @@ module.exports = (bot = Discord.Client) => {
 			}
 
 			if ((i + 1) < length) {
-
 				if ((msgAry[i + 1].charAt(0) !== "+") && (msgAry[i + 1].charAt(0) !== "-")) {
 					continue;
 				}
-
 			}
 
 			if (command !== "") {
 				switch (command) {
 					case "+":
-						addRole(message.member, rolename, message);
+						rolesArrayAdd.push(rolename);
 						break;
 					case "-":
-						removeRole(message.member, rolename, message);
+						rolesArrayRemove.push(rolename);
 						break;
 					default:
 						break;
@@ -77,86 +82,87 @@ module.exports = (bot = Discord.Client) => {
 			rolename = "";
 		}
 
+		let addedCount = await addRolesToMember(member, rolesArrayAdd);
+		let removedCount = await removeRolesFromMember(member, rolesArrayRemove);
+
+		let addFailedCount = rolesArrayAdd.length - addedCount;
+		let removeFailedCount = rolesArrayRemove.length - removedCount;
+		let totalFailed = addFailedCount + removeFailedCount;
+		message.reply(`${addedCount} role(s) added, ${removedCount} role(s) removed, ${totalFailed} role(s) failed.`)
+			.then(message => message.delete(10 * 1000)).catch(console.error);
+		message.delete(10*1000).catch(console.error);
 	};
+
 };
 
-function addRole(member, rolename, message) {
-	let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
+async function addRolesToMember(member, rolesArrayAdd) {
+	if (!member || !rolesArrayAdd) return;
 
-	if (!member) return false;
-	if (!rolename) return false;
+	let arr = [];
+	rolesArrayAdd.forEach(roleName => {
+		let role = roleExists(member.guild, roleName);
+		if (!role) return;
+		if (!canAddRole(role)) return;
+		if (userHasRole(member, role)) return;
+		arr.push(role);
+	});
 
-	let role = member.guild.roles.find(role => role.name === rolename);
-	if (!role) {
-		message.reply(`Role does not exist.`)
-			.then(message => message.delete(10 * 1000)).catch(console.error);
-		message.delete(10 * 1000).catch(console.error);
-		return false;
-	}
-	if (member.roles.has(role.id)) {
-		//Member has role
-		message.reply("You already have this role.")
-			.then(message => message.delete(10 * 1000)).catch(console.error);
-		message.delete(10 * 1000).catch(console.error);
-		return false;
-	}
+	await member.addRoles(arr).catch(console.error);
 
-	if (canAddRole(member, role)) {
-		member.addRole(role).catch(console.error);
-		message.reply("Role has been added.")
-			.then(message => message.delete(10 * 1000)).catch(console.error);
-		message.delete(10 * 1000).catch(console.error);
-		return true;
-	} else {
-		message.reply(`You do not have the required permissions to add that role. This role has \`${perms[i]}\``)
-			.then(message => message.delete(10 * 1000)).catch(console.error);
-		message.delete(10 * 1000).catch(console.error);
-		return false;
-	}
-
+	// Number of roles being added
+	return arr.length;
 }
 
-function removeRole(member, rolename, message) {
+async function removeRolesFromMember(member, rolesArrayRemove) {
+	if (!member || !rolesArrayRemove) return;
 
-	if (!member) return false;
-	if (!rolename) return false;
+	let arr = [];
+	rolesArrayRemove.forEach(roleName => {
+		let role = roleExists(member.guild, roleName);
+		if (!role) return;
+		if (!userHasRole(member, role)) return;
+		arr.push(role);
+	});
 
-	let role = member.guild.roles.find(role => role.name === rolename);
-	if (!role) {
-		message.reply(`Role does not exist.`)
-			.then(message => message.delete(10 * 1000)).catch(console.error);
-		message.delete(10 * 1000).catch(console.error);
-		return false;
-	}
-	if (member.roles.has(role.id)) {
-		//Member has role
-		return member.removeRole(role).then(() => {
-			message.reply("Role has been removed.")
-				.then(message => message.delete(10 * 1000)).catch(console.error);
-			message.delete(10 * 1000).catch(console.error);
-			return true;
-		}).catch(() => {
-			message.reply("Failed to remove role.").then(message => message.delete(10 * 1000)).catch(console.error);
-			message.delete(10 * 1000).catch(console.error);
-		});
+	await member.removeRoles(arr).catch(console.error);
 
-	} else {
-		message.reply("You do not have that role.")
-			.then(message => message.delete(10 * 1000)).catch(console.error);
-		message.delete(10 * 1000).catch(console.error);
-		return false;
-	}
+	// Number of roles being removed
+	return arr.length;
 
 }
 
 /**
- * Checks if role can be added to user.
+ * Checks if role exists on guild.
+ * @param {Guild} guild 
+ * @param {string} roleName 
+ * @returns {Role?}
+ */
+function roleExists(guild, roleName) {
+	if (!guild) { return; }
+	if (!roleName) { return; }
+
+	let role = guild.roles.find(r => r.name.toLowerCase() === roleName.toLowerCase());
+	return role;
+}
+
+/**
+ * Checks if user has role.
  * @param {GuildMember} member 
  * @param {Role} role 
  * @returns {boolean}
  */
-function canAddRole(member, role, perms) {
-	perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
+function userHasRole(member, role) {
+	return member.roles.has(role.id);
+}
+
+/**
+ * Checks if role can be added to user based on permissions.
+ * @param {GuildMember} member 
+ * @param {Role} role 
+ * @returns {boolean}
+ */
+function canAddRole(role) {
+	let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_CHANNELS", "VIEW_AUDIT_LOG", "MENTION_EVERYONE", "MANAGE_NICKNAMES", "MANAGE_ROLES", "MANAGE_WEBHOOKS", "MANAGE_EMOJIS"];
 	if (!role) return false;
 	for (i = 0; i < perms.length; i++) {
 		if (role.hasPermission(perms[i])) {
