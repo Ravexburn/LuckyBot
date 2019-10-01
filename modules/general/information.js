@@ -13,6 +13,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../misc/donators.js")(bot);
 	require("../misc/issues.js")(bot);
 	require("../misc/levels.js")(bot);
+	require("../misc/ping.js")(bot);
 	require("../misc/rep.js")(bot);
 	require("../misc/rolelist.js")(bot);
 	require("../misc/serverinfo.js")(bot);
@@ -158,6 +159,12 @@ module.exports = (bot = Discord.Client) => {
 		if ((command === `${prefix}donators`)) {
 			donators(message);
 			return;
+		}
+
+		//Ping
+
+		if (command === `${prefix}ping`) {
+			botPing(message);
 		}
 	};
 };
