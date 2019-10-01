@@ -64,7 +64,7 @@ module.exports = (bot = Discord.Client) => {
 				.setTimestamp(message.createdAt);
 			message.channel.send(embed).catch(console.error);
 		} catch (error) {
-			console.log(error);
+			message.channel.send(error.message).catch(console.error);
 		}
 	};
 
