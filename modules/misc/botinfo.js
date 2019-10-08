@@ -22,6 +22,7 @@ module.exports = (bot = Discord.Client) => {
 			.addField("Uptime", date)
 			.addField("Links", `[Website](${website}) **-** [Trello](${trello}) **-** [Github](${git}) **-** [Discord](${discordlink}) **-** [Patreon](${donate})`, true)
 			.addField("Servers", bot.guilds.size, true)
+			.addField(`Total members using ${bot.user.username}`, bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b))
 			.addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
 			.addField("Suggestions", `Have a suggestion? Use ${prefix}suggestion <your suggestion>`)
 			.addField("Issues", `Having an issue with the bot? Use ${prefix}issue <your issue> to report it!`)

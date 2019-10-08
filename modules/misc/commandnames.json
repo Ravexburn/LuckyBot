@@ -55,7 +55,8 @@
 		"ava",
 		"avatar",
 		"guildicon",
-		"servericon"
+		"servericon",
+		"ping"
     ]
 
 }
