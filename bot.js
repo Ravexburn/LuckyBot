@@ -30,7 +30,6 @@ bot.on("ready", async () => {
 	bot.user.setActivity(`on ${bot.guilds.size} servers | ${botSettings.prefix}help for list of commands`);
 	bot.guilds.forEach(guild => {
 		bot.invCache.guildInvites(guild).catch(console.error);
-		guild.fetchMembers().catch(console.error);
 	});
 });
 
