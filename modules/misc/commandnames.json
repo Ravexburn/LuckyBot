@@ -56,7 +56,8 @@
 		"avatar",
 		"guildicon",
 		"servericon",
-		"ping"
+		"ping",
+		"ticket"
     ]
 
 }
