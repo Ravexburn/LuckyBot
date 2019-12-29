@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
-const link = "https://trello.com/b/0uytHSPL";
-const link2 = "https://github.com/Ravexburn/LuckyBot";
-const invite = "https://discord.gg/z4thPtW";
+const trello = "https://trello.com/b/0uytHSPL";
+const github = "https://github.com/Ravexburn/LuckyBot";
+const helpServer = "https://discord.gg/z4thPtW";
 const website = "https://luckybot.io/";
-const donate = "https://www.patreon.com/ravexburn";
+const patreon = "https://www.patreon.com/ravexburn";
 
 module.exports = (bot = Discord.Client) => {
 
@@ -17,6 +17,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../misc/rep.js")(bot);
 	require("../misc/rolelist.js")(bot);
 	require("../misc/serverinfo.js")(bot);
+	require("../misc/serverinvite.js")(bot);
 	require("../misc/suggestions.js")(bot);
 	require("../misc/userinfo.js")(bot);
 
@@ -27,71 +28,70 @@ module.exports = (bot = Discord.Client) => {
 		let args = messageArray.slice(1);
 		let prefix = serverSettings.prefix;
 
-		//User Info Settings
+		// User Info Settings
 
 		if (command === `${prefix}userinfo`) {
 			userInfo(message, args);
 			return;
 		}
 
-		//Server Info Settings
+		// Server Info Settings
 
 		if (command === `${prefix}serverinfo`) {
 			serverInfo(message);
 			return;
 		}
 
-		//Bot Info
+		// Bot Info
 
 		if (command === `${prefix}botinfo` || command === `${prefix}about` || command === `${prefix}info`) {
-			botInfo(message, prefix);
+			botInfo(message, prefix, trello, github, helpServer, website, patreon);
 			return;
 		}
 
-		//Trello
+		// Trello
 
 		if (command === `${prefix}trello`) {
-			message.channel.send(`View upcoming features here: ${link}`).catch(console.error);
+			message.channel.send(`View upcoming features here: ${trello}`).catch(console.error);
 			return;
 		}
 
-		//Github
+		// Github
 
 		if ((command === `${prefix}github`) || (command === `${prefix}git`)) {
-			message.channel.send(`View upcoming features here: ${link2}`).catch(console.error);
+			message.channel.send(`View upcoming features here: ${github}`).catch(console.error);
 			return;
 		}
 
-		//Invite
+		// Invite
 
 		if ((command === `${prefix}invite`) || (command === `${prefix}inv`)) {
-			message.channel.send(`Sent a DM <:luckysushi:418558090682695681>`).catch(console.error);
-			message.author.send(`Want ${bot.user.username} for your server? Have any questions on how to use ${bot.user.username}? Join here ${invite} and make sure to read #welcome or post your server in #add-your-server!`).catch(console.error);
+			serverInvite(message, helpServer);
 			return;
 		}
 
-		//Profile
+		// Profile
 
 		if (command === `${prefix}profile`) {
 			tempLevelProfile(message, args);
 			return;
 		}
 
-		//Tickets
+		// Tickets
 
 		if (command === `${prefix}ticket`) {
 			curFunction(message);
 			return;
 		}
 
-		//Rep
+		// Rep
 
 		if (command === `${prefix}rep`) {
 			repFunction(message, args);
 			return;
 		}
 
-		//Leaderboard & User top servers
+		// Leaderboard & User top servers
 
 		if (command == `${prefix}leaderboard`) {
 			switch (args[0]) {
@@ -107,61 +107,63 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
+		// Most talked in servers for user
+
 		if (command == `${prefix}topservers`) {
 			topServers(message);
 			return;
 		}
 
-		//Roles info
+		// Roles info
 
 		if ((command === `${prefix}roleslist`) || (command === `${prefix}rolelist`)) {
 			rolelist(message);
 			return;
 		}
 
-		//Bias info
+		// Bias info
 
 		if ((command === `${prefix}biaslist`) || (command === `${prefix}biasstats`)) {
 			memberCount(message);
 			return;
 		}
 
-		//Help
+		// Help
 
 		if (command === `${prefix}help`) {
 			message.reply(`Help can be found here: ${website}`).catch(console.error);
 			return;
 		}
 
-		//Suggestions
+		// Suggestions
 
 		if (command === `${prefix}suggestion` || command === `${prefix}suggest` || command === `${prefix}sgt`) {
 			suggestions(message, args, command);
 			return;
 		}
 
-		//Issues
+		// Issues
 
 		if (command === `${prefix}issue` || command === `${prefix}issues` || command === `${prefix}isu`) {
 			issues(message, args, command);
 			return;
 		}
 
-		//Donate link
+		// Donate link
 
 		if ((command === `${prefix}donate`)) {
-			message.channel.send(`If you would like to help out with keeping Lucky Bot running, you can donate here: <${donate}>. Anything is appreciated!`).catch(console.error);
+			message.channel.send(`If you would like to help out with keeping Lucky Bot running, you can donate here: <${patreon}>. Anything is appreciated!`).catch(console.error);
 			return;
 		}
 
-		//Donators
+		// Donators
 
 		if ((command === `${prefix}donators`)) {
 			donators(message);
 			return;
 		}
 
-		//Ping
+		// Ping
 
 		if (command === `${prefix}ping`) {
 			botPing(message);
