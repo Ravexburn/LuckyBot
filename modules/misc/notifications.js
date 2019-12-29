@@ -516,7 +516,7 @@ serverIgnoreServer = async function serverIgnoreServer(message, guild, channelID
 	}
 	channelID = channel.id;
 	try {
-		const result = await ignorenoti.guildToggleIgnoreChannel(guild.id, channelID)
+		const result = await ignorenoti.guildToggleIgnoreChannel(guild.id, channelID);
 
 		switch (result) {
 			case 1:
