@@ -1,15 +1,10 @@
 const Discord = require("discord.js");
-const discordlink = "https://discord.gg/z4thPtW";
-const trello = "https://trello.com/b/0uytHSPL";
-const git = "https://github.com/Ravexburn/LuckyBot";
-const website = "https://luckybot.io/";
-const donate = "https://www.patreon.com/ravexburn";
 
 module.exports = (bot = Discord.Client) => {
 
 	require("../../functions/functions.js")(bot);
 
-	botInfo = function botInfo(message, prefix) {
+	botInfo = function botInfo(message, prefix, trello, github, helpServer, website, patreon) {
 		let time = bot.uptime;
 		const {seconds, minutes, hours, days} = timeFunction(time);
 		let date = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
@@ -20,7 +15,7 @@ module.exports = (bot = Discord.Client) => {
 			.setURL(bot.user.displayAvatarURL)
 			.addField("Authors", "Rave#0737 and OrigamiCoder#1375")
 			.addField("Uptime", date)
-			.addField("Links", `[Website](${website}) **-** [Trello](${trello}) **-** [Github](${git}) **-** [Discord](${discordlink}) **-** [Patreon](${donate})`, true)
+			.addField("Links", `[Website](${website}) **-** [Trello](${trello}) **-** [Github](${github}) **-** [Discord](${helpServer}) **-** [Patreon](${patreon})`, true)
 			.addField("Servers", bot.guilds.size, true)
 			.addField(`Total members using ${bot.user.username}`, bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b))
 			.addField("Bot Joined Server On", message.guild.joinedAt.toLocaleString(), true)
