@@ -18,9 +18,8 @@ module.exports = (bot = Discord.Client) => {
 	require("../modding/unban.js")(bot);
 	require("../owner/intset.js")(bot);
 	require("../owner/relays.js")(bot);
-	//require("../owner/whitelist.js")(bot);
 
-	//Admin and Mod Settings
+	// Admin and Mod Settings
 
 	modCmds = async function modCmds(serverSettings, message, perms) {
 
@@ -30,14 +29,14 @@ module.exports = (bot = Discord.Client) => {
 		let command = messageArray[0];
 		let args = messageArray.slice(1);
 
-		//Prefix
+		// Prefix
 
 		if ((command === `${prefix}setprefix`)) {
 			setPrefix(message, command, args, serverSettings);
 			return;
 		}
 
-		//Starting logs, roles, join, and music
+		// Starting logs, roles, join, and music
 
 		if ((command === `${prefix}start`)) {
 			if (args.length === 0) {
@@ -72,7 +71,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		//Toggles
+		// Toggles
 
 		if ((command === `${prefix}toggle`)) {
 			if (args.length === 0) {
@@ -127,7 +126,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		//Greeter setup
+		// Greeter setup
 
 		if ((command === `${prefix}greeter`)) {
 			if (args.length === 0) {
@@ -164,7 +163,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		//Starboard setup
+		// Starboard setup
 
 		if ((command === `${prefix}starboard`)) {
 			if (args.length === 0) {
@@ -199,21 +198,21 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		//Mute Command
+		// Mute Command
 
 		if ((command === `${prefix}mute`)) {
 			muteUser(message, command, args, perms);
 			return;
 		}
 
-		//Say Command
+		// Say Command
 
 		if (command === `${prefix}say`) {
 			sayFunction(message, command, args);
 			return;
 		}
 
-		//Edit Message Command
+		// Edit Message Command
 
 		if (command === `${prefix}edit`) {
 			editMessageFunction(message, command, args);
@@ -229,28 +228,28 @@ module.exports = (bot = Discord.Client) => {
 		let args = messageArray.slice(1);
 		const prefix = serverSettings.prefix;
 
-		//Ban Command
+		// Ban Command
 
 		if ((command === `${prefix}ban`)) {
 			banUser(message, command, args);
 			return;
 		}
 
-		//Unban Command
+		// Unban Command
 
 		if ((command === `${prefix}unban`)) {
 			unbanUser(message, command, args);
 			return;
 		}
 
-		//Kick command
+		// Kick command
 
 		if ((command === `${prefix}kick`)) {
 			kickUser(message, command, args);
 			return;
 		}
 
-		//Prune Command
+		// Prune Command
 
 		if ((command === `${prefix}prune`)) {
 			pruneMessage(message, args);
@@ -260,7 +259,7 @@ module.exports = (bot = Discord.Client) => {
 	};
 
 
-	//Intial Settings (Owner Only)
+	// Owner Commands
 
 	owner = async function owner(message) {
 
@@ -278,15 +277,7 @@ module.exports = (bot = Discord.Client) => {
 			return;
 		}
 
-		//Whitelist add
-
-		/* if ((command === `${prefix}whitelist`)) {
-			writingWL(message, args);
-			return;
-		} */
-
-		//Servers' info
-		//Server <help|list|leave>
+		// Servers' info
 
 		if ((command === `${prefix}server`) || (command === `${prefix}getmeout`)) {
 			if (args.length === 0) {
@@ -319,6 +310,8 @@ module.exports = (bot = Discord.Client) => {
 			}
 			return;
 		}
+
+		// Relay commands
 
 		if ((command === `${prefix}relay`)) {
 			if (args.length === 0) {
