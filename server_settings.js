@@ -11,9 +11,6 @@ const defaultSettings = {
 	editChannelID: "",
 	deleteChannelID: "",
 	imageChannelID: "",
-	centGuildID: "",
-	centChanID: "",
-	centEnabled: "",
 	//Toggles
 	imageEmbed: true,
 	autoRoleOn: false,
