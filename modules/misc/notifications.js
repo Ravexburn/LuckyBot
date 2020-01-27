@@ -520,7 +520,7 @@ serverIgnoreServer = async function serverIgnoreServer(message, guild, channelID
 
 		switch (result) {
 			case 1:
-				message.channel.send(`Guild members not will receive notifications from ${channel}`).catch(console.error);
+				message.channel.send(`Guild members will no longer receive notifications from ${channel}`).catch(console.error);
 				break;
 			case -1:
 				message.channel.send(`Guild members will now receive notifications from ${channel}`).catch(console.error);
