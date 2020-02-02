@@ -224,7 +224,7 @@ module.exports = (bot = Discord.Client) => {
 			if (!member) return;
 			let msg = message.content.replace(/`/g, "'");
 			const keywords = Array.from(keywordSet).map(key => `\`${key}\``).join(", ");
-			member.send(`:round_pushpin: User **${message.author.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}** **(${message.author})** has mentioned ${keywords} in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\``).catch(console.error);
+			member.send(`:round_pushpin: User **${message.author.username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}** **(${message.author})** has mentioned ${keywords} in ${message.channel} on \`${guild.name}:\` \`\`\`${msg}\`\`\`${message.url}`).catch(console.error);
 		});
 	};
 };
