@@ -26,14 +26,6 @@ module.exports = (bot = Discord.Client) => {
 		let mention = member.user;
 		let serverName = guild.name;
 		let user = member.user.tag;
-		//let image = serverSettings.welcomeImage; FEATURE DISABLED
-
-		let memberCount = 0;
-		await guild.fetchMembers().then((guild) => {
-			memberCount = guild.members.array().length;
-		}).catch((error) => {
-			console.log(error);
-		});
 
 		msg = msg.replace("{mention}", mention).replace("{server}", serverName).replace("{user}", user);
 
@@ -45,7 +37,7 @@ module.exports = (bot = Discord.Client) => {
 				.setTitle("Member Join!")
 				.setDescription(msg)
 				.setTimestamp(member.joinedAt)
-				.setFooter(`Member #${memberCount} 🎉`);
+				.setFooter(`Member #${guild.memberCount} 🎉`);
 			chan.send(embed).catch(console.error);
 		} else{
 			chan.send(msg).catch(console.error);
