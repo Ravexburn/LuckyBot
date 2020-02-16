@@ -89,7 +89,6 @@ module.exports = (bot = Discord.Client) => {
 		let perms = ["ADMINISTRATOR", "MANAGE_GUILD", "VIEW_AUDIT_LOG"];
 		if (perms.some(i => message.member.hasPermission(i))) {
 			modCmds(serverSettings, message, perms);
-			autoRoleMsg(serverSettings, message);
 		}
 		owner(message);
 	}
