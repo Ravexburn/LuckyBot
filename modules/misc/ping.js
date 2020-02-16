@@ -6,7 +6,7 @@ module.exports = (bot = Discord.Client) => {
 
 		message.channel.send("Checking ping.").then(msg => {
 			let ping = msg.createdTimestamp - message.createdTimestamp;
-			msg.edit(`Bot Latency: \`${ping} ms\` \nAPI Latency: \`${Math.round(bot.ping)} ms\``);
+			msg.edit(`Bot Latency: \`${ping} ms\` \nAPI Latency: \`${Math.round(bot.ping)} ms\``).catch(console.error);
 		}).catch((error) => {
 			console.log(error);
 		});

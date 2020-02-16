@@ -235,6 +235,6 @@ module.exports = (bot = Discord.Client) => {
 
 		const pinnedMessage = await boardChannel.fetchMessage(existingPinnedMessage.id);
 
-		await pinnedMessage.edit(editedEmbed);
+		await pinnedMessage.edit(editedEmbed).catch(console.error);
 	}
 };

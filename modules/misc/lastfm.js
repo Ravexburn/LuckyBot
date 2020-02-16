@@ -149,7 +149,7 @@ module.exports = (bot = Discord.Client) => {
 			.setFooter(`Powered by last.fm - Page ${newPageNumber}`, "https://i.imgur.com/C7u8gqg.jpg")
 			.setThumbnail(embed.thumbnail.url);
 
-		reaction.message.edit(newEmbed);
+		reaction.message.edit(newEmbed).catch(console.error);
 	};
 };
 
