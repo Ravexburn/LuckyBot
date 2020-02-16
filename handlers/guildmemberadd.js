@@ -12,7 +12,6 @@ module.exports = (bot = Discord.Client) => {
 		//Functions
 
 		welcomeMsg(member);
-		autoRoleAdd(member);
 		joinMsg(member);
 
 	};
