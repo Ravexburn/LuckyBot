@@ -54,7 +54,7 @@ module.exports = (bot = Discord.Client) => {
 							currentPage--;
 							embed.setDescription(pages[currentPage])
 								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
-							msg.edit(embed);
+							msg.edit(embed).catch(console.error);
 							Array.from(react.users.values()).forEach(user => {
 								if (!user.bot) {
 									react.remove(user);
@@ -74,7 +74,7 @@ module.exports = (bot = Discord.Client) => {
 							currentPage++;
 							embed.setDescription(pages[currentPage])
 								.setFooter(`Page ${currentPage + 1} of ${pages.length}`);
-							msg.edit(embed);
+							msg.edit(embed).catch(console.error);
 							Array.from(react.users.values()).forEach(user => {
 								if (!user.bot) {
 									react.remove(user);
