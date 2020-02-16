@@ -128,7 +128,7 @@ module.exports = class InvitesCache {
          */
 		this.clearGuildInvites = function clearGuildInvites(guild) {
 			this.debug(`Clearing cached invites for [${guild.name}].`);
-			return Promise.resolve(invitesCache.delete(guild.id));
+			return Promise.resolve(invitesCache.delete(guild.id).catch(console.error));
 		};
 	}
 };

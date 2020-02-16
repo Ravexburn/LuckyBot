@@ -139,7 +139,7 @@ module.exports = (bot = Discord.Client) => {
 	function deleteDuplicates(boardChannel, existingPinnedMessageIds) {
 		for (let i = 0; i < existingPinnedMessageIds.length; i++) {
 			boardChannel.fetchMessage(existingPinnedMessageIds[i])
-				.then(message => message.delete());
+				.then(message => message.delete().catch(console.error));
 		}
 	}
 
