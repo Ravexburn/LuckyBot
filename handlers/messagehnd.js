@@ -99,6 +99,6 @@ module.exports = (bot = Discord.Client) => {
 		infoMsg(serverSettings, message);
 		lastFM(serverSettings, message);
 		miscCommands(serverSettings, message);
-		notifySet(serverSettings, message);
+		//notifySet(serverSettings, message);
 	}
 };
