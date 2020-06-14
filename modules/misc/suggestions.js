@@ -8,7 +8,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let msg = args.join(" ").trim();
 		if (msg === "") {
-			message.channel.send(`I've got a suggestion, try adding a suggestion. \`${command} <message>\``).catch(console.error);
+			message.channel.send(`I suggest you add a suggestion. \`${command} <message>\``).catch(console.error);
 			return;
 		}
 
@@ -16,7 +16,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let embed = new Discord.RichEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-			.setTitle(`Server: ${guild}`)
+			.setTitle(`Server: ${guild}\nServer ID: ${message.guild.id}\nUser ID: ${message.author.id}`)
 			.setDescription("```css\n" + msg + "\n```")
 			.setFooter(message.createdAt);
 		if (message.attachments != null && message.attachments.size !== 0) {
