@@ -13,7 +13,7 @@ module.exports = (bot = Discord.Client) => {
 	require("../modules/modding/messagelogs.js")(bot);
 	require("../modules/general/misccommands.js")(bot);
 	require("../modules/general/modcommands.js")(bot);
-	require("../modules/misc/notifications.js")(bot);
+	//require("../modules/misc/notifications.js")(bot);
 	require("../modules/modding/roles.js")(bot);
 	require("../modules/modding/starboard.js")(bot);
 
@@ -30,7 +30,7 @@ module.exports = (bot = Discord.Client) => {
 			userCommands(serverSettings, message);
 			modOnlyCommands(serverSettings, message);
 		} else {
-			notifyPing(message);
+		//	notifyPing(message);
 		}
 
 		considerLoggingMessage(serverSettings, message);

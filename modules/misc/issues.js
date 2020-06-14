@@ -16,7 +16,7 @@ module.exports = (bot = Discord.Client) => {
 
 		let embed = new Discord.RichEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL.split("?")[0])
-			.setTitle(`Server: ${guild}`)
+			.setTitle(`Server: ${guild}\nServer ID: ${message.guild.id}\nUser ID: ${message.author.id}`)
 			.setDescription("```css\n" + msg + "\n```")
 			.setFooter(message.createdAt);
 		if (message.attachments != null && message.attachments.size !== 0) {
