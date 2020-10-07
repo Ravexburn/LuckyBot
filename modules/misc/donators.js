@@ -22,6 +22,7 @@ justin
 Chicle
 dominik
 Yuting
+Amit
 If you do not see your name on this list please contact me!`).catch(console.error);
 	};
 	
